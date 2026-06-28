@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>小迪安全课程笔记——网页导航（持续更新中……）</title>
+    <url>/2026/06/27/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%BD%91%E9%A1%B5%E5%AF%BC%E8%88%AA%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD%E2%80%A6%E2%80%A6%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="基础入门"><a href="#基础入门" class="headerlink" title="基础入门"></a>基础入门</h1><p><strong>第1天-Web应用&amp;架构搭建&amp;域名源码&amp;站库分离&amp;MVC模型&amp;解析受限&amp;对应路径</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/">http://zhigao.xyz/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/</a></p>
+<span id="more"></span>
+<p><strong>第2天-Web应用&amp;架构类别&amp;源码类别&amp;镜像容器&amp;建站模版&amp;编译封装&amp;前后端分离</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/">http://zhigao.xyz/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/</a></p>
+<p><strong>第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</a></p>
+<p><strong>第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</a></p>
+<p><strong>第5天-APP应用&amp;微信小程序&amp;原生态开发&amp;H5+Vue技术&amp;封装打包&amp;反编译抓包点</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/">http://zhigao.xyz/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/</a></p>
+<p><strong>第6天-抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;Web&amp;证书信任&amp;转发联动</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/">http://zhigao.xyz/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/</a></p>
+<p><strong>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</strong></p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/">http://zhigao.xyz/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</a></p>
+<p><strong>第8天-数据不回显&amp;数据不出网&amp;出入站策略&amp;正反向连接&amp;反弹Shell&amp;外带延迟写入</strong> </p>
+<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC8%E5%A4%A9-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%9B%9E%E6%98%BE-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%87%BA%E7%BD%91-%E5%87%BA%E5%85%A5%E7%AB%99%E7%AD%96%E7%95%A5-%E6%AD%A3%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5-%E5%8F%8D%E5%BC%B9Shell-%E5%A4%96%E5%B8%A6%E5%BB%B6%E8%BF%9F%E5%86%99%E5%85%A5/">http://zhigao.xyz/2026/06/27/%E7%AC%AC8%E5%A4%A9-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%9B%9E%E6%98%BE-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%87%BA%E7%BD%91-%E5%87%BA%E5%85%A5%E7%AB%99%E7%AD%96%E7%95%A5-%E6%AD%A3%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5-%E5%8F%8D%E5%BC%B9Shell-%E5%A4%96%E5%B8%A6%E5%BB%B6%E8%BF%9F%E5%86%99%E5%85%A5/</a></p>
+]]></content>
+      <categories>
+        <category>网页导航</category>
+      </categories>
+      <tags>
+        <tag>网页导航</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第1天-Web应用&amp;架构搭建&amp;域名源码&amp;站库分离&amp;MVC模型&amp;解析受限&amp;对应路径</title>
     <url>/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/</url>
-    <content><![CDATA[<span id="more"></span>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
 <p><font style="color:#000000;">#课程需明白：</font></p>
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、有那几种</font><font style="color:#dd4a68;">Web</font><font style="color:#000000;">域名上差异</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、有哪几种源码语言框架差异</font></p>
@@ -116,44 +145,106 @@
       </tags>
   </entry>
   <entry>
-    <title>小迪安全课程笔记——网页导航（持续更新中……）</title>
-    <url>/2026/06/27/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%BD%91%E9%A1%B5%E5%AF%BC%E8%88%AA%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD%E2%80%A6%E2%80%A6%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="基础入门"><a href="#基础入门" class="headerlink" title="基础入门"></a>基础入门</h1><p><strong>第1天-Web应用&amp;架构搭建&amp;域名源码&amp;站库分离&amp;MVC模型&amp;解析受限&amp;对应路径</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/">http://zhigao.xyz/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/</a></p>
+    <title>第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响</title>
+    <url>/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
+    <content><![CDATA[<p><font></font></p>
 <span id="more"></span>
-<p><strong>第2天-Web应用&amp;架构类别&amp;源码类别&amp;镜像容器&amp;建站模版&amp;编译封装&amp;前后端分离</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/">http://zhigao.xyz/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/</a></p>
-<p><strong>第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</a></p>
-<p><strong>第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</a></p>
-<p><strong>第5天-APP应用&amp;微信小程序&amp;原生态开发&amp;H5+Vue技术&amp;封装打包&amp;反编译抓包点</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/">http://zhigao.xyz/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/</a></p>
-<p><strong>第6天-抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;Web&amp;证书信任&amp;转发联动</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/">http://zhigao.xyz/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/</a></p>
-<p><strong>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</strong></p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/">http://zhigao.xyz/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</a></p>
-<p><strong>第8天-数据不回显&amp;数据不出网&amp;出入站策略&amp;正反向连接&amp;反弹Shell&amp;外带延迟写入</strong> </p>
-<p><a href="http://zhigao.xyz/2026/06/27/%E7%AC%AC8%E5%A4%A9-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%9B%9E%E6%98%BE-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%87%BA%E7%BD%91-%E5%87%BA%E5%85%A5%E7%AB%99%E7%AD%96%E7%95%A5-%E6%AD%A3%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5-%E5%8F%8D%E5%BC%B9Shell-%E5%A4%96%E5%B8%A6%E5%BB%B6%E8%BF%9F%E5%86%99%E5%85%A5/">http://zhigao.xyz/2026/06/27/%E7%AC%AC8%E5%A4%A9-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%9B%9E%E6%98%BE-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%87%BA%E7%BD%91-%E5%87%BA%E5%85%A5%E7%AB%99%E7%AD%96%E7%95%A5-%E6%AD%A3%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5-%E5%8F%8D%E5%BC%B9Shell-%E5%A4%96%E5%B8%A6%E5%BB%B6%E8%BF%9F%E5%86%99%E5%85%A5/</a></p>
+<p><font style="background-color:#ED740C;">本节课就是讲一些主流产品对我们渗透测试的影响，复现了解就行不做也可以</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-WAF保护-拦截攻击</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-CDN节点-隐藏真实IP</font><font style="background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-OSS存储-防上传攻击</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-反向代理-数据应用转发</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-负载均衡-多台机器服务</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#WAF</font></p>
+<p><font style="color:#000000;">原理：Web应用防火墙，旨在提供保护</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：常规Web安全测试手段会受到拦截</font></p>
+<p><font style="color:#000000;">演示：雷池社区版 <a href="https://waf-ce.chaitin.cn/">https://waf-ce.chaitin.cn/</a></font></p>
+<p><font style="color:#000000;">Ubuntu20.04 + 雷池社区版</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">安装雷池：</font></p>
+<p><a href="https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1">https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1</a></p>
+<p>命令：</p>
+<p>bash -c “$(curl -fsSLk <a href="https://waf-ce.chaitin.cn/release/latest/manager.sh">https://waf-ce.chaitin.cn/release/latest/manager.sh)"</a>“)</p>
+<p><font style="color:#000000;">搭建网站：</font></p>
+<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/705196831">https://zhuanlan.zhihu.com/p/705196831</a></p>
+<p><font style="color:#000000;">docker run –name webgoat -d -p </font><font style="color:#990055;">8080</font><font style="color:#000000;">:8080 -p </font><font style="color:#990055;">9090</font><font style="color:#000000;">:9090 registry.cn-shanghai.aliyuncs.com&#x2F;kubesec&#x2F;webgoat:v2023.8</font></p>
+<p><font style="color:#000000;">配置雷池：</font></p>
+<p><font style="color:#000000;">添加站点-设置域名-上游地址-没真实域名修改本地host解析（在c盘找到hosts文件，把对应域名解析到对应ip）</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/002-1.png"></p>
+<p><font style="background-color:#ED740C;">#CDN</font></p>
+<p><font style="color:#000000;">原理：内容分发服务，旨在提高访问速度</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：隐藏真实源IP，导致对目标IP测试错误</font></p>
+<p><font style="color:#000000;">演示：阿里云备案域名全局CDN加速服务</font></p>
+<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + CDN服务</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p>#<img src="/images/002-2.png"></p>
+<p><font style="color:#0C68CA;">CDN核心就是“就近加速、减轻源站带宽压力”，针对静态内容做缓存，用户访问的是CDN边缘节点的缓存数据，99%的情况不会触达源站</font></p>
+<p><font style="background-color:#ED740C;">怎么判断开没开CDN：用网上的超级ping网站，看看多地ping的ip结果一不一致，一致就是没开，不一致就是开了</font></p>
+<p><font style="background-color:#ED740C;"></font></p>
+<p><font style="background-color:#ED740C;">#OSS</font></p>
+<p><font style="color:#000000;">原理：云存储服务，旨在提高访问速度</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：主要影响文件上传漏洞，因为oss只负责放文件，没有php，Java这类脚本解析环境，所以上传后门后，脚本不被执行，就拿不到权限，但存在AK&#x2F;SK隐患（调用API的钥匙）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">演示：<a href="https://cloudreve.org/">https://cloudreve.org/</a></font></p>
+<p><font style="color:#000000;">Windows2016 + cloudreve + 阿里云OSS</font></p>
+<p><font style="color:#000000;"><a href="https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1">https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1</a></font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、启动应用</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、登录管理</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置存储信息</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、更改用户组存储属性</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">阿里云OSS:</font></p>
+<p><font style="color:#000000;">开OSS</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、新建Bucket</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置Bucket属性</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、配置Access访问</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">原理：</font></p>
+<p><font style="color:#000000;">为什么要使用第三方存储？</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">）静态文件会占用大量带宽</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">）加载速度</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">）存储空间</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#反向代理</font></p>
+<p><font style="color:#000000;">正代理为客户端服务,客户端主动建立代理访问目标（不代理不可达），客户端配置的。</font></p>
+<p><font style="color:#000000;">反向代理为服务端服务,服务端主动转发数据给可访问地址（不主动不可达），客户端不知道反向代理存在。</font></p>
+<p><font style="color:#000000;">原理：通过网络反向代理转发真实服务达到访问目的</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：访问目标只是一个代理，非真实应用服务器</font></p>
+<p><font style="color:#000000;">注意：正向代理和反向代理都是解决访问不可达的问题，但由于反向代理中多出一个可以重定向解析的功能操作，导致反代理出的站点指向和真实应用毫无关系！</font></p>
+<p><font style="color:#000000;">演示：Nginx反向代理配置</font></p>
+<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + Nginx</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">反向代理：就很类似一个重定向操作，就比如你访问一个网站他开了反向代理，目标url是baidu.com，服务器给浏览器返回的页面是百度的东西，但是url全程是没变的，重定向url会变成baidu.com。反向代理服务器就是它去取来数据，然后给用户，全程url还是反向代理服务器的url</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#负载均衡</font></p>
+<p>负载均衡（Load Balancing） 是一种网络与服务器架构技术，核心目标是将分布式的请求&#x2F;任务均匀分配到多个后端服务器（或节点）上，避免单一节点过载，提升系统的吞吐量、可用性与稳定性。</p>
+<p>影响：有多个服务器加载服务，测试过程中存在多个目标情况</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">有没有人看完有一个疑问：cdn和负载均衡怎么判断呢，都是访问一个网站，可能ip不一样。用超级ping ip多的是cdn，少的是负载均衡（因为负载均衡是核心服务器，cdn就是缓存），最关键我觉得就是，我们多访问几次，负载均衡很可能ip会变，cdn不变</font></p>
 ]]></content>
       <categories>
-        <category>网页导航</category>
+        <category>小迪安全课程学习笔记(基础入门)</category>
       </categories>
       <tags>
-        <tag>网页导航</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
     <title>第2天-Web应用&amp;架构类别&amp;源码类别&amp;镜像容器&amp;建站模版&amp;编译封装&amp;前后端分离</title>
     <url>/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/</url>
-    <content><![CDATA[<p><font style="color:#000000;background-color:#ED740C;">#Web架构展示：</font></p>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#000000;background-color:#ED740C;">#Web架构展示：</font></p>
 <p><font style="color:#000000;">1、套用模版型</font></p>
 <p><font style="color:#000000;">csdn &#x2F; cnblog &#x2F; github &#x2F; 建站系统等</font></p>
 <p><font style="color:#000000;">博客园举例</font></p>
-<span id="more"></span>
-
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/001-1.png" alt="案例"></p>
+<p><img src="/images/001-1.png"></p>
 <p><font style="color:#000000;">安全测试思路上的不同：</font></p>
 <p><font style="color:#000000;">一般以模版套用，基本模版无漏洞，大部分都采用测试用户管理权限为主，灵活性较低。</font></p>
 <p><font style="color:#000000;"></font></p>
@@ -212,14 +303,89 @@
       </tags>
   </entry>
   <entry>
+    <title>第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响</title>
+    <url>/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="background-color:#ED740C;">这节课一样首要任务就是理解，复现可做可不做</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-蜜罐-钓鱼诱使</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-堡垒机-突破口</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-API接口-突破口</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展应用-其他架构-突破口</font></p>
+<!-- more -->
+
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#蜜罐：<a href="https://hfish.net/">https://hfish.net/</a></font></p>
+<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
+<p><font style="color:#000000;">一键安装：bash </font><font style="color:#9a6e3a;">&lt;</font><font style="color:#999999;">(</font><font style="color:#dd4a68;">curl</font><font style="color:#000000;"> -sS -L <a href="https://hfish.net/webinstall.sh">https://hfish.net/webinstall.sh</a></font><font style="color:#999999;">)</font></p>
+<p>复现：就是租一台服务器然后上面搭建一个蜜罐系统，然后有人攻击，蜜罐后台就可看到攻击者信息</p>
+<p><font style="color:#000000;">有害影响：用来钓鱼或诱惑测试人员的防护系统，攻击者攻击半天没什么卵用，还有可能被防护方反制（一般在护网中常见，正常测试一般不会碰到）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#堡垒机：<a href="https://www.jumpserver.org/">https://www.jumpserver.org/</a></font></p>
+<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
+<p><font style="color:#000000;">一键安装：curl -sSL <a href="https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh">https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh</a> </font><font style="color:#9a6e3a;">|</font><font style="color:#dd4a68;">bash</font></p>
+<p><font style="color:#000000;">有利影响：Web应用或其他应用提供给测试人员一个能获取到价值信息的系统（运维用的），堡垒机&#x3D;服务器唯一的入口，所有运维人员，只能先登录堡垒机，才能去连接内网服务器，不能直连业务主机，对渗透测试人员这个不一定是一个坏事，因为好多堡垒机产品本身就有漏洞。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#API接口：是一个允许不同软件应用程序之间进行通信和数据交换的接口。API定义了一组规则和协议，软件开发者可以使用这些规则和协议来访问操作系统、库、服务或其他应用程序的功能。</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、Web API:</font></p>
+<p><font style="color:#000000;">通过HTTP协议进行通信的API，常用于Web服务和应用程序。</font></p>
+<p><font style="color:#000000;">例如，RESTful API、GraphQL API。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、库和框架API:</font></p>
+<p><font style="color:#000000;">提供特定编程语言或框架功能的API，供开发者在应用程序中使用。</font></p>
+<p><font style="color:#000000;">例如，Java API、Python标准库。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、操作系统API:</font></p>
+<p><font style="color:#000000;">提供操作系统功能访问的API。</font></p>
+<p><font style="color:#000000;">例如，Windows API、POSIX API。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、远程API:</font></p>
+<p><font style="color:#000000;">允许在网络上远程访问服务的API。</font></p>
+<p><font style="color:#000000;">例如，SOAP API、XML-RPC API。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">例子：</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">内部API：比如我自己开发了一个收银系统，使用API接口可以查询到顾客数据，收入支付，销售提成等</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">外部API：比如我自己搭建了一个网站应用，功能需求有要借助到外部的资源，如地图，归属地，短信收发等</font></p>
+<p><font style="background-color:#ED740C;">识别API就是看url，比如里面出现api那肯定就是了</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">有利影响：</font></p>
+<p><font style="color:#000000;">内部API：Web应用提供给测试人员一个能获取到价值信息的接口</font></p>
+<p><font style="color:#000000;">外部API：可以借助提供的API获取到当前网站不想让你获取的信息</font></p>
+<p><font style="color:#000000;">分析API的目录结构、接口命名规则、参数命名规则、功能和业务逻辑等，</font></p>
+<p><font style="color:#000000;">根据这些信息可以进行接口枚举和参数枚举，进而可以进行相关的漏洞测试。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Swagger 是API接口文档工具。</font></p>
+<p><font style="color:#000000;">后端写好接口后，自动生成网页文档，能直接看到：接口地址、传参格式、请求方式，还能在线发送测试请求。</font></p>
+<p><font style="color:#000000;">1. 作用</font></p>
+<p><font style="color:#000000;">前后端开发对接不用来回传文档，打开网页就能调试接口。</font></p>
+<p><font style="color:#000000;">2. 渗透测试核心考点</font></p>
+<p><font style="color:#000000;">默认访问地址：&#x2F;swagger-ui.html</font></p>
+<p><font style="color:#000000;">如果对外开放，攻击者可以扒出全部接口：用户新增、数据查询、管理员账号接口，极易找到未授权访问漏洞。</font></p>
+<p><font style="color:#000000;">一句话：它是项目所有API接口的展示页面，泄露后容易挖掘后端漏洞。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#拓展应用：防火墙 消息队列 分布式等</font></p>
+<p><font style="color:#000000;">ActiveMQ Redis Memcache Jenkins等漏洞</font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg">https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg</a></font></p>
+<p><font style="color:#000000;">有利影响：</font><font style="color:#000000;background-color:#ED740C;">搭建越多应用即方便了运维也提供给测试人员更多机会</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第5天-APP应用&amp;微信小程序&amp;原生态开发&amp;H5+Vue技术&amp;封装打包&amp;反编译抓包点</title>
     <url>/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/</url>
-    <content><![CDATA[<p><font style="background-color:#ED740C;">这节课没什么用其实，就是了解app和小程序的架构</font></p>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#ED740C;">这节课没什么用其实，就是了解app和小程序的架构</font></p>
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">移动App-开发架构-原生&amp;H5&amp;封装等</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ 微信小程序-开发架构-原生&amp;框架&amp;封装等</font></p>
-<span id="more"></span>
-
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
 <p><font style="color:#000000;background-color:#ED740C;">#APP应用开发架构：</font></p>
 <p><font style="color:#000000;">1、原生开发</font></p>
@@ -286,15 +452,15 @@
   <entry>
     <title>第6天-抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;Web&amp;证书信任&amp;转发联动</title>
     <url>/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/</url>
-    <content><![CDATA[<p><font style="color:#000000;">1、抓包技术-Web应用-http&#x2F;s-Burp&amp;Yakit</font></p>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#000000;">1、抓包技术-Web应用-http&#x2F;s-Burp&amp;Yakit</font></p>
 <p><font style="color:#000000;">2、抓包技术-APP应用-http&#x2F;s-Burp&amp;Yakit</font></p>
 <p><font style="color:#000000;">3、抓包技术-PC端应用-http&#x2F;s-Burp&amp;Yakit</font></p>
 <p><font style="color:#000000;">4、抓包技术-WX小程序-http&#x2F;s-Burp&amp;Yakit</font></p>
 <p><font style="color:#000000;">5、抓包技术-软件联动-http&#x2F;s-Proxifier</font></p>
 <p><font style="color:#000000;">6、抓包技术-通用方案-http&#x2F;s-ReqableApi</font></p>
 <p><font style="color:#000000;">7、抓包技术-其他工具-http&#x2F;s-Fiddler&amp;Charles</font></p>
-<span id="more"></span>
-
 <p><font style="color:#000000;"></font></p>
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-Burp&amp;Yakit</font></p>
@@ -389,176 +555,14 @@
       </tags>
   </entry>
   <entry>
-    <title>第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响</title>
-    <url>/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
-    <content><![CDATA[<p><font style="background-color:#ED740C;">本节课就是讲一些主流产品对我们渗透测试的影响，复现了解就行不做也可以</font></p>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-WAF保护-拦截攻击</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-CDN节点-隐藏真实IP</font><font style="background-color:#ffffff;"></font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-OSS存储-防上传攻击</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-反向代理-数据应用转发</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-负载均衡-多台机器服务</font></p>
-<span id="more"></span>
-
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#WAF</font></p>
-<p><font style="color:#000000;">原理：Web应用防火墙，旨在提供保护</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：常规Web安全测试手段会受到拦截</font></p>
-<p><font style="color:#000000;">演示：雷池社区版 <a href="https://waf-ce.chaitin.cn/">https://waf-ce.chaitin.cn/</a></font></p>
-<p><font style="color:#000000;">Ubuntu20.04 + 雷池社区版</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">安装雷池：</font></p>
-<p><a href="https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1">https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1</a></p>
-<p>命令：</p>
-<p>bash -c “$(curl -fsSLk <a href="https://waf-ce.chaitin.cn/release/latest/manager.sh">https://waf-ce.chaitin.cn/release/latest/manager.sh)"</a>“)</p>
-<p><font style="color:#000000;">搭建网站：</font></p>
-<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/705196831">https://zhuanlan.zhihu.com/p/705196831</a></p>
-<p><font style="color:#000000;">docker run –name webgoat -d -p </font><font style="color:#990055;">8080</font><font style="color:#000000;">:8080 -p </font><font style="color:#990055;">9090</font><font style="color:#000000;">:9090 registry.cn-shanghai.aliyuncs.com&#x2F;kubesec&#x2F;webgoat:v2023.8</font></p>
-<p><font style="color:#000000;">配置雷池：</font></p>
-<p><font style="color:#000000;">添加站点-设置域名-上游地址-没真实域名修改本地host解析（在c盘找到hosts文件，把对应域名解析到对应ip）</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/002-1.png"></p>
-<p><font style="background-color:#ED740C;">#CDN</font></p>
-<p><font style="color:#000000;">原理：内容分发服务，旨在提高访问速度</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：隐藏真实源IP，导致对目标IP测试错误</font></p>
-<p><font style="color:#000000;">演示：阿里云备案域名全局CDN加速服务</font></p>
-<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + CDN服务</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p>#<img src="/images/002-2.png"></p>
-<p><font style="color:#0C68CA;">CDN核心就是“就近加速、减轻源站带宽压力”，针对静态内容做缓存，用户访问的是CDN边缘节点的缓存数据，99%的情况不会触达源站</font></p>
-<p><font style="background-color:#ED740C;">怎么判断开没开CDN：用网上的超级ping网站，看看多地ping的ip结果一不一致，一致就是没开，不一致就是开了</font></p>
-<p><font style="background-color:#ED740C;"></font></p>
-<p><font style="background-color:#ED740C;">#OSS</font></p>
-<p><font style="color:#000000;">原理：云存储服务，旨在提高访问速度</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：主要影响文件上传漏洞，因为oss只负责放文件，没有php，Java这类脚本解析环境，所以上传后门后，脚本不被执行，就拿不到权限，但存在AK&#x2F;SK隐患（调用API的钥匙）</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">演示：<a href="https://cloudreve.org/">https://cloudreve.org/</a></font></p>
-<p><font style="color:#000000;">Windows2016 + cloudreve + 阿里云OSS</font></p>
-<p><font style="color:#000000;"><a href="https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1">https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1</a></font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、启动应用</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、登录管理</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置存储信息</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、更改用户组存储属性</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">阿里云OSS:</font></p>
-<p><font style="color:#000000;">开OSS</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、新建Bucket</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置Bucket属性</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、配置Access访问</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">原理：</font></p>
-<p><font style="color:#000000;">为什么要使用第三方存储？</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">）静态文件会占用大量带宽</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">）加载速度</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">）存储空间</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#反向代理</font></p>
-<p><font style="color:#000000;">正代理为客户端服务,客户端主动建立代理访问目标（不代理不可达），客户端配置的。</font></p>
-<p><font style="color:#000000;">反向代理为服务端服务,服务端主动转发数据给可访问地址（不主动不可达），客户端不知道反向代理存在。</font></p>
-<p><font style="color:#000000;">原理：通过网络反向代理转发真实服务达到访问目的</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：访问目标只是一个代理，非真实应用服务器</font></p>
-<p><font style="color:#000000;">注意：正向代理和反向代理都是解决访问不可达的问题，但由于反向代理中多出一个可以重定向解析的功能操作，导致反代理出的站点指向和真实应用毫无关系！</font></p>
-<p><font style="color:#000000;">演示：Nginx反向代理配置</font></p>
-<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + Nginx</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">反向代理：就很类似一个重定向操作，就比如你访问一个网站他开了反向代理，目标url是baidu.com，服务器给浏览器返回的页面是百度的东西，但是url全程是没变的，重定向url会变成baidu.com。反向代理服务器就是它去取来数据，然后给用户，全程url还是反向代理服务器的url</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#负载均衡</font></p>
-<p>负载均衡（Load Balancing） 是一种网络与服务器架构技术，核心目标是将分布式的请求&#x2F;任务均匀分配到多个后端服务器（或节点）上，避免单一节点过载，提升系统的吞吐量、可用性与稳定性。</p>
-<p>影响：有多个服务器加载服务，测试过程中存在多个目标情况</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">有没有人看完有一个疑问：cdn和负载均衡怎么判断呢，都是访问一个网站，可能ip不一样。用超级ping ip多的是cdn，少的是负载均衡（因为负载均衡是核心服务器，cdn就是缓存），最关键我觉得就是，我们多访问几次，负载均衡很可能ip会变，cdn不变</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响</title>
-    <url>/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
-    <content><![CDATA[<p><font style="background-color:#ED740C;">这节课一样首要任务就是理解，复现可做可不做</font></p>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-蜜罐-钓鱼诱使</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-堡垒机-突破口</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-API接口-突破口</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展应用-其他架构-突破口</font></p>
-<span id="more"></span>
-
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#蜜罐：<a href="https://hfish.net/">https://hfish.net/</a></font></p>
-<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
-<p><font style="color:#000000;">一键安装：bash </font><font style="color:#9a6e3a;">&lt;</font><font style="color:#999999;">(</font><font style="color:#dd4a68;">curl</font><font style="color:#000000;"> -sS -L <a href="https://hfish.net/webinstall.sh">https://hfish.net/webinstall.sh</a></font><font style="color:#999999;">)</font></p>
-<p>复现：就是租一台服务器然后上面搭建一个蜜罐系统，然后有人攻击，蜜罐后台就可看到攻击者信息</p>
-<p><font style="color:#000000;">有害影响：用来钓鱼或诱惑测试人员的防护系统，攻击者攻击半天没什么卵用，还有可能被防护方反制（一般在护网中常见，正常测试一般不会碰到）</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#堡垒机：<a href="https://www.jumpserver.org/">https://www.jumpserver.org/</a></font></p>
-<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
-<p><font style="color:#000000;">一键安装：curl -sSL <a href="https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh">https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh</a> </font><font style="color:#9a6e3a;">|</font><font style="color:#dd4a68;">bash</font></p>
-<p><font style="color:#000000;">有利影响：Web应用或其他应用提供给测试人员一个能获取到价值信息的系统（运维用的），堡垒机&#x3D;服务器唯一的入口，所有运维人员，只能先登录堡垒机，才能去连接内网服务器，不能直连业务主机，对渗透测试人员这个不一定是一个坏事，因为好多堡垒机产品本身就有漏洞。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#API接口：是一个允许不同软件应用程序之间进行通信和数据交换的接口。API定义了一组规则和协议，软件开发者可以使用这些规则和协议来访问操作系统、库、服务或其他应用程序的功能。</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、Web API:</font></p>
-<p><font style="color:#000000;">通过HTTP协议进行通信的API，常用于Web服务和应用程序。</font></p>
-<p><font style="color:#000000;">例如，RESTful API、GraphQL API。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、库和框架API:</font></p>
-<p><font style="color:#000000;">提供特定编程语言或框架功能的API，供开发者在应用程序中使用。</font></p>
-<p><font style="color:#000000;">例如，Java API、Python标准库。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、操作系统API:</font></p>
-<p><font style="color:#000000;">提供操作系统功能访问的API。</font></p>
-<p><font style="color:#000000;">例如，Windows API、POSIX API。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、远程API:</font></p>
-<p><font style="color:#000000;">允许在网络上远程访问服务的API。</font></p>
-<p><font style="color:#000000;">例如，SOAP API、XML-RPC API。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">例子：</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">内部API：比如我自己开发了一个收银系统，使用API接口可以查询到顾客数据，收入支付，销售提成等</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">外部API：比如我自己搭建了一个网站应用，功能需求有要借助到外部的资源，如地图，归属地，短信收发等</font></p>
-<p><font style="background-color:#ED740C;">识别API就是看url，比如里面出现api那肯定就是了</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">有利影响：</font></p>
-<p><font style="color:#000000;">内部API：Web应用提供给测试人员一个能获取到价值信息的接口</font></p>
-<p><font style="color:#000000;">外部API：可以借助提供的API获取到当前网站不想让你获取的信息</font></p>
-<p><font style="color:#000000;">分析API的目录结构、接口命名规则、参数命名规则、功能和业务逻辑等，</font></p>
-<p><font style="color:#000000;">根据这些信息可以进行接口枚举和参数枚举，进而可以进行相关的漏洞测试。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#Swagger 是API接口文档工具。</font></p>
-<p><font style="color:#000000;">后端写好接口后，自动生成网页文档，能直接看到：接口地址、传参格式、请求方式，还能在线发送测试请求。</font></p>
-<p><font style="color:#000000;">1. 作用</font></p>
-<p><font style="color:#000000;">前后端开发对接不用来回传文档，打开网页就能调试接口。</font></p>
-<p><font style="color:#000000;">2. 渗透测试核心考点</font></p>
-<p><font style="color:#000000;">默认访问地址：&#x2F;swagger-ui.html</font></p>
-<p><font style="color:#000000;">如果对外开放，攻击者可以扒出全部接口：用户新增、数据查询、管理员账号接口，极易找到未授权访问漏洞。</font></p>
-<p><font style="color:#000000;">一句话：它是项目所有API接口的展示页面，泄露后容易挖掘后端漏洞。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#拓展应用：防火墙 消息队列 分布式等</font></p>
-<p><font style="color:#000000;">ActiveMQ Redis Memcache Jenkins等漏洞</font></p>
-<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg">https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg</a></font></p>
-<p><font style="color:#000000;">有利影响：</font><font style="color:#000000;background-color:#ED740C;">搭建越多应用即方便了运维也提供给测试人员更多机会</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</title>
     <url>/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-扶墙双层</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-项目联动</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-Web&amp;App&amp;小程序&amp;PC-全局协议 </font></p>
-<span id="more"></span>
-
 <p><font style="color:#990055;"></font></p>
 <p><font style="color:#DF2A3F;">昨天讲的三款工具抓的都是http&#x2F;s的包，今天抓的是别的协议的包所以就不能使用昨天的三款工具了。科来和wireshark是抓网卡的包，之前bp，charles，fidder等都是抓的端口的包。</font></p>
 <p><font style="color:#990055;"></font></p>
@@ -622,16 +626,18 @@
   <entry>
     <title>第9天-反弹Shell&amp;渗透命令&amp;Reverse反向&amp;Bind正向&amp;利用语言&amp;文件下载&amp;多姿势</title>
     <url>/2026/06/27/%E7%AC%AC9%E5%A4%A9-%E5%8F%8D%E5%BC%B9Shell-%E6%B8%97%E9%80%8F%E5%91%BD%E4%BB%A4-Reverse%E5%8F%8D%E5%90%91-Bind%E6%AD%A3%E5%90%91-%E5%88%A9%E7%94%A8%E8%AF%AD%E8%A8%80-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-%E5%A4%9A%E5%A7%BF%E5%8A%BF/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+]]></content>
   </entry>
   <entry>
     <title>第8天-数据不回显&amp;数据不出网&amp;出入站策略&amp;正反向连接&amp;反弹Shell&amp;外带延迟写入</title>
     <url>/2026/06/27/%E7%AC%AC8%E5%A4%A9-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%9B%9E%E6%98%BE-%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%87%BA%E7%BD%91-%E5%87%BA%E5%85%A5%E7%AB%99%E7%AD%96%E7%95%A5-%E6%AD%A3%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5-%E5%8F%8D%E5%BC%B9Shell-%E5%A4%96%E5%B8%A6%E5%BB%B6%E8%BF%9F%E5%86%99%E5%85%A5/</url>
-    <content><![CDATA[<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">数据不回显-原因解决-反弹&amp;带外&amp;延迟&amp;写文件</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ 数据不出网-原因解决-正反连接&amp;出入站策略&amp;隧道</font></p>
-<span id="more"></span>
-
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
 <p><font style="color:#000000;background-color:#ED740C;">#数据不回显</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">原因解决</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">反弹&amp;带外&amp;延迟&amp;写文件</font></p>
 <p><font style="color:#000000;">原因：代码层面函数调用问题，没有输出测试等</font><font style="color:#117CEE;">（比如：php中System()函数和shell_exec()函数，System()函数有回显，shell_exec()函数不回显）</font></p>
@@ -755,7 +761,9 @@
   <entry>
     <title>第二届双元杯信息安全大赛夺冠！！！祝贺自己</title>
     <url>/2026/06/28/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E5%8F%8C%E5%85%83%E6%9D%AF%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E5%A4%BA%E5%86%A0%EF%BC%81%EF%BC%81%EF%BC%81%E7%A5%9D%E8%B4%BA%E8%87%AA%E5%B7%B1/</url>
-    <content><![CDATA[<p><img src="/images/ctf-num1.jpg"></p>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><img src="/images/ctf-num1.jpg"></p>
 ]]></content>
       <categories>
         <category>记录荣誉</category>
