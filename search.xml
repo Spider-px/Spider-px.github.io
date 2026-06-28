@@ -812,4 +812,64 @@
         <tag>记录荣誉</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第10天-传输加密&amp;数据格式&amp;编码算法&amp;密文存储&amp;代码混淆&amp;逆向保护&amp;安全影响</title>
+    <url>/2026/06/29/%E7%AC%AC10%E5%A4%A9-%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E5%AF%86%E6%96%87%E5%AD%98%E5%82%A8-%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-%E9%80%86%E5%90%91%E4%BF%9D%E6%8A%A4-%E5%AE%89%E5%85%A8%E5%BD%B1%E5%93%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">传输格式&amp;数据-类型&amp;编码&amp;算法</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 密码存储&amp;混淆-不可逆&amp;非对称性</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#传输格式</font></p>
+<p><font style="color:#000000;">JSON XML WebSockets HTML 二进制 自定义</font></p>
+<p><font style="color:#000000;">WebSockets：聊天交互较常见 交互式应用（豆包等应用）</font></p>
+<p><font style="color:#117CEE;">url:wss:&#x2F;&#x2F;………………</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;712032652</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1917215</font></p>
+<p><font style="color:#000000;">文件上传：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.cnblogs.com/wanglei1900/p/17177303.html">www.cnblogs.com/wanglei1900/p/17177303.html</a></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试必须严格按照格式发包</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#传输数据</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#000000;">MD5</font></p>
+<p><font style="color:#000000;">Base64</font></p>
+<p><font style="color:#000000;">自定义算法</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试如果要添加内容，内容必须是加密的要不然就无效，因为数据带入到逻辑处理前后加解密操作</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#117CEE;">编码和加密的区别：</font></p>
+<p><font style="color:#117CEE;">编码用于数据传输、存储、字符统一表示，本身不提供保密性，转换标准完全公开，无需密钥即可无损还原；</font></p>
+<p><font style="color:#117CEE;">加密用于数据防窃听、保护隐私，依靠公开加密算法+私有密钥完成转换，只有持有匹配密钥的授权方可以解密还原，加密算法规则通常公开，真正保密的是密钥。</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="color:#117CEE;">MD5是不可逆向的密文</font></p>
+<p><font style="color:#117CEE;">大部分解密都是碰撞式解密</font></p>
+<p><font style="color:#117CEE;">不是算法的逆向的还原解密</font></p>
+<p><font style="color:#117CEE;">它是穷举加密然后比对，如果太复杂解不出来</font></p>
+<p><font style="color:#000000;background-color:#ED740C;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#密码存储</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#000000;">-ZBlog&amp;Dz</font></p>
+<p><font style="color:#000000;">-Win&amp;Linux</font></p>
+<p><font style="color:#000000;">-MSSQL&amp;MYSQL</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试必须要做到算法解密</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#代码混淆</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#000000;">-PHP&amp;JS混淆加密</font></p>
+<p><font style="color:#000000;">-DLL&amp;JAR代码保护</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：代码审计，逆向破解</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">由上述内容发现还需那些内容学习：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、加密算法的识别与解密</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、自定义算法的识别解密</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
