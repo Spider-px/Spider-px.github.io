@@ -146,6 +146,124 @@ onmouseout="this.style.textDecoration='none'">
       </tags>
   </entry>
   <entry>
+    <title>第1天-Web应用&amp;架构搭建&amp;域名源码&amp;站库分离&amp;MVC模型&amp;解析受限&amp;对应路径</title>
+    <url>/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/</url>
+    <content><![CDATA[<p><font> </font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#000000;">#课程需明白：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、有那几种</font><font style="color:#dd4a68;">Web</font><font style="color:#000000;">域名上差异</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、有哪几种源码语言框架差异</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、网站数据存储有那几个方式</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、URL访问对应正确和错误原因</font></p>
+<p><font style="color:#000000;">由此我们需要结合安全测试思考：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、域名上架构了解后的思路意义</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、源码上架构了解后的思路意义</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、数据上架构了解后的思路意义</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、解析上架构了解后的思路意义</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#域名差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">主站</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">分站</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">端口站</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">子站</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、主站</font></p>
+<p><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、分站</font></p>
+<p><font style="color:#000000;">blog</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、端口站</font></p>
+<p><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">88</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、目录站</font></p>
+<p><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">bbs</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、子站</font></p>
+<p><font style="color:#990055;">123.</font><font style="color:#000000;">blog</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#常规的web应用搭建：</font></p>
+<p>1、购买云服务器，购买域名  </p>
+<p>2、云服务器去搭建中间件（<font style="background-color:#FBDE28;">phpstudy和宝塔这类集成软件更方便</font>）</p>
+<p>3、下载并上传web程序源码</p>
+<p>4、添加网站 并绑定域名目录</p>
+<p><font style="color:#2F4BDA;">1、中间件是什么？中间件是位于操作系统和应用程序之间的一类独立软件，它包括web服务器中间件、数据库中间件等，这里我们只涉及web服务器中间件，比如搭建Zblog时用的IIS，就是典型的web服务器中间件——它帮Zblog搞定了“怎么接收浏览器的访问请求”“怎么把博客页面返回给用户”这些网络层面的事，Zblog只需要专注做博客的内容管理功能就行。 </font></p>
+<p><font style="color:#2F4BDA;">2、域名需要备案否则无法在网络上被访问。</font><font style="color:#117cee;">如果服务器是香港或非大陆地区，不备案也可以</font></p>
+<p><font style="color:#117cee;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#源码差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">结构</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">语言</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">框架</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">闭源</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">加密</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、源码目录结构对应</font></p>
+<p><font style="color:#000000;">后台目录，文件目录，逻辑目录，前端目录，数据目录，配置文件等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、源码开发语言类型</font></p>
+<p>ASP，ASPX，PHP，Java，Python，Go，Javascript等</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、语言开发框架组件</font></p>
+<p>PHP：ThinkphpLaravel YII CodeIgniterCakePHPZend等</p>
+<p>JAVA：SpringMyBatis Hibernate Struts2Springboot等</p>
+<p>Python：DjangoFlask BottleTurbobarsTornadoWeb2py等</p>
+<p>Javascript：Vue.js Node.js BootstrapJQueryAngular等</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、开源闭源加密类型</font></p>
+<p><font style="color:#000000;">开源</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">如</font><font style="color:#dd4a68;">Zblog</font></p>
+<p><font style="color:#000000;">闭源</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">如内部开发</font></p>
+<p><font style="color:#000000;">加密</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">如通达OA</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#数据差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">本地数据</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">分离数据</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">云数据库</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库类型：</font></p>
+<p>Access、MYSQL、SqlServer、Oracle、</p>
+<p>Redis、DB2、Postgresql、MongoDB等</p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、本地数据库：本地服务器搭建</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、分离数据库：另外的服务器搭建</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、云数据库：RDS等  </font><font style="color:#000000;background-color:#FBDE28;">之前是一个云服务器然后上面搭建数据库，这个是一步到位，直接开个数据库。</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">用这个有一个好处，它有白名单就是只允许哪些ip连接数据库，所以就算知道数据库账号密码也没办法了。</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;"></font></p>
+<p>比如：</p>
+<p>背景：<a href="http://www.xxx.com/">www.xxx.com</a> 服务器IP是12.123.123.1 数据库放在云数据库上面</p>
+<p>我现在拿到网站webshell网站权限，我怎么去获取到数据库里面的数据？</p>
+<p><font style="background-color:#ED740C;">1、上传一个数据库连接脚本到网站上，访问脚本去让脚本去连接数据库（就是恶意代码执行，返回结果）</font></p>
+<p><font style="background-color:#ED740C;">2、利用网站权限上传代理流量工具，做数据中转的操作，去连接数据库（frp&#x2F;chisel就是用来搭建流量隧道的工具，把这类程序传到网站服务器上运行，打通攻击者和服务器的通道，你在本地数据库软件发出的连接请求，全部由这台服务器代为发送，相当于远程操控这台服务器去访问云数据库）</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;"></font></p>
+<p><font style="color:rgb(51, 51, 51);">数据库的作用就是存储数据，</font><font style="color:rgb(51, 51, 51);">是一个按数据结构来存储和管理数据的计算机软件系统，常见的有MySQL，Oracle，这两个是关系型数据库，还有非关系型数据库Redis，MongoDB</font></p>
+<p><font style="color:rgb(51, 51, 51);">关系型数据库：</font></p>
+<p><font style="color:rgb(51, 51, 51);">  	以表格形式呈现，数据是以行存储，列表示这条数据的属性</font></p>
+<p><font style="color:rgb(51, 51, 51);">非关系型数据库：</font></p>
+<p><font style="color:rgb(51, 51, 51);">  	支持多种数据模型，键值对，文档，宽列，图形数据等等</font></p>
+<p><font style="color:rgb(51, 51, 51);">DB（数据库）：数据的“</font><font style="color:rgb(51, 51, 51);background-color:#ED740C;">仓库</font><font style="color:rgb(51, 51, 51);">”（纯数据集合）</font></p>
+<p><font style="color:rgb(51, 51, 51);">DBS（数据库系统）：实现数据管理的完整硬件</font><font style="color:rgb(51, 51, 51);background-color:#ED740C;">体系</font><font style="color:rgb(51, 51, 51);">（仓库+管理员+工具+规则）</font></p>
+<p><font style="color:rgb(51, 51, 51);">DBMS（数据库管理系统）：操作和管理DB的</font><font style="color:rgb(51, 51, 51);background-color:#ED740C;">专用软件</font></p>
+<p><font style="color:#4861E0;">我们常用的MySQL是数据库管理系统，是实打实的软件程序，它运行在操作系统之上，靠操作系统调用硬件（硬盘、内存）来实现数据的存储和读写，本身也需要被安装、启动、运行</font></p>
+<p><font style="color:#4861E0;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#平台差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">中间件类型</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">系统类型</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">容器类型</font></p>
+<p><font style="color:#990055;">1</font>、系统：Windows、Linux、MacOS等</p>
+<p>2、容器：Docker、K8s、Vmware、VirtualBox等</p>
+<p><font style="color:rgb(51, 51, 51);">提到docker，就可以想到虚拟化，docker将软件与其依赖项打包为容器，相比于传统的虚拟机，docker容器更加轻便、快速、容易部署</font></p>
+<p><font style="color:#4861E0;">Docker 是一个 “容器化” 工具</font><font style="color:#4861E0;">，能把应用程序和它需要的所有依赖（比如库、</font><a href="https://so.csdn.net/so/search?q=%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6&spm=1001.2101.3001.7020"><font style="color:#4861E0;">配置文件</font></a><font style="color:#4861E0;">、运行环境）打包成一个 “容器”。  </font></p>
+<p><font style="color:#4861E0;">Docker核心概念</font></p>
+<p><font style="color:#4861E0;">1、镜像（Image）：镜像就是 “容器的模板”，是一个只读的文件包，包含了运行应用所需的所有东西（代码、依赖、配置等）。类比：就像操作系统的 ISO 镜像文件（比如 Windows 安装盘），本身不能直接用，但可以用它 “安装” 出一个可运行的系统。或者说软件安装包～</font></p>
+<p><font style="color:#4861E0;">2、容器（Container）：容器是镜像的 “运行实例”，是镜像被 “激活” 后形成的可操作环境。容器是独立的、隔离的，多个容器之间互不干扰。类比：用 ISO 镜像安装好的 Windows 系统，你可以在里面操作（运行程序、改配置），关闭后还能重新启动。</font></p>
+<p><font style="color:#4861E0;">3、仓库（Repository）：仓库是存放镜像的 “云仓库”，类似代码仓库（如 GitHub），你可以从仓库下载别人做好的镜像，也可以把自己的镜像传上去。最常用的公共仓库是 Docker Hub，里面有海量现成的镜像（比如 Nginx、MySQL、Python 等）。</font></p>
+<p><font style="color:rgb(51, 51, 51);">原文链接：</font><a href="https://blog.csdn.net/m0_64198455/article/details/152463359">https://blog.csdn.net/m0_64198455&#x2F;article&#x2F;details&#x2F;152463359</a></p>
+<p><font style="color:#DF2A3F;">Docker镜像和ISO镜像之间的区别：ISO镜像是完整的操作系统模版，相当于一个“空电脑”，拿到手可以在上面安装任何软件（MySQL，Nginx，Java都能装），自己决定部署什么：Docker镜像是单个软件的专属运行模版，相当于一个“预装了某款软件的专用设备”（比如MySQL镜像就是预装了MySQL的专用环境），里面只有这个软件+能让它跑起来的最小依赖，没法再装其他的软件，开箱就能用这个专属软件。</font></p>
+<p>3、中间件：Apache、Nginx、IIS、lighttpd、Tomcat、Jboos、Weblogic、Websphere、Jetty等</p>
+<p><font style="color:#000000;background-color:#ED740C;">#解析差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">URL路由</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">绝对相对路径</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">格式权限</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、URL路由：URL访问对应文件，MVC模型等</font></p>
+<p><font style="color:#000000;">MVC是程序员定制的代码开发规范，将项目分为三部分：控制器接收请求，模型操作数据库，视图展示页面。PHP框架普遍采用该架构，依靠路由访问程序，容易产生路由解析漏洞。</font></p>
+<p>常规：url和文件目录对应上</p>
+<p>路由访问：mvc源码 java pythonweburl和文件目录对应不上 要根据配置路由决定。</p>
+<p><font style="color:#117cee;">1. 传统网站：URL直接对应服务器里真实存在的文件与文件夹。</font></p>
+<p><font style="color:#117cee;">2. MVC框架：URL和硬盘上的文件目录完全不对应，不存在真实物理路径。</font></p>
+<p><font style="color:#117cee;">3. 路径生成规则：</font></p>
+<p><font style="color:#117cee;">程序员手动在路由配置文件里，手写自定义URL路径，把每一条网址绑定到对应的控制器函数。</font></p>
+<p><font style="color:#117cee;">4. 运行流程：</font></p>
+<p><font style="color:#117cee;">用户访问网址 → 框架读取路由表 → 找到对应的代码函数 → 调取数据库 → 生成网页。</font></p>
+<p><font style="color:#117cee;">5. 安全考点：</font></p>
+<p><font style="color:#117cee;">路由规则配置错误，会造成路径解析漏洞，突破限制访问后台文件。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">2、绝对路径：这个就是从当前目录开始，</font></p>
+<p><font style="color:#000000;">3、相对路径：这个就是从根目录开始，就是完整路径</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、格式权限：后门解析格式（网站是什么搭建环境就上传什么后门），代码正常执行（什么环境写什么代码），脚本执行权限（如果目录权限设置了，就有可能执行不了，只能换一个目录了）等</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第10天-传输加密&amp;数据格式&amp;编码算法&amp;密文存储&amp;代码混淆&amp;逆向保护&amp;安全影响</title>
     <url>/2026/06/29/%E7%AC%AC10%E5%A4%A9-%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E5%AF%86%E6%96%87%E5%AD%98%E5%82%A8-%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-%E9%80%86%E5%90%91%E4%BF%9D%E6%8A%A4-%E5%AE%89%E5%85%A8%E5%BD%B1%E5%93%8D/</url>
     <content><![CDATA[<p><font></font></p>
@@ -265,124 +383,6 @@ onmouseout="this.style.textDecoration='none'">
 <p><font style="color:#000000;"><a href="https://segmentfault.com/a/1190000045026063">https://segmentfault.com/a/1190000045026063</a></font></p>
 <p><font style="color:#000000;">5、加密型源码</font></p>
 <p><font style="color:#000000;background-color:#ED740C;">比如：通达oa（zend加密）</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第1天-Web应用&amp;架构搭建&amp;域名源码&amp;站库分离&amp;MVC模型&amp;解析受限&amp;对应路径</title>
-    <url>/2026/06/27/%E7%AC%AC1%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA-%E5%9F%9F%E5%90%8D%E6%BA%90%E7%A0%81-%E7%AB%99%E5%BA%93%E5%88%86%E7%A6%BB-MVC%E6%A8%A1%E5%9E%8B-%E8%A7%A3%E6%9E%90%E5%8F%97%E9%99%90-%E5%AF%B9%E5%BA%94%E8%B7%AF%E5%BE%84/</url>
-    <content><![CDATA[<p><font> </font></p>
-<span id="more"></span>
-
-
-<p><font style="color:#000000;">#课程需明白：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、有那几种</font><font style="color:#dd4a68;">Web</font><font style="color:#000000;">域名上差异</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、有哪几种源码语言框架差异</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、网站数据存储有那几个方式</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、URL访问对应正确和错误原因</font></p>
-<p><font style="color:#000000;">由此我们需要结合安全测试思考：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、域名上架构了解后的思路意义</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、源码上架构了解后的思路意义</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、数据上架构了解后的思路意义</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、解析上架构了解后的思路意义</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#域名差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">主站</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">分站</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">端口站</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">子站</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、主站</font></p>
-<p><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、分站</font></p>
-<p><font style="color:#000000;">blog</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、端口站</font></p>
-<p><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">88</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、目录站</font></p>
-<p><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">bbs</font><font style="color:#9a6e3a;">&#x2F;</font></p>
-<p><font style="color:#990055;">5</font><font style="color:#000000;">、子站</font></p>
-<p><font style="color:#990055;">123.</font><font style="color:#000000;">blog</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaodi8</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#常规的web应用搭建：</font></p>
-<p>1、购买云服务器，购买域名  </p>
-<p>2、云服务器去搭建中间件（<font style="background-color:#FBDE28;">phpstudy和宝塔这类集成软件更方便</font>）</p>
-<p>3、下载并上传web程序源码</p>
-<p>4、添加网站 并绑定域名目录</p>
-<p><font style="color:#2F4BDA;">1、中间件是什么？中间件是位于操作系统和应用程序之间的一类独立软件，它包括web服务器中间件、数据库中间件等，这里我们只涉及web服务器中间件，比如搭建Zblog时用的IIS，就是典型的web服务器中间件——它帮Zblog搞定了“怎么接收浏览器的访问请求”“怎么把博客页面返回给用户”这些网络层面的事，Zblog只需要专注做博客的内容管理功能就行。 </font></p>
-<p><font style="color:#2F4BDA;">2、域名需要备案否则无法在网络上被访问。</font><font style="color:#117cee;">如果服务器是香港或非大陆地区，不备案也可以</font></p>
-<p><font style="color:#117cee;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#源码差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">结构</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">语言</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">框架</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">闭源</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">加密</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、源码目录结构对应</font></p>
-<p><font style="color:#000000;">后台目录，文件目录，逻辑目录，前端目录，数据目录，配置文件等</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、源码开发语言类型</font></p>
-<p>ASP，ASPX，PHP，Java，Python，Go，Javascript等</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、语言开发框架组件</font></p>
-<p>PHP：ThinkphpLaravel YII CodeIgniterCakePHPZend等</p>
-<p>JAVA：SpringMyBatis Hibernate Struts2Springboot等</p>
-<p>Python：DjangoFlask BottleTurbobarsTornadoWeb2py等</p>
-<p>Javascript：Vue.js Node.js BootstrapJQueryAngular等</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、开源闭源加密类型</font></p>
-<p><font style="color:#000000;">开源</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">如</font><font style="color:#dd4a68;">Zblog</font></p>
-<p><font style="color:#000000;">闭源</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">如内部开发</font></p>
-<p><font style="color:#000000;">加密</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">如通达OA</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#数据差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">本地数据</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">分离数据</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">云数据库</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库类型：</font></p>
-<p>Access、MYSQL、SqlServer、Oracle、</p>
-<p>Redis、DB2、Postgresql、MongoDB等</p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、本地数据库：本地服务器搭建</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、分离数据库：另外的服务器搭建</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、云数据库：RDS等  </font><font style="color:#000000;background-color:#FBDE28;">之前是一个云服务器然后上面搭建数据库，这个是一步到位，直接开个数据库。</font></p>
-<p><font style="color:#000000;background-color:#81BBF8;">用这个有一个好处，它有白名单就是只允许哪些ip连接数据库，所以就算知道数据库账号密码也没办法了。</font></p>
-<p><font style="color:#000000;background-color:#81BBF8;"></font></p>
-<p>比如：</p>
-<p>背景：<a href="http://www.xxx.com/">www.xxx.com</a> 服务器IP是12.123.123.1 数据库放在云数据库上面</p>
-<p>我现在拿到网站webshell网站权限，我怎么去获取到数据库里面的数据？</p>
-<p><font style="background-color:#ED740C;">1、上传一个数据库连接脚本到网站上，访问脚本去让脚本去连接数据库（就是恶意代码执行，返回结果）</font></p>
-<p><font style="background-color:#ED740C;">2、利用网站权限上传代理流量工具，做数据中转的操作，去连接数据库（frp&#x2F;chisel就是用来搭建流量隧道的工具，把这类程序传到网站服务器上运行，打通攻击者和服务器的通道，你在本地数据库软件发出的连接请求，全部由这台服务器代为发送，相当于远程操控这台服务器去访问云数据库）</font></p>
-<p><font style="color:#000000;background-color:#81BBF8;"></font></p>
-<p><font style="color:rgb(51, 51, 51);">数据库的作用就是存储数据，</font><font style="color:rgb(51, 51, 51);">是一个按数据结构来存储和管理数据的计算机软件系统，常见的有MySQL，Oracle，这两个是关系型数据库，还有非关系型数据库Redis，MongoDB</font></p>
-<p><font style="color:rgb(51, 51, 51);">关系型数据库：</font></p>
-<p><font style="color:rgb(51, 51, 51);">  	以表格形式呈现，数据是以行存储，列表示这条数据的属性</font></p>
-<p><font style="color:rgb(51, 51, 51);">非关系型数据库：</font></p>
-<p><font style="color:rgb(51, 51, 51);">  	支持多种数据模型，键值对，文档，宽列，图形数据等等</font></p>
-<p><font style="color:rgb(51, 51, 51);">DB（数据库）：数据的“</font><font style="color:rgb(51, 51, 51);background-color:#ED740C;">仓库</font><font style="color:rgb(51, 51, 51);">”（纯数据集合）</font></p>
-<p><font style="color:rgb(51, 51, 51);">DBS（数据库系统）：实现数据管理的完整硬件</font><font style="color:rgb(51, 51, 51);background-color:#ED740C;">体系</font><font style="color:rgb(51, 51, 51);">（仓库+管理员+工具+规则）</font></p>
-<p><font style="color:rgb(51, 51, 51);">DBMS（数据库管理系统）：操作和管理DB的</font><font style="color:rgb(51, 51, 51);background-color:#ED740C;">专用软件</font></p>
-<p><font style="color:#4861E0;">我们常用的MySQL是数据库管理系统，是实打实的软件程序，它运行在操作系统之上，靠操作系统调用硬件（硬盘、内存）来实现数据的存储和读写，本身也需要被安装、启动、运行</font></p>
-<p><font style="color:#4861E0;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#平台差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">中间件类型</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">系统类型</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">容器类型</font></p>
-<p><font style="color:#990055;">1</font>、系统：Windows、Linux、MacOS等</p>
-<p>2、容器：Docker、K8s、Vmware、VirtualBox等</p>
-<p><font style="color:rgb(51, 51, 51);">提到docker，就可以想到虚拟化，docker将软件与其依赖项打包为容器，相比于传统的虚拟机，docker容器更加轻便、快速、容易部署</font></p>
-<p><font style="color:#4861E0;">Docker 是一个 “容器化” 工具</font><font style="color:#4861E0;">，能把应用程序和它需要的所有依赖（比如库、</font><a href="https://so.csdn.net/so/search?q=%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6&spm=1001.2101.3001.7020"><font style="color:#4861E0;">配置文件</font></a><font style="color:#4861E0;">、运行环境）打包成一个 “容器”。  </font></p>
-<p><font style="color:#4861E0;">Docker核心概念</font></p>
-<p><font style="color:#4861E0;">1、镜像（Image）：镜像就是 “容器的模板”，是一个只读的文件包，包含了运行应用所需的所有东西（代码、依赖、配置等）。类比：就像操作系统的 ISO 镜像文件（比如 Windows 安装盘），本身不能直接用，但可以用它 “安装” 出一个可运行的系统。或者说软件安装包～</font></p>
-<p><font style="color:#4861E0;">2、容器（Container）：容器是镜像的 “运行实例”，是镜像被 “激活” 后形成的可操作环境。容器是独立的、隔离的，多个容器之间互不干扰。类比：用 ISO 镜像安装好的 Windows 系统，你可以在里面操作（运行程序、改配置），关闭后还能重新启动。</font></p>
-<p><font style="color:#4861E0;">3、仓库（Repository）：仓库是存放镜像的 “云仓库”，类似代码仓库（如 GitHub），你可以从仓库下载别人做好的镜像，也可以把自己的镜像传上去。最常用的公共仓库是 Docker Hub，里面有海量现成的镜像（比如 Nginx、MySQL、Python 等）。</font></p>
-<p><font style="color:rgb(51, 51, 51);">原文链接：</font><a href="https://blog.csdn.net/m0_64198455/article/details/152463359">https://blog.csdn.net/m0_64198455&#x2F;article&#x2F;details&#x2F;152463359</a></p>
-<p><font style="color:#DF2A3F;">Docker镜像和ISO镜像之间的区别：ISO镜像是完整的操作系统模版，相当于一个“空电脑”，拿到手可以在上面安装任何软件（MySQL，Nginx，Java都能装），自己决定部署什么：Docker镜像是单个软件的专属运行模版，相当于一个“预装了某款软件的专用设备”（比如MySQL镜像就是预装了MySQL的专用环境），里面只有这个软件+能让它跑起来的最小依赖，没法再装其他的软件，开箱就能用这个专属软件。</font></p>
-<p>3、中间件：Apache、Nginx、IIS、lighttpd、Tomcat、Jboos、Weblogic、Websphere、Jetty等</p>
-<p><font style="color:#000000;background-color:#ED740C;">#解析差异</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">URL路由</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">绝对相对路径</font><font style="color:#9a6e3a;background-color:#ED740C;">&amp;</font><font style="color:#000000;background-color:#ED740C;">格式权限</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、URL路由：URL访问对应文件，MVC模型等</font></p>
-<p><font style="color:#000000;">MVC是程序员定制的代码开发规范，将项目分为三部分：控制器接收请求，模型操作数据库，视图展示页面。PHP框架普遍采用该架构，依靠路由访问程序，容易产生路由解析漏洞。</font></p>
-<p>常规：url和文件目录对应上</p>
-<p>路由访问：mvc源码 java pythonweburl和文件目录对应不上 要根据配置路由决定。</p>
-<p><font style="color:#117cee;">1. 传统网站：URL直接对应服务器里真实存在的文件与文件夹。</font></p>
-<p><font style="color:#117cee;">2. MVC框架：URL和硬盘上的文件目录完全不对应，不存在真实物理路径。</font></p>
-<p><font style="color:#117cee;">3. 路径生成规则：</font></p>
-<p><font style="color:#117cee;">程序员手动在路由配置文件里，手写自定义URL路径，把每一条网址绑定到对应的控制器函数。</font></p>
-<p><font style="color:#117cee;">4. 运行流程：</font></p>
-<p><font style="color:#117cee;">用户访问网址 → 框架读取路由表 → 找到对应的代码函数 → 调取数据库 → 生成网页。</font></p>
-<p><font style="color:#117cee;">5. 安全考点：</font></p>
-<p><font style="color:#117cee;">路由规则配置错误，会造成路径解析漏洞，突破限制访问后台文件。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">2、绝对路径：这个就是从当前目录开始，</font></p>
-<p><font style="color:#000000;">3、相对路径：这个就是从根目录开始，就是完整路径</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、格式权限：后门解析格式（网站是什么搭建环境就上传什么后门），代码正常执行（什么环境写什么代码），脚本执行权限（如果目录权限设置了，就有可能执行不了，只能换一个目录了）等</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
@@ -629,66 +629,148 @@ onmouseout="this.style.textDecoration='none'">
       </tags>
   </entry>
   <entry>
-    <title>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</title>
-    <url>/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</url>
+    <title>第9天-反弹Shell&amp;渗透命令&amp;Reverse反向&amp;Bind正向&amp;利用语言&amp;文件下载&amp;多姿势</title>
+    <url>/2026/06/27/%E7%AC%AC9%E5%A4%A9-%E5%8F%8D%E5%BC%B9Shell-%E6%B8%97%E9%80%8F%E5%91%BD%E4%BB%A4-Reverse%E5%8F%8D%E5%90%91-Bind%E6%AD%A3%E5%90%91-%E5%88%A9%E7%94%A8%E8%AF%AD%E8%A8%80-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-%E5%A4%9A%E5%A7%BF%E5%8A%BF/</url>
     <content><![CDATA[<p><font></font></p>
 <span id="more"></span>
+
+<p><font style="color:#117CEE;">目前讲的反弹shell，都是基于已经发现命令执行漏洞的前提，漏洞发现是后续的内容了</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">为什么要反弹Shell</font><font style="color:#9a6e3a;">?</font></p>
+<p><font style="color:#000000;">往往由于很多因素如：防火墙的开启限制，端口被占用，无法进行正向连接，数据不回显，攻击者可能无法直接从受攻击系统上建立连接并获取Shell控制权时。</font></p>
+<p><font style="color:#000000;">例子：</font></p>
+<p><font style="color:#990055;">1.</font><font style="color:#000000;"> 远程控制：通过反弹shell，攻击者可以远程控制目标系统，执行各种命令和操作，获得对目标系统的完全控制权限。</font></p>
+<p><font style="color:#990055;">2.</font><font style="color:#000000;"> 隐藏攻击痕迹：通过反弹shell，攻击者可以在目标系统上执行命令，而不需要直接与目标系统进行交互。这样可以减少被发现的风险，同时也可以更好地隐藏攻击者的身份和攻击行为。</font></p>
+<p><font style="color:#990055;">3.</font><font style="color:#000000;"> 横向渗透：一旦攻击者成功反弹shell并获得目标系统的访问权限，他们可以进一步横向渗透，即在网络中移动并攻击其他系统，以获取更多的敏感信息或控制权。</font></p>
+<p><font style="color:#990055;">4.</font><font style="color:#000000;"> 数据盗取和系统破坏：通过反弹shell，攻击者可以获取目标系统上的敏感数据，并且可以操纵系统以造成损害，例如删除文件、破坏系统配置等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#反弹Shell</font></p>
+<p><font style="color:#000000;">在线生成：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;sec.lintstar.top&#x2F;</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;<a href="http://www.revshells.com/">www.revshells.com/</a></font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">shell</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font></p>
+<p><font style="color:#117CEE;">这几个就是在线生成反弹shell命令的网站（三个综合利用，可能有的生成内容不好使）</font></p>
+<p><font style="color:#000000;">命令类别：</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">1</font><font style="color:#000000;background-color:#ED740C;">、开发语言：系统环境变量开发环境</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">2</font><font style="color:#000000;background-color:#ED740C;">、系统自带：系统支持的系统命令调用</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">3</font><font style="color:#000000;background-color:#ED740C;">、第三方项目：利用远程下载命令后调用（msf等）</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">4</font><font style="color:#000000;background-color:#ED740C;">、正反向类别：Reverse反向 Bind绑定等</font></p>
+<p><font style="color:#000000;">实验环境：</font></p>
+<p><font style="color:#000000;">Windows</font><font style="color:#9a6e3a;">&lt;–&gt;</font><font style="color:#000000;">Linux</font></p>
+<p><font style="color:#000000;">总结：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、Windows上基本就PowerShell命令可以反弹（</font><font style="color:#117CEE;">有时候命令太长不行，可以借助中间代理，就是把ps1文件下载到受害机，然后运行这个文件就行 powershell .&#x2F;1.ps1</font><font style="color:#000000;">），再就是环境变量的开发语言</font></p>
+<p>2、Linux上默认自带的nc(ncat)，系统命令，开发语言等基本大部分都可反弹（linux安装语言会自动配置环境变量，而windows不会）</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#渗透命令</font></p>
+<p><font style="color:#000000;">在线参考：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;book.shentoushi.top&#x2F;</font></p>
+<p><font style="color:#000000;">文件下载：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">bountytips</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font><font style="color:#9a6e3a;">?</font><font style="color:#000000;">download</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第6天-抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;Web&amp;证书信任&amp;转发联动</title>
+    <url>/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#000000;">1、抓包技术-Web应用-http&#x2F;s-Burp&amp;Yakit</font></p>
+<p><font style="color:#000000;">2、抓包技术-APP应用-http&#x2F;s-Burp&amp;Yakit</font></p>
+<p><font style="color:#000000;">3、抓包技术-PC端应用-http&#x2F;s-Burp&amp;Yakit</font></p>
+<p><font style="color:#000000;">4、抓包技术-WX小程序-http&#x2F;s-Burp&amp;Yakit</font></p>
+<p><font style="color:#000000;">5、抓包技术-软件联动-http&#x2F;s-Proxifier</font></p>
+<p><font style="color:#000000;">6、抓包技术-通用方案-http&#x2F;s-ReqableApi</font></p>
+<p><font style="color:#000000;">7、抓包技术-其他工具-http&#x2F;s-Fiddler&amp;Charles</font></p>
+<p><font style="color:#000000;"></font></p>
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-扶墙双层</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-项目联动</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-Web&amp;App&amp;小程序&amp;PC-全局协议 </font></p>
-<p><font style="color:#990055;"></font></p>
-<p><font style="color:#DF2A3F;">昨天讲的三款工具抓的都是http&#x2F;s的包，今天抓的是别的协议的包所以就不能使用昨天的三款工具了。科来和wireshark是抓网卡的包，之前bp，charles，fidder等都是抓的端口的包。</font></p>
-<p><font style="color:#990055;"></font></p>
-<p><font style="color:#990055;"></font></p>
-<p><font style="color:#990055;">Wireshark</font><font style="color:#000000;">：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">wireshark</font><font style="color:#999999;">.</font><font style="color:#000000;">org</font><font style="color:#9a6e3a;">&#x2F;</font></p>
-<p><font style="color:#000000;">网络封包分析软件。网络封包分析软件的功能是截取网络封包，并尽可能显示出最为详细的网络封包资料。</font><font style="color:#990055;">Wireshark</font><font style="color:#000000;">使用</font><font style="color:#990055;">WinPCAP</font><font style="color:#000000;">作为接口，直接与网卡进行数据报文交换。</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-Burp&amp;Yakit</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-软件联动&amp;通用方案-Proxifier&amp;Reqable</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;">准备工作（</font><font style="color:#000000;background-color:#ED740C;">重点</font><font style="color:#000000;">）：</font></p>
+<p><font style="color:#000000;">1、浏览器安装证书：解决本地抓HTTPS</font></p>
+<p><font style="color:#000000;">bp证书导出：</font></p>
+<!-- 这是一张图片，ocr 内容为：TTINGS MANAGE GLOL TOOLS >PROXY RCH PROJECT USER PROXY LISTENERS POLS ADD TLS PROTOCOLS RUNNING INVISIBLE CERTIFICATE INTERFACE REDIRECT PROXY DEFAULT EDIT O X INTRUDER CA CERTIFICATE REMOVE REPEATER YOU CAN EXPORT YOUR CERTIFICATE AND KEY FOR USE IN OTHER TOOLS,OR IN ANOTHER SEQUENCER INSTALLATION OF BURP.YOU CAN IMPORT A CERTIFICATE AND KEY TO USE IN THIS INSTALLATION OF BURP.NOTE THAT YOU CAN ALSO EXPORT THE CURRENT CERTIFICATE BY VISITING BURP'S BROWSER HTTP://BURPSUITE/CERT IN YOUR BROWSER. TOJECT S CONNECTIONS.YOU CAN IMPORT OR EXPORT THIS CERTIFICA EACH INSTALL EXPORT ESSIONS OR ANOTHER CERTIFICATE IN DER FORMAT ETWORK PRIVATE KEY IN DER FORMAT LMPORT/ SER INTERFACE CERTIFICATE AND PRIVATE KEY IN PKCS#12 KEYSTORE UITE REQUEST I KTENSIONS LMPORT USE THESE S CERTIFICATE AND PRIVATE KEY IN DER FORMAT CONFIGURATION LIBRARY CERTIFICATE AND PRIVATE KEY FROM PKCS#12 KEYSTORE INTERCEF ADD CONDITION PNG$1.CSS$$//ICO$)... EDIT REMOVE UP CANCE NEXT DOWN AUTOMATICALLY FIX MISSING OR SUPERFLUOUS NEW LINES AT END OF REQUEST AUTOMATICALLY UPDATE CONTENT-LENGTH HEADER WHEN THE REQUEST IS EDITED -->
+<p><img src="/images/006-1.png"></p>
+<p>导出以后双击就能安装了</p>
+<p><font style="color:#000000;">2、模拟器安装证书：解决模拟器抓HTTPS</font></p>
+<p><font style="color:#000000;">先把导出的证书传给模拟器，双击安装就行没什么难的</font></p>
+<p><font style="color:#000000;">3、真机器安装证书：解决真机器抓HTTPS</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">注：本地装证书一定要装在受信任和中间两个选项里面</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">科来网络分析系统：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">colasoft</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#999999;">.</font><font style="color:#000000;">cn</font><font style="color:#9a6e3a;">&#x2F;</font></p>
-<p><font style="color:#000000;">该系统具有行业领先的专家分析技术，通过捕获并分析网络中传输的底层数据包，对网络故障、网络安全以及网络性能进行全面分析，从而快速排查网络中出现或潜在的故障、安全及性能问题。</font></p>
+<p><font style="color:#000000;">Fiddler：</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.telerik.com/fiddler">www.telerik.com/fiddler</a></font></p>
+<p><font style="color:#000000;">是一个http协议调试代理工具，它能够记录并检查所有你的电脑和互联网之间的http通讯，设置断点，查看所有的“进出”Fiddler的数据（指cookie</font><font style="color:#999999;">,</font><font style="color:#000000;">html</font><font style="color:#999999;">,</font><font style="color:#000000;">js</font><font style="color:#999999;">,</font><font style="color:#000000;">css等文件）。 Fiddler 要比其他的网络调试器要更加简单，因为它不仅仅暴露http通讯还提供了一个用户友好的格式。（不演示）</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">抓包工具联动</font></p>
-<p><font style="color:#000000;">意义：让一个数据包同时经过不同安全测试工具进行扫描</font></p>
-<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#000000;">Charles：</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.charlesproxy.com/">www.charlesproxy.com/</a></font></p>
+<p><font style="color:#000000;">是一个HTTP代理服务器</font><font style="color:#999999;">,</font><font style="color:#000000;">HTTP监视器</font><font style="color:#999999;">,</font><font style="color:#000000;">反转代理服务器，当浏览器连接Charles的代理访问互联网时，Charles可以监控浏览器发送和接收的所有数据。它允许一个开发者查看所有连接互联网的HTTP通信，这些包括request</font><font style="color:#999999;">,</font><font style="color:#000000;"> response和HTTP headers （包含cookies与caching信息）。（不演示）</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Burp</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#000000;">BurpSuite：</font></p>
+<p><font style="color:#000000;">是用于攻击web 应用程序的集成平台，包含了许多工具。Burp Suite为这些工具设计了许多接口，以加快攻击应用程序的过程。所有工具都共享一个请求，并能处理对应的HTTP 消息、持久性、认证、代理、日志、警报。</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Reqable</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">5</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#000000;">设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">9000</font></p>
+<p><font style="color:#000000;">Reqable：</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;reqable.com&#x2F;</font></p>
+<p><font style="color:#000000;">是一款跨平台的专业 HTTP 开发和调试工具，在全平台支持 HTTP1、HTTP2 和 </font><font style="color:#dd4a68;">HTTP3</font><font style="color:#999999;">(</font><font style="color:#000000;">QUIC</font><font style="color:#999999;">)</font><font style="color:#000000;">协议，简单易用、功能强大、性能高效，助力程序开发和测试人员提高生产力！说白了，他就是抓包工具 </font><font style="color:#9a6e3a;">+</font><font style="color:#000000;"> Postman的合体，既可以抓包，又可以测试接口。（不演示）</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#科学上网抓包</font></p>
-<p><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Burp</font><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#000000;">解决：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、目标需要采用梯子才能访问</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">IP</font><font style="color:#000000;">隐藏去访问并要进行抓包</font></p>
+<p><font style="color:#990055;">Yakit</font><font style="color:#999999;">:</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.yaklang.com/">www.yaklang.com</a></font></p>
+<p><font style="color:#000000;">Yakit 是一个基于 Yak 语言的安全领域垂直语言工具，它提供了一个图形化用户界面（GUI）来操控 Yak 引擎的能力。Yakit 旨在降低使用安全工具的门槛，使得安全从业者即使没有编程技能也能轻松地进行安全测试和分析。（不演示）</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#117CEE;">clash就是一个代理工具（用来翻墙的），想在的目的是抓国际互联网的包，bp和yakit都用设置上下游代理，那我们把上下游代理换成127.0.0.1:7890因为clash默认是7890，但是电脑自带的代理要换成8080也就是抓包工具的，因为一开clash就自动设置成7890了，所以就抓不到包了。</font></p>
+<p><font style="color:#000000;">Proxifier：</font></p>
+<p><font style="color:#000000;">一款功能强大的网络代理工具，它可以让你将网络应用程序通过代理服务器进行连接。它提供了一个简单而灵活的方式，让你能够将任何应用程序的网络流量路由到指定的代理服务器上，从而实现匿名浏览、绕过网络封锁、访问受限网站等功能。</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">全局协议抓包</font></p>
-<p><font style="color:#990055;">WireShark</font><font style="color:#000000;"> 科来网络系统</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、解决部分代理校验</font></p>
-<p><font style="color:#000000;">有部分的</font><font style="color:#000000;">app</font><font style="color:#000000;">web</font><font style="color:#000000;"> 小程序 当设置了代理后无法抓包</font></p>
-<p><font style="color:#000000;">校验：检测到了当前机器的代理设置 做了一个策略防止</font></p>
-<p><font style="color:#000000;">做了代理的设置数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">代理</font><font style="color:#9a6e3a;">（</font><font style="color:#000000;">还没有到网卡）</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">给到监听抓包工具</font></p>
-<p><font style="color:#000000;">没有做代理的数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">服务器（网卡抓包） 代理是在网卡之前产生</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">APP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">小程序</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">PC</font><font style="color:#000000;">应用</font></p>
-<p><font style="color:#000000;">由于应用类型不同，不是说所有的应用都有</font><font style="color:#000000;">https</font><font style="color:#000000;">协议的数据</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、蓝队分析</font><font style="color:#990055;">TCP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">UDP</font><font style="color:#000000;">应用</font></p>
-<p><font style="color:#000000;">msfvenom</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">p      windows</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">meterpreter</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">reverse_tcplhost</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">192.168</font><font style="color:#999999;">.</font><font style="color:#990055;">1.9</font><font style="color:#000000;">lport</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">6666</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">fexe</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">o</font><font style="color:#990055;">9</font><font style="color:#999999;">.</font><font style="color:#000000;">exe</font></p>
+<p><font style="color:#117CEE;">安全测试我推荐使用bp和yakit，后续笔记针对bp，yakit抓包是一样的，yakit有一些漏扫插件。</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="background-color:#ED740C;">抓浏览器包：</font></p>
+<p><font style="color:#117CEE;">1、burp开启127.0.0.1:8080–&gt;搭建代理服务端</font></p>
+<p><font style="color:#117CEE;">这个操作是让burp在本地的8080端口启动一个代理监听服务，相当于在你的电脑上开了一个流量中转站，它会一直等着有流量发过来，但不会主动去抢流量。</font></p>
+<p><font style="color:#117CEE;">2、电脑设置代理指向127.0.0.1:8080–&gt;配置客户端导流</font></p>
+<p><font style="color:#117CEE;">这一步是给你电脑应用（浏览器、软件等）下达命令，让它们把所有网络请求都送到这个中转站，burp才能拦截，分析这些流量</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="background-color:#ED740C;">抓模拟器上浏览器和app的包：</font></p>
+<p><font style="color:#117CEE;">1、电脑上安装了一个模拟器，这个模拟器就相当于一个独立的手机或者是电脑，他默认和主机在同一个局域网中，此时我们想要通过抓包工具通过模拟器抓app的数据包，就需要模拟器配置代理ip就是我电脑的ip</font></p>
+<p><font style="color:#117CEE;">2、通过bp来捕获模拟器上app的包，必须在代理模块添加一个新的代理，因为127.0.0.1是本地回环地址作用范围只有电脑自己的系统内部，模拟器虽然运行在电脑，但对网络来说是独立的虚拟设备，127.0.0.1只有电脑上的浏器、客户端能连接这个代理，模拟器是外部设备，它识别的是局域网ip</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="color:#117CEE;">重点：在抓包工具关闭后，设备上的代理要关闭，否则无法正常上网，为什么呢？因为抓包工具相当于是一个代理服务器，它在监听你设备上的某一个端口，你设备上的代理就是让你的浏览器，客户端的请求数据包发到目标端口，进一步处理是由抓包工具决定的，现在抓包工具都关了，发往目标端口后因无服务响应而被系统拒绝&#x2F;超时丢弃。</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="color:#117CEE;">使用fidder抓模拟器上的包必须设置为从远程客户端，charles和fidder默认端口是8888，必须先设置代理</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="background-color:#ED740C;">抓小程序包</font></p>
+<p><font style="color:#117CEE;">抓小程序需要配合</font><font style="color:#117CEE;">-Proxifier（流量强制转发工具），因为微信小程序独立运行在WeChatAppEx.exe进程中，它自带独立网络组件，不会读取windows系统全局代理，流量直连外网，所以我们需要用proxifier，强制让这个进程流量转发到bp端口。</font></p>
+<p><font style="color:#117CEE;">1、proxifier中配置代理服务器</font></p>
+<!-- 这是一张图片，ocr 内容为：FILE PRORILE LOG VIEW HELP 品自首 SENT TARGET 旦 PROSRY SERVERS FORT TYPE PROXY CHAINS... YOU CAN CHIN SEWERA PRORY SE VERS TOGELER CANCEL OK TRAFFIC STATIGTICS [06.26 21:13:34] [06.26 21:13:34] WELCOME TO PRESEFFER V4.14 X64 [06.26 2113:34] -->
+<p><img src="/images/006-2.png"></p>
+<p><font style="color:#117CEE;">2、任务管理器找到小程序进程</font></p>
+<!-- 这是一张图片，ocr 内容为：键入要搜索的名称,发布者或PID 任务管理器 Q 结束任务 运行新任务 进程 效率模式 甲 进程 67% 14% 0% 11% 内存 网络 CPU 名称 状态 磁盘 性能 0.1 MB/秒 0 MBPS 9.4% WECHATAPPEX(13) 0.1% Y 应用历史记录 6.5% 0.1MB/秒 TENCENTDOCS(13) 0 MBPS 0.1% J ANTIMALWARE SERVICE EXECUT... 0.5% 0.1 MB/秒 OMBPS 5.0% 启动应用 R 0MB/秒 0.5% 4.5% 0 MBPS FIREFOX (11) 8月户 WINDOWS资源管理器 4.1% 0.1 MB/秒 0.5% 0 MBPS 3.7% 0.1 MB/秒 YUQUE DESKTOP APP(5) 1.5% 0 MBPS 详细信息 01% 1MB秒 -->
+<p><img src="/images/006-3.png"></p>
+<!-- 这是一张图片，ocr 内容为：JSON文件 2026/6/12 21:40 1 KB WK SWIFTSHADER ICD JSON 应用程序扩展 VOIPENGINE.DLL 2026/6/12  21:40 18.917 KB 应用程序扩展 870 KB VULKAN-1.DLL 2026/6/25 17:42 应用程序 WECHATAPPEXE 1,766 KB 2026/6/25 17:42 -->
+<p><img src="/images/006-6.png"></p>
+<p><font style="color:#117CEE;">3、将进程名称复制到Applications</font></p>
+<!-- 这是一张图片，ocr 内容为：PROXIFICATION RULE ENABLED NAME: WX APPLICATIONS WECHATAPPEX,EXE BROWSE... EXAMPLE:IEXPLORE.EXE;"C:ISOME APP.EXE";FIRE*.EXE;*.BIN TARGETHOSTS ANY EXAMPLE:127.0.0.1;*:EXAMPLE.COM;192.168.1.*;1.0.1.0.0-10.5.255.255 TARGET PORTS ANY EXAMPLE:80;8000-9000;3128 PROXY HTTPS 127.0.1 ADVANCED... ACTION: CANCEL OK -->
+<p><img src="/images/006-4.png"></p>
+<p><font style="color:#117CEE;">Action选择对应代理</font></p>
+<p><font style="color:#117CEE;">4、注意点：default中action不能是代理，要不然全部包都转发到bp了</font></p>
+<!-- 这是一张图片，ocr 内容为：PROXIFICATION RULES TARGET HOSTS APPLICATIONS TARGET PORTS ACTION RULE NAME PROXY HTTPS 127.0.1 WECHATAPPEX,EXE ANY ANY WX DIRECT DEFAULT ANY ANY ANY -->
+<p><img src="/images/006-5.png"></p>
+<p><font style="color:#117CEE;">5、之后就是bp常规操作，bp中proxy设置，然后开抓</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="background-color:#ED740C;">抓pc中app包</font></p>
+<p><font style="color:#117CEE;">和小程序一样，这里可以不用proxifier用电脑代理，但是包不止目标程序所以不方便，所以用proxifier更方便</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">PC端应用</font></p>
+<p><font style="color:#000000;">1、有代理设置走代理设置</font></p>
+<p><font style="color:#000000;">2、没有代理设置走联动转发</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">APP应用</font></p>
+<p><font style="color:#000000;">1、无防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">模拟器直接抓包</font></p>
+<p><font style="color:#000000;">2、有防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">真机绕过</font><font style="color:#117CEE;">（模拟器打不开）</font><font style="color:#000000;">&amp;更改内核</font></p>
+<p><font style="color:#000000;">3、有防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">证书绕过</font><font style="color:#117CEE;">（校验了证书，bp这类证书会被拦截）</font><font style="color:#000000;">&amp;代理绕过</font><font style="color:#117CEE;">（开代理不行）</font></p>
+<p><font style="color:#000000;">注意：真机抓包要保证手机和电脑在同一网络</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
@@ -826,148 +908,66 @@ onmouseout="this.style.textDecoration='none'">
       </tags>
   </entry>
   <entry>
-    <title>第6天-抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;Web&amp;证书信任&amp;转发联动</title>
-    <url>/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/</url>
+    <title>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</title>
+    <url>/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<p><font></font></p>
 <span id="more"></span>
-<p><font style="color:#000000;">1、抓包技术-Web应用-http&#x2F;s-Burp&amp;Yakit</font></p>
-<p><font style="color:#000000;">2、抓包技术-APP应用-http&#x2F;s-Burp&amp;Yakit</font></p>
-<p><font style="color:#000000;">3、抓包技术-PC端应用-http&#x2F;s-Burp&amp;Yakit</font></p>
-<p><font style="color:#000000;">4、抓包技术-WX小程序-http&#x2F;s-Burp&amp;Yakit</font></p>
-<p><font style="color:#000000;">5、抓包技术-软件联动-http&#x2F;s-Proxifier</font></p>
-<p><font style="color:#000000;">6、抓包技术-通用方案-http&#x2F;s-ReqableApi</font></p>
-<p><font style="color:#000000;">7、抓包技术-其他工具-http&#x2F;s-Fiddler&amp;Charles</font></p>
-<p><font style="color:#000000;"></font></p>
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-Burp&amp;Yakit</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-软件联动&amp;通用方案-Proxifier&amp;Reqable</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="color:#000000;">准备工作（</font><font style="color:#000000;background-color:#ED740C;">重点</font><font style="color:#000000;">）：</font></p>
-<p><font style="color:#000000;">1、浏览器安装证书：解决本地抓HTTPS</font></p>
-<p><font style="color:#000000;">bp证书导出：</font></p>
-<!-- 这是一张图片，ocr 内容为：TTINGS MANAGE GLOL TOOLS >PROXY RCH PROJECT USER PROXY LISTENERS POLS ADD TLS PROTOCOLS RUNNING INVISIBLE CERTIFICATE INTERFACE REDIRECT PROXY DEFAULT EDIT O X INTRUDER CA CERTIFICATE REMOVE REPEATER YOU CAN EXPORT YOUR CERTIFICATE AND KEY FOR USE IN OTHER TOOLS,OR IN ANOTHER SEQUENCER INSTALLATION OF BURP.YOU CAN IMPORT A CERTIFICATE AND KEY TO USE IN THIS INSTALLATION OF BURP.NOTE THAT YOU CAN ALSO EXPORT THE CURRENT CERTIFICATE BY VISITING BURP'S BROWSER HTTP://BURPSUITE/CERT IN YOUR BROWSER. TOJECT S CONNECTIONS.YOU CAN IMPORT OR EXPORT THIS CERTIFICA EACH INSTALL EXPORT ESSIONS OR ANOTHER CERTIFICATE IN DER FORMAT ETWORK PRIVATE KEY IN DER FORMAT LMPORT/ SER INTERFACE CERTIFICATE AND PRIVATE KEY IN PKCS#12 KEYSTORE UITE REQUEST I KTENSIONS LMPORT USE THESE S CERTIFICATE AND PRIVATE KEY IN DER FORMAT CONFIGURATION LIBRARY CERTIFICATE AND PRIVATE KEY FROM PKCS#12 KEYSTORE INTERCEF ADD CONDITION PNG$1.CSS$$//ICO$)... EDIT REMOVE UP CANCE NEXT DOWN AUTOMATICALLY FIX MISSING OR SUPERFLUOUS NEW LINES AT END OF REQUEST AUTOMATICALLY UPDATE CONTENT-LENGTH HEADER WHEN THE REQUEST IS EDITED -->
-<p><img src="/images/006-1.png"></p>
-<p>导出以后双击就能安装了</p>
-<p><font style="color:#000000;">2、模拟器安装证书：解决模拟器抓HTTPS</font></p>
-<p><font style="color:#000000;">先把导出的证书传给模拟器，双击安装就行没什么难的</font></p>
-<p><font style="color:#000000;">3、真机器安装证书：解决真机器抓HTTPS</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">注：本地装证书一定要装在受信任和中间两个选项里面</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-扶墙双层</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-项目联动</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-Web&amp;App&amp;小程序&amp;PC-全局协议 </font></p>
+<p><font style="color:#990055;"></font></p>
+<p><font style="color:#DF2A3F;">昨天讲的三款工具抓的都是http&#x2F;s的包，今天抓的是别的协议的包所以就不能使用昨天的三款工具了。科来和wireshark是抓网卡的包，之前bp，charles，fidder等都是抓的端口的包。</font></p>
+<p><font style="color:#990055;"></font></p>
+<p><font style="color:#990055;"></font></p>
+<p><font style="color:#990055;">Wireshark</font><font style="color:#000000;">：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">wireshark</font><font style="color:#999999;">.</font><font style="color:#000000;">org</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">网络封包分析软件。网络封包分析软件的功能是截取网络封包，并尽可能显示出最为详细的网络封包资料。</font><font style="color:#990055;">Wireshark</font><font style="color:#000000;">使用</font><font style="color:#990055;">WinPCAP</font><font style="color:#000000;">作为接口，直接与网卡进行数据报文交换。</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Fiddler：</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.telerik.com/fiddler">www.telerik.com/fiddler</a></font></p>
-<p><font style="color:#000000;">是一个http协议调试代理工具，它能够记录并检查所有你的电脑和互联网之间的http通讯，设置断点，查看所有的“进出”Fiddler的数据（指cookie</font><font style="color:#999999;">,</font><font style="color:#000000;">html</font><font style="color:#999999;">,</font><font style="color:#000000;">js</font><font style="color:#999999;">,</font><font style="color:#000000;">css等文件）。 Fiddler 要比其他的网络调试器要更加简单，因为它不仅仅暴露http通讯还提供了一个用户友好的格式。（不演示）</font></p>
+<p><font style="color:#000000;">科来网络分析系统：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">colasoft</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#999999;">.</font><font style="color:#000000;">cn</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">该系统具有行业领先的专家分析技术，通过捕获并分析网络中传输的底层数据包，对网络故障、网络安全以及网络性能进行全面分析，从而快速排查网络中出现或潜在的故障、安全及性能问题。</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Charles：</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.charlesproxy.com/">www.charlesproxy.com/</a></font></p>
-<p><font style="color:#000000;">是一个HTTP代理服务器</font><font style="color:#999999;">,</font><font style="color:#000000;">HTTP监视器</font><font style="color:#999999;">,</font><font style="color:#000000;">反转代理服务器，当浏览器连接Charles的代理访问互联网时，Charles可以监控浏览器发送和接收的所有数据。它允许一个开发者查看所有连接互联网的HTTP通信，这些包括request</font><font style="color:#999999;">,</font><font style="color:#000000;"> response和HTTP headers （包含cookies与caching信息）。（不演示）</font></p>
+<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">抓包工具联动</font></p>
+<p><font style="color:#000000;">意义：让一个数据包同时经过不同安全测试工具进行扫描</font></p>
+<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">BurpSuite：</font></p>
-<p><font style="color:#000000;">是用于攻击web 应用程序的集成平台，包含了许多工具。Burp Suite为这些工具设计了许多接口，以加快攻击应用程序的过程。所有工具都共享一个请求，并能处理对应的HTTP 消息、持久性、认证、代理、日志、警报。</font></p>
+<p><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Burp</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Reqable：</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;reqable.com&#x2F;</font></p>
-<p><font style="color:#000000;">是一款跨平台的专业 HTTP 开发和调试工具，在全平台支持 HTTP1、HTTP2 和 </font><font style="color:#dd4a68;">HTTP3</font><font style="color:#999999;">(</font><font style="color:#000000;">QUIC</font><font style="color:#999999;">)</font><font style="color:#000000;">协议，简单易用、功能强大、性能高效，助力程序开发和测试人员提高生产力！说白了，他就是抓包工具 </font><font style="color:#9a6e3a;">+</font><font style="color:#000000;"> Postman的合体，既可以抓包，又可以测试接口。（不演示）</font></p>
+<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Reqable</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#000000;">设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">9000</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">Yakit</font><font style="color:#999999;">:</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.yaklang.com/">www.yaklang.com</a></font></p>
-<p><font style="color:#000000;">Yakit 是一个基于 Yak 语言的安全领域垂直语言工具，它提供了一个图形化用户界面（GUI）来操控 Yak 引擎的能力。Yakit 旨在降低使用安全工具的门槛，使得安全从业者即使没有编程技能也能轻松地进行安全测试和分析。（不演示）</font></p>
+<p><font style="background-color:#ED740C;">#科学上网抓包</font></p>
+<p><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Burp</font><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#000000;">解决：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、目标需要采用梯子才能访问</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">IP</font><font style="color:#000000;">隐藏去访问并要进行抓包</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Proxifier：</font></p>
-<p><font style="color:#000000;">一款功能强大的网络代理工具，它可以让你将网络应用程序通过代理服务器进行连接。它提供了一个简单而灵活的方式，让你能够将任何应用程序的网络流量路由到指定的代理服务器上，从而实现匿名浏览、绕过网络封锁、访问受限网站等功能。</font></p>
+<p><font style="color:#117CEE;">clash就是一个代理工具（用来翻墙的），想在的目的是抓国际互联网的包，bp和yakit都用设置上下游代理，那我们把上下游代理换成127.0.0.1:7890因为clash默认是7890，但是电脑自带的代理要换成8080也就是抓包工具的，因为一开clash就自动设置成7890了，所以就抓不到包了。</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#117CEE;">安全测试我推荐使用bp和yakit，后续笔记针对bp，yakit抓包是一样的，yakit有一些漏扫插件。</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="background-color:#ED740C;">抓浏览器包：</font></p>
-<p><font style="color:#117CEE;">1、burp开启127.0.0.1:8080–&gt;搭建代理服务端</font></p>
-<p><font style="color:#117CEE;">这个操作是让burp在本地的8080端口启动一个代理监听服务，相当于在你的电脑上开了一个流量中转站，它会一直等着有流量发过来，但不会主动去抢流量。</font></p>
-<p><font style="color:#117CEE;">2、电脑设置代理指向127.0.0.1:8080–&gt;配置客户端导流</font></p>
-<p><font style="color:#117CEE;">这一步是给你电脑应用（浏览器、软件等）下达命令，让它们把所有网络请求都送到这个中转站，burp才能拦截，分析这些流量</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="background-color:#ED740C;">抓模拟器上浏览器和app的包：</font></p>
-<p><font style="color:#117CEE;">1、电脑上安装了一个模拟器，这个模拟器就相当于一个独立的手机或者是电脑，他默认和主机在同一个局域网中，此时我们想要通过抓包工具通过模拟器抓app的数据包，就需要模拟器配置代理ip就是我电脑的ip</font></p>
-<p><font style="color:#117CEE;">2、通过bp来捕获模拟器上app的包，必须在代理模块添加一个新的代理，因为127.0.0.1是本地回环地址作用范围只有电脑自己的系统内部，模拟器虽然运行在电脑，但对网络来说是独立的虚拟设备，127.0.0.1只有电脑上的浏器、客户端能连接这个代理，模拟器是外部设备，它识别的是局域网ip</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="color:#117CEE;">重点：在抓包工具关闭后，设备上的代理要关闭，否则无法正常上网，为什么呢？因为抓包工具相当于是一个代理服务器，它在监听你设备上的某一个端口，你设备上的代理就是让你的浏览器，客户端的请求数据包发到目标端口，进一步处理是由抓包工具决定的，现在抓包工具都关了，发往目标端口后因无服务响应而被系统拒绝&#x2F;超时丢弃。</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="color:#117CEE;">使用fidder抓模拟器上的包必须设置为从远程客户端，charles和fidder默认端口是8888，必须先设置代理</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="background-color:#ED740C;">抓小程序包</font></p>
-<p><font style="color:#117CEE;">抓小程序需要配合</font><font style="color:#117CEE;">-Proxifier（流量强制转发工具），因为微信小程序独立运行在WeChatAppEx.exe进程中，它自带独立网络组件，不会读取windows系统全局代理，流量直连外网，所以我们需要用proxifier，强制让这个进程流量转发到bp端口。</font></p>
-<p><font style="color:#117CEE;">1、proxifier中配置代理服务器</font></p>
-<!-- 这是一张图片，ocr 内容为：FILE PRORILE LOG VIEW HELP 品自首 SENT TARGET 旦 PROSRY SERVERS FORT TYPE PROXY CHAINS... YOU CAN CHIN SEWERA PRORY SE VERS TOGELER CANCEL OK TRAFFIC STATIGTICS [06.26 21:13:34] [06.26 21:13:34] WELCOME TO PRESEFFER V4.14 X64 [06.26 2113:34] -->
-<p><img src="/images/006-2.png"></p>
-<p><font style="color:#117CEE;">2、任务管理器找到小程序进程</font></p>
-<!-- 这是一张图片，ocr 内容为：键入要搜索的名称,发布者或PID 任务管理器 Q 结束任务 运行新任务 进程 效率模式 甲 进程 67% 14% 0% 11% 内存 网络 CPU 名称 状态 磁盘 性能 0.1 MB/秒 0 MBPS 9.4% WECHATAPPEX(13) 0.1% Y 应用历史记录 6.5% 0.1MB/秒 TENCENTDOCS(13) 0 MBPS 0.1% J ANTIMALWARE SERVICE EXECUT... 0.5% 0.1 MB/秒 OMBPS 5.0% 启动应用 R 0MB/秒 0.5% 4.5% 0 MBPS FIREFOX (11) 8月户 WINDOWS资源管理器 4.1% 0.1 MB/秒 0.5% 0 MBPS 3.7% 0.1 MB/秒 YUQUE DESKTOP APP(5) 1.5% 0 MBPS 详细信息 01% 1MB秒 -->
-<p><img src="/images/006-3.png"></p>
-<!-- 这是一张图片，ocr 内容为：JSON文件 2026/6/12 21:40 1 KB WK SWIFTSHADER ICD JSON 应用程序扩展 VOIPENGINE.DLL 2026/6/12  21:40 18.917 KB 应用程序扩展 870 KB VULKAN-1.DLL 2026/6/25 17:42 应用程序 WECHATAPPEXE 1,766 KB 2026/6/25 17:42 -->
-<p><img src="/images/006-6.png"></p>
-<p><font style="color:#117CEE;">3、将进程名称复制到Applications</font></p>
-<!-- 这是一张图片，ocr 内容为：PROXIFICATION RULE ENABLED NAME: WX APPLICATIONS WECHATAPPEX,EXE BROWSE... EXAMPLE:IEXPLORE.EXE;"C:ISOME APP.EXE";FIRE*.EXE;*.BIN TARGETHOSTS ANY EXAMPLE:127.0.0.1;*:EXAMPLE.COM;192.168.1.*;1.0.1.0.0-10.5.255.255 TARGET PORTS ANY EXAMPLE:80;8000-9000;3128 PROXY HTTPS 127.0.1 ADVANCED... ACTION: CANCEL OK -->
-<p><img src="/images/006-4.png"></p>
-<p><font style="color:#117CEE;">Action选择对应代理</font></p>
-<p><font style="color:#117CEE;">4、注意点：default中action不能是代理，要不然全部包都转发到bp了</font></p>
-<!-- 这是一张图片，ocr 内容为：PROXIFICATION RULES TARGET HOSTS APPLICATIONS TARGET PORTS ACTION RULE NAME PROXY HTTPS 127.0.1 WECHATAPPEX,EXE ANY ANY WX DIRECT DEFAULT ANY ANY ANY -->
-<p><img src="/images/006-5.png"></p>
-<p><font style="color:#117CEE;">5、之后就是bp常规操作，bp中proxy设置，然后开抓</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="background-color:#ED740C;">抓pc中app包</font></p>
-<p><font style="color:#117CEE;">和小程序一样，这里可以不用proxifier用电脑代理，但是包不止目标程序所以不方便，所以用proxifier更方便</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">PC端应用</font></p>
-<p><font style="color:#000000;">1、有代理设置走代理设置</font></p>
-<p><font style="color:#000000;">2、没有代理设置走联动转发</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">APP应用</font></p>
-<p><font style="color:#000000;">1、无防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">模拟器直接抓包</font></p>
-<p><font style="color:#000000;">2、有防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">真机绕过</font><font style="color:#117CEE;">（模拟器打不开）</font><font style="color:#000000;">&amp;更改内核</font></p>
-<p><font style="color:#000000;">3、有防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">证书绕过</font><font style="color:#117CEE;">（校验了证书，bp这类证书会被拦截）</font><font style="color:#000000;">&amp;代理绕过</font><font style="color:#117CEE;">（开代理不行）</font></p>
-<p><font style="color:#000000;">注意：真机抓包要保证手机和电脑在同一网络</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第9天-反弹Shell&amp;渗透命令&amp;Reverse反向&amp;Bind正向&amp;利用语言&amp;文件下载&amp;多姿势</title>
-    <url>/2026/06/27/%E7%AC%AC9%E5%A4%A9-%E5%8F%8D%E5%BC%B9Shell-%E6%B8%97%E9%80%8F%E5%91%BD%E4%BB%A4-Reverse%E5%8F%8D%E5%90%91-Bind%E6%AD%A3%E5%90%91-%E5%88%A9%E7%94%A8%E8%AF%AD%E8%A8%80-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-%E5%A4%9A%E5%A7%BF%E5%8A%BF/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-
-<p><font style="color:#117CEE;">目前讲的反弹shell，都是基于已经发现命令执行漏洞的前提，漏洞发现是后续的内容了</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">为什么要反弹Shell</font><font style="color:#9a6e3a;">?</font></p>
-<p><font style="color:#000000;">往往由于很多因素如：防火墙的开启限制，端口被占用，无法进行正向连接，数据不回显，攻击者可能无法直接从受攻击系统上建立连接并获取Shell控制权时。</font></p>
-<p><font style="color:#000000;">例子：</font></p>
-<p><font style="color:#990055;">1.</font><font style="color:#000000;"> 远程控制：通过反弹shell，攻击者可以远程控制目标系统，执行各种命令和操作，获得对目标系统的完全控制权限。</font></p>
-<p><font style="color:#990055;">2.</font><font style="color:#000000;"> 隐藏攻击痕迹：通过反弹shell，攻击者可以在目标系统上执行命令，而不需要直接与目标系统进行交互。这样可以减少被发现的风险，同时也可以更好地隐藏攻击者的身份和攻击行为。</font></p>
-<p><font style="color:#990055;">3.</font><font style="color:#000000;"> 横向渗透：一旦攻击者成功反弹shell并获得目标系统的访问权限，他们可以进一步横向渗透，即在网络中移动并攻击其他系统，以获取更多的敏感信息或控制权。</font></p>
-<p><font style="color:#990055;">4.</font><font style="color:#000000;"> 数据盗取和系统破坏：通过反弹shell，攻击者可以获取目标系统上的敏感数据，并且可以操纵系统以造成损害，例如删除文件、破坏系统配置等。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">#反弹Shell</font></p>
-<p><font style="color:#000000;">在线生成：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;sec.lintstar.top&#x2F;</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;<a href="http://www.revshells.com/">www.revshells.com/</a></font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">shell</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font></p>
-<p><font style="color:#117CEE;">这几个就是在线生成反弹shell命令的网站（三个综合利用，可能有的生成内容不好使）</font></p>
-<p><font style="color:#000000;">命令类别：</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">1</font><font style="color:#000000;background-color:#ED740C;">、开发语言：系统环境变量开发环境</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">2</font><font style="color:#000000;background-color:#ED740C;">、系统自带：系统支持的系统命令调用</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">3</font><font style="color:#000000;background-color:#ED740C;">、第三方项目：利用远程下载命令后调用（msf等）</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">4</font><font style="color:#000000;background-color:#ED740C;">、正反向类别：Reverse反向 Bind绑定等</font></p>
-<p><font style="color:#000000;">实验环境：</font></p>
-<p><font style="color:#000000;">Windows</font><font style="color:#9a6e3a;">&lt;–&gt;</font><font style="color:#000000;">Linux</font></p>
-<p><font style="color:#000000;">总结：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、Windows上基本就PowerShell命令可以反弹（</font><font style="color:#117CEE;">有时候命令太长不行，可以借助中间代理，就是把ps1文件下载到受害机，然后运行这个文件就行 powershell .&#x2F;1.ps1</font><font style="color:#000000;">），再就是环境变量的开发语言</font></p>
-<p>2、Linux上默认自带的nc(ncat)，系统命令，开发语言等基本大部分都可反弹（linux安装语言会自动配置环境变量，而windows不会）</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">#渗透命令</font></p>
-<p><font style="color:#000000;">在线参考：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;book.shentoushi.top&#x2F;</font></p>
-<p><font style="color:#000000;">文件下载：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">bountytips</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font><font style="color:#9a6e3a;">?</font><font style="color:#000000;">download</font></p>
+<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">全局协议抓包</font></p>
+<p><font style="color:#990055;">WireShark</font><font style="color:#000000;"> 科来网络系统</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、解决部分代理校验</font></p>
+<p><font style="color:#000000;">有部分的</font><font style="color:#000000;">app</font><font style="color:#000000;">web</font><font style="color:#000000;"> 小程序 当设置了代理后无法抓包</font></p>
+<p><font style="color:#000000;">校验：检测到了当前机器的代理设置 做了一个策略防止</font></p>
+<p><font style="color:#000000;">做了代理的设置数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">代理</font><font style="color:#9a6e3a;">（</font><font style="color:#000000;">还没有到网卡）</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">给到监听抓包工具</font></p>
+<p><font style="color:#000000;">没有做代理的数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">服务器（网卡抓包） 代理是在网卡之前产生</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">APP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">小程序</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">PC</font><font style="color:#000000;">应用</font></p>
+<p><font style="color:#000000;">由于应用类型不同，不是说所有的应用都有</font><font style="color:#000000;">https</font><font style="color:#000000;">协议的数据</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、蓝队分析</font><font style="color:#990055;">TCP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">UDP</font><font style="color:#000000;">应用</font></p>
+<p><font style="color:#000000;">msfvenom</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">p      windows</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">meterpreter</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">reverse_tcplhost</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">192.168</font><font style="color:#999999;">.</font><font style="color:#990055;">1.9</font><font style="color:#000000;">lport</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">6666</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">fexe</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">o</font><font style="color:#990055;">9</font><font style="color:#999999;">.</font><font style="color:#000000;">exe</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
