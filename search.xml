@@ -134,236 +134,15 @@ onmouseout="this.style.textDecoration='none'">
 <br>
 </div>
 </details>
+
+
+
 ]]></content>
       <categories>
         <category>网页导航</category>
       </categories>
       <tags>
         <tag>网页导航</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响</title>
-    <url>/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-<p><font style="background-color:#ED740C;">本节课就是讲一些主流产品对我们渗透测试的影响，复现了解就行不做也可以</font></p>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-WAF保护-拦截攻击</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-CDN节点-隐藏真实IP</font><font style="background-color:#ffffff;"></font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-OSS存储-防上传攻击</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-反向代理-数据应用转发</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-负载均衡-多台机器服务</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#WAF</font></p>
-<p><font style="color:#000000;">原理：Web应用防火墙，旨在提供保护</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：常规Web安全测试手段会受到拦截</font></p>
-<p><font style="color:#000000;">演示：雷池社区版 <a href="https://waf-ce.chaitin.cn/">https://waf-ce.chaitin.cn/</a></font></p>
-<p><font style="color:#000000;">Ubuntu20.04 + 雷池社区版</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">安装雷池：</font></p>
-<p><a href="https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1">https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1</a></p>
-<p>命令：</p>
-<p>bash -c “$(curl -fsSLk <a href="https://waf-ce.chaitin.cn/release/latest/manager.sh">https://waf-ce.chaitin.cn/release/latest/manager.sh)"</a>“)</p>
-<p><font style="color:#000000;">搭建网站：</font></p>
-<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/705196831">https://zhuanlan.zhihu.com/p/705196831</a></p>
-<p><font style="color:#000000;">docker run –name webgoat -d -p </font><font style="color:#990055;">8080</font><font style="color:#000000;">:8080 -p </font><font style="color:#990055;">9090</font><font style="color:#000000;">:9090 registry.cn-shanghai.aliyuncs.com&#x2F;kubesec&#x2F;webgoat:v2023.8</font></p>
-<p><font style="color:#000000;">配置雷池：</font></p>
-<p><font style="color:#000000;">添加站点-设置域名-上游地址-没真实域名修改本地host解析（在c盘找到hosts文件，把对应域名解析到对应ip）</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/002-1.png"></p>
-<p><font style="background-color:#ED740C;">#CDN</font></p>
-<p><font style="color:#000000;">原理：内容分发服务，旨在提高访问速度</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：隐藏真实源IP，导致对目标IP测试错误</font></p>
-<p><font style="color:#000000;">演示：阿里云备案域名全局CDN加速服务</font></p>
-<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + CDN服务</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p>#<img src="/images/002-2.png"></p>
-<p><font style="color:#0C68CA;">CDN核心就是“就近加速、减轻源站带宽压力”，针对静态内容做缓存，用户访问的是CDN边缘节点的缓存数据，99%的情况不会触达源站</font></p>
-<p><font style="background-color:#ED740C;">怎么判断开没开CDN：用网上的超级ping网站，看看多地ping的ip结果一不一致，一致就是没开，不一致就是开了</font></p>
-<p><font style="background-color:#ED740C;"></font></p>
-<p><font style="background-color:#ED740C;">#OSS</font></p>
-<p><font style="color:#000000;">原理：云存储服务，旨在提高访问速度</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：主要影响文件上传漏洞，因为oss只负责放文件，没有php，Java这类脚本解析环境，所以上传后门后，脚本不被执行，就拿不到权限，但存在AK&#x2F;SK隐患（调用API的钥匙）</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">演示：<a href="https://cloudreve.org/">https://cloudreve.org/</a></font></p>
-<p><font style="color:#000000;">Windows2016 + cloudreve + 阿里云OSS</font></p>
-<p><font style="color:#000000;"><a href="https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1">https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1</a></font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、启动应用</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、登录管理</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置存储信息</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、更改用户组存储属性</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">阿里云OSS:</font></p>
-<p><font style="color:#000000;">开OSS</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、新建Bucket</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置Bucket属性</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、配置Access访问</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">原理：</font></p>
-<p><font style="color:#000000;">为什么要使用第三方存储？</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">）静态文件会占用大量带宽</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">）加载速度</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">）存储空间</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#反向代理</font></p>
-<p><font style="color:#000000;">正代理为客户端服务,客户端主动建立代理访问目标（不代理不可达），客户端配置的。</font></p>
-<p><font style="color:#000000;">反向代理为服务端服务,服务端主动转发数据给可访问地址（不主动不可达），客户端不知道反向代理存在。</font></p>
-<p><font style="color:#000000;">原理：通过网络反向代理转发真实服务达到访问目的</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：访问目标只是一个代理，非真实应用服务器</font></p>
-<p><font style="color:#000000;">注意：正向代理和反向代理都是解决访问不可达的问题，但由于反向代理中多出一个可以重定向解析的功能操作，导致反代理出的站点指向和真实应用毫无关系！</font></p>
-<p><font style="color:#000000;">演示：Nginx反向代理配置</font></p>
-<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + Nginx</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">反向代理：就很类似一个重定向操作，就比如你访问一个网站他开了反向代理，目标url是baidu.com，服务器给浏览器返回的页面是百度的东西，但是url全程是没变的，重定向url会变成baidu.com。反向代理服务器就是它去取来数据，然后给用户，全程url还是反向代理服务器的url</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#负载均衡</font></p>
-<p>负载均衡（Load Balancing） 是一种网络与服务器架构技术，核心目标是将分布式的请求&#x2F;任务均匀分配到多个后端服务器（或节点）上，避免单一节点过载，提升系统的吞吐量、可用性与稳定性。</p>
-<p>影响：有多个服务器加载服务，测试过程中存在多个目标情况</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">有没有人看完有一个疑问：cdn和负载均衡怎么判断呢，都是访问一个网站，可能ip不一样。用超级ping ip多的是cdn，少的是负载均衡（因为负载均衡是核心服务器，cdn就是缓存），最关键我觉得就是，我们多访问几次，负载均衡很可能ip会变，cdn不变</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第10天-传输加密&amp;数据格式&amp;编码算法&amp;密文存储&amp;代码混淆&amp;逆向保护&amp;安全影响</title>
-    <url>/2026/06/29/%E7%AC%AC10%E5%A4%A9-%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E5%AF%86%E6%96%87%E5%AD%98%E5%82%A8-%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-%E9%80%86%E5%90%91%E4%BF%9D%E6%8A%A4-%E5%AE%89%E5%85%A8%E5%BD%B1%E5%93%8D/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-
-
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">传输格式&amp;数据-类型&amp;编码&amp;算法</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ 密码存储&amp;混淆-不可逆&amp;非对称性</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#传输格式</font></p>
-<p><font style="color:#000000;">JSON XML WebSockets HTML 二进制 自定义</font></p>
-<p><font style="color:#000000;">WebSockets：聊天交互较常见 交互式应用（豆包等应用）</font></p>
-<p><font style="color:#117CEE;">url:wss:&#x2F;&#x2F;………………</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;712032652</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1917215</font></p>
-<p><font style="color:#000000;">文件上传：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.cnblogs.com/wanglei1900/p/17177303.html">www.cnblogs.com/wanglei1900/p/17177303.html</a></font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试必须严格按照格式发包</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#传输数据</font></p>
-<p><font style="color:#000000;">例：</font></p>
-<p><font style="color:#000000;">MD5</font></p>
-<p><font style="color:#000000;">Base64</font></p>
-<p><font style="color:#000000;">自定义算法</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试如果要添加内容，内容必须是加密的要不然就无效，因为数据带入到逻辑处理前后加解密操作</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
-<p><font style="color:#117CEE;">编码和加密的区别：</font></p>
-<p><font style="color:#117CEE;">编码用于数据传输、存储、字符统一表示，本身不提供保密性，转换标准完全公开，无需密钥即可无损还原；</font></p>
-<p><font style="color:#117CEE;">加密用于数据防窃听、保护隐私，依靠公开加密算法+私有密钥完成转换，只有持有匹配密钥的授权方可以解密还原，加密算法规则通常公开，真正保密的是密钥。</font></p>
-<p><font style="color:#117CEE;"></font></p>
-<p><font style="color:#117CEE;">MD5是不可逆向的密文</font></p>
-<p><font style="color:#117CEE;">大部分解密都是碰撞式解密</font></p>
-<p><font style="color:#117CEE;">不是算法的逆向的还原解密</font></p>
-<p><font style="color:#117CEE;">它是穷举加密然后比对，如果太复杂解不出来</font></p>
-<p><font style="color:#000000;background-color:#ED740C;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#密码存储</font></p>
-<p><font style="color:#000000;">例：</font></p>
-<p><font style="color:#000000;">-ZBlog&amp;Dz</font></p>
-<p><font style="color:#000000;">-Win&amp;Linux</font></p>
-<p><font style="color:#000000;">-MSSQL&amp;MYSQL</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试必须要做到算法解密</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#代码混淆</font></p>
-<p><font style="color:#000000;">例：</font></p>
-<p><font style="color:#000000;">-PHP&amp;JS混淆加密</font></p>
-<p><font style="color:#000000;">-DLL&amp;JAR代码保护</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">影响：代码审计，逆向破解</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">由上述内容发现还需那些内容学习：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、加密算法的识别与解密</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、自定义算法的识别解密</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响</title>
-    <url>/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-<p><font style="background-color:#ED740C;">这节课一样首要任务就是理解，复现可做可不做</font></p>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-蜜罐-钓鱼诱使</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-堡垒机-突破口</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-API接口-突破口</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展应用-其他架构-突破口</font></p>
-<!-- more -->
-
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#蜜罐：<a href="https://hfish.net/">https://hfish.net/</a></font></p>
-<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
-<p><font style="color:#000000;">一键安装：bash </font><font style="color:#9a6e3a;">&lt;</font><font style="color:#999999;">(</font><font style="color:#dd4a68;">curl</font><font style="color:#000000;"> -sS -L <a href="https://hfish.net/webinstall.sh">https://hfish.net/webinstall.sh</a></font><font style="color:#999999;">)</font></p>
-<p>复现：就是租一台服务器然后上面搭建一个蜜罐系统，然后有人攻击，蜜罐后台就可看到攻击者信息</p>
-<p><font style="color:#000000;">有害影响：用来钓鱼或诱惑测试人员的防护系统，攻击者攻击半天没什么卵用，还有可能被防护方反制（一般在护网中常见，正常测试一般不会碰到）</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#堡垒机：<a href="https://www.jumpserver.org/">https://www.jumpserver.org/</a></font></p>
-<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
-<p><font style="color:#000000;">一键安装：curl -sSL <a href="https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh">https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh</a> </font><font style="color:#9a6e3a;">|</font><font style="color:#dd4a68;">bash</font></p>
-<p><font style="color:#000000;">有利影响：Web应用或其他应用提供给测试人员一个能获取到价值信息的系统（运维用的），堡垒机&#x3D;服务器唯一的入口，所有运维人员，只能先登录堡垒机，才能去连接内网服务器，不能直连业务主机，对渗透测试人员这个不一定是一个坏事，因为好多堡垒机产品本身就有漏洞。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#API接口：是一个允许不同软件应用程序之间进行通信和数据交换的接口。API定义了一组规则和协议，软件开发者可以使用这些规则和协议来访问操作系统、库、服务或其他应用程序的功能。</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、Web API:</font></p>
-<p><font style="color:#000000;">通过HTTP协议进行通信的API，常用于Web服务和应用程序。</font></p>
-<p><font style="color:#000000;">例如，RESTful API、GraphQL API。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、库和框架API:</font></p>
-<p><font style="color:#000000;">提供特定编程语言或框架功能的API，供开发者在应用程序中使用。</font></p>
-<p><font style="color:#000000;">例如，Java API、Python标准库。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、操作系统API:</font></p>
-<p><font style="color:#000000;">提供操作系统功能访问的API。</font></p>
-<p><font style="color:#000000;">例如，Windows API、POSIX API。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、远程API:</font></p>
-<p><font style="color:#000000;">允许在网络上远程访问服务的API。</font></p>
-<p><font style="color:#000000;">例如，SOAP API、XML-RPC API。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">例子：</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">内部API：比如我自己开发了一个收银系统，使用API接口可以查询到顾客数据，收入支付，销售提成等</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">外部API：比如我自己搭建了一个网站应用，功能需求有要借助到外部的资源，如地图，归属地，短信收发等</font></p>
-<p><font style="background-color:#ED740C;">识别API就是看url，比如里面出现api那肯定就是了</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">有利影响：</font></p>
-<p><font style="color:#000000;">内部API：Web应用提供给测试人员一个能获取到价值信息的接口</font></p>
-<p><font style="color:#000000;">外部API：可以借助提供的API获取到当前网站不想让你获取的信息</font></p>
-<p><font style="color:#000000;">分析API的目录结构、接口命名规则、参数命名规则、功能和业务逻辑等，</font></p>
-<p><font style="color:#000000;">根据这些信息可以进行接口枚举和参数枚举，进而可以进行相关的漏洞测试。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#Swagger 是API接口文档工具。</font></p>
-<p><font style="color:#000000;">后端写好接口后，自动生成网页文档，能直接看到：接口地址、传参格式、请求方式，还能在线发送测试请求。</font></p>
-<p><font style="color:#000000;">1. 作用</font></p>
-<p><font style="color:#000000;">前后端开发对接不用来回传文档，打开网页就能调试接口。</font></p>
-<p><font style="color:#000000;">2. 渗透测试核心考点</font></p>
-<p><font style="color:#000000;">默认访问地址：&#x2F;swagger-ui.html</font></p>
-<p><font style="color:#000000;">如果对外开放，攻击者可以扒出全部接口：用户新增、数据查询、管理员账号接口，极易找到未授权访问漏洞。</font></p>
-<p><font style="color:#000000;">一句话：它是项目所有API接口的展示页面，泄露后容易挖掘后端漏洞。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#拓展应用：防火墙 消息队列 分布式等</font></p>
-<p><font style="color:#000000;">ActiveMQ Redis Memcache Jenkins等漏洞</font></p>
-<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg">https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg</a></font></p>
-<p><font style="color:#000000;">有利影响：</font><font style="color:#000000;background-color:#ED740C;">搭建越多应用即方便了运维也提供给测试人员更多机会</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -485,6 +264,66 @@ onmouseout="this.style.textDecoration='none'">
       </tags>
   </entry>
   <entry>
+    <title>第10天-传输加密&amp;数据格式&amp;编码算法&amp;密文存储&amp;代码混淆&amp;逆向保护&amp;安全影响</title>
+    <url>/2026/06/29/%E7%AC%AC10%E5%A4%A9-%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E5%AF%86%E6%96%87%E5%AD%98%E5%82%A8-%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-%E9%80%86%E5%90%91%E4%BF%9D%E6%8A%A4-%E5%AE%89%E5%85%A8%E5%BD%B1%E5%93%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">传输格式&amp;数据-类型&amp;编码&amp;算法</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 密码存储&amp;混淆-不可逆&amp;非对称性</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#传输格式</font></p>
+<p><font style="color:#000000;">JSON XML WebSockets HTML 二进制 自定义</font></p>
+<p><font style="color:#000000;">WebSockets：聊天交互较常见 交互式应用（豆包等应用）</font></p>
+<p><font style="color:#117CEE;">url:wss:&#x2F;&#x2F;………………</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;712032652</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1917215</font></p>
+<p><font style="color:#000000;">文件上传：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.cnblogs.com/wanglei1900/p/17177303.html">www.cnblogs.com/wanglei1900/p/17177303.html</a></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试必须严格按照格式发包</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#传输数据</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#000000;">MD5</font></p>
+<p><font style="color:#000000;">Base64</font></p>
+<p><font style="color:#000000;">自定义算法</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试如果要添加内容，内容必须是加密的要不然就无效，因为数据带入到逻辑处理前后加解密操作</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#117CEE;">编码和加密的区别：</font></p>
+<p><font style="color:#117CEE;">编码用于数据传输、存储、字符统一表示，本身不提供保密性，转换标准完全公开，无需密钥即可无损还原；</font></p>
+<p><font style="color:#117CEE;">加密用于数据防窃听、保护隐私，依靠公开加密算法+私有密钥完成转换，只有持有匹配密钥的授权方可以解密还原，加密算法规则通常公开，真正保密的是密钥。</font></p>
+<p><font style="color:#117CEE;"></font></p>
+<p><font style="color:#117CEE;">MD5是不可逆向的密文</font></p>
+<p><font style="color:#117CEE;">大部分解密都是碰撞式解密</font></p>
+<p><font style="color:#117CEE;">不是算法的逆向的还原解密</font></p>
+<p><font style="color:#117CEE;">它是穷举加密然后比对，如果太复杂解不出来</font></p>
+<p><font style="color:#000000;background-color:#ED740C;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#密码存储</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#000000;">-ZBlog&amp;Dz</font></p>
+<p><font style="color:#000000;">-Win&amp;Linux</font></p>
+<p><font style="color:#000000;">-MSSQL&amp;MYSQL</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：安全后渗透测试必须要做到算法解密</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#代码混淆</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#000000;">-PHP&amp;JS混淆加密</font></p>
+<p><font style="color:#000000;">-DLL&amp;JAR代码保护</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">影响：代码审计，逆向破解</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">由上述内容发现还需那些内容学习：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、加密算法的识别与解密</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、自定义算法的识别解密</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第2天-Web应用&amp;架构类别&amp;源码类别&amp;镜像容器&amp;建站模版&amp;编译封装&amp;前后端分离</title>
     <url>/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/</url>
     <content><![CDATA[<p><font></font></p>
@@ -544,6 +383,243 @@ onmouseout="this.style.textDecoration='none'">
 <p><font style="color:#000000;"><a href="https://segmentfault.com/a/1190000045026063">https://segmentfault.com/a/1190000045026063</a></font></p>
 <p><font style="color:#000000;">5、加密型源码</font></p>
 <p><font style="color:#000000;background-color:#ED740C;">比如：通达oa（zend加密）</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响</title>
+    <url>/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="background-color:#ED740C;">本节课就是讲一些主流产品对我们渗透测试的影响，复现了解就行不做也可以</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-WAF保护-拦截攻击</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-CDN节点-隐藏真实IP</font><font style="background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-OSS存储-防上传攻击</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-反向代理-数据应用转发</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-负载均衡-多台机器服务</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#WAF</font></p>
+<p><font style="color:#000000;">原理：Web应用防火墙，旨在提供保护</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：常规Web安全测试手段会受到拦截</font></p>
+<p><font style="color:#000000;">演示：雷池社区版 <a href="https://waf-ce.chaitin.cn/">https://waf-ce.chaitin.cn/</a></font></p>
+<p><font style="color:#000000;">Ubuntu20.04 + 雷池社区版</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">安装雷池：</font></p>
+<p><a href="https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1">https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1</a></p>
+<p>命令：</p>
+<p>bash -c “$(curl -fsSLk <a href="https://waf-ce.chaitin.cn/release/latest/manager.sh">https://waf-ce.chaitin.cn/release/latest/manager.sh)"</a>“)</p>
+<p><font style="color:#000000;">搭建网站：</font></p>
+<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/705196831">https://zhuanlan.zhihu.com/p/705196831</a></p>
+<p><font style="color:#000000;">docker run –name webgoat -d -p </font><font style="color:#990055;">8080</font><font style="color:#000000;">:8080 -p </font><font style="color:#990055;">9090</font><font style="color:#000000;">:9090 registry.cn-shanghai.aliyuncs.com&#x2F;kubesec&#x2F;webgoat:v2023.8</font></p>
+<p><font style="color:#000000;">配置雷池：</font></p>
+<p><font style="color:#000000;">添加站点-设置域名-上游地址-没真实域名修改本地host解析（在c盘找到hosts文件，把对应域名解析到对应ip）</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/002-1.png"></p>
+<p><font style="background-color:#ED740C;">#CDN</font></p>
+<p><font style="color:#000000;">原理：内容分发服务，旨在提高访问速度</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：隐藏真实源IP，导致对目标IP测试错误</font></p>
+<p><font style="color:#000000;">演示：阿里云备案域名全局CDN加速服务</font></p>
+<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + CDN服务</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p>#<img src="/images/002-2.png"></p>
+<p><font style="color:#0C68CA;">CDN核心就是“就近加速、减轻源站带宽压力”，针对静态内容做缓存，用户访问的是CDN边缘节点的缓存数据，99%的情况不会触达源站</font></p>
+<p><font style="background-color:#ED740C;">怎么判断开没开CDN：用网上的超级ping网站，看看多地ping的ip结果一不一致，一致就是没开，不一致就是开了</font></p>
+<p><font style="background-color:#ED740C;"></font></p>
+<p><font style="background-color:#ED740C;">#OSS</font></p>
+<p><font style="color:#000000;">原理：云存储服务，旨在提高访问速度</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：主要影响文件上传漏洞，因为oss只负责放文件，没有php，Java这类脚本解析环境，所以上传后门后，脚本不被执行，就拿不到权限，但存在AK&#x2F;SK隐患（调用API的钥匙）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">演示：<a href="https://cloudreve.org/">https://cloudreve.org/</a></font></p>
+<p><font style="color:#000000;">Windows2016 + cloudreve + 阿里云OSS</font></p>
+<p><font style="color:#000000;"><a href="https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1">https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1</a></font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、启动应用</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、登录管理</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置存储信息</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、更改用户组存储属性</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">阿里云OSS:</font></p>
+<p><font style="color:#000000;">开OSS</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、新建Bucket</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置Bucket属性</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、配置Access访问</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">原理：</font></p>
+<p><font style="color:#000000;">为什么要使用第三方存储？</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">）静态文件会占用大量带宽</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">）加载速度</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">）存储空间</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#反向代理</font></p>
+<p><font style="color:#000000;">正代理为客户端服务,客户端主动建立代理访问目标（不代理不可达），客户端配置的。</font></p>
+<p><font style="color:#000000;">反向代理为服务端服务,服务端主动转发数据给可访问地址（不主动不可达），客户端不知道反向代理存在。</font></p>
+<p><font style="color:#000000;">原理：通过网络反向代理转发真实服务达到访问目的</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">影响：访问目标只是一个代理，非真实应用服务器</font></p>
+<p><font style="color:#000000;">注意：正向代理和反向代理都是解决访问不可达的问题，但由于反向代理中多出一个可以重定向解析的功能操作，导致反代理出的站点指向和真实应用毫无关系！</font></p>
+<p><font style="color:#000000;">演示：Nginx反向代理配置</font></p>
+<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + Nginx</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">反向代理：就很类似一个重定向操作，就比如你访问一个网站他开了反向代理，目标url是baidu.com，服务器给浏览器返回的页面是百度的东西，但是url全程是没变的，重定向url会变成baidu.com。反向代理服务器就是它去取来数据，然后给用户，全程url还是反向代理服务器的url</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#负载均衡</font></p>
+<p>负载均衡（Load Balancing） 是一种网络与服务器架构技术，核心目标是将分布式的请求&#x2F;任务均匀分配到多个后端服务器（或节点）上，避免单一节点过载，提升系统的吞吐量、可用性与稳定性。</p>
+<p>影响：有多个服务器加载服务，测试过程中存在多个目标情况</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">有没有人看完有一个疑问：cdn和负载均衡怎么判断呢，都是访问一个网站，可能ip不一样。用超级ping ip多的是cdn，少的是负载均衡（因为负载均衡是核心服务器，cdn就是缓存），最关键我觉得就是，我们多访问几次，负载均衡很可能ip会变，cdn不变</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响</title>
+    <url>/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="background-color:#ED740C;">这节课一样首要任务就是理解，复现可做可不做</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-蜜罐-钓鱼诱使</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-堡垒机-突破口</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-API接口-突破口</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展应用-其他架构-突破口</font></p>
+<!-- more -->
+
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#蜜罐：<a href="https://hfish.net/">https://hfish.net/</a></font></p>
+<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
+<p><font style="color:#000000;">一键安装：bash </font><font style="color:#9a6e3a;">&lt;</font><font style="color:#999999;">(</font><font style="color:#dd4a68;">curl</font><font style="color:#000000;"> -sS -L <a href="https://hfish.net/webinstall.sh">https://hfish.net/webinstall.sh</a></font><font style="color:#999999;">)</font></p>
+<p>复现：就是租一台服务器然后上面搭建一个蜜罐系统，然后有人攻击，蜜罐后台就可看到攻击者信息</p>
+<p><font style="color:#000000;">有害影响：用来钓鱼或诱惑测试人员的防护系统，攻击者攻击半天没什么卵用，还有可能被防护方反制（一般在护网中常见，正常测试一般不会碰到）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#堡垒机：<a href="https://www.jumpserver.org/">https://www.jumpserver.org/</a></font></p>
+<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
+<p><font style="color:#000000;">一键安装：curl -sSL <a href="https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh">https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh</a> </font><font style="color:#9a6e3a;">|</font><font style="color:#dd4a68;">bash</font></p>
+<p><font style="color:#000000;">有利影响：Web应用或其他应用提供给测试人员一个能获取到价值信息的系统（运维用的），堡垒机&#x3D;服务器唯一的入口，所有运维人员，只能先登录堡垒机，才能去连接内网服务器，不能直连业务主机，对渗透测试人员这个不一定是一个坏事，因为好多堡垒机产品本身就有漏洞。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#API接口：是一个允许不同软件应用程序之间进行通信和数据交换的接口。API定义了一组规则和协议，软件开发者可以使用这些规则和协议来访问操作系统、库、服务或其他应用程序的功能。</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、Web API:</font></p>
+<p><font style="color:#000000;">通过HTTP协议进行通信的API，常用于Web服务和应用程序。</font></p>
+<p><font style="color:#000000;">例如，RESTful API、GraphQL API。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、库和框架API:</font></p>
+<p><font style="color:#000000;">提供特定编程语言或框架功能的API，供开发者在应用程序中使用。</font></p>
+<p><font style="color:#000000;">例如，Java API、Python标准库。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、操作系统API:</font></p>
+<p><font style="color:#000000;">提供操作系统功能访问的API。</font></p>
+<p><font style="color:#000000;">例如，Windows API、POSIX API。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、远程API:</font></p>
+<p><font style="color:#000000;">允许在网络上远程访问服务的API。</font></p>
+<p><font style="color:#000000;">例如，SOAP API、XML-RPC API。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">例子：</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">内部API：比如我自己开发了一个收银系统，使用API接口可以查询到顾客数据，收入支付，销售提成等</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">外部API：比如我自己搭建了一个网站应用，功能需求有要借助到外部的资源，如地图，归属地，短信收发等</font></p>
+<p><font style="background-color:#ED740C;">识别API就是看url，比如里面出现api那肯定就是了</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">有利影响：</font></p>
+<p><font style="color:#000000;">内部API：Web应用提供给测试人员一个能获取到价值信息的接口</font></p>
+<p><font style="color:#000000;">外部API：可以借助提供的API获取到当前网站不想让你获取的信息</font></p>
+<p><font style="color:#000000;">分析API的目录结构、接口命名规则、参数命名规则、功能和业务逻辑等，</font></p>
+<p><font style="color:#000000;">根据这些信息可以进行接口枚举和参数枚举，进而可以进行相关的漏洞测试。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Swagger 是API接口文档工具。</font></p>
+<p><font style="color:#000000;">后端写好接口后，自动生成网页文档，能直接看到：接口地址、传参格式、请求方式，还能在线发送测试请求。</font></p>
+<p><font style="color:#000000;">1. 作用</font></p>
+<p><font style="color:#000000;">前后端开发对接不用来回传文档，打开网页就能调试接口。</font></p>
+<p><font style="color:#000000;">2. 渗透测试核心考点</font></p>
+<p><font style="color:#000000;">默认访问地址：&#x2F;swagger-ui.html</font></p>
+<p><font style="color:#000000;">如果对外开放，攻击者可以扒出全部接口：用户新增、数据查询、管理员账号接口，极易找到未授权访问漏洞。</font></p>
+<p><font style="color:#000000;">一句话：它是项目所有API接口的展示页面，泄露后容易挖掘后端漏洞。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#拓展应用：防火墙 消息队列 分布式等</font></p>
+<p><font style="color:#000000;">ActiveMQ Redis Memcache Jenkins等漏洞</font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg">https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg</a></font></p>
+<p><font style="color:#000000;">有利影响：</font><font style="color:#000000;background-color:#ED740C;">搭建越多应用即方便了运维也提供给测试人员更多机会</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第5天-APP应用&amp;微信小程序&amp;原生态开发&amp;H5+Vue技术&amp;封装打包&amp;反编译抓包点</title>
+    <url>/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#ED740C;">这节课没什么用其实，就是了解app和小程序的架构</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">移动App-开发架构-原生&amp;H5&amp;封装等</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 微信小程序-开发架构-原生&amp;框架&amp;封装等</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#APP应用开发架构：</font></p>
+<p><font style="color:#000000;">1、原生开发</font></p>
+<p><font style="color:#000000;">安卓一般使用java语言开发，当然现在也有kotlin语言进行开发。如何开发就涉及到具体编程了，这里就不详说了。简单描述就是使用安卓提供的一系列控件来实现页面，复杂点的页面可以通过自定义控件来实现。</font></p>
+<p><font style="color:#000000;">2、使用H5语言开发</font></p>
+<p><font style="color:#000000;">使用H5开发的好处有很多，可多端复用，比如浏览器端，ios端，当然H5开发的体验是没有原生好的。结合我做过的项目来说，一般是这个页面需要分享出去的话，就用H5开发。</font></p>
+<p><font style="color:#000000;">3、使用flutter开发</font></p>
+<p><font style="color:#000000;">flutter是近年来谷歌推出的一款UI框架，使用dart语言进行开发，支持跨平台，weight渲染直接操作硬件层，体验可媲美原生。但是flutter技术比较新，生态还不完善，开发起来效率相对偏低。</font></p>
+<p><font style="color:#000000;">4、常规Web开发</font></p>
+<p><font style="color:#000000;">Web App软件开发简单地说，就是开发一个网站，然后加入app的壳。Web App一般非常小，内容都是app内的网页展示，受制于网页技术本身，可实现功能少，而且每次打开，几乎所有的内容都需要重新加载，所以反应速度慢，内容加载过多就容易卡死，用户体验差，而且app内的交互设计等非常有效。但开发周期长端，需要的技术人员少，成本低。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#APP</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">原生态</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">IDEA</font></p>
+<p><font style="color:#000000;">演示：remusic项目源码</font></p>
+<p><font style="color:#000000;">NP管理器：</font></p>
+<p><font style="color:#990055;">http</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;normalplayer.top&#x2F;  </font><font style="color:#117CEE;">反编译工具</font></p>
+<p><font style="color:#000000;">HttpCanary：</font><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;github.com&#x2F;mingww64&#x2F;HttpCanary-SSL-Magisk</font><font style="color:#117CEE;"> 抓包工具</font></p>
+<p><font style="color:#000000;">安全影响：反编译&amp;流量抓包&amp;常规测试</font></p>
+<p><font style="color:#000000;">安全影响：逆向的角度去分析逻辑设计安全</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#117CEE;">通过apk获取源码，通过反编译工具，通过源码或者抓包都能获取一些资产信息。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#APP</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">–</font><font style="color:#000000;background-color:#ED740C;">Web封装</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">封装平台</font></p>
+<p><font style="color:#000000;">演示：ShopXO源码程序</font><font style="color:#9a6e3a;">+</font><font style="color:#000000;">多豆云打包</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;shopxo.net&#x2F;</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.ofcms.com/">www.ofcms.com/</a></font></p>
+<p><font style="color:#000000;">安全影响：常规Web安全测试</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#117CEE;">就是把一个网站封装成app了，所以跟网站是完全一样的，说白了这个app就是个网站。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#APP</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">H5&amp;Vue</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">HBuilderX</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.dcloud.io/">www.dcloud.io/</a></font></p>
+<p><font style="color:#000000;">演示：HBuilderX案例  </font><font style="color:#117CEE;">这个就是一个app开发平台</font></p>
+<p><font style="color:#000000;">安全影响：API&amp;JS框架安全问题&amp;JS前端测试</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#小程序开发架构：</font></p>
+<p><font style="color:#000000;">大家所说的小程序指微信小程序，实际上除了微信小程序外，还有支付宝、百度、头条、飞书、QQ、快手、钉钉、淘宝等个各种平台的小程序。在微信小程序开发中，开发者可以根据自身情况和项目需要，选择不同的开发方式，包括：原生开发、WebView开发、框架开发和低代码开发等。</font></p>
+<p><font style="color:#000000;">参考：</font><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;dXTb0wk57-bLA3tUuvOFSw</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#WX小程序</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">Web封装</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">平台</font></p>
+<p><font style="color:#000000;">演示：ShopXO源码程序</font><font style="color:#9a6e3a;">+</font><font style="color:#000000;">多豆云打包</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;shopxo.net&#x2F;</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.ofcms.com/">www.ofcms.com/</a></font></p>
+<p><font style="color:#000000;">安全影响：常规Web安全测试</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#WX小程序</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">H5&amp;Vue</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">HBuilderX</font></p>
+<p><font style="color:#000000;">演示：HBuilderX案例</font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.dcloud.io/">www.dcloud.io/</a></font></p>
+<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;SIWBZv_vZ6AGtHrl3hpR9A</font></p>
+<p><font style="color:#000000;">安全影响：API&amp;JS框架安全问题&amp;前端测</font></p>
+<p><font style="color:#000000;">安全影响：反编译小程序</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">提取小程序源码泄漏的信息</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">通用：</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">1、反编译</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">源码</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">提取资产（泄漏的配置信息）</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">安全测试</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">2、抓包</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">资产</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">安全测试</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
@@ -655,93 +731,6 @@ onmouseout="this.style.textDecoration='none'">
       </categories>
       <tags>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第5天-APP应用&amp;微信小程序&amp;原生态开发&amp;H5+Vue技术&amp;封装打包&amp;反编译抓包点</title>
-    <url>/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-
-<p><font style="background-color:#ED740C;">这节课没什么用其实，就是了解app和小程序的架构</font></p>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">移动App-开发架构-原生&amp;H5&amp;封装等</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ 微信小程序-开发架构-原生&amp;框架&amp;封装等</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#APP应用开发架构：</font></p>
-<p><font style="color:#000000;">1、原生开发</font></p>
-<p><font style="color:#000000;">安卓一般使用java语言开发，当然现在也有kotlin语言进行开发。如何开发就涉及到具体编程了，这里就不详说了。简单描述就是使用安卓提供的一系列控件来实现页面，复杂点的页面可以通过自定义控件来实现。</font></p>
-<p><font style="color:#000000;">2、使用H5语言开发</font></p>
-<p><font style="color:#000000;">使用H5开发的好处有很多，可多端复用，比如浏览器端，ios端，当然H5开发的体验是没有原生好的。结合我做过的项目来说，一般是这个页面需要分享出去的话，就用H5开发。</font></p>
-<p><font style="color:#000000;">3、使用flutter开发</font></p>
-<p><font style="color:#000000;">flutter是近年来谷歌推出的一款UI框架，使用dart语言进行开发，支持跨平台，weight渲染直接操作硬件层，体验可媲美原生。但是flutter技术比较新，生态还不完善，开发起来效率相对偏低。</font></p>
-<p><font style="color:#000000;">4、常规Web开发</font></p>
-<p><font style="color:#000000;">Web App软件开发简单地说，就是开发一个网站，然后加入app的壳。Web App一般非常小，内容都是app内的网页展示，受制于网页技术本身，可实现功能少，而且每次打开，几乎所有的内容都需要重新加载，所以反应速度慢，内容加载过多就容易卡死，用户体验差，而且app内的交互设计等非常有效。但开发周期长端，需要的技术人员少，成本低。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#APP</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">原生态</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">IDEA</font></p>
-<p><font style="color:#000000;">演示：remusic项目源码</font></p>
-<p><font style="color:#000000;">NP管理器：</font></p>
-<p><font style="color:#990055;">http</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;normalplayer.top&#x2F;  </font><font style="color:#117CEE;">反编译工具</font></p>
-<p><font style="color:#000000;">HttpCanary：</font><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;github.com&#x2F;mingww64&#x2F;HttpCanary-SSL-Magisk</font><font style="color:#117CEE;"> 抓包工具</font></p>
-<p><font style="color:#000000;">安全影响：反编译&amp;流量抓包&amp;常规测试</font></p>
-<p><font style="color:#000000;">安全影响：逆向的角度去分析逻辑设计安全</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#117CEE;">通过apk获取源码，通过反编译工具，通过源码或者抓包都能获取一些资产信息。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#APP</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">–</font><font style="color:#000000;background-color:#ED740C;">Web封装</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">封装平台</font></p>
-<p><font style="color:#000000;">演示：ShopXO源码程序</font><font style="color:#9a6e3a;">+</font><font style="color:#000000;">多豆云打包</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;shopxo.net&#x2F;</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.ofcms.com/">www.ofcms.com/</a></font></p>
-<p><font style="color:#000000;">安全影响：常规Web安全测试</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#117CEE;">就是把一个网站封装成app了，所以跟网站是完全一样的，说白了这个app就是个网站。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#APP</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">H5&amp;Vue</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">HBuilderX</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.dcloud.io/">www.dcloud.io/</a></font></p>
-<p><font style="color:#000000;">演示：HBuilderX案例  </font><font style="color:#117CEE;">这个就是一个app开发平台</font></p>
-<p><font style="color:#000000;">安全影响：API&amp;JS框架安全问题&amp;JS前端测试</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#小程序开发架构：</font></p>
-<p><font style="color:#000000;">大家所说的小程序指微信小程序，实际上除了微信小程序外，还有支付宝、百度、头条、飞书、QQ、快手、钉钉、淘宝等个各种平台的小程序。在微信小程序开发中，开发者可以根据自身情况和项目需要，选择不同的开发方式，包括：原生开发、WebView开发、框架开发和低代码开发等。</font></p>
-<p><font style="color:#000000;">参考：</font><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;dXTb0wk57-bLA3tUuvOFSw</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#WX小程序</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">Web封装</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">平台</font></p>
-<p><font style="color:#000000;">演示：ShopXO源码程序</font><font style="color:#9a6e3a;">+</font><font style="color:#000000;">多豆云打包</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;shopxo.net&#x2F;</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.ofcms.com/">www.ofcms.com/</a></font></p>
-<p><font style="color:#000000;">安全影响：常规Web安全测试</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#WX小程序</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">开发架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">H5&amp;Vue</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">HBuilderX</font></p>
-<p><font style="color:#000000;">演示：HBuilderX案例</font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;<a href="http://www.dcloud.io/">www.dcloud.io/</a></font></p>
-<p><font style="color:#990055;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;SIWBZv_vZ6AGtHrl3hpR9A</font></p>
-<p><font style="color:#000000;">安全影响：API&amp;JS框架安全问题&amp;前端测</font></p>
-<p><font style="color:#000000;">安全影响：反编译小程序</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">提取小程序源码泄漏的信息</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">通用：</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">1、反编译</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">源码</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">提取资产（泄漏的配置信息）</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">安全测试</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">2、抓包</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">资产</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">安全测试</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第二届双元杯信息安全大赛夺冠！！！祝贺自己</title>
-    <url>/2026/06/28/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E5%8F%8C%E5%85%83%E6%9D%AF%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E5%A4%BA%E5%86%A0%EF%BC%81%EF%BC%81%EF%BC%81%E7%A5%9D%E8%B4%BA%E8%87%AA%E5%B7%B1/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-<p><img src="/images/ctf-num1.jpg"></p>
-]]></content>
-      <categories>
-        <category>记录荣誉</category>
-      </categories>
-      <tags>
-        <tag>记录荣誉</tag>
       </tags>
   </entry>
   <entry>
@@ -985,6 +974,20 @@ onmouseout="this.style.textDecoration='none'">
       </categories>
       <tags>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第二届双元杯信息安全大赛夺冠！！！祝贺自己</title>
+    <url>/2026/06/28/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E5%8F%8C%E5%85%83%E6%9D%AF%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E5%A4%BA%E5%86%A0%EF%BC%81%EF%BC%81%EF%BC%81%E7%A5%9D%E8%B4%BA%E8%87%AA%E5%B7%B1/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><img src="/images/ctf-num1.jpg"></p>
+]]></content>
+      <categories>
+        <category>记录荣誉</category>
+      </categories>
+      <tags>
+        <tag>记录荣誉</tag>
       </tags>
   </entry>
 </search>
