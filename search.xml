@@ -146,6 +146,138 @@ onmouseout="this.style.textDecoration='none'">
       </tags>
   </entry>
   <entry>
+    <title>第11天-算法解密&amp;散列对称非对称&amp;字典碰撞&amp;前后端逆向&amp;MD5&amp;AES&amp;DES&amp;RSA</title>
+    <url>/2026/06/29/%E7%AC%AC11%E5%A4%A9-%E7%AE%97%E6%B3%95%E8%A7%A3%E5%AF%86-%E6%95%A3%E5%88%97%E5%AF%B9%E7%A7%B0%E9%9D%9E%E5%AF%B9%E7%A7%B0-%E5%AD%97%E5%85%B8%E7%A2%B0%E6%92%9E-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%86%E5%90%91-MD5-AES-DES-RSA/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#000000;background-color:#FBDE28;">安全测试中：</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">密文</font><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">有源码直接看源码分析算法（后端必须要有源码才能彻底知道）</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">密文</font><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">没有源码</font><font style="color:#990055;background-color:#FBDE28;">1</font><font style="color:#000000;background-color:#FBDE28;">、猜识别 </font><font style="color:#990055;background-color:#FBDE28;">2</font><font style="color:#000000;background-color:#FBDE28;">、看前端</font><font style="color:#990055;background-color:#FBDE28;">JS</font><font style="color:#000000;background-color:#FBDE28;">（加密逻辑是不是在前端）——后期JS逆向会讲</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#算法加密-概念&amp;分类&amp;类型</font></p>
+<p><font style="color:#990055;">1.</font><font style="color:#000000;"> 单向散列加密</font><font style="color:#117CEE;">（就是不可逆）</font><font style="color:#000000;"> </font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">MD5</font></p>
+<p><font style="color:#000000;">单向散列加密算法的优点有</font><font style="color:#999999;">(</font><font style="color:#000000;">以</font><font style="color:#990055;">MD5</font><font style="color:#000000;">为例</font><font style="color:#999999;">)</font><font style="color:#000000;">：</font></p>
+<p><font style="color:#000000;">方便存储，损耗低：加密</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">加密对于性能的损耗微乎其微。</font></p>
+<p><font style="color:#000000;">单向散列加密的缺点就是存在暴力破解的可能性，最好通过加盐值的方式提高安全性，此外可能存在散列冲突。我们都知道</font><font style="color:#990055;">MD5</font><font style="color:#000000;">加密也是可以破解的。</font></p>
+<p><font style="color:#000000;">常见的单向散列加密算法有：</font></p>
+<p><font style="color:#990055;">MD5 SHA MAC CRC</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">解密条件：密文即可，采用碰撞解密，几率看明文复杂程度</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2.</font><font style="color:#000000;"> 对称加密 </font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">AES</font></p>
+<p><font style="color:#000000;">对称加密优点是算法公开、计算量小、加密速度快、加密效率高。</font></p>
+<p><font style="color:#000000;">缺点是发送方和接收方必须商定好密钥，然后使双方都能保存好密钥，密钥管理成为双方的负担。</font></p>
+<p><font style="color:#000000;">常见的对称加密算法有：</font></p>
+<p><font style="color:#990055;">DES AES RC4</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">解密条件：密文及密钥偏移量，采用逆向算法解密，条件成立即可解密成功</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3.</font><font style="color:#000000;"> 非对称加密 </font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">RSA</font></p>
+<p><font style="color:#000000;">非对称加密的优点是与对称加密相比，安全性更好，加解密需要不同的密钥，公钥和私钥都可进行相互的加解密。</font></p>
+<p><font style="color:#000000;">缺点是加密和解密花费时间长、速度慢，只适合对少量数据进行加密。</font></p>
+<p><font style="color:#000000;">常见的非对称加密算法：</font></p>
+<p><font style="color:#990055;">RSA RSA2 PKCS</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">解密条件：密文和公钥或私钥，采用逆向算法解密，条件成立即可解密成功</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#加密解密-识别特征&amp;解密条件</font></p>
+<p><font style="color:#990055;">MD5</font><font style="color:#000000;">密文特点：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、由数字“</font><font style="color:#990055;">0</font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">9</font><font style="color:#000000;">”和字母“a</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">f”所组成的字符串</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、固定的位数 </font><font style="color:#990055;">16</font><font style="color:#000000;"> 和 </font><font style="color:#990055;">32</font><font style="color:#000000;">位</font></p>
+<p><font style="color:#000000;">解密需求：密文即可，但复杂明文可能解不出</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">BASE64</font><font style="color:#000000;">编码特点：</font></p>
+<p><font style="color:#990055;">0</font><font style="color:#000000;">、大小写区分，通过数字和字母的组合</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、一般情况下密文尾部都会有两个等号，明文很少的时候则没有</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、明文越长密文越长，一般不会出现</font><font style="color:#669900;">“&#x2F;“”+””&#x3D;”</font><font style="color:#000000;">在密文中</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">AES</font><font style="color:#000000;">、</font><font style="color:#990055;">DES</font><font style="color:#000000;">密文特点：</font></p>
+<p><font style="color:#000000;">同</font><font style="color:#990055;">BASE64</font><font style="color:#000000;">基本类似，但一般会出现</font><font style="color:#669900;">“&#x2F;“</font><font style="color:#000000;">和</font><font style="color:#669900;">“+”</font><font style="color:#000000;">在密文中</font></p>
+<p><font style="color:#000000;">解密需求：密文，模式，加密Key，偏移量，条件满足才可解出</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">RSA</font><font style="color:#000000;">密文特点：</font></p>
+<p><font style="color:#000000;">特征同</font><font style="color:#990055;">AES</font><font style="color:#999999;">,</font><font style="color:#990055;">DES</font><font style="color:#000000;">相似，但是长度较长</font></p>
+<p><font style="color:#000000;">解密需求：密文，公钥或私钥即可解出</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">其他密文特点见：</font></p>
+<p><font style="color:#990055;">1.30</font><font style="color:#000000;">余种加密编码类型的密文特征分析（建议收藏）</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s?__biz&#x3D;MzAwNDcxMjI2MA&#x3D;&#x3D;&amp;mid&#x3D;2247484455&amp;idx&#x3D;1&amp;sn&#x3D;e1b4324ddcf7d6123be30d9a5613e17b&amp;chksm&#x3D;9b26f60cac517f1a920cf3b73b3212a645aeef78882c47957b9f3c2135cb7ce051c73fe77bb2&amp;mpshare&#x3D;1&amp;scene&#x3D;23&amp;srcid&#x3D;1111auAYWmr1N0NAs9Wp2hGz&amp;sharer_sharetime&#x3D;1605145141579&amp;sharer_shareid&#x3D;5051b3eddbbe2cb698aedf9452370026#rd</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2.</font><font style="color:#990055;">CTF</font><font style="color:#000000;">中常见密码题解密网站总结（建议收藏）</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41638851&#x2F;article&#x2F;details&#x2F;100526839</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3.</font><font style="color:#990055;">CTF</font><font style="color:#000000;">密码学常见加密解密总结（建议收藏）</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;blog.csdn.net&#x2F;qq_40837276&#x2F;article&#x2F;details&#x2F;83080460</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、密码存储（后端处理）</font></p>
+<p><font style="background-color:#FBDE28;">md5&amp;salt</font></p>
+<p><font style="background-color:#FBDE28;">案例一：</font></p>
+<details class="lake-collapse"><summary id="ua90bfbbc"><span class="ne-text" style="font-size: 24px">加密核心代码：</span></summary><p id="u8a27b7b5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	functionadd_user(){</span></p><p id="u27ebd117" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">		</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">$password=md5(md5($password).$salt);//加密核心：先把密码md5加密，之后加salt值在md5加密一次</span></p><p id="u5a050966" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="color: #999999; font-size: 24px">}</span></p></details>
+
+
+<details class="lake-collapse"><summary id="uea96447f"><span class="ne-text" style="font-size: 24px">简单的一个解密代码：</span></summary><p id="u01e69c5c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?PHP</span></p><p id="u4c11e33f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$h='d7192407bb4bfc83d28f374b6812fbcd';</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">//这个是目标密文，我们向要把它还原成明</span><span class="ne-text" style="font-size: 24px">文</span></p><p id="u8e163623" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$hash=md5(md5('</span><span class="ne-text" style="background-color: #E6DCF9; font-size: 24px">123456</span><span class="ne-text" style="font-size: 24px">').'3946d5');</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">//这个就是明文加密的过程，其中明文我们不知道，所以明文部分（就是123456那个部分）扔一个字典进去跑，跑出来内容和$h相同自然就是成功（下面if判断含义）</span></p><p id="u1ffb8ce5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$h</span><span class="ne-text" style="font-size: 24px">==</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">){</span></p><p id="ude7b7d0f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	</span><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'ok'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="ufecda0b9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u7e43ed03" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	</span><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'no'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u91b95766" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub661a4df" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+<details class="lake-collapse"><summary id="uc9aadb26"><span class="ne-text" style="font-size: 24px">这个就是上面代码的升级版，把明文部分换成文件内容，自动去读取文件内容然后去一一碰撞</span></summary><p id="u7d5ed795" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?</span><span class="ne-text" style="font-size: 24px">php</span></p><p id="u6e285420" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">function</span><span class="ne-text" style="font-size: 24px">reverse_md5_hash_with_salt</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="uf6356683" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 打开字典文件</span></p><p id="ua5529e64" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fopen</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">&quot;r&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="ub6dbc2f7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">!</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u9e841655" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">die</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;无法打开字典文件！&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u5b50410f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub1b58ac0" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u8498cf1e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 遍历字典文件中的每一行（即每一个密码）</span></p><p id="u1ee7b300" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">while</span><span class="ne-text" style="font-size: 24px">((</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fgets</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">!==</span><span class="ne-text" style="font-size: 24px">false</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ud8e17671" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 去除密码两侧的空白字符（包括换行符）</span></p><p id="u0d665a6c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">trim</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u78409b6d" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ud31249c9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 第一次 MD5 加密密码</span></p><p id="u8ff17e32" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$md5_hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">md5</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u6677d064" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u31f3f9bf" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 拼接 md5($password) 和 salt</span></p><p id="u60504ca3" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$salted_hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">$md5_hash</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u1093adeb" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u14660753" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 第二次 MD5 加密</span></p><p id="ud37bba5b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$final_attempt</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">md5</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$salted_hash</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u447731a7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u1ad5afd9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 检查是否匹配</span></p><p id="u4bf1c041" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$final_attempt</span><span class="ne-text" style="font-size: 24px">===</span><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ue2f6fb3d" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">fclose</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u536bc055" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">return</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 找到匹配的密码</span></p><p id="u9a612fb7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ufa906295" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub64d9acb" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ud4715e67" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 如果没有找到匹配的密码</span></p><p id="u0604fb14" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">fclose</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u2aa65096" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">return</span><span class="ne-text" style="font-size: 24px">null</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u6ec423ff" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u0e36f6d8" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u4bb2c16b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 给定的目标加密值和盐值</span></p><p id="u95b01727" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;125648dbf16531ab7e6b2f8ec8003ea7&quot;</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 目标 MD5 值</span></p><p id="u63ab2f07" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;3e3790&quot;</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 盐值</span></p><p id="ue8b60edb" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc747108c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 字典文件路径</span></p><p id="u8d69b714" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;weaksauce.txt&quot;</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 字典文件路径</span></p><p id="u568158b5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ueaff4265" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 调用函数进行密码破解</span></p><p id="ub01c1258" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">reverse_md5_hash_with_salt</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u89af2592" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u4a4b1a40" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 输出结果</span></p><p id="u78fadde4" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ueada6789" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">&quot;破解成功，密码是: $password&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="ufaacca7e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ua3209a29" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">&quot;密码破解失败&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u5f082129" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u27139d83" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+
+
+
+
+<p><font style="background-color:#FBDE28;">#案例2：</font></p>
+<details class="lake-collapse"><summary id="uc84b229c"><span class="ne-text" style="font-size: 24px">加密核心代码</span></summary><p id="u879effed" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">function</span><span class="ne-text" style="font-size: 24px">add_user</span><span class="ne-text" style="font-size: 24px">()</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u1b74a8bd" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$salt='';</span></p><p id="u8bcc8b18" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$password=$this-&gt;generate_password($password);</span></p><p id="ue877ed63" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ud706cf81" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u6287d525" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">functiongenerate_password($password){</span></p><p id="ud74e8954" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$algo=$this-&gt;get_passwordalgo();</span></p><p id="u5365c623" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$options=$this-&gt;get_passwordoptions();</span></p><p id="u6aac2598" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">		</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">password_hash</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$algo</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$options</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u64d859d1" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	}</span></p><p id="u10f6a0f2" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	</span></p></details>
+
+
+<details class="lake-collapse"><summary id="ufea36f52"><span class="ne-text" style="font-size: 24px">简单的一个解密代码（和案例一类似）：</span></summary><p id="u00f5807b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?</span><span class="ne-text" style="font-size: 24px">PHP</span></p><p id="u2c42db78" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">'$2y$10$KA.7VYVheqod8F3X65tWjO3ZXfozNA2fC4oIZoDSu/TbfgKmiw7xO'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="ub724037e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">password_verify</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">'123456'</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u4ce6579c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'ok'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u61908d02" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u1f009fef" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'error'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u478cc26f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="uf6e25598" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+<details class="lake-collapse"><summary id="ua15c0638"><span class="ne-text" style="font-size: 24px">这个就是上面代码的升级版，把明文部分换成文件内容，自动去读取文件内容然后去一一碰撞</span></summary><p id="u251f22a9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?</span><span class="ne-text" style="font-size: 24px">PHP</span></p><p id="u5e6cd88f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">'$2y$10$PDACNCRyZzcsknF8zvL4yu7YHIPQTN8F635PxQeXSB8QxxDZSXrd.'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u48af55f3" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc8eca433" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc04e4e36" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;weaksauce.txt&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u522afedf" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fopen</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">&quot;r&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u3572f84e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">!</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u0fae5d49" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">die</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;无法打开字典文件！&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="ucd254018" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u36979c6d" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u0bc82e37" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 遍历字典文件中的每一行（即每一个密码）</span></p><p id="u4ac07efd" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">while</span><span class="ne-text" style="font-size: 24px">((</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fgets</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">!==</span><span class="ne-text" style="font-size: 24px">false</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ub3a8d999" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 去除密码两侧的空白字符（包括换行符）</span></p><p id="ud4bc3193" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">trim</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="ub84d2a35" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">&quot;&lt;br&gt;&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="udca8d7ac" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">password_verify</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ubb6d978b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'ok'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u07be8686" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u0966b998" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'error'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="uf7f72298" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u194a4082" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub5843ab0" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+<p>2、数据通讯</p>
+<p>博客登录-zblog（前端处理）</p>
+<details class="lake-collapse"><summary id="u150ac589"><span class="ne-text" style="font-size: 24px">前端js加密：md5.js</span></summary><p id="ue0a9b3b2" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;</span><span class="ne-text" style="font-size: 24px">script src</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;script/md5.js&quot;</span><span class="ne-text" style="font-size: 24px"> type</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;text/javascript&quot;</span><span class="ne-text" style="font-size: 24px">&gt;&lt;/</span><span class="ne-text" style="font-size: 24px">script</span><span class="ne-text" style="font-size: 24px">&gt;</span></p><p id="uf571759e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;#btnPost&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">click</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">function</span><span class="ne-text" style="font-size: 24px">(){</span></p><p id="u29d33687" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">var</span><span class="ne-text" style="font-size: 24px"> strPassWord</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;#edtPassWord&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">val</span><span class="ne-text" style="font-size: 24px">();</span></p><p id="u63469a90" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;form&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">attr</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;action&quot;</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">&quot;cmd.php?act=verify&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u4e7eb7d4" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;#password&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">val</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">MD5</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">strPassWord</span><span class="ne-text" style="font-size: 24px">));</span></p><p id="uce6c7b30" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">console.log(MD5(&quot;123456&quot;));</span></p></details>
+<font style="background-color:#FBDE28;">我们在登录的时候密码会被加密，你可以随便输一个然后看包里的密码变成什么记录下来，然后你去控制台md5（密码），对比发现一样就是md5加密，前端加密肯定会加载加密js包，然后代码分析就可以</font>
+
+
+
+<p>博客登录-混合加密（前端处理）</p>
+<script src="/Scripts/Vip/Login.js?v=20241202154949"></script>
+
+<p>functionLogin(){</p>
+<pre><code>logindata.UserName =encodeURI(encrypt.encrypt(numMobile));
+
+logindata.Mobile =encodeURI(encrypt.encrypt(numMobile));;
+
+logindata.Password =encodeURI(encrypt.encrypt(numPassword));
+</code></pre>
+<p>}</p>
+<p>var encrypt &#x3D;new JSEncrypt();</p>
+<p><font style="background-color:#FBDE28;">encodeURI(encrypt.encrypt(‘13554365566’));</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#FBDE28;">这个案例没找到所以无法复现，这个就是我们登录账号密码都被加密，然后一看就不是常规加密，然后js逆向分析，用登录请求包的url全局搜索一下，看看哪个js包里包含加密算法，然后我们在控制台尝试加密一下，看看是不是和登录包内一样，这里有一个坑：不是所有的都能无脑带到控制台去执行，因为命令有的是，类实例化出来的对象（比如encrypt就是JSEncrypt实例化出来的对象），这个需要在具体场景下去判断。</font></p>
+<p>3、密文</p>
+<p>明确以下三种加密算法加解密条件</p>
+<p>对称AES&#x2F;DES加解密<font style="background-color:#FBDE28;">（需要知道密钥和偏移量）</font>，非对称RSA加解密<font style="background-color:#FBDE28;">（需要公钥或者私钥）</font></p>
+<p>解密：<a href="http://tool.chacuo.net/cryptdes">http://tool.chacuo.net/cryptdes</a></p>
+<p>应用场景：</p>
+<p>1、发送数据的时候自动将数据加密发送（自需加密即可）</p>
+<p>安全测试思路：我们需要将我们的Payload也要加密发送过去，这样才符合正常的业务逻辑，所以我们就只需要调用应用的JS加密逻辑进行提交发送测试即可！</p>
+<p>2、比如要得到数据的明文（必须要拿到解密算法）</p>
+<p>由于各种算法的解密条件不一，密钥，偏移量，私钥等不一定能拿到。</p>
+<p>对于后续安全测试影响较大的：</p>
+<p>1、目标：API接口 前后端分离应用居多</p>
+<p>2、漏洞发现：未授权 各类漏洞测试 爆破等</p>
+<p>3、其他</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第10天-传输加密&amp;数据格式&amp;编码算法&amp;密文存储&amp;代码混淆&amp;逆向保护&amp;安全影响</title>
     <url>/2026/06/29/%E7%AC%AC10%E5%A4%A9-%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E5%AF%86%E6%96%87%E5%AD%98%E5%82%A8-%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-%E9%80%86%E5%90%91%E4%BF%9D%E6%8A%A4-%E5%AE%89%E5%85%A8%E5%BD%B1%E5%93%8D/</url>
     <content><![CDATA[<p><font></font></p>
@@ -197,6 +329,74 @@ onmouseout="this.style.textDecoration='none'">
 <p><font style="color:#000000;">由上述内容发现还需那些内容学习：</font></p>
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、加密算法的识别与解密</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、自定义算法的识别解密</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第2天-Web应用&amp;架构类别&amp;源码类别&amp;镜像容器&amp;建站模版&amp;编译封装&amp;前后端分离</title>
+    <url>/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#000000;background-color:#ED740C;">#Web架构展示：</font></p>
+<p><font style="color:#000000;">1、套用模版型</font></p>
+<p><font style="color:#000000;">csdn &#x2F; cnblog &#x2F; github &#x2F; 建站系统等</font></p>
+<p><font style="color:#000000;">博客园举例</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/001-1.png"></p>
+<p><font style="color:#000000;">安全测试思路上的不同：</font></p>
+<p><font style="color:#000000;">一般以模版套用，基本模版无漏洞，大部分都采用测试用户管理权限为主，灵活性较低。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">2、前后端分离</font></p>
+<p><font style="color:#000000;">例子：<a href="https://www.rxthink.cn/">https://www.rxthink.cn/</a></font></p>
+<p><font style="color:#000000;">思路：<a href="https://mp.weixin.qq.com/s/HtLU_EBXWcbq-lt10oPYwA">https://mp.weixin.qq.com/s/HtLU_EBXWcbq-lt10oPYwA</a></font></p>
+<p><font style="color:#000000;">安全测试思路上的不同：前端以JS（Vue,NodeJS等）安全问题，主要以API接口测试，前端漏洞（如XSS）为主，后端隐蔽难度加大。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">前后端分离我的理解：随着互联网的发展对这个应用的要求也越来越高，以前就是简单的前端页面，主要是后端的功能实现，但是现在对前端的要求越来越大，所以干脆把前端开发和后端开发分开，各自专注自己的活，后端只写API接口，只输出json纯数据，不生成网页。前端为纯静态网页，浏览器先加载空白页面，再主动去调用后端接口拉去数据，再渲染内容。它既是分工模式，更是网站底层架构的本质改动。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">3、集成软件包</font></p>
+<p><font style="color:#000000;">宝塔，Phpstudy，xamp等</font></p>
+<p><font style="color:#000000;">安全测试思路上的不同：主要是防护体系，权限差异为主</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">当获取网站权限后，植入后门，命令执行不了，目录也锁（这个是宝塔），不同集成软件都不同，phpstudy能执行命令</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">4、自主环境镜像</font></p>
+<p><font style="color:#000000;">云镜像打包，自行一个个搭建</font></p>
+<p><font style="color:#000000;">安全测试思路上的不同：主要是防护体系，权限差异为主</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">当获取网站权限后，植入后门，命令可以执行，文件管理基本都能看，除了一些高权限目录</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">5、容器拉取镜像</font></p>
+<p><font style="color:#000000;">Docker</font></p>
+<p><font style="color:#000000;">安全测试思路上的不同：虚拟化技术，在后期测试要进程逃逸提权</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">网站中植入后门，Docker逃逸主要是想获取宿主机的信息，如果只想拿下网站本身就不需要。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Docker的相关接收在我上一篇文章：</font></p>
+<p><a href="https://blog.csdn.net/spider_px/article/details/162316246?spm=1001.2014.3001.5501">https://blog.csdn.net/spider_px&#x2F;article&#x2F;details&#x2F;162316246?spm&#x3D;1001.2014.3001.5501</a></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">6、纯静态页面</font></p>
+<p><font style="color:#000000;">纯HTML+CSS+JS的设计</font></p>
+<p><font style="color:#000000;">安全测试思路上：无数据传输，也就无漏洞</font></p>
+<p><font style="color:#000000;">找线索：找资产，域名，客户端等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Web源码形式：</font></p>
+<p><font style="color:#000000;">旨在了解源码差异，后期代码审计和测试中对源码真实性的判断</font></p>
+<p><font style="color:#000000;">1、单纯简易源码</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">url和目录完全对应</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">2、MVC框架源码</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">url看的是路由文件，url——&gt;控制器的某个函数，例：<a href="http://127.0.0.1/user/info%EF%BC%8Cuser%E5%8F%AA%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E4%BB%A3%E8%A1%A8user%E6%8E%A7%E5%88%B6%E5%99%A8%E3%80%82info%E5%8F%AA%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E4%BB%A3%E8%A1%A8info()%E5%87%BD%E6%95%B0">http://127.0.0.1/user/info，user只是字符串，代表user控制器。info只是字符串，代表info()函数</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">3、编译调用源码</font></p>
+<p><font style="color:#000000;">如：NET-DLL封装  Java-Jar打包</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">a、.NET的源码，核心部分在dll文件里，需要用dll反编译工具后才能看到源码</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">b、Java项目写完之后，.java源代码会被编译成.class字节码文件。记事本打开是乱码，无法直接阅读，必须用Java反编译工具。</font></p>
+<p><font style="color:#000000;">4、前后端分离源码</font></p>
+<p><font style="color:#000000;"><a href="https://segmentfault.com/a/1190000045026063">https://segmentfault.com/a/1190000045026063</a></font></p>
+<p><font style="color:#000000;">5、加密型源码</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">比如：通达oa（zend加密）</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
@@ -315,74 +515,6 @@ onmouseout="this.style.textDecoration='none'">
 <p><font style="color:#000000;">2、绝对路径：这个就是从当前目录开始，</font></p>
 <p><font style="color:#000000;">3、相对路径：这个就是从根目录开始，就是完整路径</font></p>
 <p><font style="color:#990055;">4</font><font style="color:#000000;">、格式权限：后门解析格式（网站是什么搭建环境就上传什么后门），代码正常执行（什么环境写什么代码），脚本执行权限（如果目录权限设置了，就有可能执行不了，只能换一个目录了）等</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第2天-Web应用&amp;架构类别&amp;源码类别&amp;镜像容器&amp;建站模版&amp;编译封装&amp;前后端分离</title>
-    <url>/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-<p><font style="color:#000000;background-color:#ED740C;">#Web架构展示：</font></p>
-<p><font style="color:#000000;">1、套用模版型</font></p>
-<p><font style="color:#000000;">csdn &#x2F; cnblog &#x2F; github &#x2F; 建站系统等</font></p>
-<p><font style="color:#000000;">博客园举例</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/001-1.png"></p>
-<p><font style="color:#000000;">安全测试思路上的不同：</font></p>
-<p><font style="color:#000000;">一般以模版套用，基本模版无漏洞，大部分都采用测试用户管理权限为主，灵活性较低。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">2、前后端分离</font></p>
-<p><font style="color:#000000;">例子：<a href="https://www.rxthink.cn/">https://www.rxthink.cn/</a></font></p>
-<p><font style="color:#000000;">思路：<a href="https://mp.weixin.qq.com/s/HtLU_EBXWcbq-lt10oPYwA">https://mp.weixin.qq.com/s/HtLU_EBXWcbq-lt10oPYwA</a></font></p>
-<p><font style="color:#000000;">安全测试思路上的不同：前端以JS（Vue,NodeJS等）安全问题，主要以API接口测试，前端漏洞（如XSS）为主，后端隐蔽难度加大。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">前后端分离我的理解：随着互联网的发展对这个应用的要求也越来越高，以前就是简单的前端页面，主要是后端的功能实现，但是现在对前端的要求越来越大，所以干脆把前端开发和后端开发分开，各自专注自己的活，后端只写API接口，只输出json纯数据，不生成网页。前端为纯静态网页，浏览器先加载空白页面，再主动去调用后端接口拉去数据，再渲染内容。它既是分工模式，更是网站底层架构的本质改动。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">3、集成软件包</font></p>
-<p><font style="color:#000000;">宝塔，Phpstudy，xamp等</font></p>
-<p><font style="color:#000000;">安全测试思路上的不同：主要是防护体系，权限差异为主</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">当获取网站权限后，植入后门，命令执行不了，目录也锁（这个是宝塔），不同集成软件都不同，phpstudy能执行命令</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">4、自主环境镜像</font></p>
-<p><font style="color:#000000;">云镜像打包，自行一个个搭建</font></p>
-<p><font style="color:#000000;">安全测试思路上的不同：主要是防护体系，权限差异为主</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">当获取网站权限后，植入后门，命令可以执行，文件管理基本都能看，除了一些高权限目录</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">5、容器拉取镜像</font></p>
-<p><font style="color:#000000;">Docker</font></p>
-<p><font style="color:#000000;">安全测试思路上的不同：虚拟化技术，在后期测试要进程逃逸提权</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">网站中植入后门，Docker逃逸主要是想获取宿主机的信息，如果只想拿下网站本身就不需要。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Docker的相关接收在我上一篇文章：</font></p>
-<p><a href="https://blog.csdn.net/spider_px/article/details/162316246?spm=1001.2014.3001.5501">https://blog.csdn.net/spider_px&#x2F;article&#x2F;details&#x2F;162316246?spm&#x3D;1001.2014.3001.5501</a></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">6、纯静态页面</font></p>
-<p><font style="color:#000000;">纯HTML+CSS+JS的设计</font></p>
-<p><font style="color:#000000;">安全测试思路上：无数据传输，也就无漏洞</font></p>
-<p><font style="color:#000000;">找线索：找资产，域名，客户端等</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#Web源码形式：</font></p>
-<p><font style="color:#000000;">旨在了解源码差异，后期代码审计和测试中对源码真实性的判断</font></p>
-<p><font style="color:#000000;">1、单纯简易源码</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">url和目录完全对应</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">2、MVC框架源码</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">url看的是路由文件，url——&gt;控制器的某个函数，例：<a href="http://127.0.0.1/user/info%EF%BC%8Cuser%E5%8F%AA%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E4%BB%A3%E8%A1%A8user%E6%8E%A7%E5%88%B6%E5%99%A8%E3%80%82info%E5%8F%AA%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E4%BB%A3%E8%A1%A8info()%E5%87%BD%E6%95%B0">http://127.0.0.1/user/info，user只是字符串，代表user控制器。info只是字符串，代表info()函数</a></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">3、编译调用源码</font></p>
-<p><font style="color:#000000;">如：NET-DLL封装  Java-Jar打包</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">a、.NET的源码，核心部分在dll文件里，需要用dll反编译工具后才能看到源码</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">b、Java项目写完之后，.java源代码会被编译成.class字节码文件。记事本打开是乱码，无法直接阅读，必须用Java反编译工具。</font></p>
-<p><font style="color:#000000;">4、前后端分离源码</font></p>
-<p><font style="color:#000000;"><a href="https://segmentfault.com/a/1190000045026063">https://segmentfault.com/a/1190000045026063</a></font></p>
-<p><font style="color:#000000;">5、加密型源码</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">比如：通达oa（zend加密）</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
@@ -629,6 +761,75 @@ onmouseout="this.style.textDecoration='none'">
       </tags>
   </entry>
   <entry>
+    <title>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</title>
+    <url>/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-扶墙双层</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-项目联动</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-Web&amp;App&amp;小程序&amp;PC-全局协议 </font></p>
+<p><font style="color:#990055;"></font></p>
+<p><font style="color:#DF2A3F;">昨天讲的三款工具抓的都是http&#x2F;s的包，今天抓的是别的协议的包所以就不能使用昨天的三款工具了。科来和wireshark是抓网卡的包，之前bp，charles，fidder等都是抓的端口的包。</font></p>
+<p><font style="color:#990055;"></font></p>
+<p><font style="color:#990055;"></font></p>
+<p><font style="color:#990055;">Wireshark</font><font style="color:#000000;">：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">wireshark</font><font style="color:#999999;">.</font><font style="color:#000000;">org</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">网络封包分析软件。网络封包分析软件的功能是截取网络封包，并尽可能显示出最为详细的网络封包资料。</font><font style="color:#990055;">Wireshark</font><font style="color:#000000;">使用</font><font style="color:#990055;">WinPCAP</font><font style="color:#000000;">作为接口，直接与网卡进行数据报文交换。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">科来网络分析系统：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">colasoft</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#999999;">.</font><font style="color:#000000;">cn</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">该系统具有行业领先的专家分析技术，通过捕获并分析网络中传输的底层数据包，对网络故障、网络安全以及网络性能进行全面分析，从而快速排查网络中出现或潜在的故障、安全及性能问题。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">抓包工具联动</font></p>
+<p><font style="color:#000000;">意义：让一个数据包同时经过不同安全测试工具进行扫描</font></p>
+<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Burp</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Reqable</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#000000;">设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">9000</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#科学上网抓包</font></p>
+<p><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Burp</font><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Yakit</font></p>
+<p><font style="color:#000000;">解决：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、目标需要采用梯子才能访问</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">IP</font><font style="color:#000000;">隐藏去访问并要进行抓包</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#117CEE;">clash就是一个代理工具（用来翻墙的），想在的目的是抓国际互联网的包，bp和yakit都用设置上下游代理，那我们把上下游代理换成127.0.0.1:7890因为clash默认是7890，但是电脑自带的代理要换成8080也就是抓包工具的，因为一开clash就自动设置成7890了，所以就抓不到包了。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">全局协议抓包</font></p>
+<p><font style="color:#990055;">WireShark</font><font style="color:#000000;"> 科来网络系统</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、解决部分代理校验</font></p>
+<p><font style="color:#000000;">有部分的</font><font style="color:#000000;">app</font><font style="color:#000000;">web</font><font style="color:#000000;"> 小程序 当设置了代理后无法抓包</font></p>
+<p><font style="color:#000000;">校验：检测到了当前机器的代理设置 做了一个策略防止</font></p>
+<p><font style="color:#000000;">做了代理的设置数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">代理</font><font style="color:#9a6e3a;">（</font><font style="color:#000000;">还没有到网卡）</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">给到监听抓包工具</font></p>
+<p><font style="color:#000000;">没有做代理的数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">服务器（网卡抓包） 代理是在网卡之前产生</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">APP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">小程序</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">PC</font><font style="color:#000000;">应用</font></p>
+<p><font style="color:#000000;">由于应用类型不同，不是说所有的应用都有</font><font style="color:#000000;">https</font><font style="color:#000000;">协议的数据</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、蓝队分析</font><font style="color:#990055;">TCP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">UDP</font><font style="color:#000000;">应用</font></p>
+<p><font style="color:#000000;">msfvenom</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">p      windows</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">meterpreter</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">reverse_tcplhost</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">192.168</font><font style="color:#999999;">.</font><font style="color:#990055;">1.9</font><font style="color:#000000;">lport</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">6666</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">fexe</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">o</font><font style="color:#990055;">9</font><font style="color:#999999;">.</font><font style="color:#000000;">exe</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第6天-抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;Web&amp;证书信任&amp;转发联动</title>
     <url>/2026/06/27/%E7%AC%AC6%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-HTTPS%E5%8D%8F%E8%AE%AE-APP-%E5%B0%8F%E7%A8%8B%E5%BA%8F-PC%E5%BA%94%E7%94%A8-Web-%E8%AF%81%E4%B9%A6%E4%BF%A1%E4%BB%BB-%E8%BD%AC%E5%8F%91%E8%81%94%E5%8A%A8/</url>
     <content><![CDATA[<p><font></font></p>
@@ -725,121 +926,6 @@ onmouseout="this.style.textDecoration='none'">
 <p><font style="color:#000000;">2、有防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">真机绕过</font><font style="color:#117CEE;">（模拟器打不开）</font><font style="color:#000000;">&amp;更改内核</font></p>
 <p><font style="color:#000000;">3、有防护</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">证书绕过</font><font style="color:#117CEE;">（校验了证书，bp这类证书会被拦截）</font><font style="color:#000000;">&amp;代理绕过</font><font style="color:#117CEE;">（开代理不行）</font></p>
 <p><font style="color:#000000;">注意：真机抓包要保证手机和电脑在同一网络</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第7天-抓包技术&amp;全局协议&amp;通讯双层&amp;多项目联动&amp;网卡模式&amp;检验绕过&amp;移动应用</title>
-    <url>/2026/06/27/%E7%AC%AC7%E5%A4%A9-%E6%8A%93%E5%8C%85%E6%8A%80%E6%9C%AF-%E5%85%A8%E5%B1%80%E5%8D%8F%E8%AE%AE-%E9%80%9A%E8%AE%AF%E5%8F%8C%E5%B1%82-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E8%81%94%E5%8A%A8-%E7%BD%91%E5%8D%A1%E6%A8%A1%E5%BC%8F-%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-扶墙双层</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">抓包技术-Web&amp;App&amp;小程序&amp;PC-项目联动</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ 抓包技术-Web&amp;App&amp;小程序&amp;PC-全局协议 </font></p>
-<p><font style="color:#990055;"></font></p>
-<p><font style="color:#DF2A3F;">昨天讲的三款工具抓的都是http&#x2F;s的包，今天抓的是别的协议的包所以就不能使用昨天的三款工具了。科来和wireshark是抓网卡的包，之前bp，charles，fidder等都是抓的端口的包。</font></p>
-<p><font style="color:#990055;"></font></p>
-<p><font style="color:#990055;"></font></p>
-<p><font style="color:#990055;">Wireshark</font><font style="color:#000000;">：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">wireshark</font><font style="color:#999999;">.</font><font style="color:#000000;">org</font><font style="color:#9a6e3a;">&#x2F;</font></p>
-<p><font style="color:#000000;">网络封包分析软件。网络封包分析软件的功能是截取网络封包，并尽可能显示出最为详细的网络封包资料。</font><font style="color:#990055;">Wireshark</font><font style="color:#000000;">使用</font><font style="color:#990055;">WinPCAP</font><font style="color:#000000;">作为接口，直接与网卡进行数据报文交换。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">科来网络分析系统：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">colasoft</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#999999;">.</font><font style="color:#000000;">cn</font><font style="color:#9a6e3a;">&#x2F;</font></p>
-<p><font style="color:#000000;">该系统具有行业领先的专家分析技术，通过捕获并分析网络中传输的底层数据包，对网络故障、网络安全以及网络性能进行全面分析，从而快速排查网络中出现或潜在的故障、安全及性能问题。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">抓包工具联动</font></p>
-<p><font style="color:#000000;">意义：让一个数据包同时经过不同安全测试工具进行扫描</font></p>
-<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Burp</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">Burp</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Yakit</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#990055;">Reqable</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、</font><font style="color:#990055;">Burp</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8083</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、让</font><font style="color:#990055;">Burp</font><font style="color:#000000;">将给到</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、系统的代理设置：</font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">8080</font></p>
-<p><font style="color:#990055;">5</font><font style="color:#000000;">、</font><font style="color:#990055;">Yakit</font><font style="color:#000000;">设置下游 </font><font style="color:#990055;">127.0</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#9a6e3a;">:</font><font style="color:#990055;">9000</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#科学上网抓包</font></p>
-<p><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Burp</font><font style="color:#990055;">Clash</font><font style="color:#9a6e3a;">+</font><font style="color:#990055;">Yakit</font></p>
-<p><font style="color:#000000;">解决：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、目标需要采用梯子才能访问</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">IP</font><font style="color:#000000;">隐藏去访问并要进行抓包</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#117CEE;">clash就是一个代理工具（用来翻墙的），想在的目的是抓国际互联网的包，bp和yakit都用设置上下游代理，那我们把上下游代理换成127.0.0.1:7890因为clash默认是7890，但是电脑自带的代理要换成8080也就是抓包工具的，因为一开clash就自动设置成7890了，所以就抓不到包了。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#</font><font style="color:#000000;background-color:#ED740C;">全局协议抓包</font></p>
-<p><font style="color:#990055;">WireShark</font><font style="color:#000000;"> 科来网络系统</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、解决部分代理校验</font></p>
-<p><font style="color:#000000;">有部分的</font><font style="color:#000000;">app</font><font style="color:#000000;">web</font><font style="color:#000000;"> 小程序 当设置了代理后无法抓包</font></p>
-<p><font style="color:#000000;">校验：检测到了当前机器的代理设置 做了一个策略防止</font></p>
-<p><font style="color:#000000;">做了代理的设置数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">代理</font><font style="color:#9a6e3a;">（</font><font style="color:#000000;">还没有到网卡）</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">给到监听抓包工具</font></p>
-<p><font style="color:#000000;">没有做代理的数据走向：本身应用</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">服务器（网卡抓包） 代理是在网卡之前产生</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、</font><font style="color:#990055;">APP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">小程序</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">PC</font><font style="color:#000000;">应用</font></p>
-<p><font style="color:#000000;">由于应用类型不同，不是说所有的应用都有</font><font style="color:#000000;">https</font><font style="color:#000000;">协议的数据</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、蓝队分析</font><font style="color:#990055;">TCP</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">UDP</font><font style="color:#000000;">应用</font></p>
-<p><font style="color:#000000;">msfvenom</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">p      windows</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">meterpreter</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">reverse_tcplhost</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">192.168</font><font style="color:#999999;">.</font><font style="color:#990055;">1.9</font><font style="color:#000000;">lport</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#990055;">6666</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">fexe</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">o</font><font style="color:#990055;">9</font><font style="color:#999999;">.</font><font style="color:#000000;">exe</font></p>
-]]></content>
-      <categories>
-        <category>小迪安全课程学习笔记(基础入门)</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第9天-反弹Shell&amp;渗透命令&amp;Reverse反向&amp;Bind正向&amp;利用语言&amp;文件下载&amp;多姿势</title>
-    <url>/2026/06/27/%E7%AC%AC9%E5%A4%A9-%E5%8F%8D%E5%BC%B9Shell-%E6%B8%97%E9%80%8F%E5%91%BD%E4%BB%A4-Reverse%E5%8F%8D%E5%90%91-Bind%E6%AD%A3%E5%90%91-%E5%88%A9%E7%94%A8%E8%AF%AD%E8%A8%80-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-%E5%A4%9A%E5%A7%BF%E5%8A%BF/</url>
-    <content><![CDATA[<p><font></font></p>
-<span id="more"></span>
-
-<p><font style="color:#117CEE;">目前讲的反弹shell，都是基于已经发现命令执行漏洞的前提，漏洞发现是后续的内容了</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">为什么要反弹Shell</font><font style="color:#9a6e3a;">?</font></p>
-<p><font style="color:#000000;">往往由于很多因素如：防火墙的开启限制，端口被占用，无法进行正向连接，数据不回显，攻击者可能无法直接从受攻击系统上建立连接并获取Shell控制权时。</font></p>
-<p><font style="color:#000000;">例子：</font></p>
-<p><font style="color:#990055;">1.</font><font style="color:#000000;"> 远程控制：通过反弹shell，攻击者可以远程控制目标系统，执行各种命令和操作，获得对目标系统的完全控制权限。</font></p>
-<p><font style="color:#990055;">2.</font><font style="color:#000000;"> 隐藏攻击痕迹：通过反弹shell，攻击者可以在目标系统上执行命令，而不需要直接与目标系统进行交互。这样可以减少被发现的风险，同时也可以更好地隐藏攻击者的身份和攻击行为。</font></p>
-<p><font style="color:#990055;">3.</font><font style="color:#000000;"> 横向渗透：一旦攻击者成功反弹shell并获得目标系统的访问权限，他们可以进一步横向渗透，即在网络中移动并攻击其他系统，以获取更多的敏感信息或控制权。</font></p>
-<p><font style="color:#990055;">4.</font><font style="color:#000000;"> 数据盗取和系统破坏：通过反弹shell，攻击者可以获取目标系统上的敏感数据，并且可以操纵系统以造成损害，例如删除文件、破坏系统配置等。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">#反弹Shell</font></p>
-<p><font style="color:#000000;">在线生成：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;sec.lintstar.top&#x2F;</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;<a href="http://www.revshells.com/">www.revshells.com/</a></font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">shell</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font></p>
-<p><font style="color:#117CEE;">这几个就是在线生成反弹shell命令的网站（三个综合利用，可能有的生成内容不好使）</font></p>
-<p><font style="color:#000000;">命令类别：</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">1</font><font style="color:#000000;background-color:#ED740C;">、开发语言：系统环境变量开发环境</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">2</font><font style="color:#000000;background-color:#ED740C;">、系统自带：系统支持的系统命令调用</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">3</font><font style="color:#000000;background-color:#ED740C;">、第三方项目：利用远程下载命令后调用（msf等）</font></p>
-<p><font style="color:#990055;background-color:#ED740C;">4</font><font style="color:#000000;background-color:#ED740C;">、正反向类别：Reverse反向 Bind绑定等</font></p>
-<p><font style="color:#000000;">实验环境：</font></p>
-<p><font style="color:#000000;">Windows</font><font style="color:#9a6e3a;">&lt;–&gt;</font><font style="color:#000000;">Linux</font></p>
-<p><font style="color:#000000;">总结：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、Windows上基本就PowerShell命令可以反弹（</font><font style="color:#117CEE;">有时候命令太长不行，可以借助中间代理，就是把ps1文件下载到受害机，然后运行这个文件就行 powershell .&#x2F;1.ps1</font><font style="color:#000000;">），再就是环境变量的开发语言</font></p>
-<p>2、Linux上默认自带的nc(ncat)，系统命令，开发语言等基本大部分都可反弹（linux安装语言会自动配置环境变量，而windows不会）</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">#渗透命令</font></p>
-<p><font style="color:#000000;">在线参考：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;book.shentoushi.top&#x2F;</font></p>
-<p><font style="color:#000000;">文件下载：</font></p>
-<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">bountytips</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font><font style="color:#9a6e3a;">?</font><font style="color:#000000;">download</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(基础入门)</category>
@@ -988,6 +1074,52 @@ onmouseout="this.style.textDecoration='none'">
       </categories>
       <tags>
         <tag>记录荣誉</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第9天-反弹Shell&amp;渗透命令&amp;Reverse反向&amp;Bind正向&amp;利用语言&amp;文件下载&amp;多姿势</title>
+    <url>/2026/06/27/%E7%AC%AC9%E5%A4%A9-%E5%8F%8D%E5%BC%B9Shell-%E6%B8%97%E9%80%8F%E5%91%BD%E4%BB%A4-Reverse%E5%8F%8D%E5%90%91-Bind%E6%AD%A3%E5%90%91-%E5%88%A9%E7%94%A8%E8%AF%AD%E8%A8%80-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-%E5%A4%9A%E5%A7%BF%E5%8A%BF/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#117CEE;">目前讲的反弹shell，都是基于已经发现命令执行漏洞的前提，漏洞发现是后续的内容了</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">为什么要反弹Shell</font><font style="color:#9a6e3a;">?</font></p>
+<p><font style="color:#000000;">往往由于很多因素如：防火墙的开启限制，端口被占用，无法进行正向连接，数据不回显，攻击者可能无法直接从受攻击系统上建立连接并获取Shell控制权时。</font></p>
+<p><font style="color:#000000;">例子：</font></p>
+<p><font style="color:#990055;">1.</font><font style="color:#000000;"> 远程控制：通过反弹shell，攻击者可以远程控制目标系统，执行各种命令和操作，获得对目标系统的完全控制权限。</font></p>
+<p><font style="color:#990055;">2.</font><font style="color:#000000;"> 隐藏攻击痕迹：通过反弹shell，攻击者可以在目标系统上执行命令，而不需要直接与目标系统进行交互。这样可以减少被发现的风险，同时也可以更好地隐藏攻击者的身份和攻击行为。</font></p>
+<p><font style="color:#990055;">3.</font><font style="color:#000000;"> 横向渗透：一旦攻击者成功反弹shell并获得目标系统的访问权限，他们可以进一步横向渗透，即在网络中移动并攻击其他系统，以获取更多的敏感信息或控制权。</font></p>
+<p><font style="color:#990055;">4.</font><font style="color:#000000;"> 数据盗取和系统破坏：通过反弹shell，攻击者可以获取目标系统上的敏感数据，并且可以操纵系统以造成损害，例如删除文件、破坏系统配置等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#反弹Shell</font></p>
+<p><font style="color:#000000;">在线生成：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;sec.lintstar.top&#x2F;</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;<a href="http://www.revshells.com/">www.revshells.com/</a></font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">shell</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font></p>
+<p><font style="color:#117CEE;">这几个就是在线生成反弹shell命令的网站（三个综合利用，可能有的生成内容不好使）</font></p>
+<p><font style="color:#000000;">命令类别：</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">1</font><font style="color:#000000;background-color:#ED740C;">、开发语言：系统环境变量开发环境</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">2</font><font style="color:#000000;background-color:#ED740C;">、系统自带：系统支持的系统命令调用</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">3</font><font style="color:#000000;background-color:#ED740C;">、第三方项目：利用远程下载命令后调用（msf等）</font></p>
+<p><font style="color:#990055;background-color:#ED740C;">4</font><font style="color:#000000;background-color:#ED740C;">、正反向类别：Reverse反向 Bind绑定等</font></p>
+<p><font style="color:#000000;">实验环境：</font></p>
+<p><font style="color:#000000;">Windows</font><font style="color:#9a6e3a;">&lt;–&gt;</font><font style="color:#000000;">Linux</font></p>
+<p><font style="color:#000000;">总结：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、Windows上基本就PowerShell命令可以反弹（</font><font style="color:#117CEE;">有时候命令太长不行，可以借助中间代理，就是把ps1文件下载到受害机，然后运行这个文件就行 powershell .&#x2F;1.ps1</font><font style="color:#000000;">），再就是环境变量的开发语言</font></p>
+<p>2、Linux上默认自带的nc(ncat)，系统命令，开发语言等基本大部分都可反弹（linux安装语言会自动配置环境变量，而windows不会）</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#渗透命令</font></p>
+<p><font style="color:#000000;">在线参考：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#ee9900;">&#x2F;book.shentoushi.top&#x2F;</font></p>
+<p><font style="color:#000000;">文件下载：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">forum</font><font style="color:#999999;">.</font><font style="color:#000000;">ywhack</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">bountytips</font><font style="color:#999999;">.</font><font style="color:#000000;">php</font><font style="color:#9a6e3a;">?</font><font style="color:#000000;">download</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
 </search>

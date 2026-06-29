@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第11天-算法解密&amp;散列对称非对称&amp;字典碰撞&amp;前后端逆向&amp;MD5&amp;AES&amp;DES&amp;RSA">
+<meta property="og:url" content="http://zhigao.xyz/2026/06/29/%E7%AC%AC11%E5%A4%A9-%E7%AE%97%E6%B3%95%E8%A7%A3%E5%AF%86-%E6%95%A3%E5%88%97%E5%AF%B9%E7%A7%B0%E9%9D%9E%E5%AF%B9%E7%A7%B0-%E5%AD%97%E5%85%B8%E7%A2%B0%E6%92%9E-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%86%E5%90%91-MD5-AES-DES-RSA/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-29T13:27:19.000Z">
+<meta property="article:modified_time" content="2026-06-29T13:29:18.333Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/06/29/%E7%AC%AC11%E5%A4%A9-%E7%AE%97%E6%B3%95%E8%A7%A3%E5%AF%86-%E6%95%A3%E5%88%97%E5%AF%B9%E7%A7%B0%E9%9D%9E%E5%AF%B9%E7%A7%B0-%E5%AD%97%E5%85%B8%E7%A2%B0%E6%92%9E-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%86%E5%90%91-MD5-AES-DES-RSA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第11天-算法解密&散列对称非对称&字典碰撞&前后端逆向&MD5&AES&DES&RSA | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/06/29/%E7%AC%AC11%E5%A4%A9-%E7%AE%97%E6%B3%95%E8%A7%A3%E5%AF%86-%E6%95%A3%E5%88%97%E5%AF%B9%E7%A7%B0%E9%9D%9E%E5%AF%B9%E7%A7%B0-%E5%AD%97%E5%85%B8%E7%A2%B0%E6%92%9E-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%86%E5%90%91-MD5-AES-DES-RSA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第11天-算法解密&散列对称非对称&字典碰撞&前后端逆向&MD5&AES&DES&RSA
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-29 21:27:19 / 修改时间：21:29:18" itemprop="dateCreated datePublished" datetime="2026-06-29T21:27:19+08:00">2026-06-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(基础入门)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#000000;background-color:#FBDE28;">安全测试中：</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">密文</font><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">有源码直接看源码分析算法（后端必须要有源码才能彻底知道）</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">密文</font><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">没有源码</font><font style="color:#990055;background-color:#FBDE28;">1</font><font style="color:#000000;background-color:#FBDE28;">、猜识别 </font><font style="color:#990055;background-color:#FBDE28;">2</font><font style="color:#000000;background-color:#FBDE28;">、看前端</font><font style="color:#990055;background-color:#FBDE28;">JS</font><font style="color:#000000;background-color:#FBDE28;">（加密逻辑是不是在前端）——后期JS逆向会讲</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#算法加密-概念&amp;分类&amp;类型</font></p>
+<p><font style="color:#990055;">1.</font><font style="color:#000000;"> 单向散列加密</font><font style="color:#117CEE;">（就是不可逆）</font><font style="color:#000000;"> </font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">MD5</font></p>
+<p><font style="color:#000000;">单向散列加密算法的优点有</font><font style="color:#999999;">(</font><font style="color:#000000;">以</font><font style="color:#990055;">MD5</font><font style="color:#000000;">为例</font><font style="color:#999999;">)</font><font style="color:#000000;">：</font></p>
+<p><font style="color:#000000;">方便存储，损耗低：加密</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">加密对于性能的损耗微乎其微。</font></p>
+<p><font style="color:#000000;">单向散列加密的缺点就是存在暴力破解的可能性，最好通过加盐值的方式提高安全性，此外可能存在散列冲突。我们都知道</font><font style="color:#990055;">MD5</font><font style="color:#000000;">加密也是可以破解的。</font></p>
+<p><font style="color:#000000;">常见的单向散列加密算法有：</font></p>
+<p><font style="color:#990055;">MD5 SHA MAC CRC</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">解密条件：密文即可，采用碰撞解密，几率看明文复杂程度</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2.</font><font style="color:#000000;"> 对称加密 </font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">AES</font></p>
+<p><font style="color:#000000;">对称加密优点是算法公开、计算量小、加密速度快、加密效率高。</font></p>
+<p><font style="color:#000000;">缺点是发送方和接收方必须商定好密钥，然后使双方都能保存好密钥，密钥管理成为双方的负担。</font></p>
+<p><font style="color:#000000;">常见的对称加密算法有：</font></p>
+<p><font style="color:#990055;">DES AES RC4</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">解密条件：密文及密钥偏移量，采用逆向算法解密，条件成立即可解密成功</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3.</font><font style="color:#000000;"> 非对称加密 </font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">RSA</font></p>
+<p><font style="color:#000000;">非对称加密的优点是与对称加密相比，安全性更好，加解密需要不同的密钥，公钥和私钥都可进行相互的加解密。</font></p>
+<p><font style="color:#000000;">缺点是加密和解密花费时间长、速度慢，只适合对少量数据进行加密。</font></p>
+<p><font style="color:#000000;">常见的非对称加密算法：</font></p>
+<p><font style="color:#990055;">RSA RSA2 PKCS</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">解密条件：密文和公钥或私钥，采用逆向算法解密，条件成立即可解密成功</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#加密解密-识别特征&amp;解密条件</font></p>
+<p><font style="color:#990055;">MD5</font><font style="color:#000000;">密文特点：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、由数字“</font><font style="color:#990055;">0</font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">9</font><font style="color:#000000;">”和字母“a</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">f”所组成的字符串</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、固定的位数 </font><font style="color:#990055;">16</font><font style="color:#000000;"> 和 </font><font style="color:#990055;">32</font><font style="color:#000000;">位</font></p>
+<p><font style="color:#000000;">解密需求：密文即可，但复杂明文可能解不出</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">BASE64</font><font style="color:#000000;">编码特点：</font></p>
+<p><font style="color:#990055;">0</font><font style="color:#000000;">、大小写区分，通过数字和字母的组合</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、一般情况下密文尾部都会有两个等号，明文很少的时候则没有</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、明文越长密文越长，一般不会出现</font><font style="color:#669900;">“&#x2F;“”+””&#x3D;”</font><font style="color:#000000;">在密文中</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">AES</font><font style="color:#000000;">、</font><font style="color:#990055;">DES</font><font style="color:#000000;">密文特点：</font></p>
+<p><font style="color:#000000;">同</font><font style="color:#990055;">BASE64</font><font style="color:#000000;">基本类似，但一般会出现</font><font style="color:#669900;">“&#x2F;“</font><font style="color:#000000;">和</font><font style="color:#669900;">“+”</font><font style="color:#000000;">在密文中</font></p>
+<p><font style="color:#000000;">解密需求：密文，模式，加密Key，偏移量，条件满足才可解出</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">RSA</font><font style="color:#000000;">密文特点：</font></p>
+<p><font style="color:#000000;">特征同</font><font style="color:#990055;">AES</font><font style="color:#999999;">,</font><font style="color:#990055;">DES</font><font style="color:#000000;">相似，但是长度较长</font></p>
+<p><font style="color:#000000;">解密需求：密文，公钥或私钥即可解出</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">其他密文特点见：</font></p>
+<p><font style="color:#990055;">1.30</font><font style="color:#000000;">余种加密编码类型的密文特征分析（建议收藏）</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s?__biz&#x3D;MzAwNDcxMjI2MA&#x3D;&#x3D;&amp;mid&#x3D;2247484455&amp;idx&#x3D;1&amp;sn&#x3D;e1b4324ddcf7d6123be30d9a5613e17b&amp;chksm&#x3D;9b26f60cac517f1a920cf3b73b3212a645aeef78882c47957b9f3c2135cb7ce051c73fe77bb2&amp;mpshare&#x3D;1&amp;scene&#x3D;23&amp;srcid&#x3D;1111auAYWmr1N0NAs9Wp2hGz&amp;sharer_sharetime&#x3D;1605145141579&amp;sharer_shareid&#x3D;5051b3eddbbe2cb698aedf9452370026#rd</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2.</font><font style="color:#990055;">CTF</font><font style="color:#000000;">中常见密码题解密网站总结（建议收藏）</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41638851&#x2F;article&#x2F;details&#x2F;100526839</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3.</font><font style="color:#990055;">CTF</font><font style="color:#000000;">密码学常见加密解密总结（建议收藏）</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#999999;">:</font><font style="color:#708090;">&#x2F;&#x2F;blog.csdn.net&#x2F;qq_40837276&#x2F;article&#x2F;details&#x2F;83080460</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、密码存储（后端处理）</font></p>
+<p><font style="background-color:#FBDE28;">md5&amp;salt</font></p>
+<p><font style="background-color:#FBDE28;">案例一：</font></p>
+<details class="lake-collapse"><summary id="ua90bfbbc"><span class="ne-text" style="font-size: 24px">加密核心代码：</span></summary><p id="u8a27b7b5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	functionadd_user(){</span></p><p id="u27ebd117" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">		</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">$password=md5(md5($password).$salt);//加密核心：先把密码md5加密，之后加salt值在md5加密一次</span></p><p id="u5a050966" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="color: #999999; font-size: 24px">}</span></p></details>
+
+
+<details class="lake-collapse"><summary id="uea96447f"><span class="ne-text" style="font-size: 24px">简单的一个解密代码：</span></summary><p id="u01e69c5c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?PHP</span></p><p id="u4c11e33f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$h='d7192407bb4bfc83d28f374b6812fbcd';</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">//这个是目标密文，我们向要把它还原成明</span><span class="ne-text" style="font-size: 24px">文</span></p><p id="u8e163623" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$hash=md5(md5('</span><span class="ne-text" style="background-color: #E6DCF9; font-size: 24px">123456</span><span class="ne-text" style="font-size: 24px">').'3946d5');</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">//这个就是明文加密的过程，其中明文我们不知道，所以明文部分（就是123456那个部分）扔一个字典进去跑，跑出来内容和$h相同自然就是成功（下面if判断含义）</span></p><p id="u1ffb8ce5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$h</span><span class="ne-text" style="font-size: 24px">==</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">){</span></p><p id="ude7b7d0f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	</span><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'ok'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="ufecda0b9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u7e43ed03" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	</span><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'no'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u91b95766" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub661a4df" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+<details class="lake-collapse"><summary id="uc9aadb26"><span class="ne-text" style="font-size: 24px">这个就是上面代码的升级版，把明文部分换成文件内容，自动去读取文件内容然后去一一碰撞</span></summary><p id="u7d5ed795" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?</span><span class="ne-text" style="font-size: 24px">php</span></p><p id="u6e285420" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">function</span><span class="ne-text" style="font-size: 24px">reverse_md5_hash_with_salt</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="uf6356683" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 打开字典文件</span></p><p id="ua5529e64" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fopen</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">&quot;r&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="ub6dbc2f7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">!</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u9e841655" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">die</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;无法打开字典文件！&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u5b50410f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub1b58ac0" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u8498cf1e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 遍历字典文件中的每一行（即每一个密码）</span></p><p id="u1ee7b300" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">while</span><span class="ne-text" style="font-size: 24px">((</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fgets</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">!==</span><span class="ne-text" style="font-size: 24px">false</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ud8e17671" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 去除密码两侧的空白字符（包括换行符）</span></p><p id="u0d665a6c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">trim</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u78409b6d" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ud31249c9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 第一次 MD5 加密密码</span></p><p id="u8ff17e32" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$md5_hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">md5</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u6677d064" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u31f3f9bf" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 拼接 md5($password) 和 salt</span></p><p id="u60504ca3" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$salted_hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">$md5_hash</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u1093adeb" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u14660753" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 第二次 MD5 加密</span></p><p id="ud37bba5b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$final_attempt</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">md5</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$salted_hash</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u447731a7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u1ad5afd9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 检查是否匹配</span></p><p id="u4bf1c041" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$final_attempt</span><span class="ne-text" style="font-size: 24px">===</span><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ue2f6fb3d" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">fclose</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u536bc055" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">return</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 找到匹配的密码</span></p><p id="u9a612fb7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ufa906295" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub64d9acb" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ud4715e67" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 如果没有找到匹配的密码</span></p><p id="u0604fb14" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">fclose</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u2aa65096" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">return</span><span class="ne-text" style="font-size: 24px">null</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u6ec423ff" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u0e36f6d8" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u4bb2c16b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 给定的目标加密值和盐值</span></p><p id="u95b01727" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;125648dbf16531ab7e6b2f8ec8003ea7&quot;</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 目标 MD5 值</span></p><p id="u63ab2f07" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;3e3790&quot;</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 盐值</span></p><p id="ue8b60edb" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc747108c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 字典文件路径</span></p><p id="u8d69b714" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;weaksauce.txt&quot;</span><span class="ne-text" style="font-size: 24px">;</span><span class="ne-text" style="font-size: 24px">// 字典文件路径</span></p><p id="u568158b5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ueaff4265" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 调用函数进行密码破解</span></p><p id="ub01c1258" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">reverse_md5_hash_with_salt</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$final_hash</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$salt</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u89af2592" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u4a4b1a40" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 输出结果</span></p><p id="u78fadde4" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ueada6789" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">&quot;破解成功，密码是: $password&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="ufaacca7e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ua3209a29" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">&quot;密码破解失败&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u5f082129" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u27139d83" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+
+
+
+
+<p><font style="background-color:#FBDE28;">#案例2：</font></p>
+<details class="lake-collapse"><summary id="uc84b229c"><span class="ne-text" style="font-size: 24px">加密核心代码</span></summary><p id="u879effed" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">function</span><span class="ne-text" style="font-size: 24px">add_user</span><span class="ne-text" style="font-size: 24px">()</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u1b74a8bd" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$salt='';</span></p><p id="u8bcc8b18" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$password=$this-&gt;generate_password($password);</span></p><p id="ue877ed63" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ud706cf81" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u6287d525" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">functiongenerate_password($password){</span></p><p id="ud74e8954" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$algo=$this-&gt;get_passwordalgo();</span></p><p id="u5365c623" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	$options=$this-&gt;get_passwordoptions();</span></p><p id="u6aac2598" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">		</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">password_hash</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$algo</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$options</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u64d859d1" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	}</span></p><p id="u10f6a0f2" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	</span></p></details>
+
+
+<details class="lake-collapse"><summary id="ufea36f52"><span class="ne-text" style="font-size: 24px">简单的一个解密代码（和案例一类似）：</span></summary><p id="u00f5807b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?</span><span class="ne-text" style="font-size: 24px">PHP</span></p><p id="u2c42db78" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">'$2y$10$KA.7VYVheqod8F3X65tWjO3ZXfozNA2fC4oIZoDSu/TbfgKmiw7xO'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="ub724037e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">password_verify</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">'123456'</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u4ce6579c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'ok'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u61908d02" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u1f009fef" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'error'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u478cc26f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="uf6e25598" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+<details class="lake-collapse"><summary id="ua15c0638"><span class="ne-text" style="font-size: 24px">这个就是上面代码的升级版，把明文部分换成文件内容，自动去读取文件内容然后去一一碰撞</span></summary><p id="u251f22a9" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;?</span><span class="ne-text" style="font-size: 24px">PHP</span></p><p id="u5e6cd88f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">'$2y$10$PDACNCRyZzcsknF8zvL4yu7YHIPQTN8F635PxQeXSB8QxxDZSXrd.'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u48af55f3" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc8eca433" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc04e4e36" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;weaksauce.txt&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u522afedf" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fopen</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$dictionary_file</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">&quot;r&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u3572f84e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">!</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u0fae5d49" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">die</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;无法打开字典文件！&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="ucd254018" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u36979c6d" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u0bc82e37" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 遍历字典文件中的每一行（即每一个密码）</span></p><p id="u4ac07efd" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">while</span><span class="ne-text" style="font-size: 24px">((</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">fgets</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$file</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">!==</span><span class="ne-text" style="font-size: 24px">false</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ub3a8d999" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">// 去除密码两侧的空白字符（包括换行符）</span></p><p id="ud4bc3193" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">trim</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="ub84d2a35" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">&quot;&lt;br&gt;&quot;</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="udca8d7ac" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">if</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">password_verify</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">$password</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">$hash</span><span class="ne-text" style="font-size: 24px">))</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="ubb6d978b" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'ok'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="u07be8686" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span><span class="ne-text" style="font-size: 24px">else</span><span class="ne-text" style="font-size: 24px">{</span></p><p id="u0966b998" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">echo</span><span class="ne-text" style="font-size: 24px">'error'</span><span class="ne-text" style="font-size: 24px">;</span></p><p id="uf7f72298" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u194a4082" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">}</span></p><p id="ub5843ab0" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">?&gt;</span></p></details>
+
+
+<p>2、数据通讯</p>
+<p>博客登录-zblog（前端处理）</p>
+<details class="lake-collapse"><summary id="u150ac589"><span class="ne-text" style="font-size: 24px">前端js加密：md5.js</span></summary><p id="ue0a9b3b2" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">&lt;</span><span class="ne-text" style="font-size: 24px">script src</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;script/md5.js&quot;</span><span class="ne-text" style="font-size: 24px"> type</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">&quot;text/javascript&quot;</span><span class="ne-text" style="font-size: 24px">&gt;&lt;/</span><span class="ne-text" style="font-size: 24px">script</span><span class="ne-text" style="font-size: 24px">&gt;</span></p><p id="uf571759e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;#btnPost&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">click</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">function</span><span class="ne-text" style="font-size: 24px">(){</span></p><p id="u29d33687" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">var</span><span class="ne-text" style="font-size: 24px"> strPassWord</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;#edtPassWord&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">val</span><span class="ne-text" style="font-size: 24px">();</span></p><p id="u63469a90" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;form&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">attr</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;action&quot;</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">&quot;cmd.php?act=verify&quot;</span><span class="ne-text" style="font-size: 24px">);</span></p><p id="u4e7eb7d4" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">$</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">&quot;#password&quot;</span><span class="ne-text" style="font-size: 24px">)</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">val</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">MD5</span><span class="ne-text" style="font-size: 24px">(</span><span class="ne-text" style="font-size: 24px">strPassWord</span><span class="ne-text" style="font-size: 24px">));</span></p><p id="uce6c7b30" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">console.log(MD5(&quot;123456&quot;));</span></p></details>
+<font style="background-color:#FBDE28;">我们在登录的时候密码会被加密，你可以随便输一个然后看包里的密码变成什么记录下来，然后你去控制台md5（密码），对比发现一样就是md5加密，前端加密肯定会加载加密js包，然后代码分析就可以</font>
+
+
+
+<p>博客登录-混合加密（前端处理）</p>
+<script src="/Scripts/Vip/Login.js?v=20241202154949"></script>
+
+<p>functionLogin(){</p>
+<pre><code>logindata.UserName =encodeURI(encrypt.encrypt(numMobile));
+
+logindata.Mobile =encodeURI(encrypt.encrypt(numMobile));;
+
+logindata.Password =encodeURI(encrypt.encrypt(numPassword));
+</code></pre>
+<p>}</p>
+<p>var encrypt &#x3D;new JSEncrypt();</p>
+<p><font style="background-color:#FBDE28;">encodeURI(encrypt.encrypt(‘13554365566’));</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#FBDE28;">这个案例没找到所以无法复现，这个就是我们登录账号密码都被加密，然后一看就不是常规加密，然后js逆向分析，用登录请求包的url全局搜索一下，看看哪个js包里包含加密算法，然后我们在控制台尝试加密一下，看看是不是和登录包内一样，这里有一个坑：不是所有的都能无脑带到控制台去执行，因为命令有的是，类实例化出来的对象（比如encrypt就是JSEncrypt实例化出来的对象），这个需要在具体场景下去判断。</font></p>
+<p>3、密文</p>
+<p>明确以下三种加密算法加解密条件</p>
+<p>对称AES&#x2F;DES加解密<font style="background-color:#FBDE28;">（需要知道密钥和偏移量）</font>，非对称RSA加解密<font style="background-color:#FBDE28;">（需要公钥或者私钥）</font></p>
+<p>解密：<a target="_blank" rel="noopener" href="http://tool.chacuo.net/cryptdes">http://tool.chacuo.net/cryptdes</a></p>
+<p>应用场景：</p>
+<p>1、发送数据的时候自动将数据加密发送（自需加密即可）</p>
+<p>安全测试思路：我们需要将我们的Payload也要加密发送过去，这样才符合正常的业务逻辑，所以我们就只需要调用应用的JS加密逻辑进行提交发送测试即可！</p>
+<p>2、比如要得到数据的明文（必须要拿到解密算法）</p>
+<p>由于各种算法的解密条件不一，密钥，偏移量，私钥等不一定能拿到。</p>
+<p>对于后续安全测试影响较大的：</p>
+<p>1、目标：API接口 前后端分离应用居多</p>
+<p>2、漏洞发现：未授权 各类漏洞测试 爆破等</p>
+<p>3、其他</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/29/%E7%AC%AC10%E5%A4%A9-%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E5%AF%86%E6%96%87%E5%AD%98%E5%82%A8-%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-%E9%80%86%E5%90%91%E4%BF%9D%E6%8A%A4-%E5%AE%89%E5%85%A8%E5%BD%B1%E5%93%8D/" rel="prev" title="第10天-传输加密&数据格式&编码算法&密文存储&代码混淆&逆向保护&安全影响">
+      <i class="fa fa-chevron-left"></i> 第10天-传输加密&数据格式&编码算法&密文存储&代码混淆&逆向保护&安全影响
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
