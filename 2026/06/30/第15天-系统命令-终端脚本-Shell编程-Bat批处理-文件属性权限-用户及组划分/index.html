@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第15天-系统命令&amp;终端脚本&amp;Shell编程&amp;Bat批处理&amp;文件属性权限&amp;用户及组划分">
+<meta property="og:url" content="http://zhigao.xyz/2026/06/30/%E7%AC%AC15%E5%A4%A9-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4-%E7%BB%88%E7%AB%AF%E8%84%9A%E6%9C%AC-Shell%E7%BC%96%E7%A8%8B-Bat%E6%89%B9%E5%A4%84%E7%90%86-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E6%9D%83%E9%99%90-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%BB%84%E5%88%92%E5%88%86/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-30T14:47:50.000Z">
+<meta property="article:modified_time" content="2026-06-30T14:51:28.401Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/06/30/%E7%AC%AC15%E5%A4%A9-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4-%E7%BB%88%E7%AB%AF%E8%84%9A%E6%9C%AC-Shell%E7%BC%96%E7%A8%8B-Bat%E6%89%B9%E5%A4%84%E7%90%86-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E6%9D%83%E9%99%90-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%BB%84%E5%88%92%E5%88%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第15天-系统命令&终端脚本&Shell编程&Bat批处理&文件属性权限&用户及组划分 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/06/30/%E7%AC%AC15%E5%A4%A9-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4-%E7%BB%88%E7%AB%AF%E8%84%9A%E6%9C%AC-Shell%E7%BC%96%E7%A8%8B-Bat%E6%89%B9%E5%A4%84%E7%90%86-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E6%9D%83%E9%99%90-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%BB%84%E5%88%92%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第15天-系统命令&终端脚本&Shell编程&Bat批处理&文件属性权限&用户及组划分
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-30 22:47:50 / 修改时间：22:51:28" itemprop="dateCreated datePublished" datetime="2026-06-30T22:47:50+08:00">2026-06-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(基础入门)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#ffff00;">脚本开发目前了解一下就行，有兴趣自己学</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Windows&amp;Linux-脚本开发-Bat&amp;Shell</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Windows&amp;Linux-权限差异-文件&amp;用户</font></p>
+<p><font style="color:#000000;">#系统命令集合</font></p>
+<p><font style="color:#000000;">在线参考：<a target="_blank" rel="noopener" href="https://book.shentoushi.top/">https://book.shentoushi.top/</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Windows Cmd&amp;PowerShell</font></p>
+<p><font style="color:#000000;">CMD命令终端:</font></p>
+<p><font style="color:#000000;">BAT格式文件</font><font style="background-color:#FBDE28;">(全是系统命令写的)</font></p>
+<p><font style="color:#000000;">echo</font></p>
+<p><font style="color:#000000;">@字符放在命令前将关闭该命令回显，无论此时echo是否为打开状态</font></p>
+<p><font style="color:#000000;">@echo off</font></p>
+<p><font style="color:#000000;">@echo on</font></p>
+<p><font style="color:#000000;">echo “hello”</font></p>
+<p><font style="color:#000000;">echo “hello” “world”</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">常见： </font></p>
+<p><font style="color:#000000;">pause 将dos界面暂停关闭</font><font style="color:#000000;background-color:#FBDE28;">（执行后控制台会暂停，提示按任意键继续，防止bat脚本运行完毕后窗口自动关闭）</font></p>
+<p><font style="color:#000000;">:: 注释</font></p>
+<p><font style="color:#000000;">chcp 65001 乱码解决</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">变量</font></p>
+<p><font style="color:#000000;">set x&#x3D;hello</font></p>
+<p><font style="color:#000000;">set y&#x3D;world</font></p>
+<p><font style="color:#000000;">echo %x% %y%</font></p>
+<p><font style="color:#000000;">set &#x2F;p input&#x3D;请输入：</font><font style="color:#000000;background-color:#FBDE28;">&#x2F;p代表接收用户键盘输入，把输入内容存入input变量</font></p>
+<p><font style="color:#000000;">%cd%  打印当前路径</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">函数 :fun_main</font></p>
+<p><font style="color:#000000;">start 调用其他程序，如可执行文件exe</font></p>
+<p><font style="color:#000000;">goto 用于函数跳转，其中特别的是goto :eof </font><font style="color:#000000;background-color:#FBDE28;">直接跳到脚本末尾，终止当前代码段，等价于return</font></p>
+<p><font style="color:#000000;">call 用于调用函数，也可以调用别的bat脚本</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">for</font></p>
+<p><font style="color:#000000;">dir &#x2F;b 指定目录 这个语法可以用于获得指定目录下的所有文件和文件夹</font></p>
+<p><font style="color:#000000;">for &#x2F;f 遍历指定目录下所有的文件和文件夹</font></p>
+<p><font style="color:#000000;">for &#x2F;d 遍历指定目录下所有的文件夹</font></p>
+<p><font style="color:#000000;">for &#x2F;r 遍历指定目录下所有的文件和子文件夹中的文件</font></p>
+<p><font style="color:#000000;">for &#x2F;l 是Windows批处理脚本中的一种循环语句，用于按数字范围和步长进行循环</font></p>
+<p><font style="color:#000000;">%%i 则是声明的变量，可以是任意的变量名，但变量名前面必须加上两个百分号%%</font></p>
+<p><font style="color:#000000;">for 进阶 delims（分隔符），读取的字符串会以这些分隔符进行拆分成多个子字符串</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">FIND</font></p>
+<p><font style="color:#000000;">&#x2F;V 显示所有未包含指定字符串的行。</font></p>
+<p><font style="color:#000000;">&#x2F;C 仅显示包含字符串行的次数。</font></p>
+<p><font style="color:#000000;">&#x2F;N 显示行号。</font></p>
+<p><font style="color:#000000;">&#x2F;I 搜索字符串时忽略大小写。</font></p>
+<p><font style="color:#000000;">&#x2F;OFF[LINE]：不要跳过具有脱机属性集的文件。</font></p>
+<p><font style="color:#000000;">“string”：指定要搜索的文本字符串。</font></p>
+<p><font style="color:#000000;">[drive:][path]filename：指定要搜索的文件</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">bat中 比较符号</font></p>
+<p><font style="color:#000000;">EQU - 等于</font></p>
+<p><font style="color:#000000;">NEQ - 不等于</font></p>
+<p><font style="color:#000000;">LSS - 小于</font></p>
+<p><font style="color:#000000;">LEQ - 小于或等于</font></p>
+<p><font style="color:#000000;">GTR - 大于</font></p>
+<p><font style="color:#000000;">GEQ - 大于或等于</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">Linux-&gt; ; |  ||  &amp;  &amp;&amp; &#96;&#96;</font></p>
+<p>；：命令分隔符，无论前一个命令执行成功或失败，都会执行后一个命令。</p>
+<p>|：管道符，将前一个命令的输出作为后一个命令的输入。</p>
+<p>||：逻辑或，前一个命令执行失败时，执行后一个命令，如果前一个命令执行成功，后一个命令会被跳过。</p>
+<p>&amp;：后台任务符，将前一个命令放入后台执行，立即执行下一个命令。</p>
+<p>&amp;&amp;：逻辑与，前一个命令执行成功时，执行后一个命令，如果前一个命令执行失败，后一个命令就不会执行。</p>
+<p>&#96;:命令替换符，将反引号内的命令执行结果作为字符串替换到当前命令中。</p>
+<p>Windows-&gt;||    &amp;&amp;    |和Linux的用法一样。&amp;是命令分隔符，无论前一个命令成功还是失败，后一个命令都执行。</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">简易案例：</font></p>
+<p><font style="color:#000000;">1、获取目录下所有文件目录</font></p>
+<p><font style="color:#000000;">dir &#x2F;b</font></p>
+<p><font style="color:#000000;">2、用Ping获取网段存活主机</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">for l %%i in (1,1,255) do ping -n 1 192.168.1.%%i | find “TTL” &amp;&amp; echo 192.168.1.%%i 在线</font><font style="color:#000000;background-color:#ED740C;">（这里重点：%i是在cmd中敲，%%i是在.bat批处理文件里面）</font></p>
+<p><font style="color:#000000;">3、获取计算机信息筛选补丁（省略）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Linux Shell编程入门</font></p>
+<p><font style="color:#000000;">基础命令：首先，你需要熟悉一些基本的Linux命令，如ls、cd、cp、mv、rm等，这些是编写脚本的基础。</font></p>
+<p><font style="color:#000000;">文件系统：了解Linux文件系统结构和权限管理，知道如何使用chmod</font><font style="color:#000000;background-color:#FBDE28;">（修改权限）</font><font style="color:#000000;">、chown</font><font style="color:#000000;background-color:#FBDE28;">（修改文件归属者）</font><font style="color:#000000;">等命令。</font></p>
+<p><font style="color:#000000;">环境变量：理解环境变量的概念和用法，以及如何使用export、echo $VAR_NAME等命令。</font></p>
+<p><font style="color:#000000;">重定向和管道：学习如何使用输入输出重定向（&gt;</font><font style="color:#000000;background-color:#FBDE28;">(覆盖输入)</font><font style="color:#000000;">、&lt;（</font><font style="color:#000000;background-color:#FBDE28;">读取文件作为命令输入）</font><font style="color:#000000;">、&gt;&gt;</font><font style="color:#000000;background-color:#FBDE28;">（追加输入）</font><font style="color:#000000;">）和管道（|）。</font></p>
+<p><font style="color:#000000;">脚本基础：脚本的创建和执行。</font></p>
+<p><font style="color:#000000;">脚本的第一行（shebang，如#!&#x2F;bin&#x2F;bash）。</font></p>
+<p><font style="color:#000000;">脚本的注释（以#开头）。</font></p>
+<p><font style="color:#000000;">变量：如何定义和使用变量。</font></p>
+<p><font style="color:#000000;">特殊变量（如$0</font><font style="color:#000000;background-color:#FBDE28;">(当前脚本名)</font><font style="color:#000000;">、$1</font><font style="color:#000000;background-color:#FBDE28;">(第一个传入参数)</font><font style="color:#000000;">、$@</font><font style="color:#000000;background-color:#FBDE28;">(所有传入参数)</font><font style="color:#000000;">、$#</font><font style="color:#000000;background-color:#FBDE28;">(传入参数的总个数)</font><font style="color:#000000;">等）。</font></p>
+<p><font style="color:#000000;">条件语句：学习如何使用if、elif、else和fi来编写条件逻辑。</font></p>
+<p><font style="color:#000000;">循环：掌握for循环和while循环的用法。</font></p>
+<p><font style="color:#000000;">函数：了解如何定义和调用函数。</font></p>
+<p><font style="color:#000000;">文本处理：学习使用文本处理工具，如grep、sed、awk等。</font></p>
+<p><font style="color:#000000;">参考学习：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/qXZkKrF1vYtJv07L0-hkAA">https://mp.weixin.qq.com/s/qXZkKrF1vYtJv07L0-hkAA</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">简易案例：</font></p>
+<p><font style="color:#000000;">1、统计登录日志中SSH爆破事件</font></p>
+<p><font style="color:#000000;">2、统计Web日志中的SQL攻击事件</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这些也省略，感兴趣自己查，等到红蓝队我准备再系统学一下</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Windows权限</font></p>
+<p><font style="color:#000000;">文件和目录权限</font></p>
+<p><font style="color:#000000;">完全控制，修改，读取和执行，列出文件夹内容，读取，写入，拒绝等</font></p>
+<p><font style="color:#000000;">完全控制（Full Control）：允许用户对文件夹、子文件夹、文件进行全权控制，包括修改资源的权限、获取资源的所有者、删除资源的权限等。</font></p>
+<p><font style="color:#000000;">修改（Modify）：允许用户修改或删除资源，同时拥有写入及读取和运行权限。</font></p>
+<p><font style="color:#000000;">读取和运行（Read &amp; Execute）：允许用户拥有读取和列出资源目录的权限，另外也允许用户在资源中进行移动和遍历。</font></p>
+<p><font style="color:#000000;">列出文件夹目录（List Folder Contents）：允许用户查看资源中的子文件夹与文件名称。</font></p>
+<p><font style="color:#000000;">读取（Read）：允许用户查看该文件夹中的文件及子文件夹，也允许查看该文件夹的属性、所有者和拥有的权限等。</font></p>
+<p><font style="color:#000000;">写入（Write）：允许用户在该文件夹中创建新的文件和子文件夹，也可以改变文件夹的属性、查看文件夹的所有者和权限等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">用户和用户组权限</font></p>
+<p><font style="color:#000000;">Windows用户组</font></p>
+<p><font style="color:#000000;">内置用户组：如管理员组（Administrators）、普通用户组（Users）、备份操作组（Backup Operators）等。这些组根据预设的权限执行任务。</font></p>
+<p><font style="color:#000000;">特殊权限用户：系统还设有如System、TrustedInstaller、Everyone等特殊权限用户，这些用户不属于任何内置用户组，具有独立的权限。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Linux权限</font></p>
+<p><font style="color:#000000;">uid分配原则</font></p>
+<p><font style="color:#000000;">0：管理员</font></p>
+<p><font style="color:#000000;">1-999：系统内部账号，维护系统服务</font></p>
+<p><font style="color:#000000;">1000-65534：普通账号，可以登录</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">&#x2F;etc&#x2F;passwd文件解读</font></p>
+<p><font style="color:#000000;">root：登录的用户名</font></p>
+<p><font style="color:#000000;">x：登录该用户时是否需要输入密码，x表示需要使用密码，空代表不需要密码</font></p>
+<p><font style="color:#000000;">0：uid，用户ID，系统识别用户的唯一标识</font></p>
+<p><font style="color:#000000;">0：gid，组ID，</font></p>
+<p><font style="color:#000000;">root：用户描述信息，可以自定义</font></p>
+<p><font style="color:#000000;">&#x2F;root：用户的家目录，存放个人文件，登录该用户时默认进入该目录</font></p>
+<p><font style="color:#000000;">&#x2F;bin&#x2F;bash：用户的登录shell，登录系统以后所执行的shell文件，登录此用户时默认打开的shell类型bash shell</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">&#x2F;etc&#x2F;group文件解读</font></p>
+<p><font style="color:#000000;">erik：组名</font></p>
+<p><font style="color:#000000;">x：登录该组时是否需要密码，x表示需要密码，空表示不需要密码</font></p>
+<p><font style="color:#000000;">1000：组ID</font></p>
+<p><font style="color:#000000;">:erik 表示组内的成员erik</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">某个文件或者目录的权限</font></p>
+<p><font style="color:#000000;">d：表示目录</font></p>
+<p><font style="color:#000000;">-：表示普通文件，二进制文件、文本文件、压缩包等</font></p>
+<p><font style="color:#000000;">l：表示链接文件，快捷方式</font></p>
+<p><font style="color:#000000;">c：表示字符设备，键盘鼠标等设备</font></p>
+<p><font style="color:#000000;">b：表示块设备，存数据的设备</font></p>
+<p><font style="color:#000000;">rwx：表示文件拥有人的权限</font></p>
+<p><font style="color:#000000;">r-x：表示文件拥有组的权限，即为组内用户的权限</font></p>
+<p><font style="color:#000000;">r-x：表示其他人的权限</font></p>
+<p><font style="color:#000000;">2：如果是文件则表示文件硬链接数量；如果是目录则表示该目录下有几个子目录</font></p>
+<p><font style="color:#000000;">root：表示文件的拥有人</font></p>
+<p><font style="color:#000000;">root：表示文件的拥有组</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">文件的权限</font></p>
+<p><font style="color:#000000;">r：read，查看文件内容</font></p>
+<p><font style="color:#000000;">w：write，编辑文件内容</font></p>
+<p><font style="color:#000000;">x：execute，执行该文件</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">目录的权限</font></p>
+<p><font style="color:#000000;">r：能够列出目录下面的文件</font></p>
+<p><font style="color:#000000;">w：能够在该目录下创建和删除文件（能否删除文件取决于用户对该文件所在目录的权限）</font></p>
+<p><font style="color:#000000;">x：能进入该目录</font></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/30/%E7%AC%AC13%E5%A4%A9-%E7%BD%91%E7%AB%99%E5%8D%8F%E8%AE%AE-%E8%BA%AB%E4%BB%BD%E9%89%B4%E6%9D%83-OAuth2%E5%AE%89%E5%85%A8-Token%E4%BB%A4%E7%89%8C-JWT%E5%80%BC-Authirization%E6%A0%87%E5%A4%B4/" rel="prev" title="第13天-网站协议&身份鉴权&OAuth2安全&Token令牌&JWT值&Authirization标头">
+      <i class="fa fa-chevron-left"></i> 第13天-网站协议&身份鉴权&OAuth2安全&Token令牌&JWT值&Authirization标头
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

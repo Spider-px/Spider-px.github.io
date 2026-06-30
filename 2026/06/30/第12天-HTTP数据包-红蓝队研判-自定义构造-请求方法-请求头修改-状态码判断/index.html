@@ -23,17 +23,22 @@
   </script>
 
   <meta property="og:type" content="article">
-<meta property="og:title" content="第4天-Web应用&amp;蜜罐系统&amp;堡垒机运维&amp;API内外接口&amp;第三方拓展架构&amp;部署影响">
-<meta property="og:url" content="http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/index.html">
+<meta property="og:title" content="第12天-HTTP数据包&amp;红蓝队研判&amp;自定义构造&amp;请求方法&amp;请求头修改&amp;状态码判断">
+<meta property="og:url" content="http://zhigao.xyz/2026/06/30/%E7%AC%AC12%E5%A4%A9-HTTP%E6%95%B0%E6%8D%AE%E5%8C%85-%E7%BA%A2%E8%93%9D%E9%98%9F%E7%A0%94%E5%88%A4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%84%E9%80%A0-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95-%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%AE%E6%94%B9-%E7%8A%B6%E6%80%81%E7%A0%81%E5%88%A4%E6%96%AD/index.html">
 <meta property="og:site_name" content="Voyage Memo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-06-27T14:47:20.000Z">
-<meta property="article:modified_time" content="2026-06-28T14:57:37.831Z">
+<meta property="og:image" content="http://zhigao.xyz/images/012-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/012-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/012-3.png">
+<meta property="og:image" content="http://zhigao.xyz/images/012-4.png">
+<meta property="article:published_time" content="2026-06-30T14:46:43.000Z">
+<meta property="article:modified_time" content="2026-06-30T15:00:39.345Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/012-1.png">
 
-<link rel="canonical" href="http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">
+<link rel="canonical" href="http://zhigao.xyz/2026/06/30/%E7%AC%AC12%E5%A4%A9-HTTP%E6%95%B0%E6%8D%AE%E5%8C%85-%E7%BA%A2%E8%93%9D%E9%98%9F%E7%A0%94%E5%88%A4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%84%E9%80%A0-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95-%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%AE%E6%94%B9-%E7%8A%B6%E6%80%81%E7%A0%81%E5%88%A4%E6%96%AD/">
 
 
 <script id="page-configurations">
@@ -46,7 +51,7 @@
   };
 </script>
 
-  <title>第4天-Web应用&蜜罐系统&堡垒机运维&API内外接口&第三方拓展架构&部署影响 | Voyage Memo</title>
+  <title>第12天-HTTP数据包&红蓝队研判&自定义构造&请求方法&请求头修改&状态码判断 | Voyage Memo</title>
   
 
 
@@ -189,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/06/30/%E7%AC%AC12%E5%A4%A9-HTTP%E6%95%B0%E6%8D%AE%E5%8C%85-%E7%BA%A2%E8%93%9D%E9%98%9F%E7%A0%94%E5%88%A4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%84%E9%80%A0-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95-%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%AE%E6%94%B9-%E7%8A%B6%E6%80%81%E7%A0%81%E5%88%A4%E6%96%AD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/photo.jpg">
@@ -202,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          第4天-Web应用&蜜罐系统&堡垒机运维&API内外接口&第三方拓展架构&部署影响
+          第12天-HTTP数据包&红蓝队研判&自定义构造&请求方法&请求头修改&状态码判断
         </h1>
 
         <div class="post-meta">
@@ -211,16 +216,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2026-06-27 22:47:20" itemprop="dateCreated datePublished" datetime="2026-06-27T22:47:20+08:00">2026-06-27</time>
+              <time title="创建时间：2026-06-30 22:46:43 / 修改时间：23:00:39" itemprop="dateCreated datePublished" datetime="2026-06-30T22:46:43+08:00">2026-06-30</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-28 22:57:37" itemprop="dateModified" datetime="2026-06-28T22:57:37+08:00">2026-06-28</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -251,67 +250,98 @@
       
         <p><font></font></p>
 <span id="more"></span>
-<p><font style="background-color:#ED740C;">这节课一样首要任务就是理解，复现可做可不做</font></p>
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-蜜罐-钓鱼诱使</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-堡垒机-突破口</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展应用-API接口-突破口</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展应用-其他架构-突破口</font></p>
-<!-- more -->
 
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">请求头&amp;返回包-方法&amp;头修改&amp;状态码等</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">数据包分析-红队攻击手法&amp;蓝队流量研判</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 数据包构造-Reqable自定义添加修改请求</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#蜜罐：<a target="_blank" rel="noopener" href="https://hfish.net/">https://hfish.net/</a></font></p>
-<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
-<p><font style="color:#000000;">一键安装：bash </font><font style="color:#9a6e3a;">&lt;</font><font style="color:#999999;">(</font><font style="color:#dd4a68;">curl</font><font style="color:#000000;"> -sS -L <a target="_blank" rel="noopener" href="https://hfish.net/webinstall.sh">https://hfish.net/webinstall.sh</a></font><font style="color:#999999;">)</font></p>
-<p>复现：就是租一台服务器然后上面搭建一个蜜罐系统，然后有人攻击，蜜罐后台就可看到攻击者信息</p>
-<p><font style="color:#000000;">有害影响：用来钓鱼或诱惑测试人员的防护系统，攻击者攻击半天没什么卵用，还有可能被防护方反制（一般在护网中常见，正常测试一般不会碰到）</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;">数据包：</font></p>
+<p><font style="color:#000000;">客户端请求Request</font></p>
+<p><font style="color:#000000;">请求方法</font></p>
+<p><font style="color:#000000;">请求路径</font></p>
+<p><font style="color:#000000;">请求头</font></p>
+<p><font style="color:#000000;">服务端返回Response</font></p>
+<p><font style="color:#000000;">状态码</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#堡垒机：<a target="_blank" rel="noopener" href="https://www.jumpserver.org/">https://www.jumpserver.org/</a></font></p>
-<p><font style="color:#000000;">测试系统：Ubuntu </font><font style="color:#990055;">20.04</font></p>
-<p><font style="color:#000000;">一键安装：curl -sSL <a target="_blank" rel="noopener" href="https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh">https://resource.fit2cloud.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh</a> </font><font style="color:#9a6e3a;">|</font><font style="color:#dd4a68;">bash</font></p>
-<p><font style="color:#000000;">有利影响：Web应用或其他应用提供给测试人员一个能获取到价值信息的系统（运维用的），堡垒机&#x3D;服务器唯一的入口，所有运维人员，只能先登录堡垒机，才能去连接内网服务器，不能直连业务主机，对渗透测试人员这个不一定是一个坏事，因为好多堡垒机产品本身就有漏洞。</font></p>
+<p><font style="color:#000000;">方法（Get和Post最常见）</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、常规请求-Get</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、用户登录-Post</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">•get：向特定资源发出请求（请求指定页面信息，并返回实体主体）；</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">•post：向指定资源提交数据进行处理请求（提交表单、上传文件），又可能导致新的资源的建立或原有资源的修改；</font></p>
+<p><font style="color:#000000;">•head：与服务器索与get请求一致的相应，响应体不会返回，获取包含在小消息头中的原信息（与get请求类</font></p>
+<p><font style="color:#000000;">似，返回的响应中没有具体内容，用于获取报头）；</font></p>
+<p><font style="color:#000000;">•put：向指定资源位置上上传其最新内容（从客户端向服务器传送的数据取代指定文档的内容），与post的区别是put为幂等，post为非幂等；</font></p>
+<p><font style="color:#000000;">•trace：回显服务器收到的请求，用于测试和诊断。trace是http8种请求方式之中最安全的l</font></p>
+<p><font style="color:#000000;">•delete：请求服务器删除request-URL所标示的资源*（请求服务器删除页面）</font></p>
+<p><font style="color:#000000;">•option：返回服务器针对特定资源所支持的HTML请求方法 或web服务器发送*测试服务器功能（允许客户 端查看服务器性能）；</font></p>
+<p><font style="color:#000000;">•connect ： HTTP&#x2F;</font><font style="color:#990055;">1.1</font><font style="color:#000000;">协议中能够将连接改为管道方式的代理服务器</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">请求头相关字段：</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-2.png"></p>
+<p><font style="color:#000000;">请求头</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-3.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-4.png"></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#API接口：是一个允许不同软件应用程序之间进行通信和数据交换的接口。API定义了一组规则和协议，软件开发者可以使用这些规则和协议来访问操作系统、库、服务或其他应用程序的功能。</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、Web API:</font></p>
-<p><font style="color:#000000;">通过HTTP协议进行通信的API，常用于Web服务和应用程序。</font></p>
-<p><font style="color:#000000;">例如，RESTful API、GraphQL API。</font></p>
+<p><font style="color:#000000;">-</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、库和框架API:</font></p>
-<p><font style="color:#000000;">提供特定编程语言或框架功能的API，供开发者在应用程序中使用。</font></p>
-<p><font style="color:#000000;">例如，Java API、Python标准库。</font></p>
+<p><font style="color:#000000;">-Response状态码</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据是否正常</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、文件是否存在</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、地址自动跳转</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、服务提供错误</font></p>
+<p><font style="color:#000000;">注：容错处理识别</font></p>
+<p><font style="color:#000000;">•-1xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">指示信息—表示请求已接收，继续处理。</font></p>
+<p><font style="color:#000000;">•-2xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">成功—表示请求已经被成功接收、理解、接受。</font></p>
+<p><font style="color:#000000;">•-3xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">重定向—要完成请求必须进行更进一步的操作。</font></p>
+<p><font style="color:#000000;">•-4xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">客户端错误—请求有语法错误或请求无法实现。</font></p>
+<p><font style="color:#000000;">•-5xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">服务器端错误—服务器未能实现合法的请求。</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">200</font><font style="color:#000000;"> OK：客户端请求成功</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">301</font><font style="color:#000000;"> redirect：页面永久性移走，服务器进行重定向跳转；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">302</font><font style="color:#000000;"> redirect：页面暂时性移走，服务器进行重定向跳转，具有被劫持的安全风险；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">400</font><font style="color:#000000;"> BadRequest：由于客户端请求有语法错误，不能被服务器所理解；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">401</font><font style="color:#000000;"> Unauthonzed：请求未经授权。</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">403</font><font style="color:#000000;"> Forbidden：服务器收到请求，但是拒绝提供服务。</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">404</font><font style="color:#000000;"> NotFound：请求的资源不存在，例如，输入了错误的URL；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">500</font><font style="color:#000000;"> InternalServerError：服务器发生不可预期的错误，无法完成客户端的请求；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">503</font><font style="color:#000000;"> ServiceUnavailable：服务器当前不能够处理客户端的请求</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、操作系统API:</font></p>
-<p><font style="color:#000000;">提供操作系统功能访问的API。</font></p>
-<p><font style="color:#000000;">例如，Windows API、POSIX API。</font></p>
+<p><font style="color:#000000;">3XX</font></p>
+<p><font style="color:#990055;background-color:#FBDE28;">1</font><font style="color:#000000;background-color:#FBDE28;">、网站做了容错处理 一旦访问了错误页面将跳转到某个固定地址 3XX</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">中间件规则配置</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">请求路径或文件 不存在</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#990055;background-color:#FBDE28;">2</font><font style="color:#000000;background-color:#FBDE28;">、网站代码文件做了跳转 一旦触发就自动跳转到设置的固定地址 3XX</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">文件代码配置</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">请求路径或文件 存在</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、远程API:</font></p>
-<p><font style="color:#000000;">允许在网络上远程访问服务的API。</font></p>
-<p><font style="color:#000000;">例如，SOAP API、XML-RPC API。</font></p>
+<p><font style="color:#990055;">200</font><font style="color:#000000;">和</font><font style="color:#990055;">404</font><font style="color:#000000;">误报问题</font></p>
+<p><font style="color:#000000;">网站做了容错处理 一旦访问了错误页面将固定显示某个内容 显示正常</font></p>
+<p><font style="color:#000000;">访问错误 返回的状态码</font><font style="color:#990055;">200</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">例子：</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">内部API：比如我自己开发了一个收银系统，使用API接口可以查询到顾客数据，收入支付，销售提成等</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">外部API：比如我自己搭建了一个网站应用，功能需求有要借助到外部的资源，如地图，归属地，短信收发等</font></p>
-<p><font style="background-color:#ED740C;">识别API就是看url，比如里面出现api那肯定就是了</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#红队案例：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、UA头-系统平台</font></p>
+<p><font style="color:#000000;">常见举例影响：</font></p>
+<p><font style="color:#000000;">比如网站有UA收集整理功能，如果将UA信息记录到数据库的话，这个过程有接受UA信息及写入数据库的操作，这个地方可能存在SQL注入</font></p>
+<p><font style="color:#000000;">渗透测试习惯：</font></p>
+<p><font style="color:#000000;">部分网站做了限制设备访问的需求，手机或电脑只能访问一个，如果我们自己要电脑测试需要更改成手机访问才可以继续</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、Cookie-用户身份  </font><font style="color:#000000;background-color:#FBDE28;"> 就是一个身份标识，如果把别人已经登录后的Cookie拿来用，那你就能登录他的账号</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、Post数据-登录爆破</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、返回状态码-文件探针</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">有利影响：</font></p>
-<p><font style="color:#000000;">内部API：Web应用提供给测试人员一个能获取到价值信息的接口</font></p>
-<p><font style="color:#000000;">外部API：可以借助提供的API获取到当前网站不想让你获取的信息</font></p>
-<p><font style="color:#000000;">分析API的目录结构、接口命名规则、参数命名规则、功能和业务逻辑等，</font></p>
-<p><font style="color:#000000;">根据这些信息可以进行接口枚举和参数枚举，进而可以进行相关的漏洞测试。</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#蓝队案例：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、攻击漏洞</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、安全工具</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">蓝队对传统攻击和工具攻击的数据包辨别一定是必须要求的能力，护网等面试中也会问到相关工具的流量特征，之前面试就被问到过蚁剑哥斯拉这种webshell工具的特征</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#Swagger 是API接口文档工具。</font></p>
-<p><font style="color:#000000;">后端写好接口后，自动生成网页文档，能直接看到：接口地址、传参格式、请求方式，还能在线发送测试请求。</font></p>
-<p><font style="color:#000000;">1. 作用</font></p>
-<p><font style="color:#000000;">前后端开发对接不用来回传文档，打开网页就能调试接口。</font></p>
-<p><font style="color:#000000;">2. 渗透测试核心考点</font></p>
-<p><font style="color:#000000;">默认访问地址：&#x2F;swagger-ui.html</font></p>
-<p><font style="color:#000000;">如果对外开放，攻击者可以扒出全部接口：用户新增、数据查询、管理员账号接口，极易找到未授权访问漏洞。</font></p>
-<p><font style="color:#000000;">一句话：它是项目所有API接口的展示页面，泄露后容易挖掘后端漏洞。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#拓展应用：防火墙 消息队列 分布式等</font></p>
-<p><font style="color:#000000;">ActiveMQ Redis Memcache Jenkins等漏洞</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg">https://mp.weixin.qq.com/s/SEjxrUgiIIK2bveSBz6mTg</a></font></p>
-<p><font style="color:#000000;">有利影响：</font><font style="color:#000000;background-color:#ED740C;">搭建越多应用即方便了运维也提供给测试人员更多机会</font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Reqable数据包自定义构造</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这个是个抓包软件，可以进行书就报自定义构造，相同的软件还有postman</font></p>
 
     </div>
 
@@ -330,12 +360,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/" rel="prev" title="第3天-Web应用&OSS存储&负载均衡&CDN加速&反向代理&WAF防护&部署影响">
-      <i class="fa fa-chevron-left"></i> 第3天-Web应用&OSS存储&负载均衡&CDN加速&反向代理&WAF防护&部署影响
+    <a href="/2026/06/29/%E7%AC%AC11%E5%A4%A9-%E7%AE%97%E6%B3%95%E8%A7%A3%E5%AF%86-%E6%95%A3%E5%88%97%E5%AF%B9%E7%A7%B0%E9%9D%9E%E5%AF%B9%E7%A7%B0-%E5%AD%97%E5%85%B8%E7%A2%B0%E6%92%9E-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%86%E5%90%91-MD5-AES-DES-RSA/" rel="prev" title="第11天-算法解密&散列对称非对称&字典碰撞&前后端逆向&MD5&AES&DES&RSA">
+      <i class="fa fa-chevron-left"></i> 第11天-算法解密&散列对称非对称&字典碰撞&前后端逆向&MD5&AES&DES&RSA
     </a></div>
       <div class="post-nav-item">
-    <a href="/2026/06/27/%E7%AC%AC5%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%8E%9F%E7%94%9F%E6%80%81%E5%BC%80%E5%8F%91-H5-Vue%E6%8A%80%E6%9C%AF-%E5%B0%81%E8%A3%85%E6%89%93%E5%8C%85-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%93%E5%8C%85%E7%82%B9/" rel="next" title="第5天-APP应用&微信小程序&原生态开发&H5+Vue技术&封装打包&反编译抓包点">
-      第5天-APP应用&微信小程序&原生态开发&H5+Vue技术&封装打包&反编译抓包点 <i class="fa fa-chevron-right"></i>
+    <a href="/2026/06/30/%E7%AC%AC13%E5%A4%A9-%E7%BD%91%E7%AB%99%E5%8D%8F%E8%AE%AE-%E8%BA%AB%E4%BB%BD%E9%89%B4%E6%9D%83-OAuth2%E5%AE%89%E5%85%A8-Token%E4%BB%A4%E7%89%8C-JWT%E5%80%BC-Authirization%E6%A0%87%E5%A4%B4/" rel="next" title="第13天-网站协议&身份鉴权&OAuth2安全&Token令牌&JWT值&Authirization标头">
+      第13天-网站协议&身份鉴权&OAuth2安全&Token令牌&JWT值&Authirization标头 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

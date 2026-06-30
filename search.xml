@@ -1124,4 +1124,355 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第13天-网站协议&amp;身份鉴权&amp;OAuth2安全&amp;Token令牌&amp;JWT值&amp;Authirization标头</title>
+    <url>/2026/06/30/%E7%AC%AC13%E5%A4%A9-%E7%BD%91%E7%AB%99%E5%8D%8F%E8%AE%AE-%E8%BA%AB%E4%BB%BD%E9%89%B4%E6%9D%83-OAuth2%E5%AE%89%E5%85%A8-Token%E4%BB%A4%E7%89%8C-JWT%E5%80%BC-Authirization%E6%A0%87%E5%A4%B4/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">网站协议-http&amp;https-安全测试差异性</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 身份鉴权-Authorization&amp;Token&amp;JWT&amp;OAuth</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#HTTP&#x2F;HTTPS</font></p>
+<p><font style="background-color:#FBDE28;">1. 加密方式</font></p>
+<p>HTTP：使用明文传输，数据在传输过程中可以被任何人截获和查看。</p>
+<p>HTTPS：通过SSL&#x2F;TLS协议对数据进行加密，确保数据在传输过程中不被第三方截获和篡改。</p>
+<p><font style="background-color:#FBDE28;">2. 身份验证</font></p>
+<p>HTTP：不需要进行身份验证，任何人都可以访问网站。</p>
+<p>HTTPS：通过数字证书和SSL&#x2F;TLS协议验证服务器的身份，防止”中间人攻击”。</p>
+<p><font style="background-color:#FBDE28;">3. 端口号</font></p>
+<p>HTTP：默认使用<font style="background-color:#FBDE28;">80</font>端口。</p>
+<p>HTTPS：默认使用<font style="background-color:#FBDE28;">443</font>端口，提供更高的安全性。</p>
+<p><font style="background-color:#ED740C;">#身份验证鉴权技术：</font></p>
+<p>Cookie，Session，Token，JWT，oauth2等</p>
+<p>参考：<a href="https://mp.weixin.qq.com/s/Z6rt_ggCA8dNVJPgELZ44w">https://mp.weixin.qq.com/s/Z6rt_ggCA8dNVJPgELZ44w</a></p>
+<p>应用场景：</p>
+<p><font style="background-color:#FBDE28;">这些后续都有讲到，在安全开发等部分，现在了解就行</font></p>
+<p>Cookie+Session简单，建议在内网使用；</p>
+<p>Token相对完善，推荐在跨域外网使用；</p>
+<p>JWT推荐使用，常用在SSO单点登录中；</p>
+<p>OAuth灵活方便，对于第三方系统登录更友好。</p>
+<p><font style="background-color:#ED740C;">#OAuth2技术</font></p>
+<p>授权框架，使网站和Web应用程序能够请求对另一个应用上的用户帐户进行<font style="background-color:#FBDE28;">有限访问</font>。至关重要的是，OAuth允许用户授予此访问权限，而无需向请求应用程序公开其登录凭据。<font style="background-color:#FBDE28;">这意味着用户可以微调他们想要共享的数据，而不必将其帐户的完全控制权移交给第三方</font>。</p>
+<p>四种验证模式：</p>
+<p>authorization_code 授权码模式</p>
+<p>implicit code 简单模式</p>
+<p>password 密码模式</p>
+<p>client_credentials 客户端模式</p>
+<p>授权码模式流程：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/013-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/013-2.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/013-3.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/013-4.png"></p>
+<p>只要有第三方登录如：微信，qq等就存在</p>
+<p>安全漏洞问题：</p>
+<p>1、redirect_url 校验不严格导致code被劫持到恶意网站（fuzz各种bypass方式）</p>
+<p>2、client_id与redirect_url 不一致造成滥用劫持</p>
+<p>3、A应用生成的code可以用在B应用上</p>
+<p>4、state未设置csrf防护，导致csrf风险</p>
+<p>5、scope提权，将低scope权限的code用于高权限场景</p>
+<p>6、HTTP劫持，网络层中间人攻击</p>
+<p><font style="background-color:#ED740C;">#Authorization头：</font></p>
+<p>参考：<a href="https://juejin.cn/post/7300812626279251987">https://juejin.cn/post/7300812626279251987</a></p>
+<p>授权方案：</p>
+<p>1、Basic认证</p>
+<p>2、Digest认证</p>
+<p>3、Bearer认证</p>
+<p>4、JWT认证  <font style="background-color:#FBDE28;">特征：第一段内容.第二段内容.第三段内容</font></p>
+<p>5、API密钥认证</p>
+<p>6、双因素认证</p>
+<p>7、其他一些认证方式</p>
+<p>安全漏洞问题：</p>
+<p>JWT攻防，Token劫持等</p>
+<p>安全影响：</p>
+<p>1、通过以上学习了解到http&#x2F;https差异（抓包）</p>
+<p>2、身份鉴权测试中要区别oauth,jwt,token差异</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第12天-HTTP数据包&amp;红蓝队研判&amp;自定义构造&amp;请求方法&amp;请求头修改&amp;状态码判断</title>
+    <url>/2026/06/30/%E7%AC%AC12%E5%A4%A9-HTTP%E6%95%B0%E6%8D%AE%E5%8C%85-%E7%BA%A2%E8%93%9D%E9%98%9F%E7%A0%94%E5%88%A4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%84%E9%80%A0-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95-%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%AE%E6%94%B9-%E7%8A%B6%E6%80%81%E7%A0%81%E5%88%A4%E6%96%AD/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">请求头&amp;返回包-方法&amp;头修改&amp;状态码等</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">数据包分析-红队攻击手法&amp;蓝队流量研判</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 数据包构造-Reqable自定义添加修改请求</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;">数据包：</font></p>
+<p><font style="color:#000000;">客户端请求Request</font></p>
+<p><font style="color:#000000;">请求方法</font></p>
+<p><font style="color:#000000;">请求路径</font></p>
+<p><font style="color:#000000;">请求头</font></p>
+<p><font style="color:#000000;">服务端返回Response</font></p>
+<p><font style="color:#000000;">状态码</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">方法（Get和Post最常见）</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、常规请求-Get</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、用户登录-Post</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">•get：向特定资源发出请求（请求指定页面信息，并返回实体主体）；</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">•post：向指定资源提交数据进行处理请求（提交表单、上传文件），又可能导致新的资源的建立或原有资源的修改；</font></p>
+<p><font style="color:#000000;">•head：与服务器索与get请求一致的相应，响应体不会返回，获取包含在小消息头中的原信息（与get请求类</font></p>
+<p><font style="color:#000000;">似，返回的响应中没有具体内容，用于获取报头）；</font></p>
+<p><font style="color:#000000;">•put：向指定资源位置上上传其最新内容（从客户端向服务器传送的数据取代指定文档的内容），与post的区别是put为幂等，post为非幂等；</font></p>
+<p><font style="color:#000000;">•trace：回显服务器收到的请求，用于测试和诊断。trace是http8种请求方式之中最安全的l</font></p>
+<p><font style="color:#000000;">•delete：请求服务器删除request-URL所标示的资源*（请求服务器删除页面）</font></p>
+<p><font style="color:#000000;">•option：返回服务器针对特定资源所支持的HTML请求方法 或web服务器发送*测试服务器功能（允许客户 端查看服务器性能）；</font></p>
+<p><font style="color:#000000;">•connect ： HTTP&#x2F;</font><font style="color:#990055;">1.1</font><font style="color:#000000;">协议中能够将连接改为管道方式的代理服务器</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">请求头相关字段：</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-2.png"></p>
+<p><font style="color:#000000;">请求头</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-3.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/012-4.png"></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">-</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">-Response状态码</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据是否正常</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、文件是否存在</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、地址自动跳转</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、服务提供错误</font></p>
+<p><font style="color:#000000;">注：容错处理识别</font></p>
+<p><font style="color:#000000;">•-1xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">指示信息—表示请求已接收，继续处理。</font></p>
+<p><font style="color:#000000;">•-2xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">成功—表示请求已经被成功接收、理解、接受。</font></p>
+<p><font style="color:#000000;">•-3xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">重定向—要完成请求必须进行更进一步的操作。</font></p>
+<p><font style="color:#000000;">•-4xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">客户端错误—请求有语法错误或请求无法实现。</font></p>
+<p><font style="color:#000000;">•-5xx</font><font style="color:#9a6e3a;">:</font><font style="color:#000000;">服务器端错误—服务器未能实现合法的请求。</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">200</font><font style="color:#000000;"> OK：客户端请求成功</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">301</font><font style="color:#000000;"> redirect：页面永久性移走，服务器进行重定向跳转；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">302</font><font style="color:#000000;"> redirect：页面暂时性移走，服务器进行重定向跳转，具有被劫持的安全风险；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">400</font><font style="color:#000000;"> BadRequest：由于客户端请求有语法错误，不能被服务器所理解；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">401</font><font style="color:#000000;"> Unauthonzed：请求未经授权。</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">403</font><font style="color:#000000;"> Forbidden：服务器收到请求，但是拒绝提供服务。</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">404</font><font style="color:#000000;"> NotFound：请求的资源不存在，例如，输入了错误的URL；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">500</font><font style="color:#000000;"> InternalServerError：服务器发生不可预期的错误，无法完成客户端的请求；</font></p>
+<p><font style="color:#000000;">•</font><font style="color:#990055;">503</font><font style="color:#000000;"> ServiceUnavailable：服务器当前不能够处理客户端的请求</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">3XX</font></p>
+<p><font style="color:#990055;background-color:#FBDE28;">1</font><font style="color:#000000;background-color:#FBDE28;">、网站做了容错处理 一旦访问了错误页面将跳转到某个固定地址 3XX</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">中间件规则配置</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">请求路径或文件 不存在</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#990055;background-color:#FBDE28;">2</font><font style="color:#000000;background-color:#FBDE28;">、网站代码文件做了跳转 一旦触发就自动跳转到设置的固定地址 3XX</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">文件代码配置</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">请求路径或文件 存在</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">200</font><font style="color:#000000;">和</font><font style="color:#990055;">404</font><font style="color:#000000;">误报问题</font></p>
+<p><font style="color:#000000;">网站做了容错处理 一旦访问了错误页面将固定显示某个内容 显示正常</font></p>
+<p><font style="color:#000000;">访问错误 返回的状态码</font><font style="color:#990055;">200</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#红队案例：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、UA头-系统平台</font></p>
+<p><font style="color:#000000;">常见举例影响：</font></p>
+<p><font style="color:#000000;">比如网站有UA收集整理功能，如果将UA信息记录到数据库的话，这个过程有接受UA信息及写入数据库的操作，这个地方可能存在SQL注入</font></p>
+<p><font style="color:#000000;">渗透测试习惯：</font></p>
+<p><font style="color:#000000;">部分网站做了限制设备访问的需求，手机或电脑只能访问一个，如果我们自己要电脑测试需要更改成手机访问才可以继续</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、Cookie-用户身份  </font><font style="color:#000000;background-color:#FBDE28;"> 就是一个身份标识，如果把别人已经登录后的Cookie拿来用，那你就能登录他的账号</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、Post数据-登录爆破</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、返回状态码-文件探针</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#蓝队案例：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、攻击漏洞</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、安全工具</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">蓝队对传统攻击和工具攻击的数据包辨别一定是必须要求的能力，护网等面试中也会问到相关工具的流量特征，之前面试就被问到过蚁剑哥斯拉这种webshell工具的特征</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Reqable数据包自定义构造</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这个是个抓包软件，可以进行书就报自定义构造，相同的软件还有postman</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第15天-系统命令&amp;终端脚本&amp;Shell编程&amp;Bat批处理&amp;文件属性权限&amp;用户及组划分</title>
+    <url>/2026/06/30/%E7%AC%AC15%E5%A4%A9-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4-%E7%BB%88%E7%AB%AF%E8%84%9A%E6%9C%AC-Shell%E7%BC%96%E7%A8%8B-Bat%E6%89%B9%E5%A4%84%E7%90%86-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E6%9D%83%E9%99%90-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%BB%84%E5%88%92%E5%88%86/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#ffff00;">脚本开发目前了解一下就行，有兴趣自己学</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Windows&amp;Linux-脚本开发-Bat&amp;Shell</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Windows&amp;Linux-权限差异-文件&amp;用户</font></p>
+<p><font style="color:#000000;">#系统命令集合</font></p>
+<p><font style="color:#000000;">在线参考：<a href="https://book.shentoushi.top/">https://book.shentoushi.top/</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Windows Cmd&amp;PowerShell</font></p>
+<p><font style="color:#000000;">CMD命令终端:</font></p>
+<p><font style="color:#000000;">BAT格式文件</font><font style="background-color:#FBDE28;">(全是系统命令写的)</font></p>
+<p><font style="color:#000000;">echo</font></p>
+<p><font style="color:#000000;">@字符放在命令前将关闭该命令回显，无论此时echo是否为打开状态</font></p>
+<p><font style="color:#000000;">@echo off</font></p>
+<p><font style="color:#000000;">@echo on</font></p>
+<p><font style="color:#000000;">echo “hello”</font></p>
+<p><font style="color:#000000;">echo “hello” “world”</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">常见： </font></p>
+<p><font style="color:#000000;">pause 将dos界面暂停关闭</font><font style="color:#000000;background-color:#FBDE28;">（执行后控制台会暂停，提示按任意键继续，防止bat脚本运行完毕后窗口自动关闭）</font></p>
+<p><font style="color:#000000;">:: 注释</font></p>
+<p><font style="color:#000000;">chcp 65001 乱码解决</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">变量</font></p>
+<p><font style="color:#000000;">set x&#x3D;hello</font></p>
+<p><font style="color:#000000;">set y&#x3D;world</font></p>
+<p><font style="color:#000000;">echo %x% %y%</font></p>
+<p><font style="color:#000000;">set &#x2F;p input&#x3D;请输入：</font><font style="color:#000000;background-color:#FBDE28;">&#x2F;p代表接收用户键盘输入，把输入内容存入input变量</font></p>
+<p><font style="color:#000000;">%cd%  打印当前路径</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">函数 :fun_main</font></p>
+<p><font style="color:#000000;">start 调用其他程序，如可执行文件exe</font></p>
+<p><font style="color:#000000;">goto 用于函数跳转，其中特别的是goto :eof </font><font style="color:#000000;background-color:#FBDE28;">直接跳到脚本末尾，终止当前代码段，等价于return</font></p>
+<p><font style="color:#000000;">call 用于调用函数，也可以调用别的bat脚本</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">for</font></p>
+<p><font style="color:#000000;">dir &#x2F;b 指定目录 这个语法可以用于获得指定目录下的所有文件和文件夹</font></p>
+<p><font style="color:#000000;">for &#x2F;f 遍历指定目录下所有的文件和文件夹</font></p>
+<p><font style="color:#000000;">for &#x2F;d 遍历指定目录下所有的文件夹</font></p>
+<p><font style="color:#000000;">for &#x2F;r 遍历指定目录下所有的文件和子文件夹中的文件</font></p>
+<p><font style="color:#000000;">for &#x2F;l 是Windows批处理脚本中的一种循环语句，用于按数字范围和步长进行循环</font></p>
+<p><font style="color:#000000;">%%i 则是声明的变量，可以是任意的变量名，但变量名前面必须加上两个百分号%%</font></p>
+<p><font style="color:#000000;">for 进阶 delims（分隔符），读取的字符串会以这些分隔符进行拆分成多个子字符串</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">FIND</font></p>
+<p><font style="color:#000000;">&#x2F;V 显示所有未包含指定字符串的行。</font></p>
+<p><font style="color:#000000;">&#x2F;C 仅显示包含字符串行的次数。</font></p>
+<p><font style="color:#000000;">&#x2F;N 显示行号。</font></p>
+<p><font style="color:#000000;">&#x2F;I 搜索字符串时忽略大小写。</font></p>
+<p><font style="color:#000000;">&#x2F;OFF[LINE]：不要跳过具有脱机属性集的文件。</font></p>
+<p><font style="color:#000000;">“string”：指定要搜索的文本字符串。</font></p>
+<p><font style="color:#000000;">[drive:][path]filename：指定要搜索的文件</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">bat中 比较符号</font></p>
+<p><font style="color:#000000;">EQU - 等于</font></p>
+<p><font style="color:#000000;">NEQ - 不等于</font></p>
+<p><font style="color:#000000;">LSS - 小于</font></p>
+<p><font style="color:#000000;">LEQ - 小于或等于</font></p>
+<p><font style="color:#000000;">GTR - 大于</font></p>
+<p><font style="color:#000000;">GEQ - 大于或等于</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">Linux-&gt; ; |  ||  &amp;  &amp;&amp; &#96;&#96;</font></p>
+<p>；：命令分隔符，无论前一个命令执行成功或失败，都会执行后一个命令。</p>
+<p>|：管道符，将前一个命令的输出作为后一个命令的输入。</p>
+<p>||：逻辑或，前一个命令执行失败时，执行后一个命令，如果前一个命令执行成功，后一个命令会被跳过。</p>
+<p>&amp;：后台任务符，将前一个命令放入后台执行，立即执行下一个命令。</p>
+<p>&amp;&amp;：逻辑与，前一个命令执行成功时，执行后一个命令，如果前一个命令执行失败，后一个命令就不会执行。</p>
+<p>&#96;:命令替换符，将反引号内的命令执行结果作为字符串替换到当前命令中。</p>
+<p>Windows-&gt;||    &amp;&amp;    |和Linux的用法一样。&amp;是命令分隔符，无论前一个命令成功还是失败，后一个命令都执行。</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">简易案例：</font></p>
+<p><font style="color:#000000;">1、获取目录下所有文件目录</font></p>
+<p><font style="color:#000000;">dir &#x2F;b</font></p>
+<p><font style="color:#000000;">2、用Ping获取网段存活主机</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">for l %%i in (1,1,255) do ping -n 1 192.168.1.%%i | find “TTL” &amp;&amp; echo 192.168.1.%%i 在线</font><font style="color:#000000;background-color:#ED740C;">（这里重点：%i是在cmd中敲，%%i是在.bat批处理文件里面）</font></p>
+<p><font style="color:#000000;">3、获取计算机信息筛选补丁（省略）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Linux Shell编程入门</font></p>
+<p><font style="color:#000000;">基础命令：首先，你需要熟悉一些基本的Linux命令，如ls、cd、cp、mv、rm等，这些是编写脚本的基础。</font></p>
+<p><font style="color:#000000;">文件系统：了解Linux文件系统结构和权限管理，知道如何使用chmod</font><font style="color:#000000;background-color:#FBDE28;">（修改权限）</font><font style="color:#000000;">、chown</font><font style="color:#000000;background-color:#FBDE28;">（修改文件归属者）</font><font style="color:#000000;">等命令。</font></p>
+<p><font style="color:#000000;">环境变量：理解环境变量的概念和用法，以及如何使用export、echo $VAR_NAME等命令。</font></p>
+<p><font style="color:#000000;">重定向和管道：学习如何使用输入输出重定向（&gt;</font><font style="color:#000000;background-color:#FBDE28;">(覆盖输入)</font><font style="color:#000000;">、&lt;（</font><font style="color:#000000;background-color:#FBDE28;">读取文件作为命令输入）</font><font style="color:#000000;">、&gt;&gt;</font><font style="color:#000000;background-color:#FBDE28;">（追加输入）</font><font style="color:#000000;">）和管道（|）。</font></p>
+<p><font style="color:#000000;">脚本基础：脚本的创建和执行。</font></p>
+<p><font style="color:#000000;">脚本的第一行（shebang，如#!&#x2F;bin&#x2F;bash）。</font></p>
+<p><font style="color:#000000;">脚本的注释（以#开头）。</font></p>
+<p><font style="color:#000000;">变量：如何定义和使用变量。</font></p>
+<p><font style="color:#000000;">特殊变量（如$0</font><font style="color:#000000;background-color:#FBDE28;">(当前脚本名)</font><font style="color:#000000;">、$1</font><font style="color:#000000;background-color:#FBDE28;">(第一个传入参数)</font><font style="color:#000000;">、$@</font><font style="color:#000000;background-color:#FBDE28;">(所有传入参数)</font><font style="color:#000000;">、$#</font><font style="color:#000000;background-color:#FBDE28;">(传入参数的总个数)</font><font style="color:#000000;">等）。</font></p>
+<p><font style="color:#000000;">条件语句：学习如何使用if、elif、else和fi来编写条件逻辑。</font></p>
+<p><font style="color:#000000;">循环：掌握for循环和while循环的用法。</font></p>
+<p><font style="color:#000000;">函数：了解如何定义和调用函数。</font></p>
+<p><font style="color:#000000;">文本处理：学习使用文本处理工具，如grep、sed、awk等。</font></p>
+<p><font style="color:#000000;">参考学习：<a href="https://mp.weixin.qq.com/s/qXZkKrF1vYtJv07L0-hkAA">https://mp.weixin.qq.com/s/qXZkKrF1vYtJv07L0-hkAA</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">简易案例：</font></p>
+<p><font style="color:#000000;">1、统计登录日志中SSH爆破事件</font></p>
+<p><font style="color:#000000;">2、统计Web日志中的SQL攻击事件</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这些也省略，感兴趣自己查，等到红蓝队我准备再系统学一下</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Windows权限</font></p>
+<p><font style="color:#000000;">文件和目录权限</font></p>
+<p><font style="color:#000000;">完全控制，修改，读取和执行，列出文件夹内容，读取，写入，拒绝等</font></p>
+<p><font style="color:#000000;">完全控制（Full Control）：允许用户对文件夹、子文件夹、文件进行全权控制，包括修改资源的权限、获取资源的所有者、删除资源的权限等。</font></p>
+<p><font style="color:#000000;">修改（Modify）：允许用户修改或删除资源，同时拥有写入及读取和运行权限。</font></p>
+<p><font style="color:#000000;">读取和运行（Read &amp; Execute）：允许用户拥有读取和列出资源目录的权限，另外也允许用户在资源中进行移动和遍历。</font></p>
+<p><font style="color:#000000;">列出文件夹目录（List Folder Contents）：允许用户查看资源中的子文件夹与文件名称。</font></p>
+<p><font style="color:#000000;">读取（Read）：允许用户查看该文件夹中的文件及子文件夹，也允许查看该文件夹的属性、所有者和拥有的权限等。</font></p>
+<p><font style="color:#000000;">写入（Write）：允许用户在该文件夹中创建新的文件和子文件夹，也可以改变文件夹的属性、查看文件夹的所有者和权限等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">用户和用户组权限</font></p>
+<p><font style="color:#000000;">Windows用户组</font></p>
+<p><font style="color:#000000;">内置用户组：如管理员组（Administrators）、普通用户组（Users）、备份操作组（Backup Operators）等。这些组根据预设的权限执行任务。</font></p>
+<p><font style="color:#000000;">特殊权限用户：系统还设有如System、TrustedInstaller、Everyone等特殊权限用户，这些用户不属于任何内置用户组，具有独立的权限。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#Linux权限</font></p>
+<p><font style="color:#000000;">uid分配原则</font></p>
+<p><font style="color:#000000;">0：管理员</font></p>
+<p><font style="color:#000000;">1-999：系统内部账号，维护系统服务</font></p>
+<p><font style="color:#000000;">1000-65534：普通账号，可以登录</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">&#x2F;etc&#x2F;passwd文件解读</font></p>
+<p><font style="color:#000000;">root：登录的用户名</font></p>
+<p><font style="color:#000000;">x：登录该用户时是否需要输入密码，x表示需要使用密码，空代表不需要密码</font></p>
+<p><font style="color:#000000;">0：uid，用户ID，系统识别用户的唯一标识</font></p>
+<p><font style="color:#000000;">0：gid，组ID，</font></p>
+<p><font style="color:#000000;">root：用户描述信息，可以自定义</font></p>
+<p><font style="color:#000000;">&#x2F;root：用户的家目录，存放个人文件，登录该用户时默认进入该目录</font></p>
+<p><font style="color:#000000;">&#x2F;bin&#x2F;bash：用户的登录shell，登录系统以后所执行的shell文件，登录此用户时默认打开的shell类型bash shell</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">&#x2F;etc&#x2F;group文件解读</font></p>
+<p><font style="color:#000000;">erik：组名</font></p>
+<p><font style="color:#000000;">x：登录该组时是否需要密码，x表示需要密码，空表示不需要密码</font></p>
+<p><font style="color:#000000;">1000：组ID</font></p>
+<p><font style="color:#000000;">:erik 表示组内的成员erik</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">某个文件或者目录的权限</font></p>
+<p><font style="color:#000000;">d：表示目录</font></p>
+<p><font style="color:#000000;">-：表示普通文件，二进制文件、文本文件、压缩包等</font></p>
+<p><font style="color:#000000;">l：表示链接文件，快捷方式</font></p>
+<p><font style="color:#000000;">c：表示字符设备，键盘鼠标等设备</font></p>
+<p><font style="color:#000000;">b：表示块设备，存数据的设备</font></p>
+<p><font style="color:#000000;">rwx：表示文件拥有人的权限</font></p>
+<p><font style="color:#000000;">r-x：表示文件拥有组的权限，即为组内用户的权限</font></p>
+<p><font style="color:#000000;">r-x：表示其他人的权限</font></p>
+<p><font style="color:#000000;">2：如果是文件则表示文件硬链接数量；如果是目录则表示该目录下有几个子目录</font></p>
+<p><font style="color:#000000;">root：表示文件的拥有人</font></p>
+<p><font style="color:#000000;">root：表示文件的拥有组</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">文件的权限</font></p>
+<p><font style="color:#000000;">r：read，查看文件内容</font></p>
+<p><font style="color:#000000;">w：write，编辑文件内容</font></p>
+<p><font style="color:#000000;">x：execute，执行该文件</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">目录的权限</font></p>
+<p><font style="color:#000000;">r：能够列出目录下面的文件</font></p>
+<p><font style="color:#000000;">w：能够在该目录下创建和删除文件（能否删除文件取决于用户对该文件所在目录的权限）</font></p>
+<p><font style="color:#000000;">x：能进入该目录</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(基础入门)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
