@@ -1483,4 +1483,381 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>记录荣誉</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第16天-主机服务器&amp;系统识别&amp;IP资产&amp;反查技术&amp;端口扫描&amp;协议探针&amp;角色定性</title>
+    <url>/2026/07/02/%E7%AC%AC16%E5%A4%A9-%E4%B8%BB%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%99%A8-%E7%B3%BB%E7%BB%9F%E8%AF%86%E5%88%AB-IP%E8%B5%84%E4%BA%A7-%E5%8F%8D%E6%9F%A5%E6%8A%80%E6%9C%AF-%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-%E5%8D%8F%E8%AE%AE%E6%8E%A2%E9%92%88-%E8%A7%92%E8%89%B2%E5%AE%9A%E6%80%A7/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#000000;">#知识点：</font></p>
+<p><font style="color:#000000;">1、信息收集-服务器系统-操作系统&amp;IP资产</font></p>
+<p><font style="color:#000000;">2、信息收集-服务器系统-端口扫描&amp;服务定性</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">应用服务器-操作系统&amp;IP资产</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 应用服务器-端口扫描&amp;角色定性</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#区分服务器操作系统</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、Web大小写</font></p>
+<p><font style="color:#117CEE;">windows服务器url不区分大小写，linux服务器url区分大小写</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、端口服务特征</font></p>
+<p><font style="color:#117CEE;">linux常见端口：22（ssh）    windows常见端口：3389（RDP） 139（NetBIOS） 445（SMB）新版windows系统自带OpenSSH，开启同样占用22端口</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、TTL值判断返回</font></p>
+<p><font style="color:#117CEE;">TTL约等于128——&gt;windows</font></p>
+<p><font style="color:#117CEE;">TTL约等于——&gt;linux</font></p>
+<p><font style="color:#117CEE;">经过路由会递减，看数值靠近哪个基准即可；管理员可以修改TTL，会造成误判</font></p>
+<p><font style="color:#000000;">4、Nmap（准确率最高）</font></p>
+<p><font style="color:#117CEE;">nmap -O 目标ip</font></p>
+<p><a href="https://www.runoob.com/linux/linux-comm-nmap.html">https://www.runoob.com/linux/linux-comm-nmap.html</a><font style="color:#117CEE;">常用命令，护网面试问到过</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p><font style="color:#000000;">#IP资产</font></p>
+<p><font style="color:#000000;">归属地查询</font></p>
+<p><font style="color:#000000;">归属云厂商</font><font style="color:#000000;background-color:#FBDE28;">（知道之后也会有一些思路：那肯定不用查c端了，专心挖子域，常用微步在线查询）</font></p>
+<p><font style="color:#000000;">IP反查机构</font><font style="color:#000000;background-color:#FBDE28;">（通过ip找到这个ip属于哪家公司。通过fofa查然后看图标对应什么公司，如果有域名一直去查备案）</font></p>
+<p><font style="color:#000000;">IP反查域名</font><font style="color:#000000;background-color:#FBDE28;">（如果你只拿到一个网站，但是防护很严找不到漏洞，你可以通过反查域名找到同一台服务器上别的网站。可通过ip138来查）</font></p>
+<p><font style="color:#000000;">IP-C段查询</font><font style="background-color:#FBDE28;">（一般大公司会把一整个C段买下，来部署服务，扩大攻击面。可通过网络测绘工具，如fofa，hunter，quake等查询，具体语法工具会有提示）</font></p>
+<p><font style="color:#000000;">这里可以转换成Web上，机构上，从而获取更多信息</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#端口资产</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、网络资产引擎：直接使用网络测绘引擎</font><font style="color:#999999;">(</font><font style="color:#000000;">Fofa、Hunter、Quake、</font><font style="color:#990055;">00</font><font style="color:#000000;">信安等搜索IP；此类网络资产测绘引擎都是每隔一段时间会对全网的网络资产去做一个轮询，那可能每个引擎的轮询周期、扫描精准度都不同，故建议可使用不同的搜索引擎以获取更多资产。</font></p>
+<p><font style="color:#000000;">地址导航：https</font><font style="color:#999999;">:</font><font style="color:#000000;">&#x2F;&#x2F;dh</font><font style="color:#999999;">.</font><font style="color:#000000;">aabyss</font><font style="color:#999999;">.</font><font style="color:#0077aa;">cn</font><font style="color:#000000;">&#x2F;</font></p>
+<p><font style="color:#000000;">参考：https</font><font style="color:#999999;">:</font><font style="color:#000000;">&#x2F;&#x2F;mp</font><font style="color:#999999;">.</font><font style="color:#000000;">weixin</font><font style="color:#999999;">.</font><font style="color:#000000;">qq</font><font style="color:#999999;">.</font><font style="color:#000000;">com&#x2F;s&#x2F;FRgPQKJDj2xRCduwPfZrTw</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、在线端口扫描：百度或google直接搜索在线端口扫描就会有一些网站，同理很多功能都可以直接搜索在线xxx；例如在线正则提取解析、在线编码转换等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、本地离线工具：推荐使用Nmap、Masscan、Fscan、KScan，其中Nmap最为准确，但最慢；Masscan最快，误报相对更高。</font></p>
+<p><font style="color:#000000;">端口扫描：https</font><font style="color:#999999;">:</font><font style="color:#000000;">&#x2F;&#x2F;xz</font><font style="color:#999999;">.</font><font style="color:#000000;">aliyun</font><font style="color:#999999;">.</font><font style="color:#000000;">com&#x2F;t&#x2F;</font><font style="color:#990055;">15753</font></p>
+<p><font style="color:#000000;">演示：Yakit Nmap TscanPlus FScan Tanggo等</font></p>
+<p><font style="color:#000000;">考虑：</font><font style="color:#990055;">1</font><font style="color:#000000;">、防火墙 </font><font style="color:#990055;">2</font><font style="color:#000000;">、内网环境</font></p>
+<p><font style="color:#000000;">可能出现案例：</font><font style="color:#117CEE;">nmap显示filtered说明被防火墙过滤了，端口开不开都可能</font></p>
+<p><font style="color:#117CEE;">内网环境可能出现情况：明明数据库端口开放，网站也能正常打开，但是你对目标进行端口扫描，发现数据库端口没有开放（排除防火墙问题）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#应用服务</font></p>
+<p><font style="color:#000000;">端口协议对应服务应用</font></p>
+<p><a href="https://blog.csdn.net/Geroge_Ming/article/details/109711897">https://blog.csdn.net/Geroge_Ming&#x2F;article&#x2F;details&#x2F;109711897</a></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">#角色定性判定</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、网站服务器</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、数据库服务器</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、邮件系统服务器</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、文件存储服务器</font></p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、网络通信服务器</font></p>
+<p><font style="color:#990055;">6</font><font style="color:#000000;">、安全系统服务器</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第17天-Web应用&amp;备案产权&amp;Whois反查&amp;域名枚举&amp;DNS记录&amp;证书特征&amp;相似查询</title>
+    <url>/2026/07/02/%E7%AC%AC17%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E5%A4%87%E6%A1%88%E4%BA%A7%E6%9D%83-Whois%E5%8F%8D%E6%9F%A5-%E5%9F%9F%E5%90%8D%E6%9E%9A%E4%B8%BE-DNS%E8%AE%B0%E5%BD%95-%E8%AF%81%E4%B9%A6%E7%89%B9%E5%BE%81-%E7%9B%B8%E4%BC%BC%E6%9F%A5%E8%AF%A2/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong><font style="color:#444444;">标签</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">名称</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">地址</font></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><font style="color:#444444;">企业信息</font></td>
+<td align="left"><font style="color:#444444;">天眼查</font></td>
+<td align="left"><a href="https://www.tianyancha.com/"><u><font style="color:#1e6fff;">https://www.tianyancha.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">企业信息</font></td>
+<td align="left"><font style="color:#444444;">小蓝本</font></td>
+<td align="left"><a href="https://www.xiaolanben.com/"><u><font style="color:#1e6fff;">https://www.xiaolanben.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">企业信息</font></td>
+<td align="left"><font style="color:#444444;">爱企查</font></td>
+<td align="left"><a href="https://aiqicha.baidu.com/"><u><font style="color:#1e6fff;">https://aiqicha.baidu.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">企业信息</font></td>
+<td align="left"><font style="color:#444444;">企查查</font></td>
+<td align="left"><a href="https://www.qcc.com/"><u><font style="color:#1e6fff;">https://www.qcc.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">企业信息</font></td>
+<td align="left"><font style="color:#333333;">国外企查</font></td>
+<td align="left"><a href="https://opencorporates.com/"><u><font style="color:#1e6fff;">https://opencorporates.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">企业信息</font></td>
+<td align="left"><font style="color:#444444;">启信宝</font></td>
+<td align="left"><a href="https://www.qixin.com/"><u><font style="color:#1e6fff;">https://www.qixin.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">备案信息</font></td>
+<td align="left"><font style="color:#444444;">备案信息查询</font></td>
+<td align="left"><a href="http://www.beianx.cn/"><u><font style="color:#1e6fff;">http://www.beianx.cn/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">备案信息</font></td>
+<td align="left"><font style="color:#444444;">备案管理系统</font></td>
+<td align="left"><a href="https://beian.miit.gov.cn/"><u><font style="color:#1e6fff;">https://beian.miit.gov.cn/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">注册域名</font></td>
+<td align="left"><font style="color:#333333;">域名注册查询</font></td>
+<td align="left"><a href="https://buy.cloud.tencent.com/domain"><u><font style="color:#1e6fff;">https://buy.cloud.tencent.com/domain</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">IP反查</font></td>
+<td align="left"><font style="color:#444444;background-color:#ffffff;">IP反查域名</font></td>
+<td align="left"><a href="https://x.threatbook.cn/"><u><font style="color:#1e6fff;">https://x.threatbook.cn/</font></u></a></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong><font style="color:#444444;">标签</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">名称</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">地址</font></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><font style="color:#333333;">DNS数据</font></td>
+<td align="left"><font style="color:#444444;">dnsdumpster</font></td>
+<td align="left"><a href="https://dnsdumpster.com/"><u><font style="color:#1e6fff;">https://dnsdumpster.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">证书查询</font></td>
+<td align="left"><font style="color:#444444;background-color:#f6f8fa;">CertificateSearch</font></td>
+<td align="left"><a href="https://crt.sh/"><u><font style="color:#1e6fff;">https://crt.sh/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#000000;">FOFA</font></td>
+<td align="left"><a href="https://fofa.info/"><u><font style="color:#1e6fff;">https://fofa.info/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#000000;">全球鹰</font></td>
+<td align="left"><a href="http://hunter.qianxin.com/"><u><font style="color:#1e6fff;">http://hunter.qianxin.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#000000;">360 </font></td>
+<td align="left"><a href="https://quake.360.cn/quake/#/index"><u><font style="color:#1e6fff;">https://quake.360.cn/quake/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#000000;">微步在线 情报社区</font></td>
+<td align="left"><a href="https://x.threatbook.cn/"><u><font style="color:#1e6fff;">https://x.threatbook.cn/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#000000;">奇安信 威胁情报中心</font></td>
+<td align="left"><a href="https://ti.qianxin.com/"><u><font style="color:#1e6fff;">https://ti.qianxin.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#000000;">360 威胁情报中心</font></td>
+<td align="left"><a href="https://ti.360.cn/#/homepage"><u><font style="color:#1e6fff;">https://ti.360.cn/#/homepage</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">枚举解析</font></td>
+<td align="left"><font style="color:#444444;">在线子域名查询</font></td>
+<td align="left"><a href="http://tools.bugscaner.com/subdomain/"><u><font style="color:#1e6fff;">http://tools.bugscaner.com/subdomain/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">枚举解析</font></td>
+<td align="left"><font style="color:#444444;">DNSGrep子域名查询</font></td>
+<td align="left"><a href="https://www.dnsgrep.cn/subdomain"><u><font style="color:#1e6fff;">https://www.dnsgrep.cn/subdomain</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">枚举解析</font></td>
+<td align="left"><font style="color:#333333;">工具强大的子域名收集器</font></td>
+<td align="left"><a href="https://github.com/shmilylty/OneForAll"><u><font style="color:#1e6fff;">https://github.com/shmilylty/OneForAll</font></u></a></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong><font style="color:#444444;">标签</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">名称</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">地址</font></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">钟馗之眼</font></td>
+<td align="left"><a href="https://www.zoomeye.org/?R1nG"><u><font style="color:#1e6fff;">https://www.zoomeye.org/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">零零信安</font></td>
+<td align="left"><a href="https://0.zone/"><u><font style="color:#1e6fff;">https://0.zone/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">Shodan </font></td>
+<td align="left"><a href="https://www.shodan.io/"><u><font style="color:#1e6fff;">https://www.shodan.io/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">Censys </font></td>
+<td align="left"><a href="https://censys.io/"><u><font style="color:#1e6fff;">https://censys.io/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">ONYPHE</font></td>
+<td align="left"><a href="https://www.onyphe.io/"><u><font style="color:#1e6fff;">https://www.onyphe.io/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">FullHunt</font></td>
+<td align="left"><a href="https://fullhunt.io/"><u><font style="color:#1e6fff;">https://fullhunt.io/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">Soall Search Engine</font></td>
+<td align="left"><a href="https://soall.org/"><u><font style="color:#1e6fff;">https://soall.org/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">Netlas</font></td>
+<td align="left"><a href="https://app.netlas.io/responses/"><u><font style="color:#1e6fff;">https://app.netlas.io/responses/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">Leakix</font></td>
+<td align="left"><a href="https://leakix.net/"><u><font style="color:#1e6fff;">https://leakix.net/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">网络空间</font></td>
+<td align="left"><font style="color:#444444;">DorkSearch</font></td>
+<td align="left"><a href="https://dorksearch.com/"><u><font style="color:#1e6fff;">https://dorksearch.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">VirusTotal在线查杀平台</font></td>
+<td align="left"><a href="https://www.virustotal.com/gui/"><u><font style="color:#1e6fff;">https://www.virustotal.com/gui/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">VenusEye 威胁情报中心</font></td>
+<td align="left"><a href="https://www.venuseye.com.cn/"><u><font style="color:#1e6fff;">https://www.venuseye.com.cn/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">绿盟科技 威胁情报云</font></td>
+<td align="left"><a href="https://ti.nsfocus.com/"><u><font style="color:#1e6fff;">https://ti.nsfocus.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">IBM 情报中心</font></td>
+<td align="left"><a href="https://exchange.xforce.ibmcloud.com/"><u><font style="color:#1e6fff;">https://exchange.xforce.ibmcloud.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">天际友盟安全智能平台</font></td>
+<td align="left"><a href="https://redqueen.tj-un.com/IntelHome.html"><u><font style="color:#1e6fff;">https://redqueen.tj-un.com</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">华为安全中心平台</font></td>
+<td align="left"><a href="https://isecurity.huawei.com/sec/web/intelligencePortal.do"><u><font style="color:#1e6fff;">https://isecurity.huawei.com/sec</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">安恒威胁情报中心</font></td>
+<td align="left"><a href="https://ti.dbappsecurity.com.cn/"><u><font style="color:#1e6fff;">https://ti.dbappsecurity.com.cn/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">AlienVault </font></td>
+<td align="left"><a href="https://otx.alienvault.com/"><u><font style="color:#1e6fff;">https://otx.alienvault.com/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">深信服 </font></td>
+<td align="left"><a href="https://sec.sangfor.com.cn/analysis-platform"><u><font style="color:#1e6fff;">https://sec.sangfor.com.cn/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">丁爸情报分析师的工具箱</font></td>
+<td align="left"><a href="http://dingba.top/"><u><font style="color:#1e6fff;">http://dingba.top/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">听风者情报源 start.me</font></td>
+<td align="left"><a href="https://start.me/p/X20Apn"><u><font style="color:#1e6fff;">https://start.me/p/X20Apn</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">GreyNoise Visualizer</font></td>
+<td align="left"><a href="https://viz.greynoise.io/"><u><font style="color:#1e6fff;">https://viz.greynoise.io/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">URLhaus 数据库</font></td>
+<td align="left"><a href="https://urlhaus.abuse.ch/browse/"><u><font style="color:#1e6fff;">https://urlhaus.abuse.ch/browse/</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">威胁情报</font></td>
+<td align="left"><font style="color:#444444;">Pithus</font></td>
+<td align="left"><a href="https://beta.pithus.org/"><u><font style="color:#1e6fff;">https://beta.pithus.org/</font></u></a></td>
+</tr>
+</tbody></table>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web应用-机构产权&amp;域名相关性</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web应用-子域名&amp;DNS&amp;证书&amp;枚举</font></p>
+<p><font style="color:#000000;">主动信息收集：</font></p>
+<p><font style="color:#000000;">通过直接经过目标服务器网络流量的信息收集方式。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">被动信息收集：</font></p>
+<p><font style="color:#000000;">不与目标系统直接交互的情况下获取信息收集方式。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">域名：</font></p>
+<p><font style="color:#000000;">1、备案信息</font></p>
+<p><font style="color:#000000;">通过域名查备案信息，备案信息获取更多域名</font></p>
+<p><font style="color:#000000;">2、企业产权</font></p>
+<p><font style="color:#000000;">通过企业产权查询Web,APP,小程序等版权资产</font></p>
+<p><font style="color:#000000;">3、域名相关性</font></p>
+<p><font style="color:#000000;">Whois信息：例如域名所有人、域名注册商、邮箱等。</font></p>
+<p><font style="color:#000000;">通过域名注册接口获取后缀</font></p>
+<p><font style="color:#000000;">查询域名注册邮箱</font></p>
+<p><font style="color:#000000;">通过域名查询备案号</font></p>
+<p><font style="color:#000000;">通过备案号查询域名</font></p>
+<p><font style="color:#000000;">反查注册邮箱</font></p>
+<p><font style="color:#000000;">反查注册人</font></p>
+<p><font style="color:#000000;">通过注册人查询到的域名在查询邮箱</font></p>
+<p><font style="color:#000000;">通过上一步邮箱去查询域名</font></p>
+<p><font style="color:#000000;">查询以上获取出的域名的子域名</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">子域名：</font></p>
+<p><font style="color:#000000;">在后续测试中，还要注意对子域名进行筛选整理，太多的垃圾子域名和没用的子域名，主要看你的收集的子域名方法决定。</font></p>
+<p><font style="color:#000000;">1、DNS数据</font><font style="color:#000000;background-color:#FBDE28;">（输入主域名，返回*.主域名）</font></p>
+<p><font style="color:#000000;">以DNS解析历史记录查询域名资产</font></p>
+<p><font style="color:#000000;">2、证书查询</font><font style="color:#000000;background-color:#FBDE28;">（返回相同证书的域名）</font></p>
+<p><font style="color:#000000;">以SSL证书解析查询域名资产</font></p>
+<p><font style="color:#000000;">3、网络空间</font></p>
+<p><font style="color:#000000;">多网络空间综合型获取的记录</font></p>
+<p><font style="color:#000000;">4、威胁情报</font></p>
+<p><font style="color:#000000;">各类接口的集成的记录</font></p>
+<p><font style="color:#000000;">5、枚举解析</font><font style="color:#000000;background-color:#FBDE28;">（对方开了泛解析就会不准）</font></p>
+<p><font style="color:#000000;">结果主要以字典决定</font></p>
+<p><font style="color:#000000;"><a href="https://github.com/knownsec/ksubdomain">https://github.com/knownsec/ksubdomain</a></font></p>
+<p><font style="color:#000000;"><a href="https://github.com/shmilylty/OneForAll">https://github.com/shmilylty/OneForAll</a></font></p>
+<p><font style="color:#000000;">6、JS提取子域名</font></p>
+<p><font style="color:#000000;">后续会讲到，</font><font style="color:#000000;background-color:#FBDE28;">就是通过网络请求的包来获取域名</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
