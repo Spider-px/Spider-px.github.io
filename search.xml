@@ -1870,4 +1870,177 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第18天-Web应用&amp;搭建架构&amp;指纹识别&amp;WAF判断&amp;蜜罐排除&amp;开发框架&amp;组件应用</title>
+    <url>/2026/07/07/%E7%AC%AC18%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%90%AD%E5%BB%BA%E6%9E%B6%E6%9E%84-%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB-WAF%E5%88%A4%E6%96%AD-%E8%9C%9C%E7%BD%90%E6%8E%92%E9%99%A4-%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6-%E7%BB%84%E4%BB%B6%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web应用-架构分析-WAF&amp;蜜罐识别</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web应用-架构分析-框架组件指纹识别</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#Web架构（看看就行，重要的后面会讲）</font></p>
+<p><font style="color:#000000;">开源CMS：</font></p>
+<p><font style="color:#000000;">Discuz、WordPress、PageAdmin、蝉知等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">前端技术：</font></p>
+<p><font style="color:#000000;">HTML5、Jquery、Bootstrap、Vue、NodeJS等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">开发语言：</font></p>
+<p><font style="color:#000000;">PHP、JAVA、Ruby、Python、C</font><font style="color:#708090;">#、JS、Go等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">框架组件：</font></p>
+<p><font style="color:#000000;">SpringMVC、Thinkphp、Yii、Tornado、Vue等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Web服务器：</font></p>
+<p><font style="color:#000000;">Apache、Nginx、IIS、Lighttpd等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">应用服务器：</font></p>
+<p><font style="color:#000000;">Tomcat、Jboss、Weblogic、Websphere等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">数据库类型：</font></p>
+<p><font style="color:#000000;">端口扫描，组合判断，应用功能+</font></p>
+<p><font style="color:#000000;">Mysql、SqlServer、Oracle、Redis、MongoDB等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">操作系统信息：</font></p>
+<p><font style="color:#000000;">Linux、Windows、Mac等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">应用服务信息：</font></p>
+<p><font style="color:#000000;">FTP、SSH、RDP、SMB、SMTP、LDAP、Rsync等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">CDN信息：</font></p>
+<p><font style="color:#000000;">帝联、Cloudflare、网宿、七牛云、阿里云等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">WAF信息：</font></p>
+<p><font style="color:#000000;">创宇盾、宝塔、ModSecurity、玄武盾、OpenRASP等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">蜜罐信息：</font></p>
+<p><font style="color:#000000;">HFish、TeaPot、T</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">Pot、Glastopf等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">其他组件信息：</font></p>
+<p><font style="color:#000000;">FastJson、Shiro、Log4j、Solr、XStream等</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#指纹识别：</font></p>
+<p>CMS指纹识别理解成：给网站做“身份体检”，精确查出他的搭建工具（CMS）、版本、服务器环境等专属身份信息</p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、平台：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;"><a href="http://www.yunsee.cn/">www.yunsee.cn</a></font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">http</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">finger.tidesec.net</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">fp.shuziguanxing.com</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、项目：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">AliasIO</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">wappalyzer 浏览器插件</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">https</font><font style="color:#9a6e3a;background-color:#FBDE28;">:&#x2F;&#x2F;</font><font style="color:#000000;background-color:#FBDE28;">github.com</font><font style="color:#9a6e3a;background-color:#FBDE28;">&#x2F;</font><font style="color:#000000;background-color:#FBDE28;">HackAllSec</font><font style="color:#9a6e3a;background-color:#FBDE28;">&#x2F;</font><font style="color:#000000;background-color:#FBDE28;">hfinger</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">Tuhinshubhra</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">CMSeeK</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">https</font><font style="color:#9a6e3a;background-color:#FBDE28;">:&#x2F;&#x2F;</font><font style="color:#000000;background-color:#FBDE28;">github.com</font><font style="color:#9a6e3a;background-color:#FBDE28;">&#x2F;</font><font style="color:#000000;background-color:#FBDE28;">lemonlove7</font><font style="color:#9a6e3a;background-color:#FBDE28;">&#x2F;</font><font style="color:#000000;background-color:#FBDE28;">EHole_magic</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">emo</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">crab</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">observer_ward</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、使用网络空间的icon识别</font></p>
+<p><font style="color:#000000;">借助目标的icon图标进行识别，不过这个可以自定义不一定搜的到，</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#WAF识别：</font></p>
+<p><font style="background-color:#FBDE28;">了解一下就可以了，一般都有拦截页面然后推断</font></p>
+<p><font style="color:#000000;">拦截页面，identywaf项目内置</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">stamparm</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">identYwaf</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">EnableSecurity</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">wafw00f</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#蜜罐识别：</font></p>
+<p><font style="background-color:#FBDE28;">每个蜜罐都有自己独特的特征，但是我们也记不住那么多特征，所以需要的时候使用工具</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、项目识别：</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">graynjo</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">Heimdallr</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">360</font><font style="color:#000000;">quake</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">quake_rs</font></p>
+<p><font style="color:#000000;">quake.exe init apikey值</font></p>
+<p><font style="color:#000000;">quake.exe honeypot 目标</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、人工识别：</font></p>
+<p><font style="color:#9a6e3a;">*</font><font style="color:#000000;">端口多而有规律性（针对多服务蜜罐）</font></p>
+<p><font style="color:#9a6e3a;">*</font><font style="color:#000000;">Web访问协议就下载（针对多服务蜜罐）</font></p>
+<p><font style="color:#9a6e3a;">*</font><font style="color:#000000;">设备指纹分析（针对蜜罐特征）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#框架组件识别：</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">后续会讲到更多识别方法及项目插件</font></p>
+<p><font style="color:#000000;">例子：</font></p>
+<p><font style="color:#000000;">FastJson：https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">forum.butian.net</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">share</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#990055;">1679</font></p>
+<p><font style="color:#000000;">Shiro：https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">mp.weixin.qq.com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">s</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">j1nDnb0Ub5bk2</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">Tq5tt2pg</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第19天-Web应用&amp;源码获取&amp;闭源备份开发泄漏&amp;WebPack打包&amp;资源搜索&amp;ICO定位</title>
+    <url>/2026/07/07/%E7%AC%AC19%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%BA%90%E7%A0%81%E8%8E%B7%E5%8F%96-%E9%97%AD%E6%BA%90%E5%A4%87%E4%BB%BD%E5%BC%80%E5%8F%91%E6%B3%84%E6%BC%8F-WebPack%E6%89%93%E5%8C%85-%E8%B5%84%E6%BA%90%E6%90%9C%E7%B4%A2-ICO%E5%AE%9A%E4%BD%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p>参考：</p>
+<p><a href="https://www.secpulse.com/archives/124398.html">https://www.secpulse.com/archives/124398.html</a></p>
+<p><a href="https://mp.weixin.qq.com/s/zhjxW2mUEgq6dFAp3kBcgQ">https://mp.weixin.qq.com/s/zhjxW2mUEgq6dFAp3kBcgQ</a></p>
+<p><font style="background-color:#ED740C;">#源码泄漏原因：</font></p>
+<p>1、从源码本身的特性</p>
+<p>2、从管理员不好的习惯入口</p>
+<p>3、从管理员习惯的开发入口</p>
+<p>4、从管理员不好的配置入口</p>
+<p>5、从管理员不好的意识入口</p>
+<p>6、从管理员资源信息搜集入口</p>
+<p>源码泄漏大概集合：</p>
+<p><font style="background-color:#FBDE28;">Webpack打包泄漏</font></p>
+<p><font style="color:#DF2A3F;">Webpack 是前端</font><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">模块打包工具</font><font style="color:#DF2A3F;">，核心作用：把浏览器不直接识别的零散资源（JS、CSS、图片、字体、Vue&#x2F;React 组件等）统一编译、压缩、合并成浏览器可运行的静态文件  </font></p>
+<p><font style="color:#DF2A3F;"></font></p>
+<p><font style="color:#DF2A3F;">分为两种模式：</font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">1、开发模式：不压缩代码、保留完整注释、不混淆变量、生成 source-map（源码映射文件），方便调试。<br></font><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">2、生产模式：默认代码压缩、变量混淆、删除注释、tree-shaking，一般不对外暴露完整源码映射。</font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"></font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">Source-Map 是什么：</font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">浏览器运行压缩混淆后的代码（一行几万字符、变量名 a&#x2F;b&#x2F;c），报错时无法定位原始代码行数。 Source Map（</font><code>&lt;font style=&quot;color:#DF2A3F;background-color:rgba(0, 0, 0, 0);&quot;&gt;.map&lt;/font&gt;</code><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"> 文件）是一份映射表： 压缩代码 </font><font style="color:#DF2A3F;">↔</font><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"> 开发时未压缩、带注释、完整变量名的原始源码。 拿到 </font><code>&lt;font style=&quot;color:#DF2A3F;background-color:rgba(0, 0, 0, 0);&quot;&gt;.map&lt;/font&gt;</code><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"> 文件，可一键还原完整前端源码（业务逻辑、接口地址、密钥、注释、内部逻辑全部暴露）。</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">  </font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p>source detector安装配置：<a href="https://blog.csdn.net/gitblog_00648/article/details/146995172">https://blog.csdn.net/gitblog_00648&#x2F;article&#x2F;details&#x2F;146995172</a></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#117CEE;">核心根源：错误配置导致完整源码映射文件（source-map）被部署到线上服务器，任何人可下载还原完整前端源代码。  </font></p>
+<p><font style="background-color:#FBDE28;">composer.json</font></p>
+<p><font style="color:#DF2A3F;">绝大多数现代PHP项目在搭建过程中都会产生composer.json文件，但它不是PHP语言本身强制生成的，而是使用composer包管理器是自动生成的配置文件。composer包管理器和python的pip几乎一样，它用来帮PHP项目自动下载、安装、管理第三方库（插件&#x2F;组件）</font></p>
+<p><font style="color:#DF2A3F;"></font></p>
+<p><font style="background-color:#FBDE28;">GitHub源码泄漏</font></p>
+<p><font style="color:#DF2A3F;">就是开发人员主动把代码上传到了这种代码平台上，但是特别重要的网站一般是不会，不过渗透过程你可以碰碰运气</font></p>
+<p><font style="background-color:#FBDE28;">git源码泄露</font></p>
+<p><font style="color:#DF2A3F;">git是分布式的代码版本管理工具：通俗解读就是每个开发者电脑上都有完整的代码仓库+所有版本记录，Git是分布式代码管理工具，公司开发网站时，每个开发人员的电脑都必须装Git，大家写代码时，Git会完整记录代码的每一个迭代版本，以及谁改、什么时候改、改了什么的所有修改记录，团队之间靠</font><font style="color:#DF2A3F;background-color:#EDCE02;"></font><font style="color:#DF2A3F;">Git配合同步代码，这是核心逻辑。</font></p>
+<p><font style="background-color:#117CEE;">在网站URL后加一个.git如果有就存在这个漏洞</font></p>
+<p><font style="background-color:#117CEE;">python GitHack.py url</font></p>
+<p>GIT：<a href="https://github.com/lijiejie/GitHack">https://github.com/lijiejie/GitHack</a></p>
+<p><font style="color:#DF2A3F;background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#FBDE28;">svn源码泄露</font></p>
+<p><font style="color:#DF2A3F;">SVN是集中式的代码版本管理工具：SVN就是唯一的代码仓库+版本记录库，公司搭一台核心服务器装SVN→作为唯一的代码库+版本记录库；开发人员电脑装SVN客户端→仅作操作工具，本地只有写的代码，无任何版本记录；开发完通过客户端联网提交代码到核心服务器→服务器记录所有代码版本、修改信息（和Git记录的内容维度完全一致）；网站部署时→从这台SVN核心服务器拉取纯代码上线即可（和Git部署逻辑完全相同，都只拿运行所需代码，不碰管理工具文件）。</font></p>
+<p><font style="background-color:#117CEE;">在网站URL后加一个.svn如果有就存在这个漏洞</font></p>
+<p><font style="background-color:#117CEE;">python SvnHack.py -u url python要用2如果当前是3就把目录写全 加–download就下载了</font></p>
+<p>SVN：<a href="https://github.com/callmefeifei/SvnHack">https://github.com/callmefeifei/SvnHack</a></p>
+<p><font style="background-color:#FBDE28;">网站备份压缩文件</font></p>
+<p><font style="color:#DF2A3F;">把源码压缩后存放在网站目录下，通过御剑等目录扫描工具进行目录扫描即可</font></p>
+<p><font style="color:#DF2A3F;"></font></p>
+<p>DS_Store文件泄露</p>
+<p><font style="color:#DF2A3F;">.DS_Store是macos系统自动生成的隐藏文件，它是macos用来保存文件夹显示设置的配置文件，只要你用macos打开过一个文件夹，系统就会自动在里面生成一个.DS_Store文件，很多开发者用macos开发，然后直接把整个项目文件夹上传到网站根目录，忘记删除.DS_Store，攻击者访问网站.com&#x2F;.DS_Store，就能直接看到这个目录下有哪些文件，相当于拿到了网站的目录地图，</font><font style="color:#DF2A3F;background-color:#FBDE28;">ds_store_exp工具  </font></p>
+<p>DS_Store：<a href="https://github.com/lijiejie/ds_store_exp">https://github.com/lijiejie/ds_store_exp</a></p>
+<p>通用：<a href="https://github.com/0xHJK/dumpall">https://github.com/0xHJK/dumpall</a><font style="background-color:#FBDE28;">这个是git、svn、ds_store通用工具</font></p>
+<p><font style="background-color:#ED740C;">思路点：</font></p>
+<p>1、使用指纹识别平台获取到目标CMS</p>
+<p>通过搜索引擎获取到源码</p>
+<p>2、使用指纹识别平台不能获取目标信息</p>
+<p>后端：借助svn git composer.json ds_store 备份扫描等配置泄漏安全</p>
+<p>前端：webpack打包 谷歌插件获取源码</p>
+<p>3、借助资源平台去搜索（github gitee oschina等源码）</p>
+<p>-特定文件<font style="background-color:#FBDE28;">（就是看访问网站加载的数据包名字有没有特殊含义的，直接去github上搜）</font></p>
+<p>-特征联系方式<font style="background-color:#FBDE28;">（看页面有没有什么联系方式，github搜）</font></p>
+<p>-github监控（ 除了源码，漏洞更新，工具更新等都有用处）</p>
+<p>目标使用的源码是开源还是闭源，是否公开</p>
+<p><font style="background-color:#ED740C;">#源码泄漏实战文章</font></p>
+<p><font style="color:#000000;">渗透测试实战—某资金盘信息收集</font><font style="color:#999999;">(</font><font style="color:#000000;">.idea目录泄露</font><font style="color:#999999;">)</font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/7cSrDZci_drE6wTGvQOOHw">https://mp.weixin.qq.com/s/7cSrDZci_drE6wTGvQOOHw</a></font></p>
+<p><font style="color:#000000;">SRC挖掘-js.map泄露到接管云上域控</font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/QZsNjbTiaqC1qwzARVAiGQ">https://mp.weixin.qq.com/s/QZsNjbTiaqC1qwzARVAiGQ</a></font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>

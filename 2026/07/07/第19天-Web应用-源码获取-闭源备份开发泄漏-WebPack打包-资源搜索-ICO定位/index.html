@@ -23,22 +23,17 @@
   </script>
 
   <meta property="og:type" content="article">
-<meta property="og:title" content="第13天-网站协议&amp;身份鉴权&amp;OAuth2安全&amp;Token令牌&amp;JWT值&amp;Authirization标头">
-<meta property="og:url" content="http://zhigao.xyz/2026/06/30/%E7%AC%AC13%E5%A4%A9-%E7%BD%91%E7%AB%99%E5%8D%8F%E8%AE%AE-%E8%BA%AB%E4%BB%BD%E9%89%B4%E6%9D%83-OAuth2%E5%AE%89%E5%85%A8-Token%E4%BB%A4%E7%89%8C-JWT%E5%80%BC-Authirization%E6%A0%87%E5%A4%B4/index.html">
+<meta property="og:title" content="第19天-Web应用&amp;源码获取&amp;闭源备份开发泄漏&amp;WebPack打包&amp;资源搜索&amp;ICO定位">
+<meta property="og:url" content="http://zhigao.xyz/2026/07/07/%E7%AC%AC19%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%BA%90%E7%A0%81%E8%8E%B7%E5%8F%96-%E9%97%AD%E6%BA%90%E5%A4%87%E4%BB%BD%E5%BC%80%E5%8F%91%E6%B3%84%E6%BC%8F-WebPack%E6%89%93%E5%8C%85-%E8%B5%84%E6%BA%90%E6%90%9C%E7%B4%A2-ICO%E5%AE%9A%E4%BD%8D/index.html">
 <meta property="og:site_name" content="Voyage Memo">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://zhigao.xyz/images/013-1.png">
-<meta property="og:image" content="http://zhigao.xyz/images/013-2.png">
-<meta property="og:image" content="http://zhigao.xyz/images/013-3.png">
-<meta property="og:image" content="http://zhigao.xyz/images/013-4.png">
-<meta property="article:published_time" content="2026-06-30T14:47:06.000Z">
-<meta property="article:modified_time" content="2026-06-30T15:00:41.078Z">
+<meta property="article:published_time" content="2026-07-06T18:33:12.000Z">
+<meta property="article:modified_time" content="2026-07-06T18:35:10.024Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zhigao.xyz/images/013-1.png">
 
-<link rel="canonical" href="http://zhigao.xyz/2026/06/30/%E7%AC%AC13%E5%A4%A9-%E7%BD%91%E7%AB%99%E5%8D%8F%E8%AE%AE-%E8%BA%AB%E4%BB%BD%E9%89%B4%E6%9D%83-OAuth2%E5%AE%89%E5%85%A8-Token%E4%BB%A4%E7%89%8C-JWT%E5%80%BC-Authirization%E6%A0%87%E5%A4%B4/">
+<link rel="canonical" href="http://zhigao.xyz/2026/07/07/%E7%AC%AC19%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%BA%90%E7%A0%81%E8%8E%B7%E5%8F%96-%E9%97%AD%E6%BA%90%E5%A4%87%E4%BB%BD%E5%BC%80%E5%8F%91%E6%B3%84%E6%BC%8F-WebPack%E6%89%93%E5%8C%85-%E8%B5%84%E6%BA%90%E6%90%9C%E7%B4%A2-ICO%E5%AE%9A%E4%BD%8D/">
 
 
 <script id="page-configurations">
@@ -51,7 +46,7 @@
   };
 </script>
 
-  <title>第13天-网站协议&身份鉴权&OAuth2安全&Token令牌&JWT值&Authirization标头 | Voyage Memo</title>
+  <title>第19天-Web应用&源码获取&闭源备份开发泄漏&WebPack打包&资源搜索&ICO定位 | Voyage Memo</title>
   
 
 
@@ -194,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/06/30/%E7%AC%AC13%E5%A4%A9-%E7%BD%91%E7%AB%99%E5%8D%8F%E8%AE%AE-%E8%BA%AB%E4%BB%BD%E9%89%B4%E6%9D%83-OAuth2%E5%AE%89%E5%85%A8-Token%E4%BB%A4%E7%89%8C-JWT%E5%80%BC-Authirization%E6%A0%87%E5%A4%B4/">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/07/%E7%AC%AC19%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%BA%90%E7%A0%81%E8%8E%B7%E5%8F%96-%E9%97%AD%E6%BA%90%E5%A4%87%E4%BB%BD%E5%BC%80%E5%8F%91%E6%B3%84%E6%BC%8F-WebPack%E6%89%93%E5%8C%85-%E8%B5%84%E6%BA%90%E6%90%9C%E7%B4%A2-ICO%E5%AE%9A%E4%BD%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/photo.jpg">
@@ -207,7 +202,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          第13天-网站协议&身份鉴权&OAuth2安全&Token令牌&JWT值&Authirization标头
+          第19天-Web应用&源码获取&闭源备份开发泄漏&WebPack打包&资源搜索&ICO定位
         </h1>
 
         <div class="post-meta">
@@ -218,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-06-30 22:47:06 / 修改时间：23:00:41" itemprop="dateCreated datePublished" datetime="2026-06-30T22:47:06+08:00">2026-06-30</time>
+              <time title="创建时间：2026-07-07 02:33:12 / 修改时间：02:35:10" itemprop="dateCreated datePublished" datetime="2026-07-07T02:33:12+08:00">2026-07-07</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,7 +221,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(基础入门)</span></a>
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(信息收集)</span></a>
                 </span>
             </span>
 
@@ -251,68 +246,68 @@
         <p><font></font></p>
 <span id="more"></span>
 
-<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">网站协议-http&amp;https-安全测试差异性</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ 身份鉴权-Authorization&amp;Token&amp;JWT&amp;OAuth</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#HTTP&#x2F;HTTPS</font></p>
-<p><font style="background-color:#FBDE28;">1. 加密方式</font></p>
-<p>HTTP：使用明文传输，数据在传输过程中可以被任何人截获和查看。</p>
-<p>HTTPS：通过SSL&#x2F;TLS协议对数据进行加密，确保数据在传输过程中不被第三方截获和篡改。</p>
-<p><font style="background-color:#FBDE28;">2. 身份验证</font></p>
-<p>HTTP：不需要进行身份验证，任何人都可以访问网站。</p>
-<p>HTTPS：通过数字证书和SSL&#x2F;TLS协议验证服务器的身份，防止”中间人攻击”。</p>
-<p><font style="background-color:#FBDE28;">3. 端口号</font></p>
-<p>HTTP：默认使用<font style="background-color:#FBDE28;">80</font>端口。</p>
-<p>HTTPS：默认使用<font style="background-color:#FBDE28;">443</font>端口，提供更高的安全性。</p>
-<p><font style="background-color:#ED740C;">#身份验证鉴权技术：</font></p>
-<p>Cookie，Session，Token，JWT，oauth2等</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Z6rt_ggCA8dNVJPgELZ44w">https://mp.weixin.qq.com/s/Z6rt_ggCA8dNVJPgELZ44w</a></p>
-<p>应用场景：</p>
-<p><font style="background-color:#FBDE28;">这些后续都有讲到，在安全开发等部分，现在了解就行</font></p>
-<p>Cookie+Session简单，建议在内网使用；</p>
-<p>Token相对完善，推荐在跨域外网使用；</p>
-<p>JWT推荐使用，常用在SSO单点登录中；</p>
-<p>OAuth灵活方便，对于第三方系统登录更友好。</p>
-<p><font style="background-color:#ED740C;">#OAuth2技术</font></p>
-<p>授权框架，使网站和Web应用程序能够请求对另一个应用上的用户帐户进行<font style="background-color:#FBDE28;">有限访问</font>。至关重要的是，OAuth允许用户授予此访问权限，而无需向请求应用程序公开其登录凭据。<font style="background-color:#FBDE28;">这意味着用户可以微调他们想要共享的数据，而不必将其帐户的完全控制权移交给第三方</font>。</p>
-<p>四种验证模式：</p>
-<p>authorization_code 授权码模式</p>
-<p>implicit code 简单模式</p>
-<p>password 密码模式</p>
-<p>client_credentials 客户端模式</p>
-<p>授权码模式流程：</p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/013-1.png"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/013-2.png"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/013-3.png"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/013-4.png"></p>
-<p>只要有第三方登录如：微信，qq等就存在</p>
-<p>安全漏洞问题：</p>
-<p>1、redirect_url 校验不严格导致code被劫持到恶意网站（fuzz各种bypass方式）</p>
-<p>2、client_id与redirect_url 不一致造成滥用劫持</p>
-<p>3、A应用生成的code可以用在B应用上</p>
-<p>4、state未设置csrf防护，导致csrf风险</p>
-<p>5、scope提权，将低scope权限的code用于高权限场景</p>
-<p>6、HTTP劫持，网络层中间人攻击</p>
-<p><font style="background-color:#ED740C;">#Authorization头：</font></p>
-<p>参考：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7300812626279251987">https://juejin.cn/post/7300812626279251987</a></p>
-<p>授权方案：</p>
-<p>1、Basic认证</p>
-<p>2、Digest认证</p>
-<p>3、Bearer认证</p>
-<p>4、JWT认证  <font style="background-color:#FBDE28;">特征：第一段内容.第二段内容.第三段内容</font></p>
-<p>5、API密钥认证</p>
-<p>6、双因素认证</p>
-<p>7、其他一些认证方式</p>
-<p>安全漏洞问题：</p>
-<p>JWT攻防，Token劫持等</p>
-<p>安全影响：</p>
-<p>1、通过以上学习了解到http&#x2F;https差异（抓包）</p>
-<p>2、身份鉴权测试中要区别oauth,jwt,token差异</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.secpulse.com/archives/124398.html">https://www.secpulse.com/archives/124398.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/zhjxW2mUEgq6dFAp3kBcgQ">https://mp.weixin.qq.com/s/zhjxW2mUEgq6dFAp3kBcgQ</a></p>
+<p><font style="background-color:#ED740C;">#源码泄漏原因：</font></p>
+<p>1、从源码本身的特性</p>
+<p>2、从管理员不好的习惯入口</p>
+<p>3、从管理员习惯的开发入口</p>
+<p>4、从管理员不好的配置入口</p>
+<p>5、从管理员不好的意识入口</p>
+<p>6、从管理员资源信息搜集入口</p>
+<p>源码泄漏大概集合：</p>
+<p><font style="background-color:#FBDE28;">Webpack打包泄漏</font></p>
+<p><font style="color:#DF2A3F;">Webpack 是前端</font><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">模块打包工具</font><font style="color:#DF2A3F;">，核心作用：把浏览器不直接识别的零散资源（JS、CSS、图片、字体、Vue&#x2F;React 组件等）统一编译、压缩、合并成浏览器可运行的静态文件  </font></p>
+<p><font style="color:#DF2A3F;"></font></p>
+<p><font style="color:#DF2A3F;">分为两种模式：</font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">1、开发模式：不压缩代码、保留完整注释、不混淆变量、生成 source-map（源码映射文件），方便调试。<br></font><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">2、生产模式：默认代码压缩、变量混淆、删除注释、tree-shaking，一般不对外暴露完整源码映射。</font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"></font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">Source-Map 是什么：</font></p>
+<p><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);">浏览器运行压缩混淆后的代码（一行几万字符、变量名 a&#x2F;b&#x2F;c），报错时无法定位原始代码行数。 Source Map（</font><code>&lt;font style=&quot;color:#DF2A3F;background-color:rgba(0, 0, 0, 0);&quot;&gt;.map&lt;/font&gt;</code><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"> 文件）是一份映射表： 压缩代码 </font><font style="color:#DF2A3F;">↔</font><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"> 开发时未压缩、带注释、完整变量名的原始源码。 拿到 </font><code>&lt;font style=&quot;color:#DF2A3F;background-color:rgba(0, 0, 0, 0);&quot;&gt;.map&lt;/font&gt;</code><font style="color:#DF2A3F;background-color:rgba(0, 0, 0, 0);"> 文件，可一键还原完整前端源码（业务逻辑、接口地址、密钥、注释、内部逻辑全部暴露）。</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">  </font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p>source detector安装配置：<a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00648/article/details/146995172">https://blog.csdn.net/gitblog_00648&#x2F;article&#x2F;details&#x2F;146995172</a></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#117CEE;">核心根源：错误配置导致完整源码映射文件（source-map）被部署到线上服务器，任何人可下载还原完整前端源代码。  </font></p>
+<p><font style="background-color:#FBDE28;">composer.json</font></p>
+<p><font style="color:#DF2A3F;">绝大多数现代PHP项目在搭建过程中都会产生composer.json文件，但它不是PHP语言本身强制生成的，而是使用composer包管理器是自动生成的配置文件。composer包管理器和python的pip几乎一样，它用来帮PHP项目自动下载、安装、管理第三方库（插件&#x2F;组件）</font></p>
+<p><font style="color:#DF2A3F;"></font></p>
+<p><font style="background-color:#FBDE28;">GitHub源码泄漏</font></p>
+<p><font style="color:#DF2A3F;">就是开发人员主动把代码上传到了这种代码平台上，但是特别重要的网站一般是不会，不过渗透过程你可以碰碰运气</font></p>
+<p><font style="background-color:#FBDE28;">git源码泄露</font></p>
+<p><font style="color:#DF2A3F;">git是分布式的代码版本管理工具：通俗解读就是每个开发者电脑上都有完整的代码仓库+所有版本记录，Git是分布式代码管理工具，公司开发网站时，每个开发人员的电脑都必须装Git，大家写代码时，Git会完整记录代码的每一个迭代版本，以及谁改、什么时候改、改了什么的所有修改记录，团队之间靠</font><font style="color:#DF2A3F;background-color:#EDCE02;"></font><font style="color:#DF2A3F;">Git配合同步代码，这是核心逻辑。</font></p>
+<p><font style="background-color:#117CEE;">在网站URL后加一个.git如果有就存在这个漏洞</font></p>
+<p><font style="background-color:#117CEE;">python GitHack.py url</font></p>
+<p>GIT：<a target="_blank" rel="noopener" href="https://github.com/lijiejie/GitHack">https://github.com/lijiejie/GitHack</a></p>
+<p><font style="color:#DF2A3F;background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#FBDE28;">svn源码泄露</font></p>
+<p><font style="color:#DF2A3F;">SVN是集中式的代码版本管理工具：SVN就是唯一的代码仓库+版本记录库，公司搭一台核心服务器装SVN→作为唯一的代码库+版本记录库；开发人员电脑装SVN客户端→仅作操作工具，本地只有写的代码，无任何版本记录；开发完通过客户端联网提交代码到核心服务器→服务器记录所有代码版本、修改信息（和Git记录的内容维度完全一致）；网站部署时→从这台SVN核心服务器拉取纯代码上线即可（和Git部署逻辑完全相同，都只拿运行所需代码，不碰管理工具文件）。</font></p>
+<p><font style="background-color:#117CEE;">在网站URL后加一个.svn如果有就存在这个漏洞</font></p>
+<p><font style="background-color:#117CEE;">python SvnHack.py -u url python要用2如果当前是3就把目录写全 加–download就下载了</font></p>
+<p>SVN：<a target="_blank" rel="noopener" href="https://github.com/callmefeifei/SvnHack">https://github.com/callmefeifei/SvnHack</a></p>
+<p><font style="background-color:#FBDE28;">网站备份压缩文件</font></p>
+<p><font style="color:#DF2A3F;">把源码压缩后存放在网站目录下，通过御剑等目录扫描工具进行目录扫描即可</font></p>
+<p><font style="color:#DF2A3F;"></font></p>
+<p>DS_Store文件泄露</p>
+<p><font style="color:#DF2A3F;">.DS_Store是macos系统自动生成的隐藏文件，它是macos用来保存文件夹显示设置的配置文件，只要你用macos打开过一个文件夹，系统就会自动在里面生成一个.DS_Store文件，很多开发者用macos开发，然后直接把整个项目文件夹上传到网站根目录，忘记删除.DS_Store，攻击者访问网站.com&#x2F;.DS_Store，就能直接看到这个目录下有哪些文件，相当于拿到了网站的目录地图，</font><font style="color:#DF2A3F;background-color:#FBDE28;">ds_store_exp工具  </font></p>
+<p>DS_Store：<a target="_blank" rel="noopener" href="https://github.com/lijiejie/ds_store_exp">https://github.com/lijiejie/ds_store_exp</a></p>
+<p>通用：<a target="_blank" rel="noopener" href="https://github.com/0xHJK/dumpall">https://github.com/0xHJK/dumpall</a><font style="background-color:#FBDE28;">这个是git、svn、ds_store通用工具</font></p>
+<p><font style="background-color:#ED740C;">思路点：</font></p>
+<p>1、使用指纹识别平台获取到目标CMS</p>
+<p>通过搜索引擎获取到源码</p>
+<p>2、使用指纹识别平台不能获取目标信息</p>
+<p>后端：借助svn git composer.json ds_store 备份扫描等配置泄漏安全</p>
+<p>前端：webpack打包 谷歌插件获取源码</p>
+<p>3、借助资源平台去搜索（github gitee oschina等源码）</p>
+<p>-特定文件<font style="background-color:#FBDE28;">（就是看访问网站加载的数据包名字有没有特殊含义的，直接去github上搜）</font></p>
+<p>-特征联系方式<font style="background-color:#FBDE28;">（看页面有没有什么联系方式，github搜）</font></p>
+<p>-github监控（ 除了源码，漏洞更新，工具更新等都有用处）</p>
+<p>目标使用的源码是开源还是闭源，是否公开</p>
+<p><font style="background-color:#ED740C;">#源码泄漏实战文章</font></p>
+<p><font style="color:#000000;">渗透测试实战—某资金盘信息收集</font><font style="color:#999999;">(</font><font style="color:#000000;">.idea目录泄露</font><font style="color:#999999;">)</font></p>
+<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/7cSrDZci_drE6wTGvQOOHw">https://mp.weixin.qq.com/s/7cSrDZci_drE6wTGvQOOHw</a></font></p>
+<p><font style="color:#000000;">SRC挖掘-js.map泄露到接管云上域控</font></p>
+<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QZsNjbTiaqC1qwzARVAiGQ">https://mp.weixin.qq.com/s/QZsNjbTiaqC1qwzARVAiGQ</a></font></p>
 
     </div>
 
@@ -331,13 +326,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2026/06/30/%E7%AC%AC12%E5%A4%A9-HTTP%E6%95%B0%E6%8D%AE%E5%8C%85-%E7%BA%A2%E8%93%9D%E9%98%9F%E7%A0%94%E5%88%A4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%84%E9%80%A0-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95-%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%AE%E6%94%B9-%E7%8A%B6%E6%80%81%E7%A0%81%E5%88%A4%E6%96%AD/" rel="prev" title="第12天-HTTP数据包&红蓝队研判&自定义构造&请求方法&请求头修改&状态码判断">
-      <i class="fa fa-chevron-left"></i> 第12天-HTTP数据包&红蓝队研判&自定义构造&请求方法&请求头修改&状态码判断
+    <a href="/2026/07/07/%E7%AC%AC18%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%90%AD%E5%BB%BA%E6%9E%B6%E6%9E%84-%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB-WAF%E5%88%A4%E6%96%AD-%E8%9C%9C%E7%BD%90%E6%8E%92%E9%99%A4-%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6-%E7%BB%84%E4%BB%B6%E5%BA%94%E7%94%A8/" rel="prev" title="第18天-Web应用&搭建架构&指纹识别&WAF判断&蜜罐排除&开发框架&组件应用">
+      <i class="fa fa-chevron-left"></i> 第18天-Web应用&搭建架构&指纹识别&WAF判断&蜜罐排除&开发框架&组件应用
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2026/06/30/%E7%AC%AC15%E5%A4%A9-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4-%E7%BB%88%E7%AB%AF%E8%84%9A%E6%9C%AC-Shell%E7%BC%96%E7%A8%8B-Bat%E6%89%B9%E5%A4%84%E7%90%86-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E6%9D%83%E9%99%90-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%BB%84%E5%88%92%E5%88%86/" rel="next" title="第15天-系统命令&终端脚本&Shell编程&Bat批处理&文件属性权限&用户及组划分">
-      第15天-系统命令&终端脚本&Shell编程&Bat批处理&文件属性权限&用户及组划分 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
