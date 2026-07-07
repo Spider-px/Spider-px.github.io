@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第20天-Web应用&amp;JS架构&amp;URL提取&amp;数据匹配&amp;Fuzz接口&amp;WebPack分析&amp;自动化">
+<meta property="og:url" content="http://zhigao.xyz/2026/07/08/%E7%AC%AC20%E5%A4%A9-Web%E5%BA%94%E7%94%A8-JS%E6%9E%B6%E6%9E%84-URL%E6%8F%90%E5%8F%96-%E6%95%B0%E6%8D%AE%E5%8C%B9%E9%85%8D-Fuzz%E6%8E%A5%E5%8F%A3-WebPack%E5%88%86%E6%9E%90-%E8%87%AA%E5%8A%A8%E5%8C%96/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-07T20:26:43.000Z">
+<meta property="article:modified_time" content="2026-07-07T20:29:18.049Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/07/08/%E7%AC%AC20%E5%A4%A9-Web%E5%BA%94%E7%94%A8-JS%E6%9E%B6%E6%9E%84-URL%E6%8F%90%E5%8F%96-%E6%95%B0%E6%8D%AE%E5%8C%B9%E9%85%8D-Fuzz%E6%8E%A5%E5%8F%A3-WebPack%E5%88%86%E6%9E%90-%E8%87%AA%E5%8A%A8%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第20天-Web应用&JS架构&URL提取&数据匹配&Fuzz接口&WebPack分析&自动化 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/08/%E7%AC%AC20%E5%A4%A9-Web%E5%BA%94%E7%94%A8-JS%E6%9E%B6%E6%9E%84-URL%E6%8F%90%E5%8F%96-%E6%95%B0%E6%8D%AE%E5%8C%B9%E9%85%8D-Fuzz%E6%8E%A5%E5%8F%A3-WebPack%E5%88%86%E6%9E%90-%E8%87%AA%E5%8A%A8%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第20天-Web应用&JS架构&URL提取&数据匹配&Fuzz接口&WebPack分析&自动化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-07-08 04:26:43 / 修改时间：04:29:18" itemprop="dateCreated datePublished" datetime="2026-07-08T04:26:43+08:00">2026-07-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(信息收集)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="background-color:#ED740C;">这节课就是讲了，在渗透测试过程中，js文件是相当重要的，一般在加载网页时会返回很多js文件，可以对部分功能进行白盒测试，但是不是绝对的，如果逻辑业务代码是在后端那就没招，但是js代码中可以收集更多的url进行测试，有的站点js文件甚至会泄漏账号密码等敏感信息，所以介绍了下面一系列工具，对现有js进行分析取得有利信息，还可以暴力枚举js路径，拓宽攻击范围</font></p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong><font style="color:#444444;">标签</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">名称</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">地址</font></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><font style="color:#444444;">FUZZ测试</font></td>
+<td align="left"><font style="color:#333333;">ffuf</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/ffuf/ffuf"><u><font style="color:#1e6fff;">https://github.com/ffuf/ffuf</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">匹配插件</font></td>
+<td align="left"><font style="color:#444444;">Hae</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/gh0stkey/HaE"><u><font style="color:#1e6fff;">https://github.com/gh0stkey/HaE</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取</font></td>
+<td align="left"><font style="color:#444444;">JSFinder</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/Threezh1/JSFinder"><u><font style="color:#1e6fff;">https://github.com/Threezh1/JSFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取爬虫</font></td>
+<td align="left"><font style="color:#333333;">URLFinder</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/pingc0y/URLFinder"><u><font style="color:#1e6fff;">https://github.com/pingc0y/URLFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">WebPack分析</font></td>
+<td align="left"><font style="color:#333333;">Packer-Fuzzer</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/rtcatc/Packer-Fuzzer"><u><font style="color:#1e6fff;">https://github.com/rtcatc/Packer-Fuzzer</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS匹配插件</font></td>
+<td align="left"><font style="color:#333333;">BurpAPIFinder</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/shuanx/BurpAPIFinder"><u><font style="color:#1e6fff;">https://github.com/shuanx/BurpAPIFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取</font></td>
+<td align="left"><font style="color:#333333;">LinkFinder</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/GerbenJavado/LinkFinder"><u><font style="color:#1e6fff;">https://github.com/GerbenJavado/LinkFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">WebPack分析</font></td>
+<td align="left"><font style="color:#333333;">jjjjjjjjjjjjjs</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/ttstormxx/jjjjjjjjjjjjjs"><u><font style="color:#1e6fff;">https://github.com/ttstormxx/jjjjjjjjjjjjjs</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取爬虫</font></td>
+<td align="left"><font style="color:#333333;">FindSomething</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/momosecurity/FindSomething"><u><font style="color:#1e6fff;">https://github.com/momosecurity/FindSomething</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS匹配插件</font></td>
+<td align="left"><font style="color:#333333;">Unexpected_information</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/ScriptKid-Beta/Unexpected_information"><u><font style="color:#1e6fff;">https://github.com/ScriptKid-Beta/Unexpected_information</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">FUZZ字典</font></td>
+<td align="left"><font style="color:#333333;">字典集合</font></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://wordlists.assetnote.io/"><u><font style="color:#1e6fff;">https://wordlists.assetnote.io</font></u></a></td>
+</tr>
+</tbody></table>
+<p>在日常渗透测试中，从JavaScript(JS)文件中提取信息是一项关键的步骤，以往有些案例就是通过JS文件中发现的敏感信息从而拿下重要的系统。在JS开发的WEB应用和PHP，JAVA,NET等区别在于即没有源代码，也可以通过浏览器的查看源代码获取部分源代码逻辑。从而获取URL，获取JS敏感信息，获取代码传参等，所以相当于JS开发的WEB应用大部分属于白盒测试（默认有大量源码参考），一般会在JS中寻找更多的URL地址，在JS代码逻辑（加密算法，APIkey配置，验证逻辑等）进行后期安全测试。</p>
+<p>0、JS信息收集</p>
+<p>接口URL提取</p>
+<p>后端地址提取</p>
+<p>敏感信息提取</p>
+<p>配置信息提取</p>
+<p>其他信息提取（环境，注释，用途等）</p>
+<p>1、JS安全问题</p>
+<p>源码泄漏，代码审计，JS逆向分析</p>
+<p>未授权访问&#x3D;JS里面分析更多的URL访问确定接口路径</p>
+<p>敏感Key泄漏&#x3D;JS文件中配置接口信息（云应用，短信，邮件，数据库等）</p>
+<p>API接口安全&#x3D;（代码中加密提交参数传递，更多的URL路径）</p>
+<p>2、流行的Js框架有那些？</p>
+<p>Vue NodeJS jQuery Angular等</p>
+<p>3、如何判定JS开发应用？</p>
+<p>插件wappalyzer</p>
+<p>源程序代码简短</p>
+<p>引入多个js文件</p>
+<p>一般有&#x2F;static&#x2F;js&#x2F;app.js等顺序的js文件</p>
+<p>一般cookie中有connect.sid</p>
+<p>4、如何获取更多的JS文件？</p>
+<p>手工-浏览器搜索</p>
+<p>半自动-Burpsuite插件</p>
+<p>工具化-各类提取&amp;FUZZ项目</p>
+<p>5、如何快速获取价值信息？<font style="background-color:#FBDE28;">（手工分析，在加载的数据包&#x2F;源码中搜索关键词）</font></p>
+<p>src&#x3D;</p>
+<p>path&#x3D;</p>
+<p>method:”get”</p>
+<p>http.get(“</p>
+<p>method:”post”</p>
+<p>http.post(“</p>
+<p>$.ajax</p>
+<p><a target="_blank" rel="noopener" href="http://service.httppost/">http://service.httppost</a></p>
+<p><a target="_blank" rel="noopener" href="http://service.httpget/">http://service.httpget</a></p>
+<p>案例：</p>
+<p>0、人工JS中提取URL信息</p>
+<p>1、从JS中提取到URL信息</p>
+<p>2、从JS中提取到敏感信息</p>
+<p>3、从JS中提取到配置信息</p>
+<p>4、从JS中Fuzz提取到更多</p>
+<p>5、WebPack打包器信息获取</p>
+<p><font style="background-color:#FBDE28;">#项目插件工具：</font></p>
+<p><font style="color:#117CEE;">用来暴力枚举js接口的程序</font></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ffuf/ffuf">https://github.com/ffuf/ffuf</a></p>
+<p>用Go编写的快速 Web 模糊测试程序。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/gh0stkey/HaE">https://github.com/gh0stkey/HaE</a></p>
+<p>HaE是一款网络安全（数据安全）领域下的框架式项目，采用了乐高积木式模块化设计理念，巧妙地融入了人工智能大模型辅助技术，实现对HTTP消息（包含WebSocket）精细化的标记和提取。<font style="color:#117CEE;">其实就是一个bp插件，所有经过bp的流量，都会在规则库进行比对，如果命中了你自己配置的规则就会高亮显示，用来快速定位一些url泄漏信息泄漏等</font></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Threezh1/JSFinder">https://github.com/Threezh1/JSFinder</a></p>
+<p>一款用作快速在网站的js文件中提取URL，子域名的工具。<font style="color:#117CEE;">老牌工具了，现在推荐使用下面的URLFinder</font></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/pingc0y/URLFinder">https://github.com/pingc0y/URLFinder</a><font style="color:#117CEE;">（推荐）</font></p>
+<p>URLFinder是一款快速、全面、易用的页面信息提取工具</p>
+<p>用于分析页面中的js与url,查找隐藏在其中的敏感信息或未授权api接口</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rtcatc/Packer-Fuzzer">https://github.com/rtcatc/Packer-Fuzzer</a></p>
+<p>针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ttstormxx/jjjjjjjjjjjjjs">https://github.com/ttstormxx/jjjjjjjjjjjjjs</a></p>
+<p><font style="color:#000000;">针对webpack站点，爬取网站</font><font style="color:#990055;">JS</font><font style="color:#000000;">文件，分析获取接口列表，自动结合指纹识别和fuzz获取正确api根，可指定api根地址（针对前后端分离项目，可指定后端接口地址），根据有效api根组合爬取到的接口进行自动化请求，发现未授权</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">敏感信息泄露，回显api响应，定位敏感信息、敏感文件、敏感接口。支持批量模式。支持需认证接口自动尝试bypass。</font></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shuanx/BurpAPIFinder">https://github.com/shuanx/BurpAPIFinder</a><font style="color:#117CEE;">（推荐）</font></p>
+<p>攻防演练过程中，我们通常会用浏览器访问一些资产，但很多未授权&#x2F;敏感信息&#x2F;越权隐匿在已访问接口过html、JS文件等，通过该BurpAPIFinder插件我们可以：</p>
+<p>1、发现通过某接口可以进行未授权&#x2F;越权获取到所有的账号密码、私钥、凭证</p>
+<p>2、发现通过某接口可以枚举用户信息、密码修改、用户创建接口</p>
+<p>3、发现登陆后台网址</p>
+<p>4、发现在html、JS中泄漏账号密码或者云主机的Access Key和SecretKey</p>
+<p>5、自动提取js、html中路径进行访问，也支持自定义父路径访问 …</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/GerbenJavado/LinkFinder">https://github.com/GerbenJavado/LinkFinder</a></p>
+<p>功能类似于JSFinder，但JSFinder好久没更新了。</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">momosecurity</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">FindSomething</font><font style="color:#117CEE;">（这个个人觉得很好用）</font></p>
+<p><font style="color:#000000;">该工具是用于快速在网页的html源码或js代码中提取一些有趣的信息的浏览器插件，包括请求的资源、接口的url，请求的ip和域名，泄漏的证件号、手机号、邮箱等信息。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ScriptKid</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">Beta</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">Unexpected_information</font></p>
+<p><font style="color:#000000;">BurpSuite插件用来标记请求包中的一些敏感信息、</font><font style="color:#990055;">JS</font><font style="color:#000000;">接口和一些特殊字段，</font></p>
+<p><font style="color:#000000;">防止我们疏忽了一些数据包，使用它可能会有意外的收获信息。</font></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/07/07/%E7%AC%AC19%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%BA%90%E7%A0%81%E8%8E%B7%E5%8F%96-%E9%97%AD%E6%BA%90%E5%A4%87%E4%BB%BD%E5%BC%80%E5%8F%91%E6%B3%84%E6%BC%8F-WebPack%E6%89%93%E5%8C%85-%E8%B5%84%E6%BA%90%E6%90%9C%E7%B4%A2-ICO%E5%AE%9A%E4%BD%8D/" rel="prev" title="第19天-Web应用&源码获取&闭源备份开发泄漏&WebPack打包&资源搜索&ICO定位">
+      <i class="fa fa-chevron-left"></i> 第19天-Web应用&源码获取&闭源备份开发泄漏&WebPack打包&资源搜索&ICO定位
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/07/08/%E7%AC%AC21%E5%A4%A9-Web%E5%BA%94%E7%94%A8-CDN%E7%BB%95%E8%BF%87-%E5%8A%A0%E9%80%9F%E9%83%A8%E7%BD%B2-%E6%BC%8F%E6%B4%9E%E5%9B%9E%E9%93%BE-%E5%85%A8%E7%BD%91%E6%89%AB%E6%8F%8F-%E5%8F%8D%E5%90%91%E9%82%AE%E4%BB%B6-%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95/" rel="next" title="第21天-Web应用&CDN绕过&加速部署&漏洞回链&全网扫描&反向邮件&解析记录">
+      第21天-Web应用&CDN绕过&加速部署&漏洞回链&全网扫描&反向邮件&解析记录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

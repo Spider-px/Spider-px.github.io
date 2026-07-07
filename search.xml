@@ -2047,4 +2047,296 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第20天-Web应用&amp;JS架构&amp;URL提取&amp;数据匹配&amp;Fuzz接口&amp;WebPack分析&amp;自动化</title>
+    <url>/2026/07/08/%E7%AC%AC20%E5%A4%A9-Web%E5%BA%94%E7%94%A8-JS%E6%9E%B6%E6%9E%84-URL%E6%8F%90%E5%8F%96-%E6%95%B0%E6%8D%AE%E5%8C%B9%E9%85%8D-Fuzz%E6%8E%A5%E5%8F%A3-WebPack%E5%88%86%E6%9E%90-%E8%87%AA%E5%8A%A8%E5%8C%96/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="background-color:#ED740C;">这节课就是讲了，在渗透测试过程中，js文件是相当重要的，一般在加载网页时会返回很多js文件，可以对部分功能进行白盒测试，但是不是绝对的，如果逻辑业务代码是在后端那就没招，但是js代码中可以收集更多的url进行测试，有的站点js文件甚至会泄漏账号密码等敏感信息，所以介绍了下面一系列工具，对现有js进行分析取得有利信息，还可以暴力枚举js路径，拓宽攻击范围</font></p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong><font style="color:#444444;">标签</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">名称</font></strong></th>
+<th align="left"><strong><font style="color:#444444;">地址</font></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><font style="color:#444444;">FUZZ测试</font></td>
+<td align="left"><font style="color:#333333;">ffuf</font></td>
+<td align="left"><a href="https://github.com/ffuf/ffuf"><u><font style="color:#1e6fff;">https://github.com/ffuf/ffuf</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">匹配插件</font></td>
+<td align="left"><font style="color:#444444;">Hae</font></td>
+<td align="left"><a href="https://github.com/gh0stkey/HaE"><u><font style="color:#1e6fff;">https://github.com/gh0stkey/HaE</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取</font></td>
+<td align="left"><font style="color:#444444;">JSFinder</font></td>
+<td align="left"><a href="https://github.com/Threezh1/JSFinder"><u><font style="color:#1e6fff;">https://github.com/Threezh1/JSFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取爬虫</font></td>
+<td align="left"><font style="color:#333333;">URLFinder</font></td>
+<td align="left"><a href="https://github.com/pingc0y/URLFinder"><u><font style="color:#1e6fff;">https://github.com/pingc0y/URLFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">WebPack分析</font></td>
+<td align="left"><font style="color:#333333;">Packer-Fuzzer</font></td>
+<td align="left"><a href="https://github.com/rtcatc/Packer-Fuzzer"><u><font style="color:#1e6fff;">https://github.com/rtcatc/Packer-Fuzzer</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS匹配插件</font></td>
+<td align="left"><font style="color:#333333;">BurpAPIFinder</font></td>
+<td align="left"><a href="https://github.com/shuanx/BurpAPIFinder"><u><font style="color:#1e6fff;">https://github.com/shuanx/BurpAPIFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取</font></td>
+<td align="left"><font style="color:#333333;">LinkFinder</font></td>
+<td align="left"><a href="https://github.com/GerbenJavado/LinkFinder"><u><font style="color:#1e6fff;">https://github.com/GerbenJavado/LinkFinder</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">WebPack分析</font></td>
+<td align="left"><font style="color:#333333;">jjjjjjjjjjjjjs</font></td>
+<td align="left"><a href="https://github.com/ttstormxx/jjjjjjjjjjjjjs"><u><font style="color:#1e6fff;">https://github.com/ttstormxx/jjjjjjjjjjjjjs</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS提取爬虫</font></td>
+<td align="left"><font style="color:#333333;">FindSomething</font></td>
+<td align="left"><a href="https://github.com/momosecurity/FindSomething"><u><font style="color:#1e6fff;">https://github.com/momosecurity/FindSomething</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#444444;">JS匹配插件</font></td>
+<td align="left"><font style="color:#333333;">Unexpected_information</font></td>
+<td align="left"><a href="https://github.com/ScriptKid-Beta/Unexpected_information"><u><font style="color:#1e6fff;">https://github.com/ScriptKid-Beta/Unexpected_information</font></u></a></td>
+</tr>
+<tr>
+<td align="left"><font style="color:#333333;">FUZZ字典</font></td>
+<td align="left"><font style="color:#333333;">字典集合</font></td>
+<td align="left"><a href="https://wordlists.assetnote.io/"><u><font style="color:#1e6fff;">https://wordlists.assetnote.io</font></u></a></td>
+</tr>
+</tbody></table>
+<p>在日常渗透测试中，从JavaScript(JS)文件中提取信息是一项关键的步骤，以往有些案例就是通过JS文件中发现的敏感信息从而拿下重要的系统。在JS开发的WEB应用和PHP，JAVA,NET等区别在于即没有源代码，也可以通过浏览器的查看源代码获取部分源代码逻辑。从而获取URL，获取JS敏感信息，获取代码传参等，所以相当于JS开发的WEB应用大部分属于白盒测试（默认有大量源码参考），一般会在JS中寻找更多的URL地址，在JS代码逻辑（加密算法，APIkey配置，验证逻辑等）进行后期安全测试。</p>
+<p>0、JS信息收集</p>
+<p>接口URL提取</p>
+<p>后端地址提取</p>
+<p>敏感信息提取</p>
+<p>配置信息提取</p>
+<p>其他信息提取（环境，注释，用途等）</p>
+<p>1、JS安全问题</p>
+<p>源码泄漏，代码审计，JS逆向分析</p>
+<p>未授权访问&#x3D;JS里面分析更多的URL访问确定接口路径</p>
+<p>敏感Key泄漏&#x3D;JS文件中配置接口信息（云应用，短信，邮件，数据库等）</p>
+<p>API接口安全&#x3D;（代码中加密提交参数传递，更多的URL路径）</p>
+<p>2、流行的Js框架有那些？</p>
+<p>Vue NodeJS jQuery Angular等</p>
+<p>3、如何判定JS开发应用？</p>
+<p>插件wappalyzer</p>
+<p>源程序代码简短</p>
+<p>引入多个js文件</p>
+<p>一般有&#x2F;static&#x2F;js&#x2F;app.js等顺序的js文件</p>
+<p>一般cookie中有connect.sid</p>
+<p>4、如何获取更多的JS文件？</p>
+<p>手工-浏览器搜索</p>
+<p>半自动-Burpsuite插件</p>
+<p>工具化-各类提取&amp;FUZZ项目</p>
+<p>5、如何快速获取价值信息？<font style="background-color:#FBDE28;">（手工分析，在加载的数据包&#x2F;源码中搜索关键词）</font></p>
+<p>src&#x3D;</p>
+<p>path&#x3D;</p>
+<p>method:”get”</p>
+<p>http.get(“</p>
+<p>method:”post”</p>
+<p>http.post(“</p>
+<p>$.ajax</p>
+<p><a href="http://service.httppost/">http://service.httppost</a></p>
+<p><a href="http://service.httpget/">http://service.httpget</a></p>
+<p>案例：</p>
+<p>0、人工JS中提取URL信息</p>
+<p>1、从JS中提取到URL信息</p>
+<p>2、从JS中提取到敏感信息</p>
+<p>3、从JS中提取到配置信息</p>
+<p>4、从JS中Fuzz提取到更多</p>
+<p>5、WebPack打包器信息获取</p>
+<p><font style="background-color:#FBDE28;">#项目插件工具：</font></p>
+<p><font style="color:#117CEE;">用来暴力枚举js接口的程序</font></p>
+<p><a href="https://github.com/ffuf/ffuf">https://github.com/ffuf/ffuf</a></p>
+<p>用Go编写的快速 Web 模糊测试程序。</p>
+<p><a href="https://github.com/gh0stkey/HaE">https://github.com/gh0stkey/HaE</a></p>
+<p>HaE是一款网络安全（数据安全）领域下的框架式项目，采用了乐高积木式模块化设计理念，巧妙地融入了人工智能大模型辅助技术，实现对HTTP消息（包含WebSocket）精细化的标记和提取。<font style="color:#117CEE;">其实就是一个bp插件，所有经过bp的流量，都会在规则库进行比对，如果命中了你自己配置的规则就会高亮显示，用来快速定位一些url泄漏信息泄漏等</font></p>
+<p><a href="https://github.com/Threezh1/JSFinder">https://github.com/Threezh1/JSFinder</a></p>
+<p>一款用作快速在网站的js文件中提取URL，子域名的工具。<font style="color:#117CEE;">老牌工具了，现在推荐使用下面的URLFinder</font></p>
+<p><a href="https://github.com/pingc0y/URLFinder">https://github.com/pingc0y/URLFinder</a><font style="color:#117CEE;">（推荐）</font></p>
+<p>URLFinder是一款快速、全面、易用的页面信息提取工具</p>
+<p>用于分析页面中的js与url,查找隐藏在其中的敏感信息或未授权api接口</p>
+<p><a href="https://github.com/rtcatc/Packer-Fuzzer">https://github.com/rtcatc/Packer-Fuzzer</a></p>
+<p>针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具。</p>
+<p><a href="https://github.com/ttstormxx/jjjjjjjjjjjjjs">https://github.com/ttstormxx/jjjjjjjjjjjjjs</a></p>
+<p><font style="color:#000000;">针对webpack站点，爬取网站</font><font style="color:#990055;">JS</font><font style="color:#000000;">文件，分析获取接口列表，自动结合指纹识别和fuzz获取正确api根，可指定api根地址（针对前后端分离项目，可指定后端接口地址），根据有效api根组合爬取到的接口进行自动化请求，发现未授权</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">敏感信息泄露，回显api响应，定位敏感信息、敏感文件、敏感接口。支持批量模式。支持需认证接口自动尝试bypass。</font></p>
+<p><a href="https://github.com/shuanx/BurpAPIFinder">https://github.com/shuanx/BurpAPIFinder</a><font style="color:#117CEE;">（推荐）</font></p>
+<p>攻防演练过程中，我们通常会用浏览器访问一些资产，但很多未授权&#x2F;敏感信息&#x2F;越权隐匿在已访问接口过html、JS文件等，通过该BurpAPIFinder插件我们可以：</p>
+<p>1、发现通过某接口可以进行未授权&#x2F;越权获取到所有的账号密码、私钥、凭证</p>
+<p>2、发现通过某接口可以枚举用户信息、密码修改、用户创建接口</p>
+<p>3、发现登陆后台网址</p>
+<p>4、发现在html、JS中泄漏账号密码或者云主机的Access Key和SecretKey</p>
+<p>5、自动提取js、html中路径进行访问，也支持自定义父路径访问 …</p>
+<p><a href="https://github.com/GerbenJavado/LinkFinder">https://github.com/GerbenJavado/LinkFinder</a></p>
+<p>功能类似于JSFinder，但JSFinder好久没更新了。</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">momosecurity</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">FindSomething</font><font style="color:#117CEE;">（这个个人觉得很好用）</font></p>
+<p><font style="color:#000000;">该工具是用于快速在网页的html源码或js代码中提取一些有趣的信息的浏览器插件，包括请求的资源、接口的url，请求的ip和域名，泄漏的证件号、手机号、邮箱等信息。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ScriptKid</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">Beta</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">Unexpected_information</font></p>
+<p><font style="color:#000000;">BurpSuite插件用来标记请求包中的一些敏感信息、</font><font style="color:#990055;">JS</font><font style="color:#000000;">接口和一些特殊字段，</font></p>
+<p><font style="color:#000000;">防止我们疏忽了一些数据包，使用它可能会有意外的收获信息。</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第21天-Web应用&amp;CDN绕过&amp;加速部署&amp;漏洞回链&amp;全网扫描&amp;反向邮件&amp;解析记录</title>
+    <url>/2026/07/08/%E7%AC%AC21%E5%A4%A9-Web%E5%BA%94%E7%94%A8-CDN%E7%BB%95%E8%BF%87-%E5%8A%A0%E9%80%9F%E9%83%A8%E7%BD%B2-%E6%BC%8F%E6%B4%9E%E5%9B%9E%E9%93%BE-%E5%85%A8%E7%BD%91%E6%89%AB%E6%8F%8F-%E5%8F%8D%E5%90%91%E9%82%AE%E4%BB%B6-%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#ED740C;">#前置知识：</font></p>
+<p>1.传统访问：用户访问域名–&gt;解析服务器IP–&gt;访问目标主机</p>
+<p>2.普通CDN：用户访问域名–&gt;CDN节点–&gt;真实服务器IP–&gt;访问目标主机</p>
+<p>3.带WAF的CDN：用户访问域名–&gt;CDN节点（WAF）–&gt;真实IP–&gt;访问目标主机</p>
+<p><font style="background-color:#ED740C;">安全影响：主要对于信息收集时端口扫描和IP探针的相关真实信息存在有误等</font></p>
+<details class="lake-collapse"><summary id="ucaf21082"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">了解一下cdn厂商：</span></summary><p id="u6ad903ab" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">国内服务商：</span></p><p id="u0920e15e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">阿里云 百度云 七牛云 </span></p><p id="u8d425e72" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">又拍云 腾讯云 Ucloud</span></p><p id="ub410242f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">360</span><span class="ne-text" style="font-size: 24px"> 网宿科技 ChinaCache</span></p><p id="ue11bf02c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="uc048e902" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">国外服务商</span></p><p id="u88b66670" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">CloudFlare StackPath Fastly</span></p><p id="ua42cce27" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">Akamai CloudFront Edgecast</span></p><p id="ube7a5e79" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">CDNetworks Google Cloud CDN</span></p><p id="uee768e21" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">CacheFly Keycdn Udomain CDN77</span></p></details>
+
+
+<p><font style="background-color:#ED740C;">#CDN配置：</font></p>
+<p>配置1：加速域名-需要启用加速的域名（子域名没配置）</p>
+<p>配置2：加速区域-需要启用加速的地区（国外地区没加速）</p>
+<p>配置3：加速类型-需要启用加速的资源</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/021-1.png"></p>
+<p>#参考知识：</p>
+<p>超级Ping：<a href="http://www.17ce.com/">http://www.17ce.com/</a></p>
+<p>超级Ping：<a href="https://ping.chinaz.com/">https://ping.chinaz.com/</a></p>
+<p>接口查询：<a href="https://get-site-ip.com/">https://get-site-ip.com/</a></p>
+<p>接口查询：<a href="https://fofa.info/extensions/source">https://fofa.info/extensions/source</a></p>
+<p>国外请求：<a href="https://tools.ipip.net/cdn.php">https://tools.ipip.net/cdn.php</a></p>
+<p>国外请求：<a href="https://boce.aliyun.com/detect/">https://boce.aliyun.com/detect/</a></p>
+<p>IP社区库：<a href="https://www.cz88.net/geo-public">https://www.cz88.net/geo-public</a></p>
+<p>CDN厂商查询：<a href="https://cdn.chinaz.com/">https://cdn.chinaz.com/</a></p>
+<p>CDN厂商查询：<a href="https://tools.ipip.net/cdn.php">https://tools.ipip.net/cdn.php</a></p>
+<p>全网扫描：<a href="https://github.com/Tai7sy/fuckcdn">https://github.com/Tai7sy/fuckcdn</a></p>
+<p>全网扫描：<a href="https://github.com/boy-hack/w8fuckcdn">https://github.com/boy-hack/w8fuckcdn</a></p>
+<p>全网扫描：<a href="https://github.com/Pluto-123/Bypass_cdn">https://github.com/Pluto-123/Bypass_cdn</a></p>
+<p>参考</p>
+<p><a href="https://mp.weixin.qq.com/s/M_tdPxhtOm9XPoVq721FPg">https://mp.weixin.qq.com/s/M_tdPxhtOm9XPoVq721FPg</a></p>
+<p><a href="https://mp.weixin.qq.com/s/zxEH-HMqKukmq7qXfrdnQQ">https://mp.weixin.qq.com/s/zxEH-HMqKukmq7qXfrdnQQ</a></p>
+<p>常见方法：</p>
+<p>子域名，邮件系统，国外访问，证书查询，APP抓包，网络空间</p>
+<p>通过漏洞或泄露获取，扫全网，以量打量，第三方接口查询等</p>
+<p><font style="background-color:#ED740C;">1. 查询历史DNS记录</font>：通过查询历史DNS记录，可以找到使用CDN前的IP地址。常用网站有DNSDB、微步在线、Netcraft、ViewDNS等。<font style="background-color:#FBDE28;">就是网站可能之前没有开启cdn，就有真实的dns解析记录。</font></p>
+<p><font style="background-color:#ED740C;">2. 查询子域名</font>：一些网站可能只对主站或流量大的子站点使用CDN。通过查询子域名对应的IP地址，可以辅助找到网站的真实IP。常用工具包括微步在线、Dnsdb查询法、Google搜索等。</p>
+<ol start="3">
+<li>网络空间引擎搜索：利用网络空间搜索引擎（如Shodan、Fofa、ZoomEye）搜索特定关键词或特征，可以找到使用CDN的网站的真实IP地址。</li>
+</ol>
+<p><font style="background-color:#ED740C;">4. SSL证书</font>：扫描互联网获取SSL证书，进而找到服务器的真实IP。Censys是一个用于搜索联网设备信息并扫描整个互联网的强大工具。</p>
+<p>:::info</p>
+<ol>
+<li><p>CA颁发SSL证书时强制存入公开CT日志，全网可查证书域名、SAN域名。</p>
+</li>
+<li><p>工具批量扫描全网443端口，抓取每台IP返回的证书指纹&#x2F;内容。 </p>
+</li>
+<li><p>建立映射：IP ↔ 证书指纹 ↔ 目标域名。 </p>
+</li>
+<li><p>匹配到相同证书，即可反推出站点真实源站IP。 5. 历史证书、未接入CDN的子域名证书，也能挖出过往&#x2F;后端真实IP。</p>
+</li>
+</ol>
+<p>:::</p>
+<ol start="5">
+<li><p>HTTP标头：通过比较HTTP标头来查找原始服务器。例如，使用SecurityTrails平台搜索特定HTTP标头。</p>
+</li>
+<li><p>网站源代码：浏览网站源代码，寻找独特的代码片段或隐藏的IP地址信息。</p>
+</li>
+<li><p>国外主机解析域名：由于一些CDN服务在国外地区可能无法提供完整的保护，使用国外的主机直接访问目标网站可能会获取到真实IP地址。</p>
+</li>
+</ol>
+<p><font style="background-color:#ED740C;">8. 遗留文件</font>：如phpinfo页面泄露，可能会显示服务器的外网IP地址。<font style="background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#ED740C;">9. 漏洞探针</font>：利用网站上的漏洞（如SSRF漏洞）让VPS获取对方反向连接的IP地址。<font style="background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#ED740C;">10. 网站邮件订阅</font>：查看RSS邮件订阅的邮件源码，通常包含服务器的真实IP地址。<font style="background-color:#FBDE28;"></font></p>
+<ol start="11">
+<li><p>全网扫描：使用Zmap、Masscan等工具对整个互联网进行扫描，针对扫描结果进行关键字查找，获取网站真实IP。</p>
+</li>
+<li><p>解码F5 LTM负载均衡器：当服务器使用F5 LTM做负载均衡时，通过对set-cookie关键字的解码，可以获取到真实IP地址。</p>
+</li>
+<li><p>利用MX记录：如果网站在与web相同的服务器和IP上托管自己的邮件服务器，那么原始服务器IP将在MX记录中。</p>
+</li>
+<li><p>利用favicon.ico：查看网站的favicon.ico文件，通过其唯一的hash值进行识别，有时可以找到与网站相关的真实IP地址。</p>
+</li>
+</ol>
+<p><font style="background-color:#ED740C;">15. 配置错误</font>：检查CDN的配置细节，有时小小的配置错误就可能导致CDN防护被绕过。例如，CDN只配置了www域名，而直接访问非www域名可能获取到真实IP。<font style="background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#ED740C;">16. 协议差异</font>：如果站点同时支持http和https访问<font style="background-color:#FBDE28;">（前置条件，80端口开放）</font>，而CDN只配置了https协议，那么访问http可能获取到真实IP。</p>
+<ol start="17">
+<li><p>利用网站功能：通过网站提供的某些功能（如邮箱注册、找回密码等），让网站主动暴露真实IP地址。</p>
+</li>
+<li><p>搜索引擎查询：利用搜索引擎的特定查询语法（如site:和inurl:），结合目标网站的信息，可能找到与网站相关的真实IP地址。</p>
+</li>
+<li><p>子域名挖掘机：输入域名即可基于字典挖掘子域名，通过查找子域名的IP地址来辅助找到网站的真实IP。</p>
+</li>
+<li><p>IP库查询：使用IP库（如纯真数据库）来查询IP段，结合网站特征进行爆破，可能找到真实IP地址。</p>
+</li>
+</ol>
+<p><font style="background-color:#ED740C;">#前置后置-CDN服务-识别加速&amp;绑定访问</font></p>
+<p>超级Ping：<a href="http://17ce.com/">http://17ce.com/</a></p>
+<p>超级Ping：<a href="https://ping.chinaz.com/">https://ping.chinaz.com/</a></p>
+<p>拨测工具：<a href="https://boce.aliyun.com/detect/">https://boce.aliyun.com/detect/</a></p>
+<p>各地ping（出现多个IP即启用CDN服务）</p>
+<p>后置：绑定HOST访问解析（参考基础课CDN安全影响）</p>
+<p><font style="background-color:#ED740C;">#某应用-CDN绕过-主动漏洞&amp;遗留文件&amp;综合查询</font></p>
+<p>检查CDN的配置细节，有时小小的配置错误就可能导致CDN防护被绕过。例如，CDN只配置了www域名，而直接访问非www域名可能获取到真实IP。<font style="background-color:#FBDE28;">这个就是配置的问题，加速域名配置不当，可以看上面配置过程图片</font></p>
+<p>1、国外接口访问</p>
+<p>2、子域名解析IP</p>
+<p>3、综合查询（历史记录，证书记录等）</p>
+<p>综合接口查询：<a href="https://get-site-ip.com/">https://get-site-ip.com/</a></p>
+<p>综合接口查询：<a href="https://fofa.info/extensions/source">https://fofa.info/extensions/source</a></p>
+<p>使用网络空间&amp;第三方功能集合查询判断</p>
+<p><font style="background-color:#ED740C;">#某应用-CDN绕过-主动漏洞&amp;遗留文件&amp;邮件系统</font></p>
+<p>1、漏洞如：SSRF RCE等</p>
+<p>利用网站上的漏洞（如SSRF漏洞）让VPS获取对方反向连接的IP地址。<font style="background-color:#FBDE28;">就是利用对方业务上的漏洞来让对方服务器主动交出ip，我们在公网上通过nc等工具监听自己端口，通过可以加载外部资源的功能点访问攻击机，那就得到真实ip了</font></p>
+<p>2、遗留文件：phpinfo类似功能</p>
+<p>如phpinfo页面泄露，可能会显示服务器的外网IP地址。<font style="background-color:#FBDE28;">这种就是靠漏洞信息泄露导致，有可能也会显示内网ip，自己判别</font></p>
+<p>3、邮箱系统：</p>
+<p>查看RSS邮件订阅的邮件源码，通常包含服务器的真实IP地址。<font style="background-color:#FBDE28;">这种情况获取的概率较低，第一种情况：第三方代发，就是可能用了其他企业专门的邮箱系统，所以自然获取不了。第二种情况：邮件服务器和目标关系不大，如果两个都不在一个服务器上自然也是不行。第三种情况：自己邮箱的问题，比如你用qq邮箱这种，它可能不是直达，是先发给qq然后再给你，所以看到的ip是qq的，但是这种有办法解决，就是搭建自己的邮件系统。</font></p>
+<p>常见的邮件触发点有：</p>
+<p>1、RSS订阅</p>
+<p>2、邮箱注册、激活处</p>
+<p>3、邮箱找回密码处</p>
+<p>4、产品更新的邮件推送</p>
+<p>5、某业务执行后发送的邮件通知</p>
+<p>6、员工邮箱、邮件管理平台等入口处的忘记密码</p>
+<p><font style="background-color:#ED740C;">#某应用-CDN绕过-全网扫描</font></p>
+<p>案例1：结合关键字固定IP段找真实IP</p>
+<p>1、判断加速厂商</p>
+<p>2、IP库筛地址段<font style="background-color:#FBDE28;">（不同地区的ip段不一样，所以还得知道对方的地址）所以我感觉不太好用</font></p>
+<p>3、配置范围扫描<font style="background-color:#FBDE28;">【用fuckcdn，里面有个ip.txt就是写ip段的（这也是为什么前两步要做），然后运行脚本就能找到，原理就是访问这个网段的所有ip地址，然后找到符合你输入的特征的网站（就是脚本里有一个部分就是输入网站的特征）】</font></p>
+<p>厂商查询：</p>
+<p><a href="https://cdn.chinaz.com/">https://cdn.chinaz.com/</a></p>
+<p><a href="https://tools.ipip.net/cdn.php">https://tools.ipip.net/cdn.php</a></p>
+<p>工具项目：</p>
+<p><a href="https://www.cz88.net/geo-public">https://www.cz88.net/geo-public</a></p>
+<p><a href="https://github.com/Tai7sy/fuckcdn">https://github.com/Tai7sy/fuckcdn</a></p>
+<p>案例2：ico筛选资产+特征端口找真实IP</p>
+<p><font style="background-color:#FBDE28;">这个和网络空间搜索引擎有关，它需要时间爬取，所以内容可能没有也可能失效</font></p>
+<p><a href="https://mp.weixin.qq.com/s/fAbKQsTE0jzUnMWqOkDjMA">https://mp.weixin.qq.com/s/fAbKQsTE0jzUnMWqOkDjMA</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
