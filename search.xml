@@ -2221,7 +2221,7 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p>配置2：加速区域-需要启用加速的地区（国外地区没加速）</p>
 <p>配置3：加速类型-需要启用加速的资源</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/021-1.png"></p>
+<p><img src="/images/021-1.png"></p>
 <p>#参考知识：</p>
 <p>超级Ping：<a href="http://www.17ce.com/">http://www.17ce.com/</a></p>
 <p>超级Ping：<a href="https://ping.chinaz.com/">https://ping.chinaz.com/</a></p>
