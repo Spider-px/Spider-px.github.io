@@ -2342,4 +2342,186 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第23天-APP应用&amp;产权渠道&amp;服务资产&amp;通讯抓包&amp;静态提取&amp;动态调试&amp;测试范围</title>
+    <url>/2026/07/11/%E7%AC%AC23%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E4%BA%A7%E6%9D%83%E6%B8%A0%E9%81%93-%E6%9C%8D%E5%8A%A1%E8%B5%84%E4%BA%A7-%E9%80%9A%E8%AE%AF%E6%8A%93%E5%8C%85-%E9%9D%99%E6%80%81%E6%8F%90%E5%8F%96-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-%E6%B5%8B%E8%AF%95%E8%8C%83%E5%9B%B4/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">APP应用-公开信息-知识产权&amp;开发者定位</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ APP应用-资产信息-抓包&amp;静态提取&amp;动态调试</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;">APP渗透测试的范围应涵盖APP所有功能和组件，包括但不限于以下几个方面：</font></p>
+<p><font style="color:#000000;">• 前端安全：包括界面交互、输入验证、会话管理等。</font></p>
+<p><font style="color:#000000;">• 后端安全：包括API接口、数据库交互、业务逻辑等。</font></p>
+<p><font style="color:#000000;">• 数据传输安全：包括数据传输过程中的加密、签名、完整性校验等。</font></p>
+<p><font style="color:#000000;">• 用户认证与授权：包括登录、注册、权限分配、会话管理等。</font></p>
+<p><font style="color:#000000;">• 第三方库与组件：包括使用的第三方库、SDK、插件等的安全性和稳定性。</font></p>
+<p><font style="color:#000000;">• 配置与环境：包括APP的配置文件、环境变量、日志管理等。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">移动安全：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、站着逆向角度</font></p>
+<p><font style="color:#000000;">有无保护，源码修改打包HOOK</font></p>
+<p><font style="color:#000000;">删除验证代码 证书 代理 抓包</font></p>
+<p><font style="color:#000000;">删除验证代码 破解版（突破会员制度等）</font></p>
+<p><font style="color:#000000;">翻到密钥 接口 密码等关键敏感</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、站着渗透角度</font></p>
+<p><font style="color:#000000;">APP架构资产</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">表现，源码，调试逻辑</font></p>
+<p><font style="color:#000000;">web 域名 cms api接口 web安全问题</font></p>
+<p><font style="color:#000000;">ip 端口 服务 web服务（见上） 数据库 中间件 等服务测试</font></p>
+<p><font style="color:#000000;">API 接口 测试 </font></p>
+<p><font style="color:#000000;">逻辑安全问题</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">通过获取</font><font style="color:#dd4a68;">App</font><font style="color:#000000;">配置、数据包，去获取url、api、osskey、js等敏感信息。</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、资产信息</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">IP 域名 网站 </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">转到对应</font><font style="color:#dd4a68;">Web</font><font style="color:#000000;">测试 API接口测试 服务测试 </font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、泄露信息</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">配置key 资源文件 </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;"> key（osskey利用，密钥配置等）</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、代码信息</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">代码安全 HOOK绕过限制（证书，代理，脱壳等）</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;"> 逆向相关</font></p>
+<p><font style="color:#000000;">APP中收集资产：通讯抓包，静态提取，动态调试</font></p>
+<p><font style="color:#000000;background-color:#ED740C;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#公开信息收集：</font></p>
+<p><font style="color:#000000;">通过搜索引擎、社交媒体、应用商店等渠道，收集目标APP信息，如APP名称、版本、开发者、下载量等。名称获取APP信息（爱企查</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">小蓝本</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">七麦</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">点点）</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、查备案信息在搜</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、网站上有APP下载</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、市场直接搜单位名称</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">qimai</font><font style="color:#999999;">.</font><font style="color:#000000;">cn</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">app</font><font style="color:#999999;">.</font><font style="color:#000000;">diandian</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">aiqicha</font><font style="color:#999999;">.</font><font style="color:#000000;">baidu</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">xiaolanben</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#APP资产提取：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、动态抓包</font></p>
+<p><font style="color:#dd4a68;">Burpsuite</font><font style="color:#9a6e3a;">+</font><font style="color:#dd4a68;">Reqable</font></p>
+<p><font style="color:#000000;">参考前期部分抓包技术</font></p>
+<p><font style="color:#000000;">技术优点：没有误报</font></p>
+<p><font style="color:#000000;">技术缺点：无法做到完整</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、静态提取</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">反编译</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">上传 APK&#x2F;IPA，工具</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">反编译、解压</font><font style="color:#000000;background-color:#FBDE28;">，只解析代码、配置文件，</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">全程不启动 APP</font><font style="color:#000000;background-color:#FBDE28;">。 </font><font style="color:#000000;"> </font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">技术优点：数据较为完整</font></p>
+<p><font style="color:#000000;">技术缺点：有很多无用的资产</font></p>
+<p><font style="color:#dd4a68;">APKDeepLens</font><font style="color:#000000;">收集APP的权限、组件信息、IP、</font><font style="color:#dd4a68;">Secret</font><font style="color:#000000;">。</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">d78ui98</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#dd4a68;">APKDeepLens</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#dd4a68;">APKLeaks</font><font style="color:#000000;">工具，用于检查APK文件中的硬编码URL、API密钥等敏感信息。</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">dwisiswant0</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">apkleaks</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#dd4a68;">AppInfoScanner</font><font style="color:#000000;">对</font><font style="color:#dd4a68;">Android</font><font style="color:#000000;">、iOS、WEB多场景应用进行信息扫描，收集IP、URL、</font><font style="color:#dd4a68;">Server</font><font style="color:#000000;">、CDN等信息。</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">kelvinBen</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#dd4a68;">AppInfoScanner</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这三个工具就是通过反编译获取源代码，然后通过正则表达式匹配获取信息，有的应用弄不了，可能是app加壳，第一步反编译就失败了。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、动态调试</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">反调试</font></p>
+<p><font style="color:#000000;">技术优点：HOOK可解决不能抓包不能代理等情况</font></p>
+<p><font style="color:#000000;">技术优点；搞逆向的人能看到实时的app调用链等</font></p>
+<p><font style="color:#000000;">技术缺点：部分APP有反调试等无法做到完整</font></p>
+<p><font style="color:#dd4a68;">MobSF</font><font style="color:#000000;">是一种自动化的移动应用（</font><font style="color:#dd4a68;">Android</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">iOS</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#dd4a68;">Windows</font><font style="color:#000000;">）静态和动态分析的测试，恶意软件分析和安全评估框架。</font></p>
+<p><font style="color:#000000;">https</font><font style="color:#9a6e3a;">:&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#dd4a68;">MobSF</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#dd4a68;">Mobile</font><font style="color:#9a6e3a;">-</font><font style="color:#dd4a68;">Security</font><font style="color:#9a6e3a;">-</font><font style="color:#dd4a68;">Framework</font><font style="color:#9a6e3a;">-</font><font style="color:#dd4a68;">MobSF</font></p>
+<p><font style="color:#dd4a68;"></font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#ED740C;">核心逻辑</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">：在隔离模拟器 &#x2F; 真机里真实启动 APP，用 Xposed&#x2F;Frida 做 Hook，全程抓运行行为。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#ED740C;">能查什么：</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">抓全部网络流量（HTTP&#x2F;HTTPS），看账号密码是否明文传输</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">Hook 系统 API：文件读写、数据库、加密、权限调用</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">监控日志、本地存储（数据库、缓存明文隐私）</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">绕过 SSL 校验、遍历页面组件，发现静态扫不出来的逻辑漏洞</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#ED740C;">限制：</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">仅完整支持 Android；必须开模拟器，耗时更长。</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第22天-Web应用&amp;各语言框架&amp;安全组件&amp;联动系统&amp;数据特征&amp;人工分析&amp;识别项目</title>
+    <url>/2026/07/11/%E7%AC%AC22%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E5%90%84%E8%AF%AD%E8%A8%80%E6%A1%86%E6%9E%B6-%E5%AE%89%E5%85%A8%E7%BB%84%E4%BB%B6-%E8%81%94%E5%8A%A8%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E7%89%B9%E5%BE%81-%E4%BA%BA%E5%B7%A5%E5%88%86%E6%9E%90-%E8%AF%86%E5%88%AB%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#FBDE28;">web开发使用的框架组件，都多多少少报过漏洞，所以我们识别框架就至关重要，识别到可以利用历史漏洞进行渗透(利用对应框架漏洞利用工具)</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">框架：一套完整程序骨架，定好项目结构、代码写法、程序运行流程，框架主导程序执行，你只写业务代码。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">组件：独立小功能模块，只负责一件事，按需引入、可随意替换，依附框架使用。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">下面框架识别方法，还是识别插件比较好用（wappalyzer），数据包特征我们也记不住那么多，并且这个也不是每个站点都会出现，管理人员可以自定义的，还可以看icon图标有的网站图标是框架图标。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Python-开发框架-Django&amp;Flask</font></p>
+<p><font style="color:#000000;">Django</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、固定的数据包格式：Set-Cookie:expires&#x3D;</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Flask</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、固定的数据包格式：Etag: “flask X-Powered-By: Flask</font></p>
+<p><font style="color:#000000;">Tornado</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、固定的数据包格式：Server: TornadoServer</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#JavaScript-开发框架-Vue&amp;Node.js</font></p>
+<p><font style="color:#000000;">Vue</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、JS语法和加载文件（vue.js）</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Node.js</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、固定的数据包格式：ETag: W&#x2F;“</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#PHP-开发框架-ThinkPHP&amp;Laravel&amp;Yii</font></p>
+<p><font style="color:#000000;">ThinkPHP：</font></p>
+<p><font style="color:#000000;">0、识别插件</font></p>
+<p><font style="color:#000000;">1、X-Powered-By: ThinkPHP</font></p>
+<p><font style="color:#000000;">2、CMS识别到源码体系TP开发</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Laravel：</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、Set-Cookie中特征的格式 XSRF-TOKEN&#x3D; laravel_session&#x3D; </font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Yii:</font></p>
+<p><font style="color:#000000;">1、识别插件</font></p>
+<p><font style="color:#000000;">2、Set-Cookie中特征的格式 YII_CSRF_TOKEN&#x3D; </font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#Java-框架组件-Fastjson&amp;Shiro&amp;Solr&amp;Spring</font></p>
+<p><font style="color:#000000;">52类110个主流Java组件和框架介绍：</font></p>
+<p><font style="color:#000000;"><a href="https://blog.csdn.net/agonie201218/article/details/125300729">https://blog.csdn.net/agonie201218/article/details/125300729</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">框架：</font></p>
+<p><font style="color:#000000;">Struts2</font></p>
+<p><font style="color:#000000;">一般使用struts2框架后缀带do或action，可以尝试进行利用</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">SpringBoot</font></p>
+<p><font style="color:#000000;">1、默认web应用标签小绿叶图标</font></p>
+<p><font style="color:#000000;">2、通过springboot框架默认页面</font></p>
+<p><font style="color:#000000;">3、ICO源码体系采用SpringBoot开发</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">组件：</font></p>
+<p><font style="color:#000000;">FastJson&#x2F;Jackson</font></p>
+<p><font style="color:#000000;">在提交JSON数据包中修改测试：</font></p>
+<p><font style="color:#000000;">-FastJson组件会把01解析成1</font></p>
+<p><font style="color:#000000;">-Jackson组件在解析01时会抛出异常</font></p>
+<p><font style="color:#000000;"><a href="https://forum.butian.net/share/1679">https://forum.butian.net/share/1679</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Shiro</font></p>
+<p><font style="color:#000000;">请求包的cookie中存在rememberMe字段。</font></p>
+<p><font style="color:#000000;">返回包中存在set-Cookie：remeberMe&#x3D;deleteMe。</font></p>
+<p><font style="color:#000000;">请求包中存在rememberMe&#x3D;x时，响应包中存在rememberMe&#x3D;deleteMe。</font></p>
+<p><font style="color:#000000;">有时候服务器不会主动返回remeberMe&#x3D;deleteMe，直接发包即可，将Cookie内容改为remember Me&#x3D;1，若相应包有rememberMe&#x3D;deleteMe，则基本可以确定网站apache shiro搭建的。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">Solr识别 </font></p>
+<p><font style="color:#000000;">一般开放8983端口,访问页面也可以探针到</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#工具使用：</font></p>
+<p><font style="color:#000000;"><a href="https://github.com/projectdiscovery/nuclei">https://github.com/projectdiscovery/nuclei</a></font><font style="color:#000000;background-color:#FBDE28;">这是个漏扫工具，后续会讲到，它在漏洞扫描之前会进行一个指纹识别，所以能扫的框架组件这些</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(信息收集)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
