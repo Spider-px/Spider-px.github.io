@@ -2773,7 +2773,7 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p><font style="color:#000000;">供应链例子edusrc挖洞思路：</font></p>
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、找供应链公司，通过演示站点或提供的ico或特征文件找到大量高校使用系统的目标，一旦测出这个应用产品系统的漏洞，形成了通杀</font></p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/026-1.png"></p>
+<p><img src="/images/026-1.png"></p>
 <p><font style="background-color:#ED740C;">由上游供应链打下面目标：</font><font style="background-color:#81BBF8;">比如edu上面有厂商的排名，我们可以直接找某个厂商的系统去测，测到那其他使用这个系统的学校大概率有同样漏洞，形成通杀</font></p>
 <p><font style="background-color:#ED740C;">怎么找下面目标呢？</font><font style="background-color:#81BBF8;">1、可以到供养商官网看看，可能有写案例           2、通过备案或者站点下面信息，去网络搜索引擎去搜    3、用icon图标去搜，这个东西可以改动，没改的也能被搜索引擎搜到</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、找高校目标，通过高校系统的信息或者ico等找到供应链，再从供应链继续找使用同样的系统的高校目标，一旦测出这个应用产品系统的漏洞，形成了通杀</font></p>
