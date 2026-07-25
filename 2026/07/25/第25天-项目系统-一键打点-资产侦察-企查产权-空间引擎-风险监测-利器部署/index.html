@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="演示案例： ➢ 自动化-环境部署-F8x ➢ 自动化-移动资产-ENScan_Go ➢ 自动化-网络空间-Yakit&amp;TScanPlus ➢ 自动化-综合管理-ARL&amp;Nemo&amp;TestNet   #自动化-网络空间-Yakit&amp;TscanPlus 这两个不用搭建，一键使用。但是也有局限，信息搜集时会暴露自身ip，云服务器搭建的不会，当然你也可以在云服务器上运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第25天-项目系统&amp;一键打点&amp;资产侦察&amp;企查产权&amp;空间引擎&amp;风险监测&amp;利器部署">
+<meta property="og:url" content="http://zhigao.xyz/2026/07/25/%E7%AC%AC25%E5%A4%A9-%E9%A1%B9%E7%9B%AE%E7%B3%BB%E7%BB%9F-%E4%B8%80%E9%94%AE%E6%89%93%E7%82%B9-%E8%B5%84%E4%BA%A7%E4%BE%A6%E5%AF%9F-%E4%BC%81%E6%9F%A5%E4%BA%A7%E6%9D%83-%E7%A9%BA%E9%97%B4%E5%BC%95%E6%93%8E-%E9%A3%8E%E9%99%A9%E7%9B%91%E6%B5%8B-%E5%88%A9%E5%99%A8%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:description" content="演示案例： ➢ 自动化-环境部署-F8x ➢ 自动化-移动资产-ENScan_Go ➢ 自动化-网络空间-Yakit&amp;TScanPlus ➢ 自动化-综合管理-ARL&amp;Nemo&amp;TestNet   #自动化-网络空间-Yakit&amp;TscanPlus 这两个不用搭建，一键使用。但是也有局限，信息搜集时会暴露自身ip，云服务器搭建的不会，当然你也可以在云服务器上运">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/025-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/025-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/025-3.png">
+<meta property="og:image" content="http://zhigao.xyz/images/025-4.png">
+<meta property="article:published_time" content="2026-07-25T13:23:04.000Z">
+<meta property="article:modified_time" content="2026-07-25T13:29:36.943Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/025-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/07/25/%E7%AC%AC25%E5%A4%A9-%E9%A1%B9%E7%9B%AE%E7%B3%BB%E7%BB%9F-%E4%B8%80%E9%94%AE%E6%89%93%E7%82%B9-%E8%B5%84%E4%BA%A7%E4%BE%A6%E5%AF%9F-%E4%BC%81%E6%9F%A5%E4%BA%A7%E6%9D%83-%E7%A9%BA%E9%97%B4%E5%BC%95%E6%93%8E-%E9%A3%8E%E9%99%A9%E7%9B%91%E6%B5%8B-%E5%88%A9%E5%99%A8%E9%83%A8%E7%BD%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第25天-项目系统&一键打点&资产侦察&企查产权&空间引擎&风险监测&利器部署 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/25/%E7%AC%AC25%E5%A4%A9-%E9%A1%B9%E7%9B%AE%E7%B3%BB%E7%BB%9F-%E4%B8%80%E9%94%AE%E6%89%93%E7%82%B9-%E8%B5%84%E4%BA%A7%E4%BE%A6%E5%AF%9F-%E4%BC%81%E6%9F%A5%E4%BA%A7%E6%9D%83-%E7%A9%BA%E9%97%B4%E5%BC%95%E6%93%8E-%E9%A3%8E%E9%99%A9%E7%9B%91%E6%B5%8B-%E5%88%A9%E5%99%A8%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第25天-项目系统&一键打点&资产侦察&企查产权&空间引擎&风险监测&利器部署
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-07-25 21:23:04 / 修改时间：21:29:36" itemprop="dateCreated datePublished" datetime="2026-07-25T21:23:04+08:00">2026-07-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(信息收集)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<!--- more --->
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">自动化-环境部署-F8x</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">自动化-移动资产-ENScan_Go</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">自动化-网络空间-Yakit&amp;TScanPlus</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ 自动化-综合管理-ARL&amp;Nemo&amp;TestNet</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#自动化</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">网络空间</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">Yakit&amp;TscanPlus</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">这两个不用搭建，一键使用。但是也有局限，信息搜集时会暴露自身ip，云服务器搭建的不会，当然你也可以在云服务器上运行！</font></p>
+<p><font style="color:#000000;">项目地址：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">www</font><font style="color:#999999;">.</font><font style="color:#000000;">yaklang</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="background-color:#81BBF8;">yakit除了抓包，它也集成了很多功能信息收集，漏洞扫描等</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/025-1.png"></p>
+<p><font style="color:#000000;">项目地址：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">TideSec</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">TscanPlus</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/025-2.png"></p>
+<p><font style="color:#000000;">集成Fofa、Hunter、Quake、Zoomeye、Shodan、censys、VT、</font><font style="color:#990055;">0</font><font style="color:#999999;">.</font><font style="color:#000000;">zone、微步等接口查询</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#自动化</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">企查信息</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">ENScan   </font><font style="color:#000000;background-color:#FBDE28;">（个人觉得没什么用，不如手动细致）</font></p>
+<p><font style="color:#000000;">项目地址：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">wgpsec</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ENScan_GO</font></p>
+<p><font style="background-color:#81BBF8;">这个就是把各种资产收集应用的接口集成起来，不用你一个平台一个平台的去搜</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、介绍：</font></p>
+<p><font style="color:#000000;">剑指HW</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">SRC，解决在HW</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">SRC场景下遇到的各种针对国内企业信息收集难题</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、配置：</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">ENScanGo在第一次使用时需要使用</font><font style="color:#9a6e3a;background-color:#81BBF8;">-</font><font style="color:#000000;background-color:#81BBF8;">v命令生成配置文件信息后进行配置</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/025-3.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/025-4.png"></p>
+<p><font style="background-color:#81BBF8;">生成的配置文件需要你添加各种信息收集应用的Cookie，登录对应站点f12找到复制一下就行</font></p>
+<p><font style="background-color:#81BBF8;"></font></p>
+<p><font style="background-color:#ED740C;">注意：爱企查获取Cookie的时候f12没用，应该属部署了前端反调试机制，一打开开发者工具，立刻清除网络面板等，导致拿不到Cookie，所以我们需要利用抓包工具！</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、使用：</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">见项目文档</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#自动化</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">综合架构</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">ARL&amp;Nemo&amp;TestNet</font></p>
+<p><font style="color:#000000;background-color:#ED740C;"></font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">下面内容就不演示了，搭建可以结合ai网上资料自行搭建。</font></p>
+<p><font style="color:#000000;background-color:#ED740C;"></font></p>
+<p><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">ARL灯塔</font></p>
+<p><font style="color:#000000;">项目地址</font><font style="color:#990055;">1</font><font style="color:#000000;">：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">adysec</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ARL（升级版）</font></p>
+<p><font style="color:#000000;">项目地址</font><font style="color:#990055;">2</font><font style="color:#000000;">：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ki9mu</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ARL</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">plus</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">docker</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、介绍：</font></p>
+<p><font style="color:#000000;">旨在快速侦察与目标关联的互联网资产，构建基础资产信息库。 协助甲方安全团队或者渗透测试人员有效侦察和检索资产，发现存在的薄弱点和攻击面。</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、配置：（docker搭建）</font></p>
+<p><font style="color:#000000;">安装环境：Aliyun HK服务器 Ubuntu20</font><font style="color:#999999;">.</font><font style="color:#990055;">04</font></p>
+<p><font style="color:#000000;">apt update</font></p>
+<p><font style="color:#000000;">apt install unzip wget docker</font><font style="color:#999999;">.</font><font style="color:#000000;">io docker</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">compose </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">y</font></p>
+<p><font style="color:#000000;">cd </font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">opt</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">mkdir docker_arl</font></p>
+<p><font style="color:#000000;">wget </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">O docker_arl</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">docker</font><font style="color:#999999;">.</font><font style="color:#000000;">zip https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ki9mu</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ARL</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">plus</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">docker</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">archive</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">refs</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">tags</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">v3</font><font style="color:#999999;">.</font><font style="color:#990055;">0.1</font><font style="color:#999999;">.</font><font style="color:#000000;">zip</font></p>
+<p><font style="color:#000000;">cd docker_arl</font></p>
+<p><font style="color:#000000;">unzip </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">o docker</font><font style="color:#999999;">.</font><font style="color:#000000;">zip</font></p>
+<p><font style="color:#000000;">docker volume create arl_db</font></p>
+<p><font style="color:#000000;">cd ARL</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">plus</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">docker</font><font style="color:#9a6e3a;">-</font><font style="color:#990055;">3.0</font><font style="color:#999999;">.</font><font style="color:#990055;">1</font></p>
+<p><font style="color:#000000;">docker</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">compose pull</font></p>
+<p><font style="color:#000000;">docker</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">compose up </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">d</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、使用：见直播操作</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">Nemo_Go</font></p>
+<p><font style="color:#000000;">项目地址：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">hanc00l</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">nemo_go</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、介绍：</font></p>
+<p><font style="color:#000000;">Nemo是用来进行自动化信息收集的一个简单平台，通过集成常用的信息收集工具和技术，实现对内网及互联网资产信息的自动收集，提高隐患排查和渗透测试的工作效率，用Golang完全重构了原Python版本。</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、配置：（docker搭建）</font></p>
+<p><font style="color:#000000;">安装环境：Aliyun HK服务器 Ubuntu18</font><font style="color:#999999;">.</font><font style="color:#990055;">04</font></p>
+<p><font style="color:#000000;">https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">hanc00l</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">nemo_go</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">blob</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">main</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">docs</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">docker</font><font style="color:#999999;">.</font><font style="color:#000000;">md</font></p>
+<p><font style="color:#000000;">下载release的nemo_linux_amd64</font><font style="color:#999999;">.</font><font style="color:#000000;">tar后执行：</font></p>
+<p><font style="color:#000000;">mkdir nemo</font><font style="color:#999999;">;</font><font style="color:#000000;">tar xvf nemo_linux_amd64</font><font style="color:#999999;">.</font><font style="color:#000000;">tar </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">C nemo</font><font style="color:#999999;">;</font><font style="color:#000000;">cd nemo</font></p>
+<p><font style="color:#000000;">docker</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">compose up </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">d</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、使用：见直播操作</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#9a6e3a;background-color:#FBDE28;">-</font><font style="color:#000000;background-color:#FBDE28;">Testnet（最推荐，界面功能最好）</font></p>
+<p><font style="color:#000000;">项目地址：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">testnet0</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">testnet</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、介绍：</font></p>
+<p><font style="color:#000000;">TestNet资产管理系统旨在提供全面、高效的互联网资产管理与监控服务，构建详细的资产信息库。 该系统能够帮助企业安全团队或渗透测试人员对目标资产进行深入侦察和分析，提供攻击者视角的持续风险监测，协助用户实时掌握资产动态，识别并修复安全漏洞，从而有效收敛攻击面，提升整体安全防护能力。</font><font style="color:#990055;">2</font><font style="color:#000000;">、配置：（docker搭建）</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、配置：（docker搭建）</font></p>
+<p><font style="color:#000000;">安装环境：Aliyun HK服务器 Ubuntu22</font><font style="color:#999999;">.</font><font style="color:#990055;">04</font></p>
+<p><font style="color:#000000;">git clone https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">testnet0</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">testnet</font><font style="color:#999999;">.</font><font style="color:#000000;">git</font></p>
+<p><font style="color:#000000;">cd testnet </font><font style="color:#9a6e3a;">&amp;&amp;</font><font style="color:#000000;"> bash build</font><font style="color:#999999;">.</font><font style="color:#000000;">sh</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、使用：见直播操作</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;background-color:#ED740C;">#自动化</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">武器库部署</font><font style="color:#9a6e3a;background-color:#ED740C;">-</font><font style="color:#000000;background-color:#ED740C;">F8x</font></p>
+<p><font style="color:#000000;">项目地址：https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">github</font><font style="color:#999999;">.</font><font style="color:#000000;">com</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">ffffffff0x</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">f8x</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、介绍：</font></p>
+<p><font style="color:#000000;">一款红</font><font style="color:#9a6e3a;">&#x2F;</font><font style="color:#000000;">蓝队环境自动化部署工具</font><font style="color:#999999;">,</font><font style="color:#000000;">支持多种场景</font><font style="color:#999999;">,</font><font style="color:#000000;">渗透</font><font style="color:#999999;">,</font><font style="color:#000000;">开发</font><font style="color:#999999;">,</font><font style="color:#000000;">代理环境</font><font style="color:#999999;">,</font><font style="color:#000000;">服务可选项等</font><font style="color:#999999;">.</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、配置：</font></p>
+<p><font style="color:#000000;">通过 CF Workers 下载 </font><font style="color:#999999;">[</font><font style="color:#000000;">推荐</font><font style="color:#999999;">]</font></p>
+<p><font style="color:#000000;">wget : wget </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">O f8x https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">f8x</font><font style="color:#999999;">.</font><font style="color:#000000;">io</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#000000;">curl : curl </font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">o f8x https:</font><font style="color:#9a6e3a;">&#x2F;&#x2F;</font><font style="color:#000000;">f8x</font><font style="color:#999999;">.</font><font style="color:#000000;">io</font><font style="color:#9a6e3a;">&#x2F;</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、使用：见项目文档</font></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/07/25/%E7%AC%AC24%E5%A4%A9-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BA%94%E7%94%A8-%E9%80%86%E5%90%91%E5%8F%8D%E7%BC%96%E8%AF%91-%E5%A4%96%E5%9C%A8%E6%8A%93%E5%8C%85-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8F%90%E5%8F%96-%E4%B8%BB%E5%8C%85%E5%88%86%E5%8C%85%E6%BA%90%E7%A0%81/" rel="prev" title="第24天-小程序应用&逆向反编译&外在抓包&动态调试&自动化提取&主包分包源码">
+      <i class="fa fa-chevron-left"></i> 第24天-小程序应用&逆向反编译&外在抓包&动态调试&自动化提取&主包分包源码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/07/25/%E7%AC%AC26%E5%A4%A9-%E5%85%AC%E4%BC%97%E5%8F%B7%E8%B5%84%E4%BA%A7-%E4%BE%9B%E5%BA%94%E9%93%BE%E5%9B%9E%E6%BA%AF-Github%E6%B3%84%E6%BC%8F-%E5%A4%9A%E6%B8%A0%E9%81%93%E6%B3%84%E6%BC%8F-%E8%B5%84%E4%BA%A7%E7%9B%91%E6%8E%A7-%E5%BC%95%E6%93%8E%E8%AF%AD%E6%B3%95/" rel="next" title="第26天-公众号资产&供应链回溯&Github泄漏&多渠道泄漏&资产监控&引擎语法">
+      第26天-公众号资产&供应链回溯&Github泄漏&多渠道泄漏&资产监控&引擎语法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
