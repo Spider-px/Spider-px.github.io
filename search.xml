@@ -151,7 +151,13 @@ onmouseout="this.style.textDecoration='none'">
 <details style="margin:18px 0">
 <summary style="font-size: 32px; font-weight: bold; cursor: pointer; padding: 6px 8px; background: #b5f1f5; border-radius: 4px; box-shadow: 0 2px 6px ; border-radius:8px; ">Web攻防</summary>
 <div style="padding-left:16px; margin-top:8px;">
+<a href="https://zhigao.xyz/2026/07/28/%E7%AC%AC53%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90-%E6%9E%B6%E6%9E%84%E5%88%86%E5%B1%82-%E7%AC%A6%E5%8F%B7%E5%B9%B2%E6%89%B0-%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B-%E5%8F%91%E7%8E%B0%E6%80%9D%E8%B7%AF/#more" style="color:#2378dd" >
+第53天-SQL注入&数据库类型&用户权限&架构分层&符号干扰&利用过程&发现思路
+</a >
 <br>
+<a href="https://zhigao.xyz/2026/07/28/%E7%AC%AC54%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F-JSON-XML-%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86-%E7%AC%A6%E5%8F%B7%E9%97%AD%E5%90%88-%E5%A4%8D%E7%9B%98%E6%8A%A5%E5%91%8A/#more" style="color:#2378dd" >
+第54天-SQL注入&数据类型&参数格式&JSON&XML&编码加密&符号闭合&复盘报告
+</a >
 </div>
 </details >
 
@@ -2819,26 +2825,9 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> name</font><font style="color:#9a6e3a;">&#x3D;</font><font style="color:#669900;">‘$name’</font><font style="color:#999999;">;</font></p>
 <p><font style="color:#0077aa;">select </font><font style="color:#9a6e3a;">* </font><font style="color:#0077aa;">from</font><font style="color:#000000;"> news </font><font style="color:#0077aa;">where</font><font style="color:#000000;"> name </font><font style="color:#9a6e3a;">like</font><font style="color:#669900;">‘%name%’</font><font style="color:#999999;">;</font></p>
 <p><font style="color:#000000;">符号干扰：有无单引号或双引号及通配符等</font></p>
-<p>:::info<br>这里小迪演示案例就是一个网站有一个搜索框，这个搜索框的后端sql逻辑就是select * from news where name like’%name%’; </p>
-<p>1、select * from news where name like’%name%’ order by 3 <font style="background-color:#FBDE28;">这个是判断有多少个字段，因为后面要用union联合注入，必须知道前面select的字段个数，后面select的字段数量也得一样</font></p>
-<p><font style="background-color:#FBDE28;"></font></p>
-<p>2、select * from news where name like’%1%’ union select 1,2,3#%’;<font style="background-color:#FBDE28;">这里就是使用union联合注入，判断回显位</font></p>
-<p>3、知道数据库名：<font style="background-color:#FBDE28;">在回显位写</font>database()       数据库名：news_db</p>
-<p>4、获取数据库名下的表名信息：</p>
-<p>借助自带的information_schema.tables表（记录所有数据库名下的表名）</p>
-<p>select * from news where name like’%1%’ union select 1,2,table_name from information_schema.tables where table_schema&#x3D;’news_db’#</p>
-<p>5、admin下列名</p>
-<p>借助自带的information_schema.columns表（记录所有数据库名下的表名对应的列名信息）</p>
-<p>select * from news where name like’%1%’unionselect1,2,column_name from information_schema.columns where table_schema&#x3D;’news_db’ and table_name&#x3D;’admin’#</p>
-<p>6、查admin的密码：select * from news where name like’%1%’ union select 1,2,password from admin#</p>
-<p>案例数据库架构：</p>
-<p>news_db</p>
-<pre><code>admin
+<details class="lake-collapse"><summary id="ud74d588a"><span class="ne-text" style="font-size: 24px">案例讲解</span></summary><p id="uc9977d95" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">这里小迪演示案例就是一个网站有一个搜索框，这个搜索框的后端sql逻辑就是select * from news where name like'%name%'; </span></p><p id="uc66d4ab2" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u2594e1b1" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">1、select </span><span class="ne-text" style="font-size: 24px">* </span><span class="ne-text" style="font-size: 24px">from</span><span class="ne-text" style="font-size: 24px"> news </span><span class="ne-text" style="font-size: 24px">where</span><span class="ne-text" style="font-size: 24px"> name </span><span class="ne-text" style="font-size: 24px">like</span><span class="ne-text" style="font-size: 24px">'%name%'</span><span class="ne-text" style="font-size: 24px"> </span><span class="ne-text" style="font-size: 24px">order by </span><span class="ne-text" style="font-size: 24px">3 </span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">这个是判断有多少个字段，因为后面要用union联合注入，必须知道前面select的字段个数，后面select的字段数量也得一样</span></p><p id="ucd192fca" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px"></span></p><p id="u4bab58a7" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">2、select * from news where name like'%1%' union select 1,2,3#%';</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">这里就是使用union联合注入，判断回显位</span></p><p id="u124749b8" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u429271a1" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">3、知道数据库名：</span><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">在回显位写</span><span class="ne-text" style="font-size: 24px">database()       数据库名：news_db</span></p><p id="ue5ba2baa" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="ud5a9c23f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">4、获取数据库名下的表名信息：</span></p><p id="u5084ffc2" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">借助自带的information_schema.tables表（记录所有数据库名下的表名）</span></p><p id="u0e6808b1" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">select </span><span class="ne-text" style="font-size: 24px">* </span><span class="ne-text" style="font-size: 24px">from</span><span class="ne-text" style="font-size: 24px"> news </span><span class="ne-text" style="font-size: 24px">where</span><span class="ne-text" style="font-size: 24px"> name </span><span class="ne-text" style="font-size: 24px">like</span><span class="ne-text" style="font-size: 24px">'%</span><span class="ne-text" style="font-size: 24px">1</span><span class="ne-text" style="font-size: 24px">%</span><span class="ne-text" style="font-size: 24px">' union select 1,2,table_name from information_schema.tables where table_schema='</span><span class="ne-text" style="font-size: 24px">news_db</span><span class="ne-text" style="font-size: 24px">'#</span></p><p id="u97487577" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u8d4f77be" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">5、admin下列名</span></p><p id="u96c0618e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">借助自带的information_schema.columns表（记录所有数据库名下的表名对应的列名信息）</span></p><p id="uaec65f8f" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">select </span><span class="ne-text" style="font-size: 24px">* </span><span class="ne-text" style="font-size: 24px">from</span><span class="ne-text" style="font-size: 24px"> news </span><span class="ne-text" style="font-size: 24px">where</span><span class="ne-text" style="font-size: 24px"> name </span><span class="ne-text" style="font-size: 24px">like</span><span class="ne-text" style="font-size: 24px">'%1%'</span><span class="ne-text" style="font-size: 24px">unionselect</span><span class="ne-text" style="font-size: 24px">1</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">2</span><span class="ne-text" style="font-size: 24px">,</span><span class="ne-text" style="font-size: 24px">column_name </span><span class="ne-text" style="font-size: 24px">from</span><span class="ne-text" style="font-size: 24px"> information_schema</span><span class="ne-text" style="font-size: 24px">.</span><span class="ne-text" style="font-size: 24px">columns where</span><span class="ne-text" style="font-size: 24px"> table_schema</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">'news_db' </span><span class="ne-text" style="font-size: 24px">and</span><span class="ne-text" style="font-size: 24px"> table_name</span><span class="ne-text" style="font-size: 24px">=</span><span class="ne-text" style="font-size: 24px">'admin'</span><span class="ne-text" style="font-size: 24px">#</span></p><p id="uec0e2d6c" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u5869ad20" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">6、查admin的密码：select * from news where name like'%1%' union select 1,2,password from admin#</span></p><p id="udd4f5ac5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px"></span></p><p id="u6168a55e" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">案例数据库架构：</span></p><p id="ub94fa7f5" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">news_db</span></p><p id="u403ff031" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">	admin</span></p><p id="uebeb2b38" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="font-size: 24px">		username,password</span></p></details>
+<font style="color:#000000;"></font>
 
-    username,password
-</code></pre>
-<p>:::</p>
-<p><font style="color:#000000;"></font></p>
 <p><font style="background-color:#ED740C;">#XML，JSON，编码，混合</font></p>
 <p><font style="background-color:#FBDE28;">这种格式都是在post请求包的请求体中，案例和上面一样，就是我们注入攻击语句写在键值的位置</font></p>
 <p><font style="background-color:#FBDE28;"></font></p>
@@ -2905,14 +2894,9 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p>]</p>
 <p>}</p>
 <p><font style="color:#000000;"></font></p>
-<p>:::info<br><font style="color:#000000;background-color:#FBDE28;">我们在挖洞过程中可以改变格式来绕过：</font></p>
-<ul>
-<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">请求头和请求体格式必须匹配，数据包才合法。</font></li>
-<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">后端代码要有对应解析逻辑，payload 才能传入漏洞点。</font></li>
-<li><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">WAF 不能解析该格式，才可以实现绕过。</font></li>
-</ul>
-<p>:::</p>
-<p><font style="color:#000000;"></font></p>
+<details class="lake-collapse"><summary id="u14f50141"><span class="ne-text" style="color: #000000; background-color: #FBDE28; font-size: 24px">我们在挖洞过程中可以改变格式来绕过：</span></summary><ul class="ne-ul"><li id="u526c4e1f" data-lake-index-type="0" style="text-align: left; line-height: 3"><span class="ne-text" style="color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0); font-size: 24px">请求头和请求体格式必须匹配，数据包才合法。</span></li><li id="ub2345e0a" data-lake-index-type="0" style="text-align: left; line-height: 3"><span class="ne-text" style="color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0); font-size: 24px">后端代码要有对应解析逻辑，payload 才能传入漏洞点。</span></li><li id="ub1ad1a9e" data-lake-index-type="0" style="text-align: left; line-height: 3"><span class="ne-text" style="color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0); font-size: 24px">WAF 不能解析该格式，才可以实现绕过。</span></li></ul></details>
+<font style="color:#000000;"></font>
+
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、数据传输采用XML或JSON格式传递</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、数据传输采用编码或加密形式传递</font></p>
 <p><font style="color:#990055;">3</font><font style="color:#000000;">、数据传递采用JSON又采用编码传递</font></p>
@@ -2955,74 +2939,43 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
 <p><font style="background-color:#ED740C;">#数据库知识（都以mysql讲解）：</font></p>
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库名，表名，列名，数据</font></p>
-<p>:::info<br><font style="color:#000000;background-color:#FBDE28;">数据库架构：</font></p>
-<p><font style="color:#000000;">数据库服务器（如mysql等）</font></p>
-<p><font style="color:#000000;">|——数据库A</font></p>
-<p><font style="color:#000000;">|——表</font></p>
-<p><font style="color:#000000;">|——字段</font></p>
-<p><font style="color:#000000;">|——数据</font></p>
-<p><font style="color:#000000;">|——数据库A</font></p>
-<p><font style="color:#000000;">|——表</font></p>
-<p><font style="color:#000000;">|——字段</font></p>
-<p><font style="color:#000000;">|——数据</font></p>
-<p>:::</p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、自带数据库，数据库用户及权限</font></p>
-<p>:::info<br><font style="background-color:#FBDE28;">information_schema 数据库sql注入相关知识点：</font></p>
-<p>schemata表（记录所有数据库） 关键字段：schema_name</p>
-<p>tables表（记录所有表）：查表名 关键字段：table_schema：数据库名  table_name：表名</p>
-<p>columns表（记录所有字段）：查字段名  table_schema:库名  table_name:表名 column_name:字段名</p>
-<p>:::</p>
-<p>:::info<br><font style="background-color:#FBDE28;">数据库用户及权限内容：</font></p>
-<p>一台MySQL服务器可以创建多个等于账号。</p>
-<p>root（超级管理员）负责划分权限；普通账号没有先天划分权限。</p>
-<p>root授予哪个库的哪些权限，账号才能对应操作；</p>
-<p>未授权的数据库无法看见；</p>
-<p>就算能够看见的数据库，权限也是拆分的，可以做到仅查询</p>
-<p>:::</p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、数据库敏感函数，默认端口及应用</font></p>
+<details class="lake-collapse"><summary id="ucf943a6f"><span class="ne-text" style="color: #000000; background-color: #FBDE28; font-size: 24px">数据库架构：</span></summary><p id="u62f350d8" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">数据库服务器（如mysql等）</span></p><p id="u8890fe1f" class="ne-p" style="text-align: justify; text-indent: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据库A</span></p><p id="u2490c9d5" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——表</span></p><p id="u22fc9699" class="ne-p" style="text-align: justify; margin-left: 4em; text-indent: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——字段</span></p><p id="uf346cfad" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 6em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据</span></p><p id="uce7e837b" class="ne-p" style="text-align: justify; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据库A</span></p><p id="u1ed5a417" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——表</span></p><p id="u38237743" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 4em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——字段</span></p><p id="u281a80a4" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 6em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据</span></p></details>
+<font style="color:#990055;">2</font><font style="color:#000000;">、自带数据库，数据库用户及权限</font>
+
+<details class="lake-collapse"><summary id="uab42246d"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">information_schema 数据库sql注入相关知识点：</span></summary><p id="u3c6829fd" class="ne-p"><span class="ne-text" style="font-size: 24px">schemata表（记录所有数据库） 关键字段：schema_name</span></p><p id="u48bebae1" class="ne-p"><span class="ne-text" style="font-size: 24px">tables表（记录所有表）：查表名 关键字段：table_schema：数据库名  table_name：表名</span></p><p id="u89654f64" class="ne-p"><span class="ne-text" style="font-size: 24px">columns表（记录所有字段）：查字段名  table_schema:库名  table_name:表名 column_name:字段名</span></p></details>
+<details class="lake-collapse"><summary id="ucd44155c"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">数据库用户及权限内容：</span></summary><p id="ue1e756ba" class="ne-p"><span class="ne-text" style="font-size: 24px">一台MySQL服务器可以创建多个等于账号。</span></p><p id="uf2768a67" class="ne-p"><span class="ne-text" style="font-size: 24px">root（超级管理员）负责划分权限；普通账号没有先天划分权限。</span></p><p id="u7b2206c2" class="ne-p"><span class="ne-text" style="font-size: 24px">root授予哪个库的哪些权限，账号才能对应操作；</span></p><p id="u474aa93e" class="ne-p"><span class="ne-text" style="font-size: 24px">未授权的数据库无法看见；</span></p><p id="uebdaa60e" class="ne-p"><span class="ne-text" style="font-size: 24px">就算能够看见的数据库，权限也是拆分的，可以做到仅查询</span></p></details>
+<font style="color:#990055;">3</font><font style="color:#000000;">、数据库敏感函数，默认端口及应用</font>
+
 <p><font style="background-color:#FBDE28;">数据库自带函数也能利用来操作数据库</font></p>
-<p>:::info<br><font style="background-color:#FBDE28;">默认端口（后期面试可能会提问，之前护网面试提到过）<br></font>mysql：3306</p>
-<p>oracle：1521</p>
-<p>SQLserver：1433</p>
-<p>Redis：6379</p>
-<p>MongoDB：27017</p>
-<p>不止这些剩下可以网上查一下，为什么要记这些呢，后期渗透测试的时候首先会进行端口扫描，通过端口就能判断使用的是什么数据库</p>
-<p>:::</p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、数据库查询方法（增加删除修改更新）</font></p>
-<p>:::info<br><font style="background-color:#FBDE28;">mysql增删改查：</font></p>
-<p>查：select * from 表名 where 列名&#x3D;“条件”；</p>
-<p>增：insert into 表名（<code>列名1</code>,<code>列名2</code>）values(列1值1’,’列2值2’)；</p>
-<p>删：delete from 表名 where 列名&#x3D;“条件”；</p>
-<p>改：update 表名 set 列名 &#x3D; 数据 where 列名 &#x3D; “条件”；</p>
-<p>:::</p>
+<details class="lake-collapse"><summary id="uce3b7232"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">默认端口（后期面试可能会提问，之前护网面试提到过）</span></summary><p id="u1be9acf9" class="ne-p"><span class="ne-text" style="font-size: 24px">mysql：3306</span></p><p id="u2fced44b" class="ne-p"><span class="ne-text" style="font-size: 24px">oracle：1521</span></p><p id="u393927d1" class="ne-p"><span class="ne-text" style="font-size: 24px">SQLserver：1433</span></p><p id="u7bff797d" class="ne-p"><span class="ne-text" style="font-size: 24px">Redis：6379</span></p><p id="u54ad743f" class="ne-p"><span class="ne-text" style="font-size: 24px">MongoDB：27017</span></p><p id="ub1092f7e" class="ne-p"><span class="ne-text" style="font-size: 24px">不止这些剩下可以网上查一下，为什么要记这些呢，后期渗透测试的时候首先会进行端口扫描，通过端口就能判断使用的是什么数据库</span></p></details>
+<font style="color:#990055;">4</font><font style="color:#000000;">、数据库查询方法（增加删除修改更新）</font>
+
+<details class="lake-collapse"><summary id="ufd3ab294"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">mysql增删改查：</span></summary><p id="u605ca60e" class="ne-p"><span class="ne-text" style="font-size: 24px">查：select * from 表名 where 列名=“条件”；</span></p><p id="u955bca9b" class="ne-p"><span class="ne-text" style="font-size: 24px">增：insert into 表名（`列名1`,`列名2`）values(列1值1','列2值2')；</span></p><p id="uf2d24340" class="ne-p"><span class="ne-text" style="font-size: 24px">删：delete from 表名 where 列名=“条件”；</span></p><p id="uf8ff09ed" class="ne-p"><span class="ne-text" style="font-size: 24px">改：update 表名 set 列名 = 数据 where 列名 = “条件”；</span></p></details>
+
+
 <p><font style="background-color:#ED740C;">#SQL注入产生原理：</font></p>
 <p>代码中执行的SQL语句存在可控变量导致</p>
 <p><font style="background-color:#81BBF8;">就好理解的案例：大部分站点都有搜索功能，你只需要输入关键字，它的后端逻辑为select * from 表 where 字段&#x3D;我们的输入，这就是我们可以控制where后面的参数，用后续的注入方式就能获取到你想要的东西</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#影响SQL注入的主要因素：</font></p>
+<p><font style="background-color:#ED740C;">#影响SQL注入的主要因素（后续按这个顺序讲）：</font></p>
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库类型（权限操作）</font></p>
-<p>:::info<br><font style="color:#000000;">不同数据库类型注入语句不同</font></p>
-<p>:::</p>
+<p><font style="color:#000000;background-color:#FBDE28;">不同数据库类型注入语句不同</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、数据操作方法（增删改查）</font></p>
 <p><font style="color:#990055;">3</font><font style="color:#000000;">、参数数据类型（符号干扰）</font></p>
-<p>:::info<br><font style="color:#000000;">比如：select * from 表 where 字段&#x3D;”$username”</font></p>
-<p><font style="color:#000000;">黑盒测试中字符注入一定要考虑引号，不考虑的话你把你的注入语句都写在引号内不生效</font></p>
-<p>:::</p>
+<p><font style="color:#000000;background-color:#FBDE28;">比如：select * from 表 where 字段&#x3D;”$username”</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">黑盒测试中字符注入一定要考虑引号，不考虑的话你把你的注入语句都写在引号内不生效</font></p>
 <p><font style="color:#990055;">4</font><font style="color:#000000;">、参数数据格式（加密编码等）</font></p>
-<p>:::info<br><font style="color:#000000;">你输入注入内容，后端接收数据会进行解密解码，带入带sql中执行，所以你必须在一开始输入的时候就进行对应的加密</font></p>
-<p>:::</p>
+<p><font style="color:#000000;background-color:#FBDE28;">你输入注入内容，后端接收数据会进行解密解码，带入带sql中执行，所以你必须在一开始输入的时候就进行对应的加密</font></p>
 <p><font style="color:#990055;">5</font><font style="color:#000000;">、提交数据方式（数据包部分）</font></p>
-<p>:::info<br><font style="color:#000000;">按照对应格式(json，xml等)注入，注入语句不能破坏数据提交格式</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">json:{“id”:”1”,”username”:”admin”}</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">xml:</font></p>
-<p><font style="color:#000000;"><username>admin</username></font></p>
-<p><font style="color:#000000;"><password>123456</password></font></p>
-<p>:::</p>
+<p><font style="color:#000000;background-color:#FBDE28;">按照对应格式(json，xml等)注入，注入语句不能破坏数据提交格式</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">json:{“id”:”1”,”username”:”admin”}</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">xml:</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"><username>admin</username></font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"><password>123456</password></font></p>
 <p><font style="color:#990055;">6</font><font style="color:#000000;">、有无数据处理（无回显逻辑等）</font></p>
-<p>:::info<br><font style="color:#000000;">无回显我们会用到延时注入</font></p>
-<p>:::</p>
+<p><font style="color:#000000;background-color:#FBDE28;">无回显我们会用到延时注入</font></p>
 <p><font style="background-color:#ED740C;"></font></p>
 <p><font style="background-color:#ED740C;">#常见SQL注入的利用过程：</font></p>
 <p><font style="color:#990055;">1</font><font style="color:#000000;">、判断数据库类型</font></p>
@@ -3039,8 +2992,7 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p><font style="color:#000000;"></font></p>
 <p><font style="color:#000000;">利用过程：</font></p>
 <p><font style="color:#000000;">获取数据库名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">表名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">列名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">数据（一般是关键数据，如管理员）</font></p>
-<p>:::info<br><font style="color:#000000;">大部分都是用工具跑，工具有限制或者跑不出来才手工。后面原本也有各种数据库的靶场，因为是第一节课很多东西写了也看不懂，所以等到后面讲完了或者遇到对应数据库再写</font></p>
-<p>:::</p>
+<p><font style="color:#000000;background-color:#FBDE28;">大部分都是用工具跑，工具有限制或者跑不出来才手工。后面原本也有各种数据库的靶场，因为是第一节课很多东西写了也看不懂，所以等到后面讲完了或者遇到对应数据库再写</font></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(web攻防)</category>
