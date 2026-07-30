@@ -23,17 +23,22 @@
   </script>
 
   <meta property="og:type" content="article">
-<meta property="og:title" content="第22天-Web应用&amp;各语言框架&amp;安全组件&amp;联动系统&amp;数据特征&amp;人工分析&amp;识别项目">
-<meta property="og:url" content="http://zhigao.xyz/2026/07/11/%E7%AC%AC22%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E5%90%84%E8%AF%AD%E8%A8%80%E6%A1%86%E6%9E%B6-%E5%AE%89%E5%85%A8%E7%BB%84%E4%BB%B6-%E8%81%94%E5%8A%A8%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E7%89%B9%E5%BE%81-%E4%BA%BA%E5%B7%A5%E5%88%86%E6%9E%90-%E8%AF%86%E5%88%AB%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:title" content="第55天-SQL注入&amp;增删改查&amp;HTTP头&amp;UA&amp;XFF&amp;Referer&amp;Cookie&amp;无回显报错&amp;复盘">
+<meta property="og:url" content="http://zhigao.xyz/2026/07/30/%E7%AC%AC55%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-HTTP%E5%A4%B4-UA-XFF-Referer-Cookie-%E6%97%A0%E5%9B%9E%E6%98%BE%E6%8A%A5%E9%94%99-%E5%A4%8D%E7%9B%98/index.html">
 <meta property="og:site_name" content="Voyage Memo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-07-10T20:40:16.000Z">
-<meta property="article:modified_time" content="2026-07-10T20:52:14.295Z">
+<meta property="og:image" content="http://zhigao.xyz/images/055-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/055-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/055-3.png">
+<meta property="og:image" content="http://zhigao.xyz/images/055-4.png">
+<meta property="article:published_time" content="2026-07-30T00:36:41.000Z">
+<meta property="article:modified_time" content="2026-07-30T00:38:58.550Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/055-1.png">
 
-<link rel="canonical" href="http://zhigao.xyz/2026/07/11/%E7%AC%AC22%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E5%90%84%E8%AF%AD%E8%A8%80%E6%A1%86%E6%9E%B6-%E5%AE%89%E5%85%A8%E7%BB%84%E4%BB%B6-%E8%81%94%E5%8A%A8%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E7%89%B9%E5%BE%81-%E4%BA%BA%E5%B7%A5%E5%88%86%E6%9E%90-%E8%AF%86%E5%88%AB%E9%A1%B9%E7%9B%AE/">
+<link rel="canonical" href="http://zhigao.xyz/2026/07/30/%E7%AC%AC55%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-HTTP%E5%A4%B4-UA-XFF-Referer-Cookie-%E6%97%A0%E5%9B%9E%E6%98%BE%E6%8A%A5%E9%94%99-%E5%A4%8D%E7%9B%98/">
 
 
 <script id="page-configurations">
@@ -46,7 +51,7 @@
   };
 </script>
 
-  <title>第22天-Web应用&各语言框架&安全组件&联动系统&数据特征&人工分析&识别项目 | Voyage Memo</title>
+  <title>第55天-SQL注入&增删改查&HTTP头&UA&XFF&Referer&Cookie&无回显报错&复盘 | Voyage Memo</title>
   
 
 
@@ -189,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/11/%E7%AC%AC22%E5%A4%A9-Web%E5%BA%94%E7%94%A8-%E5%90%84%E8%AF%AD%E8%A8%80%E6%A1%86%E6%9E%B6-%E5%AE%89%E5%85%A8%E7%BB%84%E4%BB%B6-%E8%81%94%E5%8A%A8%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E7%89%B9%E5%BE%81-%E4%BA%BA%E5%B7%A5%E5%88%86%E6%9E%90-%E8%AF%86%E5%88%AB%E9%A1%B9%E7%9B%AE/">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/30/%E7%AC%AC55%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-HTTP%E5%A4%B4-UA-XFF-Referer-Cookie-%E6%97%A0%E5%9B%9E%E6%98%BE%E6%8A%A5%E9%94%99-%E5%A4%8D%E7%9B%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/photo.jpg">
@@ -202,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          第22天-Web应用&各语言框架&安全组件&联动系统&数据特征&人工分析&识别项目
+          第55天-SQL注入&增删改查&HTTP头&UA&XFF&Referer&Cookie&无回显报错&复盘
         </h1>
 
         <div class="post-meta">
@@ -213,7 +218,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-07-11 04:40:16 / 修改时间：04:52:14" itemprop="dateCreated datePublished" datetime="2026-07-11T04:40:16+08:00">2026-07-11</time>
+              <time title="创建时间：2026-07-30 08:36:41 / 修改时间：08:38:58" itemprop="dateCreated datePublished" datetime="2026-07-30T08:36:41+08:00">2026-07-30</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,7 +226,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(信息收集)</span></a>
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
                 </span>
             </span>
 
@@ -246,81 +251,68 @@
         <p><font></font></p>
 <span id="more"></span>
 
-<p><font style="background-color:#FBDE28;">web开发使用的框架组件，都多多少少报过漏洞，所以我们识别框架就至关重要，识别到可以利用历史漏洞进行渗透(利用对应框架漏洞利用工具)</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">框架：一套完整程序骨架，定好项目结构、代码写法、程序运行流程，框架主导程序执行，你只写业务代码。</font></p>
-<p><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">组件：独立小功能模块，只负责一件事，按需引入、可随意替换，依附框架使用。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">下面框架识别方法，还是识别插件比较好用（wappalyzer），数据包特征我们也记不住那么多，并且这个也不是每个站点都会出现，管理人员可以自定义的，还可以看icon图标有的网站图标是框架图标。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#Python-开发框架-Django&amp;Flask</font></p>
-<p><font style="color:#000000;">Django</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、固定的数据包格式：Set-Cookie:expires&#x3D;</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Flask</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、固定的数据包格式：Etag: “flask X-Powered-By: Flask</font></p>
-<p><font style="color:#000000;">Tornado</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、固定的数据包格式：Server: TornadoServer</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#JavaScript-开发框架-Vue&amp;Node.js</font></p>
-<p><font style="color:#000000;">Vue</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、JS语法和加载文件（vue.js）</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Node.js</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、固定的数据包格式：ETag: W&#x2F;“</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#PHP-开发框架-ThinkPHP&amp;Laravel&amp;Yii</font></p>
-<p><font style="color:#000000;">ThinkPHP：</font></p>
-<p><font style="color:#000000;">0、识别插件</font></p>
-<p><font style="color:#000000;">1、X-Powered-By: ThinkPHP</font></p>
-<p><font style="color:#000000;">2、CMS识别到源码体系TP开发</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Laravel：</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、Set-Cookie中特征的格式 XSRF-TOKEN&#x3D; laravel_session&#x3D; </font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Yii:</font></p>
-<p><font style="color:#000000;">1、识别插件</font></p>
-<p><font style="color:#000000;">2、Set-Cookie中特征的格式 YII_CSRF_TOKEN&#x3D; </font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#Java-框架组件-Fastjson&amp;Shiro&amp;Solr&amp;Spring</font></p>
-<p><font style="color:#000000;">52类110个主流Java组件和框架介绍：</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://blog.csdn.net/agonie201218/article/details/125300729">https://blog.csdn.net/agonie201218/article/details/125300729</a></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">框架：</font></p>
-<p><font style="color:#000000;">Struts2</font></p>
-<p><font style="color:#000000;">一般使用struts2框架后缀带do或action，可以尝试进行利用</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">SpringBoot</font></p>
-<p><font style="color:#000000;">1、默认web应用标签小绿叶图标</font></p>
-<p><font style="color:#000000;">2、通过springboot框架默认页面</font></p>
-<p><font style="color:#000000;">3、ICO源码体系采用SpringBoot开发</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">组件：</font></p>
-<p><font style="color:#000000;">FastJson&#x2F;Jackson</font></p>
-<p><font style="color:#000000;">在提交JSON数据包中修改测试：</font></p>
-<p><font style="color:#000000;">-FastJson组件会把01解析成1</font></p>
-<p><font style="color:#000000;">-Jackson组件在解析01时会抛出异常</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://forum.butian.net/share/1679">https://forum.butian.net/share/1679</a></font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Shiro</font></p>
-<p><font style="color:#000000;">请求包的cookie中存在rememberMe字段。</font></p>
-<p><font style="color:#000000;">返回包中存在set-Cookie：remeberMe&#x3D;deleteMe。</font></p>
-<p><font style="color:#000000;">请求包中存在rememberMe&#x3D;x时，响应包中存在rememberMe&#x3D;deleteMe。</font></p>
-<p><font style="color:#000000;">有时候服务器不会主动返回remeberMe&#x3D;deleteMe，直接发包即可，将Cookie内容改为remember Me&#x3D;1，若相应包有rememberMe&#x3D;deleteMe，则基本可以确定网站apache shiro搭建的。</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">Solr识别 </font></p>
-<p><font style="color:#000000;">一般开放8983端口,访问页面也可以探针到</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;background-color:#ED740C;">#工具使用：</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/projectdiscovery/nuclei">https://github.com/projectdiscovery/nuclei</a></font><font style="color:#000000;background-color:#FBDE28;">这是个漏扫工具，后续会讲到，它在漏洞扫描之前会进行一个指纹识别，所以能扫的框架组件这些</font></p>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-增删改查&amp;无回显报错</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-SQL注入-HTTP头&amp;UA&amp;Cookie</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-HTTP头&amp;XFF&amp;Referer</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p>案例说明：</p>
+<p>在应用中，存在增删改查数据的操作，其中SQL语句结构不一导致注入语句也要针对应用达到兼容执行，另外也需要明白黑盒中功能对应的操作方法；除此之外部分业务应用功能也要做到了解（如接受IP,UA,COOKIE,Referer等头部），并且通过功能分析出对应SQL操作方法。</p>
+<p>增删改查大致功能应用：</p>
+<p>select查询：用户查询，新闻查询</p>
+<p>delete删除：用户删除，新闻删除</p>
+<p>update修改：用户修改，新闻修改</p>
+<p>insert增加：用户注册，新闻添加</p>
+<p><font style="background-color:#FBDE28;">不同的功能对应不同的sql语句，我们要自己搞增删改查的sql语句怎么写，</font><font style="background-color:#ED740C;">主要就是闭合！</font></p>
+<p><font style="background-color:#ED740C;">UA(User-Agent):</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/055-1.png"></p>
+<p>场景1：对UA设备指定显示方案<font style="background-color:#FBDE28;">（简单说就是来做到多设备的兼容，ua展示设备型号、操作系统、浏览器内核、浏览器版本的信息，不同设备展示各自的画面，比如同一个网站，手机和电脑展示的效果就是不一样的。）</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p><font style="background-color:#81BBF8;">小迪这里的案例使用的是联合注入，抓包在ua拼接注入语句，先order by判断字段，然后union判断数据库、表、字段，然后就完事。执行找靶场练习，我使用的是好靶场，那个靶场和小迪讲的大部分一样，就是不能使用order by但是它已经告诉你sql语句了，我们可以使用union 1,2,3……直接去判断有多少个字段，后续操作就是一样的了</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p>场景2：对UA设备进行信息记录<font style="background-color:#FBDE28;">（</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">用户行为统计、数据分析</font><font style="background-color:#FBDE28;">统计）</font></p>
+<p><font style="background-color:#81BBF8;">比如访问来源进行统计：多少人手机访问，多少电脑；用 Chrome、Edge 还是微信内置浏览器。  </font></p>
+<p><font style="background-color:#81BBF8;"></font></p>
+<p><font style="background-color:#81BBF8;">这里是记录所以就不是select了，sql语句大概就是</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">INSERT INTO access_log (ua,visit_time) VALUES (‘Mozilla&#x2F;5.0 xxx Chrome’,’2026-07-29 16:00:00’);这样。在ua头闭合’)后使用堆叠注入或者报错注入等方式进行下一步</font></p>
+<p><font style="background-color:#81BBF8;"></font></p>
+<p><font style="background-color:#ED740C;">XFF(X-Forwarded-For):</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/055-2.png"></p>
+<p>场景1：限制IP访问功能</p>
+<p><font style="background-color:#81BBF8;">小迪演示的案例就是登录一个网站，他直接显示了一个你没有权限访问该网页，既然是讲xff肯定是ip被限制了，还有其他原因：1、登录了但是用户权限问题 2、没带Cookie、session等 3、Referer校验等等，很多的这里只是一部分。后面测试如果数据保内有xff那直接改值，没有xff就盲测自行添加键值，在值里面写注入语句</font></p>
+<p>场景2：记录IP访问日志</p>
+<p><font style="background-color:#81BBF8;">同理这个就是insert，和上面ua一样</font></p>
+<p><font style="background-color:#ED740C;">Cookie:</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/055-3.png"></p>
+<p>场景：开发人员在编写一个根据用户 ID（存储在Cookie中）来查询信息的功能</p>
+<p><font style="background-color:#81BBF8;">小迪这里的案例是访问一个网站，网站显示未发现用户登录访问，这都提示很明显了大致就能猜到是登录凭证的问题了。后端逻辑就是获取Cookie中的参数值，然后去数据库查询有就登录成功。我们抓包改包肯定要在Cookie那里写键值的，如果原本没有带，我们怎么知道键是什么，正常注册登录一个用户，抓一个包看数据包。</font></p>
+<p><font style="background-color:#ED740C;"></font></p>
+<p><font style="background-color:#ED740C;">Referer:</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/055-4.png"></p>
+<p>网站期望登录请求来自于本站页面，如果Referer是其他来源，则拒绝登录<font style="background-color:#FBDE28;">（这个就是我现在要进行登录操作，登录框在login.html，当我点击发送，数据就会发送到后端登录接口，然后看Referer来判断你是不是在login.html进行的登录操作，而不是脚本登录）</font>。</p>
+<p><font style="background-color:#81BBF8;">举一个最简单的例子：我在<a href="http://www.zhigao.xyz里有一个www.baidu.com链接，那么点击这www.baidu.com，它的header信息里就有：">www.zhigao.xyz里有一个www.baidu.com链接，那么点击这www.baidu.com，它的header信息里就有：</a>  Referer&#x3D;<a target="_blank" rel="noopener" href="http://www.google.com/">http://www.google.com</a>  </font></p>
+<p><font style="background-color:#81BBF8;"></font></p>
+<p><font style="background-color:#81BBF8;">小迪案例就是一个网站只允许白名单ip域名登录，直接在Referer写注入语句就好，很简单就不多说了。</font></p>
+<p><font style="background-color:#ED740C;">#实例应用：</font></p>
+<p>1、增删改查-操作方法注入</p>
+<p>SRC报告-广东工业大学sql注入</p>
+<p><font style="background-color:#FBDE28;">就是一个insert注入，和上面是一样的，就是个注册用户界面</font></p>
+<p>2、HTTP头-cookie注入</p>
+<p>SRC报告-吉林工业职业技术大学sql注入Bypass</p>
+<p><font style="background-color:#FBDE28;">这个案例也就是展示了个Cookie绕过，绕过语句什么的都是基本一样，就是多一个加长内容来绕过waf。</font></p>
+<p>3、HTTP头-XFF注入</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CiCxpHbW4IArB2nYSH-12w">https://mp.weixin.qq.com/s/CiCxpHbW4IArB2nYSH-12w</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/_jj0o7BKm8CGEcn77gvdOg">https://mp.weixin.qq.com/s/_jj0o7BKm8CGEcn77gvdOg</a></p>
+<p>4、加密还原+JSON注入</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/c3wji_LL_nuiskAKpg89pA">https://mp.weixin.qq.com/s/c3wji_LL_nuiskAKpg89pA</a></p>
+<p>5、HTTP头-403绕过</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/t0VH_9qmb1EuwPGiz3Bbcw">https://mp.weixin.qq.com/s/t0VH_9qmb1EuwPGiz3Bbcw</a></p>
 
     </div>
 
@@ -339,12 +331,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2026/07/08/%E7%AC%AC21%E5%A4%A9-Web%E5%BA%94%E7%94%A8-CDN%E7%BB%95%E8%BF%87-%E5%8A%A0%E9%80%9F%E9%83%A8%E7%BD%B2-%E6%BC%8F%E6%B4%9E%E5%9B%9E%E9%93%BE-%E5%85%A8%E7%BD%91%E6%89%AB%E6%8F%8F-%E5%8F%8D%E5%90%91%E9%82%AE%E4%BB%B6-%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95/" rel="prev" title="第21天-Web应用&CDN绕过&加速部署&漏洞回链&全网扫描&反向邮件&解析记录">
-      <i class="fa fa-chevron-left"></i> 第21天-Web应用&CDN绕过&加速部署&漏洞回链&全网扫描&反向邮件&解析记录
+    <a href="/2026/07/28/%E7%AC%AC54%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F-JSON-XML-%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86-%E7%AC%A6%E5%8F%B7%E9%97%AD%E5%90%88-%E5%A4%8D%E7%9B%98%E6%8A%A5%E5%91%8A/" rel="prev" title="第54天-SQL注入&数据类型&参数格式&JSON&XML&编码加密&符号闭合&复盘报告">
+      <i class="fa fa-chevron-left"></i> 第54天-SQL注入&数据类型&参数格式&JSON&XML&编码加密&符号闭合&复盘报告
     </a></div>
       <div class="post-nav-item">
-    <a href="/2026/07/11/%E7%AC%AC23%E5%A4%A9-APP%E5%BA%94%E7%94%A8-%E4%BA%A7%E6%9D%83%E6%B8%A0%E9%81%93-%E6%9C%8D%E5%8A%A1%E8%B5%84%E4%BA%A7-%E9%80%9A%E8%AE%AF%E6%8A%93%E5%8C%85-%E9%9D%99%E6%80%81%E6%8F%90%E5%8F%96-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-%E6%B5%8B%E8%AF%95%E8%8C%83%E5%9B%B4/" rel="next" title="第23天-APP应用&产权渠道&服务资产&通讯抓包&静态提取&动态调试&测试范围">
-      第23天-APP应用&产权渠道&服务资产&通讯抓包&静态提取&动态调试&测试范围 <i class="fa fa-chevron-right"></i>
+    <a href="/2026/07/30/%E7%AC%AC56%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-%E7%9B%B2%E6%B3%A8-%E5%BB%B6%E6%97%B6-%E5%B8%83%E5%B0%94-%E6%8A%A5%E9%94%99-%E6%9C%89%E6%97%A0%E5%9B%9E%E6%98%BE-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86-%E5%AE%A1%E8%AE%A1%E5%A4%8D%E7%9B%98/" rel="next" title="第56天-SQL注入&增删改查&盲注&延时&布尔&报错&有无回显&错误处理&审计复盘">
+      第56天-SQL注入&增删改查&盲注&延时&布尔&报错&有无回显&错误处理&审计复盘 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

