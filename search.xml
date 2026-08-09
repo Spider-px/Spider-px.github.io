@@ -3749,7 +3749,9 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p>这里就很明显了，&lt;&gt;被实体化了，所以执行不，我们换个地方看看呢，发现搜索框也有js语句</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/063-18.png"></p>
-<p>发现这个js语句没被实体化，只是被放在了input标签里的value值中，所以思路就是闭合前面的属性和标签，让js语句能够正常执行”&gt;<script>alert('xss')</script>就通关了</p>
+<p>发现这个js语句没被实体化，只是被放在了input标签里的value值中，所以思路就是闭合前面的属性和标签，让js语句能够正常执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;&gt;&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>就通关了</p>
 <p>level3：</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/063-19.png"></p>
@@ -3773,16 +3775,21 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p>level6:</p>
 <p>这里使用大小写绕过，那么我们作为防护方来说，那怎么避免大小写绕过呢，一个一个过滤那也太麻烦了，方案一：将用户输入转为小写，在做关键词黑名单匹配，php来说用strtolower()函数，htmlspecialchars($data,ENT_QUOTES(必开))，方案二：针对大小写绕过的正则，&#x2F;focus&#x2F;i</p>
 <p>level7:</p>
-<p>输入”&gt;<script>alert(1)</script></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/063-22.png"></p>
-<p>输入’&gt;<script>alert(1)</script></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入&#x27;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/063-23.png"></p>
 <p>发现script被过滤了，那尝试大小写呗，但是不太行，输入内容被strtolower函数转换成小写了，那就尝试双写绕过</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/063-24.png"></p>
-<p>“&gt;<sscriptcript>alert(‘xss’)</sscriptcript>就绕过了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;&gt;&lt;sscriptcript&gt;alert(&#x27;xss&#x27;)&lt;/sscriptcript&gt;就绕过了</span><br></pre></td></tr></table></figure>
+
+
+
 <p>level8:</p>
 <p>这里用Unicode，为什么呢？你输入Unicode编码后的东西后端看到的是乱码，后端看不到javascript所以就放行，浏览器解析html时会自动解码。</p>
 <!-- 这是一张图片，ocr 内容为： -->
