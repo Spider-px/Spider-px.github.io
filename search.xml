@@ -3732,17 +3732,28 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p>blog.csdn.net&#x2F;2301_80031208&#x2F;article&#x2F;details&#x2F;139159525</p>
 <p>level1：</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-15.png"><br>直接中在name参数后输入恶意js语句就行，<script>alert(1)</acript></p>
+<p><img src="/images/063-15.png"></p>
+<p>直接中在name参数后输入恶意js语句就行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;alert(1)&lt;/acript&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 <p>level2:</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-16.png"><br>发现并没有弹窗，说明js没被正常执行，我们审查元素看一下</p>
+<p><img src="/images/063-16.png"></p>
+<p>发现并没有弹窗，说明js没被正常执行，我们审查元素看一下</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-17.png"><br>这里就很明显了，<>被实体化了，所以执行不，我们换个地方看看呢，发现搜索框也有js语句</p>
+<p><img src="/images/063-17.png"></p>
+<p>这里就很明显了，&lt;&gt;被实体化了，所以执行不，我们换个地方看看呢，发现搜索框也有js语句</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-18.png"><br>发现这个js语句没被实体化，只是被放在了input标签里的value值中，所以思路就是闭合前面的属性和标签，让js语句能够正常执行"><script>alert('xss')</script>就通关了</p>
+<p><img src="/images/063-18.png"></p>
+<p>发现这个js语句没被实体化，只是被放在了input标签里的value值中，所以思路就是闭合前面的属性和标签，让js语句能够正常执行”&gt;<script>alert('xss')</script>就通关了</p>
 <p>level3：</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-19.png"><br>首先思路和level2一样，审查元素看一下，这里搜索框“也被实体化了，所以闭合标签这种方法就不能用了，只能用事件了。</p>
+<p><img src="/images/063-19.png"></p>
+<p>首先思路和level2一样，审查元素看一下，这里搜索框“也被实体化了，所以闭合标签这种方法就不能用了，只能用事件了。</p>
 <p><a href="https://xz.aliyun.com/news/3699">https://xz.aliyun.com/news/3699</a>这里有标签介绍</p>
 <p>‘ onfocus&#x3D;alert(1) ‘就通过了</p>
 <p>level4：</p>
@@ -3751,33 +3762,44 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p><font style="color:#DF2A3F;">在html属性中Javascript:alert(1)和alert(1)是一样的，javascript:是伪协议就是告诉浏览器后面内容当做js执行，事件属性默认本身就是执行js，所以没区别。但是在a标签中href中必须加javascript：要不然就当做网址了。</font></p>
 <p>level5:</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-20.png"><br>还是用onfocus标签发现on被过滤成o_n了，那就换一个事件呗，用a标签先把前面闭合面用a标签，当然其他事件也是可以的。</p>
+<p><img src="/images/063-20.png"></p>
+<p>还是用onfocus标签发现on被过滤成o_n了，那就换一个事件呗，用a标签先把前面闭合面用a标签，当然其他事件也是可以的。</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-21.png"><br>“&gt;<a href=javascritp:alert(1)>xxx</a></p>
+<p><img src="/images/063-21.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">“&gt;&lt;a href=javascritp:alert(1)&gt;xxx&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+
+
 <p>level6:</p>
 <p>这里使用大小写绕过，那么我们作为防护方来说，那怎么避免大小写绕过呢，一个一个过滤那也太麻烦了，方案一：将用户输入转为小写，在做关键词黑名单匹配，php来说用strtolower()函数，htmlspecialchars($data,ENT_QUOTES(必开))，方案二：针对大小写绕过的正则，&#x2F;focus&#x2F;i</p>
 <p>level7:</p>
 <p>输入”&gt;<script>alert(1)</script></p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-22.png"><br>输入’&gt;<script>alert(1)</script></p>
+<p><img src="/images/063-22.png"></p>
+<p>输入’&gt;<script>alert(1)</script></p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-23.png"><br>发现script被过滤了，那尝试大小写呗，但是不太行，输入内容被strtolower函数转换成小写了，那就尝试双写绕过</p>
+<p><img src="/images/063-23.png"></p>
+<p>发现script被过滤了，那尝试大小写呗，但是不太行，输入内容被strtolower函数转换成小写了，那就尝试双写绕过</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-24.png"><br>“&gt;<sscriptcript>alert(‘xss’)</sscriptcript>就绕过了</p>
+<p><img src="/images/063-24.png"></p>
+<p>“&gt;<sscriptcript>alert(‘xss’)</sscriptcript>就绕过了</p>
 <p>level8:</p>
 <p>这里用Unicode，为什么呢？你输入Unicode编码后的东西后端看到的是乱码，后端看不到javascript所以就放行，浏览器解析html时会自动解码。</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-25.png"><br>用Unicode绕</p>
+<p><img src="/images/063-25.png"></p>
+<p>用Unicode绕</p>
 <p>&amp;#x006a&amp;#x0061&amp;#x0076&amp;#x0061&amp;#x0073&amp;#x0063&amp;#x0072&amp;#x0069&amp;#x0070&amp;#x0074&amp;#x003a&amp;#x0061&amp;#x006c&amp;#x0065&amp;#x0072&amp;#x0074&amp;#x0028&amp;#x0031&amp;#x0029</p>
 <p>level9:</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-26.png"><br>代码审计中就能看出来，友情连接必须有http:&#x2F;&#x2F;其余和level8一模一样</p>
+<p><img src="/images/063-26.png"></p>
+<p>代码审计中就能看出来，友情连接必须有http:&#x2F;&#x2F;其余和level8一模一样</p>
 <p>我原本想法是把javascript:alert(1)编码了，然后在开头加http:&#x2F;&#x2F;但是不行，这样的话就会被认为是一个网址不是js代码了，我们可以在javascript：alert(1)编码最后加&#x2F;&#x2F;http:&#x2F;&#x2F;用&#x2F;&#x2F;注释掉</p>
 <p>level10:</p>
 <p>隐藏属性触发闭合。就是表单中有的标签type是hidden，起始有属性值为你输得js，但是你看不到，那你就type改为text想办法看到呗</p>
 <p>还是onfocus事件，这是一开始的样子</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/063-27.png"><br>这是成功后的样子</p>
+<p><img src="/images/063-27.png"></p>
+<p>这是成功后的样子</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/063-28.png"></p>
 <p>11-20</p>
