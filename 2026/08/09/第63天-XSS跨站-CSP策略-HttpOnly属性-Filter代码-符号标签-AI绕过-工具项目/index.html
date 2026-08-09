@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第63天-XSS跨站&amp;CSP策略&amp;HttpOnly属性&amp;Filter代码&amp;符号标签&amp;AI绕过&amp;工具项目">
+<meta property="og:url" content="http://zhigao.xyz/2026/08/09/%E7%AC%AC63%E5%A4%A9-XSS%E8%B7%A8%E7%AB%99-CSP%E7%AD%96%E7%95%A5-HttpOnly%E5%B1%9E%E6%80%A7-Filter%E4%BB%A3%E7%A0%81-%E7%AC%A6%E5%8F%B7%E6%A0%87%E7%AD%BE-AI%E7%BB%95%E8%BF%87-%E5%B7%A5%E5%85%B7%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/063-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-3.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-4.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-5.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-6.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-7.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-8.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-9.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-10.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-11.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-12.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-13.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-14.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-15.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-16.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-17.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-18.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-19.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-20.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-21.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-22.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-23.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-24.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-25.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-26.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-27.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-28.png">
+<meta property="og:image" content="http://zhigao.xyz/images/063-29.png">
+<meta property="article:published_time" content="2026-08-09T09:12:54.000Z">
+<meta property="article:modified_time" content="2026-08-09T09:33:26.257Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/063-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/08/09/%E7%AC%AC63%E5%A4%A9-XSS%E8%B7%A8%E7%AB%99-CSP%E7%AD%96%E7%95%A5-HttpOnly%E5%B1%9E%E6%80%A7-Filter%E4%BB%A3%E7%A0%81-%E7%AC%A6%E5%8F%B7%E6%A0%87%E7%AD%BE-AI%E7%BB%95%E8%BF%87-%E5%B7%A5%E5%85%B7%E9%A1%B9%E7%9B%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第63天-XSS跨站&CSP策略&HttpOnly属性&Filter代码&符号标签&AI绕过&工具项目 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/08/09/%E7%AC%AC63%E5%A4%A9-XSS%E8%B7%A8%E7%AB%99-CSP%E7%AD%96%E7%95%A5-HttpOnly%E5%B1%9E%E6%80%A7-Filter%E4%BB%A3%E7%A0%81-%E7%AC%A6%E5%8F%B7%E6%A0%87%E7%AD%BE-AI%E7%BB%95%E8%BF%87-%E5%B7%A5%E5%85%B7%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第63天-XSS跨站&CSP策略&HttpOnly属性&Filter代码&符号标签&AI绕过&工具项目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-08-09 17:12:54 / 修改时间：17:33:26" itemprop="dateCreated datePublished" datetime="2026-08-09T17:12:54+08:00">2026-08-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-XSS跨站-安全防护&amp;CSP&amp;Httponly&amp;WAF等</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-XSS跨站-工具项目&amp;XSStrike&amp;Chypass_pro</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、CSP"><a href="#一、CSP" class="headerlink" title="一、CSP"></a><font style="color:#000000;">一、</font><font style="color:#990055;">CSP</font></h1><p><font style="color:#000000;">内容安全策略是一种可信白名单机制，来限制网站中是否可以包含某来源内容。</font></p>
+<p><font style="color:#000000;">该制度明确告诉客户端，哪些外部资源可以加载和执行，等同于提供白名单，</font></p>
+<p><font style="color:#000000;">它的实现和执行全部由浏览器完成，开发者只需提供配置。</font></p>
+<p><font style="color:#000000;">禁止加载外域代码，防止复杂的攻击逻辑。</font></p>
+<p><font style="color:#000000;">禁止外域提交，网站被攻击后，用户的数据不会泄露到外域。</font></p>
+<p><font style="color:#000000;">禁止内联脚本执行（规则较严格，目前发现 GitHub 使用）。</font></p>
+<p><font style="color:#000000;">禁止未授权的脚本执行（新特性，Google Map 移动版在使用）。</font></p>
+<p><font style="color:#000000;">合理使用上报可以及时发现</font><font style="color:#990055;">XSS</font><font style="color:#000000;">，利于尽快修复问题。</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">开没开CSP直接可以在数据包中看到</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-1.png"></p>
+<p>实验：</p>
+<h2 id="1、设置任何域JS加载"><a href="#1、设置任何域JS加载" class="headerlink" title="1、设置任何域JS加载"></a>1、设置任何域JS加载</h2><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-2.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-3.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-4.png"></p>
+<h2 id="2、设置本地域JS加载"><a href="#2、设置本地域JS加载" class="headerlink" title="2、设置本地域JS加载"></a>2、设置本地域JS加载</h2><p>绕过利用条件：文件上传JS绕过</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-5.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-6.png"><br>只有当前域的x.js执行了</p>
+<h2 id="3、设置本地域JS外加限制目录"><a href="#3、设置本地域JS外加限制目录" class="headerlink" title="3、设置本地域JS外加限制目录"></a>3、设置本地域JS外加限制目录</h2><p>绕过利用条件1：目录有302跳转绕过</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-7.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-8.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-9.png"><br>生效的是本地的js代码，因为static下有一个302.php做了一个重定向操作，这个重定向操作能够目录遍历，所以执行了当前域的js</p>
+<p>绕过利用条件2：文件上传JS（指定目录）</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-10.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-11.png"><br>只有指定目录的js代码生效了</p>
+<h2 id="4、其他绕过技术"><a href="#4、其他绕过技术" class="headerlink" title="4、其他绕过技术"></a>4、其他绕过技术</h2><p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/11816">https://xz.aliyun.com/news/11816</a></p>
+<h1 id="二、http-only"><a href="#二、http-only" class="headerlink" title="二、http_only"></a>二、http_only</h1><p>一个可以在设置Cookie时使用的标记;当一个Cookie被标记为HttpOnly时，JavaScript无法访问该Cookie，只能通过HTTP（或HTTPS）协议传输。</p>
+<p>这一特性有助于防止跨站脚本攻击（XSS），因为攻击者无法通过JavaScript代码窃取存储在 HttpOnly Cookie中的敏感信息。</p>
+<p><code>HttpOnly</code><strong>是</strong><code>**Cookie**</code><strong>的一个安全属性</strong>，由服务器通过<code>Set-Cookie</code>响应头设置，用于限制客户端脚本（如<code>JavaScript</code>）对<code>Cookie</code>的访问。他的核心目的是防御<code>XSS</code>攻击对敏感<code>Cookie</code>的窃取。  </p>
+<p>:::info<br>cookie名，cookie值，cookie失效时间，cookie有效路径，cookie有效域名，secure安全属性，httponly安全属性</p>
+<p>setcookie(‘name’, ‘xiaodi’, time() + 3600, ‘&#x2F;xss’, ‘’, false, true);</p>
+<p>:::</p>
+<p><font style="color:#DF2A3F;">判断启用httponly的方法，就是在浏览器存储cookie的地方，看httponly字段就行</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-12.png"></p>
+<p>实验：</p>
+<p>开启和未开启HttpOnly时XSS窃取Cookie的加载情况</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-13.png"><br>name开了httponly，pass没开</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-14.png"><br>所以只弹窗pass</p>
+<p>绕过：有但鸡肋</p>
+<p>(1)CVE-2012-0053</p>
+<p>(2)PHPINFO页面</p>
+<p>(3) Flash&#x2F;Java</p>
+<p>blog.csdn.net&#x2F;weixin_42478365&#x2F;article&#x2F;details&#x2F;116597222</p>
+<p><font style="background-color:#FBDE28;">思路：一般可不采用获取Cookie利用，采用方式（钓鱼，浏览器攻击框架等）</font></p>
+<h1 id="三、WAF或代码Filter"><a href="#三、WAF或代码Filter" class="headerlink" title="三、WAF或代码Filter"></a>三、WAF或代码Filter</h1><p>黑盒XSS手工分析：</p>
+<p>-页面中显示的数据找可控的（有些隐藏的）</p>
+<p>-利用可控地方发送JS代码去看执行加载情况</p>
+<p>-成功执行即XSS，不能成功就看语句输出的地方显示（过滤）</p>
+<p>-根据显示分析为什么不能执行（实体化，符号括起来，关键字被删除等）</p>
+<h2 id="1、人工分析"><a href="#1、人工分析" class="headerlink" title="1、人工分析"></a>1、人工分析</h2><p>演示：xss-lab（关卡）</p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/4067">https://xz.aliyun.com/t/4067</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/11816">https://xz.aliyun.com/news/11816</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Re13orn/xss-lab">https://github.com/Re13orn/xss-lab</a></p>
+<p>blog.csdn.net&#x2F;2301_80031208&#x2F;article&#x2F;details&#x2F;139159525</p>
+<p>level1：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-15.png"><br>直接中在name参数后输入恶意js语句就行，<script>alert(1)</acript></p>
+<p>level2:</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-16.png"><br>发现并没有弹窗，说明js没被正常执行，我们审查元素看一下</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-17.png"><br>这里就很明显了，<>被实体化了，所以执行不，我们换个地方看看呢，发现搜索框也有js语句</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-18.png"><br>发现这个js语句没被实体化，只是被放在了input标签里的value值中，所以思路就是闭合前面的属性和标签，让js语句能够正常执行"><script>alert('xss')</script>就通关了</p>
+<p>level3：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-19.png"><br>首先思路和level2一样，审查元素看一下，这里搜索框“也被实体化了，所以闭合标签这种方法就不能用了，只能用事件了。</p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/3699">https://xz.aliyun.com/news/3699</a>这里有标签介绍</p>
+<p>‘ onfocus&#x3D;alert(1) ‘就通过了</p>
+<p>level4：</p>
+<p>这里和level3基本一样，都是用事件来完成，只不过用的是双引号来闭合其他属性” onfocus&#x3D;alert(1) “</p>
+<p>htmlspecialchars()函数：把特殊字符转为html实体，用来防御xss。但是默认情况下只转双引号，不转单引号</p>
+<p><font style="color:#DF2A3F;">在html属性中Javascript:alert(1)和alert(1)是一样的，javascript:是伪协议就是告诉浏览器后面内容当做js执行，事件属性默认本身就是执行js，所以没区别。但是在a标签中href中必须加javascript：要不然就当做网址了。</font></p>
+<p>level5:</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-20.png"><br>还是用onfocus标签发现on被过滤成o_n了，那就换一个事件呗，用a标签先把前面闭合面用a标签，当然其他事件也是可以的。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-21.png"><br>“&gt;<a href=javascritp:alert(1)>xxx</a></p>
+<p>level6:</p>
+<p>这里使用大小写绕过，那么我们作为防护方来说，那怎么避免大小写绕过呢，一个一个过滤那也太麻烦了，方案一：将用户输入转为小写，在做关键词黑名单匹配，php来说用strtolower()函数，htmlspecialchars($data,ENT_QUOTES(必开))，方案二：针对大小写绕过的正则，&#x2F;focus&#x2F;i</p>
+<p>level7:</p>
+<p>输入”&gt;<script>alert(1)</script></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-22.png"><br>输入’&gt;<script>alert(1)</script></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-23.png"><br>发现script被过滤了，那尝试大小写呗，但是不太行，输入内容被strtolower函数转换成小写了，那就尝试双写绕过</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-24.png"><br>“&gt;<sscriptcript>alert(‘xss’)</sscriptcript>就绕过了</p>
+<p>level8:</p>
+<p>这里用Unicode，为什么呢？你输入Unicode编码后的东西后端看到的是乱码，后端看不到javascript所以就放行，浏览器解析html时会自动解码。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-25.png"><br>用Unicode绕</p>
+<p>&amp;#x006a&amp;#x0061&amp;#x0076&amp;#x0061&amp;#x0073&amp;#x0063&amp;#x0072&amp;#x0069&amp;#x0070&amp;#x0074&amp;#x003a&amp;#x0061&amp;#x006c&amp;#x0065&amp;#x0072&amp;#x0074&amp;#x0028&amp;#x0031&amp;#x0029</p>
+<p>level9:</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-26.png"><br>代码审计中就能看出来，友情连接必须有http:&#x2F;&#x2F;其余和level8一模一样</p>
+<p>我原本想法是把javascript:alert(1)编码了，然后在开头加http:&#x2F;&#x2F;但是不行，这样的话就会被认为是一个网址不是js代码了，我们可以在javascript：alert(1)编码最后加&#x2F;&#x2F;http:&#x2F;&#x2F;用&#x2F;&#x2F;注释掉</p>
+<p>level10:</p>
+<p>隐藏属性触发闭合。就是表单中有的标签type是hidden，起始有属性值为你输得js，但是你看不到，那你就type改为text想办法看到呗</p>
+<p>还是onfocus事件，这是一开始的样子</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-27.png"><br>这是成功后的样子</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-28.png"></p>
+<p>11-20</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/l2872253606/article/details/125638898">https://blog.csdn.net/l2872253606/article/details/125638898</a></p>
+<h2 id="2、工具项目"><a href="#2、工具项目" class="headerlink" title="2、工具项目"></a>2、工具项目</h2><p><a target="_blank" rel="noopener" href="https://github.com/s0md3v/XSStrike">https://github.com/s0md3v/XSStrike</a></p>
+<p><font style="background-color:#FBDE28;"><a target="_blank" rel="noopener" href="https://github.com/wxwhhh/Chypass_pro%EF%BC%88%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%EF%BC%89">https://github.com/wxwhhh/Chypass_pro（推荐使用）</a></font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/063-29.png"><br>安装好后配置api key我这里用的是千问，因为有免费额度😄</p>
+<p>用的时候就正常抓包，把包转发到这里，然后在需要xss的地方写一个<xss>保存然后开始ai分析就行，我就不演示了</p>
+<p>演示：</p>
+<p><a target="_blank" rel="noopener" href="https://xss.xiejiahe.com/">https://xss.xiejiahe.com/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/09/%E7%AC%AC62%E5%A4%A9-XSS%E8%B7%A8%E7%AB%99-Cookie%E7%9B%97%E5%8F%96-%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8F%90%E4%BA%A4-%E7%BD%91%E7%BB%9C%E9%92%93%E9%B1%BC-BEEF%E9%A1%B9%E7%9B%AE-XSS%E5%B9%B3%E5%8F%B0-%E5%8D%B1%E5%AE%B3%E5%88%A9%E7%94%A8/" rel="prev" title="第62天-XSS跨站&Cookie盗取&数据包提交&网络钓鱼&BEEF项目&XSS平台&危害利用">
+      <i class="fa fa-chevron-left"></i> 第62天-XSS跨站&Cookie盗取&数据包提交&网络钓鱼&BEEF项目&XSS平台&危害利用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/08/09/%E7%AC%AC64%E5%A4%A9-CSRF%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0-Referer%E5%90%8C%E6%BA%90-Token%E6%A0%A1%E9%AA%8C-%E5%A4%8D%E7%94%A8%E5%88%A0%E9%99%A4%E7%BD%AE%E7%A9%BA-%E8%81%94%E5%8A%A8%E4%B8%8A%E4%BC%A0%E6%88%96XSS/" rel="next" title="第64天-CSRF跨站请求伪造&Referer同源&Token校验&复用删除置空&联动上传或XSS">
+      第64天-CSRF跨站请求伪造&Referer同源&Token校验&复用删除置空&联动上传或XSS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81CSP"><span class="nav-number">1.</span> <span class="nav-text">一、CSP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E8%AE%BE%E7%BD%AE%E4%BB%BB%E4%BD%95%E5%9F%9FJS%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.1.</span> <span class="nav-text">1、设置任何域JS加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E8%AE%BE%E7%BD%AE%E6%9C%AC%E5%9C%B0%E5%9F%9FJS%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.2.</span> <span class="nav-text">2、设置本地域JS加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E8%AE%BE%E7%BD%AE%E6%9C%AC%E5%9C%B0%E5%9F%9FJS%E5%A4%96%E5%8A%A0%E9%99%90%E5%88%B6%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.</span> <span class="nav-text">3、设置本地域JS外加限制目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%85%B6%E4%BB%96%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF"><span class="nav-number">1.4.</span> <span class="nav-text">4、其他绕过技术</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81http-only"><span class="nav-number">2.</span> <span class="nav-text">二、http_only</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81WAF%E6%88%96%E4%BB%A3%E7%A0%81Filter"><span class="nav-number">3.</span> <span class="nav-text">三、WAF或代码Filter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E4%BA%BA%E5%B7%A5%E5%88%86%E6%9E%90"><span class="nav-number">3.1.</span> <span class="nav-text">1、人工分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%B7%A5%E5%85%B7%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.2.</span> <span class="nav-text">2、工具项目</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
