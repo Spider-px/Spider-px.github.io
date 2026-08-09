@@ -183,7 +183,7 @@ onmouseout="this.style.textDecoration='none'">
 第60天-XSS跨站&文件类型&功能逻辑&SVG&PDF&SWF&PMessage&LocalStorage
 </a >
 <br>
-<a href="" style="color:#2378dd" >
+<a  style="color:#2378dd" >
 第61天-XSS跨站&浏览器UXSS&突变MXSS&Vue&React框架&JQuery库&写法和版本（安全开发后补）
 </a >
 <br>
