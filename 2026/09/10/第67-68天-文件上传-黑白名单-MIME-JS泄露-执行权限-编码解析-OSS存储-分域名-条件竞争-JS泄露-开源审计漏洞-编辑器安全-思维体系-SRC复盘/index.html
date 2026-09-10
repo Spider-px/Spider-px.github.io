@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第67&amp;68天-文件上传&amp;黑白名单&amp;MIME&amp;JS泄露&amp;执行权限&amp;编码解析&amp;OSS存储&amp;分域名&amp;条件竞争&amp;JS泄露&amp;开源审计漏洞&amp;编辑器安全&amp;思维体系&amp;SRC复盘">
+<meta property="og:url" content="http://zhigao.xyz/2026/09/10/%E7%AC%AC67-68%E5%A4%A9-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E9%BB%91%E7%99%BD%E5%90%8D%E5%8D%95-MIME-JS%E6%B3%84%E9%9C%B2-%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90-%E7%BC%96%E7%A0%81%E8%A7%A3%E6%9E%90-OSS%E5%AD%98%E5%82%A8-%E5%88%86%E5%9F%9F%E5%90%8D-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-JS%E6%B3%84%E9%9C%B2-%E5%BC%80%E6%BA%90%E5%AE%A1%E8%AE%A1%E6%BC%8F%E6%B4%9E-%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%89%E5%85%A8-%E6%80%9D%E7%BB%B4%E4%BD%93%E7%B3%BB-SRC%E5%A4%8D%E7%9B%98/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/067&068-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/067&068-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/067&068-3.png">
+<meta property="article:published_time" content="2026-09-10T08:03:19.000Z">
+<meta property="article:modified_time" content="2026-09-10T08:24:21.820Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/067&068-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/09/10/%E7%AC%AC67-68%E5%A4%A9-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E9%BB%91%E7%99%BD%E5%90%8D%E5%8D%95-MIME-JS%E6%B3%84%E9%9C%B2-%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90-%E7%BC%96%E7%A0%81%E8%A7%A3%E6%9E%90-OSS%E5%AD%98%E5%82%A8-%E5%88%86%E5%9F%9F%E5%90%8D-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-JS%E6%B3%84%E9%9C%B2-%E5%BC%80%E6%BA%90%E5%AE%A1%E8%AE%A1%E6%BC%8F%E6%B4%9E-%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%89%E5%85%A8-%E6%80%9D%E7%BB%B4%E4%BD%93%E7%B3%BB-SRC%E5%A4%8D%E7%9B%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第67&68天-文件上传&黑白名单&MIME&JS泄露&执行权限&编码解析&OSS存储&分域名&条件竞争&JS泄露&开源审计漏洞&编辑器安全&思维体系&SRC复盘 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/09/10/%E7%AC%AC67-68%E5%A4%A9-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E9%BB%91%E7%99%BD%E5%90%8D%E5%8D%95-MIME-JS%E6%B3%84%E9%9C%B2-%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90-%E7%BC%96%E7%A0%81%E8%A7%A3%E6%9E%90-OSS%E5%AD%98%E5%82%A8-%E5%88%86%E5%9F%9F%E5%90%8D-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-JS%E6%B3%84%E9%9C%B2-%E5%BC%80%E6%BA%90%E5%AE%A1%E8%AE%A1%E6%BC%8F%E6%B4%9E-%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%89%E5%85%A8-%E6%80%9D%E7%BB%B4%E4%BD%93%E7%B3%BB-SRC%E5%A4%8D%E7%9B%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第67&68天-文件上传&黑白名单&MIME&JS泄露&执行权限&编码解析&OSS存储&分域名&条件竞争&JS泄露&开源审计漏洞&编辑器安全&思维体系&SRC复盘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-09-10 16:03:19 / 修改时间：16:24:21" itemprop="dateCreated datePublished" datetime="2026-09-10T16:03:19+08:00">2026-09-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-文件上传-安全验证&amp;层面逻辑</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-文件上传-执行权限&amp;解码还原</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-文件上传-分站存储&amp;OSS存储</font></p>
+<p><font style="color:#708090;"></font></p>
+<h1 id="一、常规文件上传"><a href="#一、常规文件上传" class="headerlink" title="一、常规文件上传"></a>一、常规文件上传</h1><p>1、课前一定要明白：</p>
+<p>无文件解析安全问题上，格式解析是一对一的（不能jpg解析php）</p>
+<p>换句话来说有解析错误配置或后缀解析漏洞时才能实现格式差异解析</p>
+<p>2、文件上传安全指的是攻击者通过利用上传实现后门的写入连接后门进行权限控制的安全问题，对于如何确保这类安全问题，一般会从原生态功能中的文件内容，文件后缀，文件类型等方面判断，但是漏洞可能不仅在本身的代码验证逻辑中出现安全问题，也会在语言版本，语言函数，中间件，引用的第三方编辑器等存在缺陷地方配合利用。另外文件上传也有多个存储逻辑，不同的文件存储方案也会给攻击者带来不一样的挑战！</p>
+<p>1、无限制</p>
+<p>任意上传，什么文件都能上传</p>
+<p>2、有限制：</p>
+<p>限制后缀格式（判断后缀名（黑白名单），MIME类型，文件头等）</p>
+<p>3、测试环境安装参考：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ffffffff0x/f8x">https://github.com/ffffffff0x/f8x</a> 自动化环境部署工具</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fuzzdb-project/fuzzdb">https://github.com/fuzzdb-project/fuzzdb</a>渗透测试字典全家桶</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/sqlsec/upload-labs-docker">https://github.com/sqlsec/upload-labs-docker</a>文件上传靶场</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/sqlsec/upload-labs-docker/blob/main/WP.md">https://github.com/sqlsec/upload-labs-docker/blob/main/WP.md</a>wp在这里</p>
+<p>下载上述资源</p>
+<p>docker安装</p>
+<p>f8x -d 或 f8x -docker</p>
+<p>进入项目文件夹</p>
+<p>cd upload-labs-docker</p>
+<p>一键部署运行</p>
+<p>docker-compose up -d</p>
+<h2 id="1、第一关-前端JS"><a href="#1、第一关-前端JS" class="headerlink" title="1、第一关(前端JS)"></a>1、第一关(前端JS)</h2><p>如何判断是否是前端验证呢？</p>
+<p>首先抓包监听，如果上传文件的时候还没有抓取到数据包，但是浏览器就提示文件类型不正确的话，那么这个多半就是前端校验了</p>
+<p>前端js验证代码审计：</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/067&068-1.png"></p>
+<p>enctype&#x3D;”multipart&#x2F;form-data”(上传文件必写)，作用就是告诉浏览器这个表单要传文件</p>
+<p>on-xxx都是事件：onsubmit提交事件，onclick点击事件，onchange改变事件，onmouseover鼠标悬浮。事件就是触发开关，使得HTML和js联动。</p>
+<details class="lake-collapse"><summary id="u34061673"><span class="ne-text" style="font-size: 24px">js代码</span></summary><p id="u9a7783cb" class="ne-p"><span class="ne-text" style="font-size: 24px">function checkfilesuffix()</span></p><p id="ud9e25f94" class="ne-p"><span class="ne-text" style="font-size: 24px">{</span></p><p id="u2f6761ea" class="ne-p"><span class="ne-text" style="font-size: 24px">    var file=document.getElementsByName('file')[0]['value'];</span></p><p id="ua788fef4" class="ne-p"><span class="ne-text" style="font-size: 24px">/*这里是一个dom操作document.getElementsByName('file')</span></p><p id="u07537fbc" class="ne-p"><span class="ne-text" style="font-size: 24px">通过name找标签，elements带s，返回数组（多个标签列表），[0]数组从0开始，取第一个上传框，value是上传框自带属性，存你选中的文件路径加文件名*/</span></p><p id="u007b06bd" class="ne-p"><span class="ne-text" style="font-size: 24px">    if(file==&quot;&quot;||file==null)</span></p><p id="u5b0ce487" class="ne-p"><span class="ne-text" style="font-size: 24px">    {</span></p><p id="u659a7366" class="ne-p"><span class="ne-text" style="font-size: 24px">        swal(&quot;请添加上传文件&quot;, &quot;&quot;, &quot;error&quot;);</span></p><p id="ucb1757c3" class="ne-p"><span class="ne-text" style="font-size: 24px">//这就是一个弹窗，相当于alert的升级版，更好看</span></p><p id="uebf60d1c" class="ne-p"><span class="ne-text" style="font-size: 24px">        return false;</span></p><p id="u47eeec9b" class="ne-p"><span class="ne-text" style="font-size: 24px">//直接告诉浏览器：不要提交表单，终止上传</span></p><p id="u05a0338d" class="ne-p"><span class="ne-text" style="font-size: 24px">    }</span></p><p id="u9b565607" class="ne-p"><span class="ne-text" style="font-size: 24px">    else</span></p><p id="ue428da4a" class="ne-p"><span class="ne-text" style="font-size: 24px">    {</span></p><p id="u4c8f6531" class="ne-p"><span class="ne-text" style="font-size: 24px">        var whitelist=new Array(&quot;.jpg&quot;,&quot;.png&quot;,&quot;.gif&quot;,&quot;.jpeg&quot;);</span></p><p id="u3488d5a8" class="ne-p"><span class="ne-text" style="font-size: 24px">        var file_suffix=file.substring(file.lastIndexOf(&quot;.&quot;));、</span></p><p id="u75b18d0a" class="ne-p"><span class="ne-text" style="font-size: 24px">/*substring(起始下标)从指定下标开始，截取字符串后面所有内容，lastIndexOf（&quot;.&quot;）找到字符串里最后一个小数点的位置，返回下标*/</span></p><p id="u2e97e0ac" class="ne-p"><span class="ne-text" style="font-size: 24px">        if(whitelist.indexOf(file_suffix) == -1)</span></p><p id="ue5068604" class="ne-p"><span class="ne-text" style="font-size: 24px">//indexOf()在一个数组/字符串里，查找某个内容，返回它的位置(下标)</span></p><p id="uc7b905e6" class="ne-p"><span class="ne-text" style="font-size: 24px">        {</span></p><p id="ua2207320" class="ne-p"><span class="ne-text" style="font-size: 24px">            swal(&quot;只允许上传图片类型的文件!&quot;, &quot;&quot;, &quot;error&quot;);</span></p><p id="u535c86d8" class="ne-p"><span class="ne-text" style="font-size: 24px">            return false;</span></p><p id="u9a120c9c" class="ne-p"><span class="ne-text" style="font-size: 24px">        }</span></p><p id="u54ade980" class="ne-p"><span class="ne-text" style="font-size: 24px">    }</span></p><p id="u8b0a0855" class="ne-p"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u0b8a501c" class="ne-p"><span class="ne-text" style="font-size: 24px"></span></p><p id="uff4621a5" class="ne-p"><span class="ne-text" style="font-size: 24px">function error(){</span></p><p id="u42ea92ac" class="ne-p"><span class="ne-text" style="font-size: 24px">    swal(&quot;上传失败&quot;, &quot;&quot;, &quot;error&quot;);</span></p><p id="u5f1b9eac" class="ne-p"><span class="ne-text" style="font-size: 24px">}</span></p><p id="u2560a481" class="ne-p"><span class="ne-text" style="font-size: 24px"></span></p><p id="u27945fa6" class="ne-p"><br></p></details>
+
+
+
+
+<p>绕过方法：</p>
+<p>判断是前端验证还是后端验证可以通过抓包，能抓到就是传到后端了，抓不到就是没传到服务器是前端验证。可以先把文件换为合法后缀，通过bp抓包后改后缀之后就把目标文件传到服务器了</p>
+<h2 id="2、第二关-htaccess"><a href="#2、第二关-htaccess" class="headerlink" title="2、第二关(.htaccess)"></a>2、第二关(.htaccess)</h2><p>AddType application&#x2F;x-httpd-php .png</p>
+<details class="lake-collapse"><summary id="u556283d5"><span class="ne-text" style="font-size: 24px">后端代码</span></summary><pre data-language="php" id="Iogey" class="ne-codeblock language-php"><code>header(&quot;Content-type: text/html;charset=utf-8&quot;);
+
+<p>&#x2F;&#x2F;设置 HTTP 响应头，告诉浏览器页面是 HTML 格式、使用 UTF-8 编码，防止中文乱码。</p>
+<pre><code>    error_reporting(0);
+</code></pre>
+<p>&#x2F;&#x2F;关闭所有 PHP 错误提示（警告、报错、通知都不显示）。</p>
+<pre><code>    //设置上传目录
+    define(&amp;quot;UPLOAD_PATH&amp;quot;, dirname(__FILE__) . &amp;quot;/upload/&amp;quot;);
+</code></pre>
+<p>&#x2F;<em>dirname(<strong>FILE</strong>) &#x3D; 当前 PHP 文件所在的绝对路径<br>定义常量 UPLOAD_PATH &#x3D; 当前目录下的 &#x2F;upload&#x2F; 文件夹绝对路径<br>示例：&#x2F;var&#x2F;www&#x2F;html&#x2F;upload&#x2F;</em>&#x2F;</p>
+<pre><code>    define(&amp;quot;UPLOAD_URL_PATH&amp;quot;, str_replace($_SERVER[&#39;DOCUMENT_ROOT&#39;], &amp;quot;&amp;quot;, UPLOAD_PATH));
+</code></pre>
+<p>&#x2F;&#x2F;str_replace(要去掉什么，换成什么，原字符串)，$_SERVER[‘DOCUMENT_ROOT’]网站根目录</p>
+<pre><code>    if (!file_exists(UPLOAD_PATH)) &#123;
+        mkdir(UPLOAD_PATH, 0755);
+    &#125;
+
+    $is_upload = false;
+    if (!empty($_POST[&#39;submit&#39;])) &#123;
+        $name = basename($_FILES[&#39;file&#39;][&#39;name&#39;]);
+      //获取文件名，去掉前面的路径
+        $ext = pathinfo($name)[&#39;extension&#39;];
+      //pathinfo(文件名)解析文件名，取各种信息。[&#39;extension&#39;]专门拿文件后缀
+        $blacklist = array(&amp;quot;php&amp;quot;, &amp;quot;php7&amp;quot;, &amp;quot;php5&amp;quot;, &amp;quot;php4&amp;quot;, &amp;quot;php3&amp;quot;, &amp;quot;phtml&amp;quot;, &amp;quot;pht&amp;quot;, &amp;quot;jsp&amp;quot;, &amp;quot;jspa&amp;quot;, &amp;quot;jspx&amp;quot;, &amp;quot;jsw&amp;quot;, &amp;quot;jsv&amp;quot;, &amp;quot;jspf&amp;quot;, &amp;quot;jtml&amp;quot;, &amp;quot;asp&amp;quot;, &amp;quot;aspx&amp;quot;, &amp;quot;asa&amp;quot;, &amp;quot;asax&amp;quot;, &amp;quot;ascx&amp;quot;, &amp;quot;ashx&amp;quot;, &amp;quot;asmx&amp;quot;, &amp;quot;cer&amp;quot;, &amp;quot;swf&amp;quot;);
+        if (!in_array($ext, $blacklist)) &#123;
+            if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], UPLOAD_PATH . $name)) &#123;
+                $is_upload = true;
+            &#125; else &#123;
+                echo &amp;quot;&amp;lt;script&amp;gt;error();&amp;lt;/script&amp;gt;&amp;quot;;
+            &#125;
+        &#125; else &#123;
+            echo &amp;quot;&amp;lt;script&amp;gt;black();&amp;lt;/script&amp;gt;&amp;quot;;
+        &#125;
+    
+    &#125;&lt;/code&gt;&lt;/pre&gt;&lt;p id=&quot;u4aafcd55&quot; class=&quot;ne-p&quot;&gt;&lt;span class=&quot;ne-text&quot; style=&quot;font-size: 24px&quot;&gt;代码审计发现没过滤.htaccess,并且网站还是Apache+php搭建，所以可利用.htaccess配置文件来绕过&lt;/span&gt;&lt;/p&gt;&lt;/details&gt;
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46684578/article/details/119141109">https://blog.csdn.net/weixin_46684578&#x2F;article&#x2F;details&#x2F;119141109</a></p>
+<p>AddType application&#x2F;x-httpd-php .png</p>
+<p>addtype告诉Apache服务器，新增文件后缀对应的解析类型</p>
+<p>application：mime类型大类，表示这是可执行应用程序，不是普通文本或图片</p>
+<p>x-httpd-php专门给Apache web服务器用的PHP解析器</p>
+<p>.htaccess修改解析配置文件</p>
+<p>借助这个配置让.png的命名文件做类型application&#x2F;x-httpd-php(PHP的类型)当做PHP执行</p>
+<p>非靶场步骤：先看是不是用apache搭建的，其次看网站用什么语言开发，之后就可以正常测试</p>
+<h2 id="3、第三关-MIME类型"><a href="#3、第三关-MIME类型" class="headerlink" title="3、第三关(MIME类型)"></a>3、第三关(MIME类型)</h2><p>Content-Type：image&#x2F;png</p>
+<details class="lake-collapse"><summary id="u59594c6d"><span class="ne-text" style="font-size: 24px">后端代码</span></summary><pre data-language="php" id="Jq7FX" class="ne-codeblock language-php"><code>&lt;?php
+        header(&quot;Content-type: text/html;charset=utf-8&quot;);
+        error_reporting(0);
+        //设置上传目录
+        define(&quot;UPLOAD_PATH&quot;, dirname(__FILE__) . &quot;/upload/&quot;);
+        define(&quot;UPLOAD_URL_PATH&quot;, str_replace($_SERVER['DOCUMENT_ROOT'], &quot;&quot;, UPLOAD_PATH));
+        if (!file_exists(UPLOAD_PATH)) &#123;
+            mkdir(UPLOAD_PATH, 0755);
+        &#125;
+        $is_upload = false;
+        if (!empty($_POST['submit'])) &#123;
+            if (!in_array($_FILES['file']['type'], [&quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;, &quot;image/jpg&quot;])) &#123;
+                echo &quot;&lt;script&gt;black();&lt;/script&gt;&quot;;
+            &#125; else &#123;
+                $name = basename($_FILES['file']['name']);
+                if (move_uploaded_file($_FILES['file']['tmp_name'], UPLOAD_PATH . $name)) &#123;
+                    $is_upload = true;
+                &#125; else &#123;
+                    echo &quot;&lt;script&gt;alert('上传失败')&lt;/script&gt;&quot;;
+                &#125;
+            &#125;
+        &#125;
+    ?&gt;</code></pre><p id="u66b0a095" class="ne-p"><span class="ne-text" style="font-size: 24px">可以看出来这是MIME后端验证的</span></p></details>
+网站过滤逻辑是通过MIME类型过滤，我们可以先把目标文件改为允许上传的文件后缀，我们上传抓包后再改掉后缀即可过滤，文件上传后执行，看的是后缀加中间件解析规则，不看MIME
+
+
+
+<h2 id="4、第四关-文件头判断"><a href="#4、第四关-文件头判断" class="headerlink" title="4、第四关(文件头判断)"></a>4、第四关(文件头判断)</h2><p>GIF89a</p>
+<details class="lake-collapse"><summary id="u2cf2c13b"><span class="ne-text" style="font-size: 24px">代码审计</span></summary><pre data-language="php" id="EYQ4h" class="ne-codeblock language-php"><code>// 1. 判断是否通过POST方式提交了名为submit的表单数据，且不为空
+if (!empty($_POST['submit'])) &#123;
+    // 2. 判断上传文件的大小是否为0（空文件）
+    if (!$_FILES['file']['size']) &#123;
+        // 3. 前端执行error() JS函数，提示上传错误
+        echo &quot;&lt;script&gt;error();&lt;/script&gt;&quot;;
+    &#125; else &#123;
+        // 4. 以二进制只读模式打开上传的临时文件
+        $file = fopen($_FILES['file']['tmp_name'], &quot;rb&quot;);
+        // 5. 读取临时文件的前4个字节（二进制数据）
+        $bin = fread($file, 4);
+        // 6. 关闭打开的文件句柄，释放资源
+        fclose($file);
+        
+<pre><code>    // 7. 校验文件MIME类型，是否为指定图片类型
+    if (!in_array($_FILES[&#39;file&#39;][&#39;type&#39;], [&amp;quot;image/jpeg&amp;quot;, &amp;quot;image/jpg&amp;quot;, &amp;quot;image/png&amp;quot;, &amp;quot;image/gif&amp;quot;])) &#123;
+        // 8. 前端执行black() JS函数，非法文件拦截
+        echo &amp;quot;&amp;lt;script&amp;gt;black();&amp;lt;/script&amp;gt;&amp;quot;;
+    &#125; 
+    // 9. 校验文件头（前4字节转16进制），匹配图片文件头
+    else if (!in_array(bin2hex($bin), [&amp;quot;89504E47&amp;quot;, &amp;quot;FFD8FFE0&amp;quot;, &amp;quot;47494638&amp;quot;])) &#123;
+        // 10. 非法文件头，拦截
+        echo &amp;quot;&amp;lt;script&amp;gt;black();&amp;lt;/script&amp;gt;&amp;quot;;
+    &#125; 
+    // 11. 校验全部通过，处理文件上传
+    else &#123;
+        // 12. 获取上传文件的原始文件名（过滤路径，只保留文件名）
+        $name = basename($_FILES[&#39;file&#39;][&#39;name&#39;]);
+        // 13. 将临时文件移动到指定上传目录
+        if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], UPLOAD_PATH . $name)) &#123;
+            // 14. 上传成功标记
+            $is_upload = true;
+        &#125; else &#123;
+            // 15. 移动文件失败，提示错误
+            echo &amp;quot;&amp;lt;script&amp;gt;error();&amp;lt;/script&amp;gt;&amp;quot;;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>}</code></pre><p id="u8fb04af7" class="ne-p"><span class="ne-text" style="font-size: 24px">通过代码审计可知，文件验证时MIME类型和读文件开头前四个字节，配合010editor工具。后门文件前面写GIF89a gif文件的前几个字符</span></p></details><br>网站绕过逻辑是直接读文件开头几个字节，因为前面一串字节是代表着文件后缀，但是改MIME类型就上传成功了，这里有疑问。这是要在目标文件内前面加上jpg或其他的文件头前几个字节头，然后搭配mima类型就能绕过</p>
+<h2 id="5、第五关-黑名单-过滤不严"><a href="#5、第五关-黑名单-过滤不严" class="headerlink" title="5、第五关(黑名单-过滤不严)"></a>5、第五关(黑名单-过滤不严)</h2><p>无递归，pphphp</p>
+<details class="lake-collapse"><summary id="ufc63db2b"><span class="ne-text" style="font-size: 24px">代码审计</span></summary><p id="uc1837ae5" class="ne-p"><br></p><pre data-language="php" id="gIV9X" class="ne-codeblock language-php"><code>$is_upload = false;
+        if (!empty($_POST['submit'])) &#123;
+            $name = basename($_FILES['file']['name']);
+            $blacklist = array(&quot;php&quot;, &quot;php5&quot;, &quot;php4&quot;, &quot;php3&quot;, &quot;phtml&quot;, &quot;pht&quot;, &quot;jsp&quot;, &quot;jspa&quot;, &quot;jspx&quot;, &quot;jsw&quot;, &quot;jsv&quot;, &quot;jspf&quot;, &quot;jtml&quot;, &quot;asp&quot;, &quot;aspx&quot;, &quot;asa&quot;, &quot;asax&quot;, &quot;ascx&quot;, &quot;ashx&quot;, &quot;asmx&quot;, &quot;cer&quot;, &quot;swf&quot;, &quot;htaccess&quot;, &quot;ini&quot;);
+            
+<pre><code>        $name = str_ireplace($blacklist, &amp;quot;&amp;quot;, $name);
+    
+        if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], UPLOAD_PATH . $name)) &#123;
+            $is_upload = true;
+        &#125; else &#123;
+            echo &amp;quot;&amp;lt;script&amp;gt;error();&amp;lt;/script&amp;gt;&amp;quot;;
+        &#125;
+    &#125;&lt;/code&gt;&lt;/pre&gt;&lt;p id=&quot;ua50bba66&quot; class=&quot;ne-p&quot;&gt;&lt;span class=&quot;ne-text&quot; style=&quot;font-size: 24px&quot;&gt;通过代码审计可知，代码只执行一次，没有循环遍历，所以可以双写绕过例如.pphphp，str_ireplace()函数不区分大小写&lt;/span&gt;&lt;/p&gt;&lt;/details&gt;
+</code></pre>
+<p>通过文件后缀判断文件后缀</p>
+<p>1、黑名单</p>
+<p>检测文件上传后缀是不是在黑名单，在就gg不在就通过</p>
+<p>2、白名单</p>
+<p>检测上传文件后缀是不是在白名单，在就通过不在就gg</p>
+<p>这关和第一关的区别是，这一关是后端严格验证，不能通过抓包绕。</p>
+<p>通过源代码可以看出它没有递归，只检测一次我们把后缀写成pphphp,后端会把PHP删掉剩下还是php（双写绕过）</p>
+<h2 id="6、第六关-黑名单-过滤不严"><a href="#6、第六关-黑名单-过滤不严" class="headerlink" title="6、第六关(黑名单-过滤不严)"></a>6、第六关(黑名单-过滤不严)</h2><p>系统大小写敏感属性</p>
+<p>代码和上一关基本一样，只不过替换函数str_replace()它区分大小写所以可直接绕过</p>
+<p>这一关黑白名单还是一样，这一关就是大小写问题可以绕过，windows服务器不区分大小写，linux会严格区分，linux就不行了</p>
+<h2 id="7、第七关-低版本GET-00截断"><a href="#7、第七关-低版本GET-00截断" class="headerlink" title="7、第七关(低版本GET-%00截断)"></a>7、第七关(低版本GET-%00截断)</h2><p>自动解码一次</p>
+<p>&#x2F;var&#x2F;www&#x2F;html&#x2F;upload&#x2F;x.php%00</p>
+<p>这个漏洞是php小于5.3.4以下才有的漏洞（00截断）</p>
+<p>一种是改文件后缀:shell.php%00.jpg，黑白名单验证后缀顺利通过，但是保存文件时会受影响然后.jpg失效</p>
+<p>一种是改文件保存路径shell.php%00,文件正常为shell.jpg但是在保存的时候还是会变为php</p>
+<h2 id="8、第八关-低版本POST-00截断"><a href="#8、第八关-低版本POST-00截断" class="headerlink" title="8、第八关(低版本POST-%00截断)"></a>8、第八关(低版本POST-%00截断)</h2><p>手工解码一次</p>
+<p>..&#x2F;upload&#x2F;x.php%00 二次解码</p>
+<p>考点和第七关大部分一样</p>
+<p>00截断是%00解码后的结果</p>
+<p>url上面%00会自动解码一次</p>
+<p>post下面%00手工解码一次</p>
+<h2 id="9、第九关-黑名单-过滤不严"><a href="#9、第九关-黑名单-过滤不严" class="headerlink" title="9、第九关(黑名单-过滤不严)"></a>9、第九关(黑名单-过滤不严)</h2><p>php3</p>
+<p>可以通过fuzzdb里面关于文件上传字典来过滤，因为很多写法可以解析成你目标后缀</p>
+<h2 id="10、逻辑不严-条件竞争"><a href="#10、逻辑不严-条件竞争" class="headerlink" title="10、逻辑不严-条件竞争"></a>10、逻辑不严-条件竞争</h2><p><font style="color:#81BBF8;">这个一般是通过代码审计才能发现这个漏洞。</font></p>
+<p><font style="color:#81BBF8;">代码逻辑：</font></p>
+<p><font style="color:#81BBF8;">1、上传1.php</font></p>
+<p><font style="color:#81BBF8;">2、1.php存储到upload</font></p>
+<p><font style="color:#81BBF8;">3、发现1.php不是合法的后缀</font></p>
+<p><font style="color:#81BBF8;">4、删除1.php</font></p>
+<p><font style="color:#81BBF8;">原理：在1.php被删除之前触发代码</font></p>
+<?php fputs(fopen('xiao.php','w'),'<?php eval($_REQUEST[1]);?><p>‘);?&gt;</p>
+<p>上传不断发包</p>
+<p>请求不断发包</p>
+<h2 id="11、二次渲染"><a href="#11、二次渲染" class="headerlink" title="11、二次渲染"></a>11、二次渲染</h2><p>先搞个正常图片，上传导出渲染后的图片</p>
+<p>对比保留部分，在保留部分添加后门代码</p>
+<p>最后利用提示的文件包含执行图片后门代码</p>
+<h2 id="12、函数缺陷"><a href="#12、函数缺陷" class="headerlink" title="12、函数缺陷"></a>12、函数缺陷</h2><p>函数缺陷:move_uploaded_file()</p>
+<p>必须保存名字我们可控就可利用这个漏洞</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/067&068-2.png"></p>
+<h1 id="二、实战遇到的情况"><a href="#二、实战遇到的情况" class="headerlink" title="二、实战遇到的情况"></a>二、实战遇到的情况</h1><p>参考:<a target="_blank" rel="noopener" href="https://konwait12.github.io/my-kon-blog/posts/049web%E6%94%BB%E9%98%B2/">https://konwait12.github.io/my-kon-blog/posts/049web%E6%94%BB%E9%98%B2/</a></p>
+<p>1、执行权限</p>
+<p>文件上传后存储目录不给执行权限</p>
+<p>绕过条件：能控制上传文件存储目录</p>
+<p>2、解码还原</p>
+<p>数据做存储，解析固定（文件后缀名无关）</p>
+<p>文件上传后利用编码传输解码还原</p>
+<p>绕过：无法直接绕过</p>
+<p>3、分站存储</p>
+<p>upload.xiaodi8.com 上传</p>
+<p>images.xiaodi8.com 存储</p>
+<p>绕过：看存储的执行策略</p>
+<p>4、OSS对象</p>
+<p>Access控制-OSS对象存储-Bucket对象</p>
+<p>绕过：无法直接绕过</p>
+<h1 id="三、应用场景"><a href="#三、应用场景" class="headerlink" title="三、应用场景"></a><font style="color:#000000;">三、应用场景</font></h1><p><font style="color:#000000;">1</font><font style="color:#000000;">、注册用户上传地方</font></p>
+<p><font style="color:#000000;">2</font><font style="color:#000000;">、JS或API接口的代码</font></p>
+<p><font style="color:#000000;">3</font><font style="color:#000000;">、后台或其他管理页面</font></p>
+<p><font style="color:#000000;">4</font><font style="color:#000000;">、源码泄露或盲测文件</font></p>
+<p><font style="color:#000000;">5</font><font style="color:#000000;">、三方编辑器上传漏洞</font></p>
+<p><font style="color:#000000;">6</font><font style="color:#000000;">、特定的源码审计漏洞</font></p>
+<p><font style="color:#000000;">演示(笔记中不演示，因为也没什么必要)：</font></p>
+<p><font style="color:#000000;">JS或API接口代码</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">可能网站页面中没有上传文件的点，但是js中可能有这个功能代码，我们可以根据功能代码写一个上传表单，来测试这个功能点。</font></p>
+<p><font style="color:#000000;">三方编辑器上传漏洞</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">就是看加载的js文件有没有第三方编辑器，然后看编辑器报出的漏洞，例如ueditor</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/067&068-3.png"></p>
+<p><font style="background-color:#81BBF8;">比如这个例子，在js中看到了ueditor。利用exp直接打，就能打进去。</font></p>
+<p><font style="color:#000000;">特定的源码审计漏洞</font></p>
+<p><font style="color:#000000;background-color:#81BBF8;">就是前人栽树后人乘凉，看看这个系统是不是什么有名的系统，曾经报过这个漏洞，直接利用payload即可</font></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/09/10/%E7%AC%AC66%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E5%8A%9F%E8%83%BD%E9%80%BB%E8%BE%91-SRC%E5%AE%9E%E8%B7%B5%E5%A4%8D%E7%9B%98-%E5%8F%82%E6%95%B0%E7%9B%B2%E6%B5%8B-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%A3%80%E6%B5%8B-%E6%B5%81%E9%87%8F%E6%8F%92%E4%BB%B6/" rel="prev" title="第66天-SSRF服务端伪造&功能逻辑&SRC实践复盘&参数盲测&自动化检测&流量插件">
+      <i class="fa fa-chevron-left"></i> 第66天-SSRF服务端伪造&功能逻辑&SRC实践复盘&参数盲测&自动化检测&流量插件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/09/10/%E7%AC%AC69%E5%A4%A9-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-LFI-RFI-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E6%9D%A1%E4%BB%B6-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E6%97%A0%E6%96%87%E4%BB%B6%E5%88%A9%E7%94%A8-JAVA%E5%BA%94%E7%94%A8-SRC%E5%A4%8D%E7%9B%98/" rel="next" title="第69天-文件包含&LFI&RFI&伪协议条件&编码算法&无文件利用&JAVA应用&SRC复盘">
+      第69天-文件包含&LFI&RFI&伪协议条件&编码算法&无文件利用&JAVA应用&SRC复盘 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B8%B8%E8%A7%84%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">1.</span> <span class="nav-text">一、常规文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E7%AC%AC%E4%B8%80%E5%85%B3-%E5%89%8D%E7%AB%AFJS"><span class="nav-number">1.1.</span> <span class="nav-text">1、第一关(前端JS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E7%AC%AC%E4%BA%8C%E5%85%B3-htaccess"><span class="nav-number">1.2.</span> <span class="nav-text">2、第二关(.htaccess)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E7%AC%AC%E4%B8%89%E5%85%B3-MIME%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">3、第三关(MIME类型)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E7%AC%AC%E5%9B%9B%E5%85%B3-%E6%96%87%E4%BB%B6%E5%A4%B4%E5%88%A4%E6%96%AD"><span class="nav-number">1.4.</span> <span class="nav-text">4、第四关(文件头判断)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E7%AC%AC%E4%BA%94%E5%85%B3-%E9%BB%91%E5%90%8D%E5%8D%95-%E8%BF%87%E6%BB%A4%E4%B8%8D%E4%B8%A5"><span class="nav-number">1.5.</span> <span class="nav-text">5、第五关(黑名单-过滤不严)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E7%AC%AC%E5%85%AD%E5%85%B3-%E9%BB%91%E5%90%8D%E5%8D%95-%E8%BF%87%E6%BB%A4%E4%B8%8D%E4%B8%A5"><span class="nav-number">1.6.</span> <span class="nav-text">6、第六关(黑名单-过滤不严)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E7%AC%AC%E4%B8%83%E5%85%B3-%E4%BD%8E%E7%89%88%E6%9C%ACGET-00%E6%88%AA%E6%96%AD"><span class="nav-number">1.7.</span> <span class="nav-text">7、第七关(低版本GET-%00截断)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81%E7%AC%AC%E5%85%AB%E5%85%B3-%E4%BD%8E%E7%89%88%E6%9C%ACPOST-00%E6%88%AA%E6%96%AD"><span class="nav-number">1.8.</span> <span class="nav-text">8、第八关(低版本POST-%00截断)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%E3%80%81%E7%AC%AC%E4%B9%9D%E5%85%B3-%E9%BB%91%E5%90%8D%E5%8D%95-%E8%BF%87%E6%BB%A4%E4%B8%8D%E4%B8%A5"><span class="nav-number">1.9.</span> <span class="nav-text">9、第九关(黑名单-过滤不严)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10%E3%80%81%E9%80%BB%E8%BE%91%E4%B8%8D%E4%B8%A5-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="nav-number">1.10.</span> <span class="nav-text">10、逻辑不严-条件竞争</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E3%80%81%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93"><span class="nav-number">1.11.</span> <span class="nav-text">11、二次渲染</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12%E3%80%81%E5%87%BD%E6%95%B0%E7%BC%BA%E9%99%B7"><span class="nav-number">1.12.</span> <span class="nav-text">12、函数缺陷</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9E%E6%88%98%E9%81%87%E5%88%B0%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.</span> <span class="nav-text">二、实战遇到的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">三、应用场景</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

