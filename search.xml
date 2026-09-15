@@ -3140,7 +3140,7 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 
 
 <p><font style="background-color:#ffff00;"></font></p>
-<p><font style="background-color:#ffff00;">这节课其实是很简单的，整个过程会很费时间，我下面可能只会写大概过程，而且一般都是判断存在sql注入，我们就用sqlmap了。我之前手写过一份很全的笔记，等回学校上传</font></p>
+<p><font style="background-color:#ffff00;">这节课其实是很简单的，整个过程会很费时间，我下面可能只会写大概过程，而且一般都是判断存在sql注入，我们就用sqlmap了。我之前手写过一份很全的笔记，等回学校上传</font><br><img src="/images/056-3.jpg"><br><img src="/images/056-4.jpg"><br><img src="/images/056-5.jpg"><br><img src="/images/056-6.jpg"><br><img src="/images/056-7.jpg"><br><img src="/images/056-8.jpg"></p>
 <p><font style="color:#ff0000;background-color:#ffff00;"></font></p>
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-布尔&amp;延时&amp;报错&amp;盲注</font></p>
@@ -3256,18 +3256,6 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
 <p>1’ and substr((select flag from sql_injection_lab.flag limit 1),1,1)&#x3D;’f’ or ‘</p>
 <p>flag{24dd1d4e93f841daae53cf4ad34d7562}</p>
 </blockquote>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/056-3.jpg"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/056-4.jpg"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/056-5.jpg"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/056-6.jpg"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/056-7.jpg"></p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/056-8.jpg"></p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(web攻防)</category>
