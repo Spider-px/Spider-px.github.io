@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第80天-身份验证篇&amp;JWT令牌&amp;空密钥&amp;未签名&amp;密钥爆破&amp;JWK&amp;JWU&amp;KID&amp;算法替换">
+<meta property="og:url" content="http://zhigao.xyz/2026/09/28/%E7%AC%AC80%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-JWT%E4%BB%A4%E7%89%8C-%E7%A9%BA%E5%AF%86%E9%92%A5-%E6%9C%AA%E7%AD%BE%E5%90%8D-%E5%AF%86%E9%92%A5%E7%88%86%E7%A0%B4-JWK-JWU-KID-%E7%AE%97%E6%B3%95%E6%9B%BF%E6%8D%A2/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/images/080-1.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-2.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-3.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-4.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-5.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-6.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-7.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-8.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-9.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-10.png">
+<meta property="og:image" content="http://zhigao.xyz/images/080-11.png">
+<meta property="article:published_time" content="2026-09-28T05:17:15.000Z">
+<meta property="article:modified_time" content="2026-09-28T05:54:18.882Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/images/080-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/09/28/%E7%AC%AC80%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-JWT%E4%BB%A4%E7%89%8C-%E7%A9%BA%E5%AF%86%E9%92%A5-%E6%9C%AA%E7%AD%BE%E5%90%8D-%E5%AF%86%E9%92%A5%E7%88%86%E7%A0%B4-JWK-JWU-KID-%E7%AE%97%E6%B3%95%E6%9B%BF%E6%8D%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第80天-身份验证篇&JWT令牌&空密钥&未签名&密钥爆破&JWK&JWU&KID&算法替换 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/09/28/%E7%AC%AC80%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-JWT%E4%BB%A4%E7%89%8C-%E7%A9%BA%E5%AF%86%E9%92%A5-%E6%9C%AA%E7%AD%BE%E5%90%8D-%E5%AF%86%E9%92%A5%E7%88%86%E7%A0%B4-JWK-JWU-KID-%E7%AE%97%E6%B3%95%E6%9B%BF%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第80天-身份验证篇&JWT令牌&空密钥&未签名&密钥爆破&JWK&JWU&KID&算法替换
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-09-28 13:17:15 / 修改时间：13:54:18" itemprop="dateCreated datePublished" datetime="2026-09-28T13:17:15+08:00">2026-09-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web攻防)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+
+
+
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-2.png"></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-JWT令牌-组成&amp;识别&amp;检测&amp;安全</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-JWT令牌-空算法&amp;未签名&amp;爆破密钥</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-JWT令牌-JWK&amp;JWU&amp;KID&amp;加密替换</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、JWT介绍"><a href="#一、JWT介绍" class="headerlink" title="一、JWT介绍"></a>一、JWT介绍</h1><p>JSON Web Token(JWT)。它遵循JSON格式，将用户信息加密到token里，服务器不保存任何用户信息，只保存密钥信息，通过使用特定加密算法验证token，通过token验证用户身份。基于token的身份验证可以替代传统的cookie+session身份验证方法。这使得JWT成为高度分布式网站的热门选择，在这些网站中，用户需要与多个后端服务器无缝交互。</p>
+<h2 id="1、JWT识别"><a href="#1、JWT识别" class="headerlink" title="1、JWT识别"></a>1、JWT识别</h2><p>1、标头（Header）</p>
+<p>Header是JWT的第一个部分，是一个JSON对象，主要声明了JWT的签名算法，如”HS256”、”RS256”等，以及其他可选参数，如”kid”、”jku”、”x5u”等</p>
+<p>alg字段通常用于表示加密采用的算法。如”HS256”、”RS256”等</p>
+<p>typ字段通常用于表示类型</p>
+<p>还有一些其他可选参数，如”kid”、”jku”、”jwk”等</p>
+<h2 id="2、有效载荷（Payload）"><a href="#2、有效载荷（Payload）" class="headerlink" title="2、有效载荷（Payload）"></a>2、有效载荷（Payload）</h2><p>Payload是JWT的第二个部分，这是一个JSON对象，主要承载了各种声明并传递明文数据，用于存储用户的信息，如id、用户名、角色、令牌生成时间和其他自定义声明。</p>
+<p>iss：该字段表示jwt的签发者。</p>
+<p>sub：该jwt面向的用户。</p>
+<p>aud：jwt的接收方。</p>
+<p>exp：jwt的过期时间,通常来说是一个时间戳。</p>
+<p>iat：jwt的签发时间,常来说是一个时间戳。</p>
+<p>jti：此jwt的唯一标识。通常用于解决请求中的重放攻击。该字段在大多数地方没有被提及或使用。因为使用此字段就意味着必须要在服务器维护一张jti表， 当客户端携带jwt访问的时候需要在jti表中查找这个唯一标识是否被使用过。使用这种方式防止重放攻击似乎让jwt有点怪怪的感觉, 毕竟jwt所宣称的优点就是无状态访问</p>
+<h2 id="3、签名（Signature）"><a href="#3、签名（Signature）" class="headerlink" title="3、签名（Signature）"></a>3、签名（Signature）</h2><p>Signature是对Header和Payload进行签名，具体是用什么加密方式写在Header的alg 中。同时拥有该部分的JWT被称为JWS，也就是签了名的JWT。</p>
+<p>对Header和Payload进行签名，具体是用什么加密方式写在Header的alg中。</p>
+<p>同时拥有该部分的JWT被称为JWS，也就是签了名的JWT。</p>
+<p><font style="color:#2F8EF4;">后端就是通过第三部分来验证身份的，重新做一遍加密运算然后和第三部分进行对比，一样通过，反之不通过。</font></p>
+<p>第一部分：对 JSON 的头部做 base64 编码处理得到</p>
+<p>第二部分：对 JSON 类型的 payload 做 base64 编码处理得到</p>
+<p>第三部分：分别对头部和载荷做base64编码，并使用.拼接起来</p>
+<p>使用头部声明的加密方式，对base64编码前两部分合并的结果加盐加密处理，作为JWT</p>
+<p>HS256：对称性加密（同一的密钥加密和解密） 可以采用爆破密钥攻击</p>
+<p>RS256：非对称性加密（公钥和私钥，私钥解密或加密，公钥加密或解密）</p>
+<h1 id="二、识别检测利用项目："><a href="#二、识别检测利用项目：" class="headerlink" title="二、识别检测利用项目："></a>二、识别检测利用项目：</h1><p>BURP插件：Hae&amp;JSON Web Tokens解jwt&amp;JWT Editor生成密钥</p>
+<p><a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/z-bool/Venom-JWT">https://github.com/z-bool/Venom-JWT</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ticarpi/jwt_tool">https://github.com/ticarpi/jwt_tool</a> 密钥爆破</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wallarm/jwt-secrets">https://github.com/wallarm/jwt-secrets</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CompassSecurity/jwt-scanner">https://github.com/CompassSecurity/jwt-scanner</a></p>
+<h1 id="三、实验"><a href="#三、实验" class="headerlink" title="三、实验"></a>三、实验</h1><p>参考：blog.csdn.net&#x2F;weixin_44288604&#x2F;article&#x2F;details&#x2F;128562796</p>
+<h2 id="1、实验室：通过未验证的签名绕过JWT身份验证"><a href="#1、实验室：通过未验证的签名绕过JWT身份验证" class="headerlink" title="1、实验室：通过未验证的签名绕过JWT身份验证"></a>1、实验室：通过未验证的签名绕过JWT身份验证</h2><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-3.png"></p>
+<p>按照给的账号密码登进去就能看到身份验证使用了jwt，但是这关后端是没有校验签名而是直接看payload里的值，所以我们直接sub的值改成administrator即可越权访问&#x2F;admin。</p>
+<h2 id="2、实验室：通过有缺陷的签名验证绕过JWT身份验证"><a href="#2、实验室：通过有缺陷的签名验证绕过JWT身份验证" class="headerlink" title="2、实验室：通过有缺陷的签名验证绕过JWT身份验证"></a>2、实验室：通过有缺陷的签名验证绕过JWT身份验证</h2><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-4.png"></p>
+<p>这个就是后端没写死算法，而是看alg的值来用对应算法，所以直接算法置空，也没有验证签名了，直接看payload值</p>
+<h2 id="3、实验室：通过弱签名密钥绕过JWT身份验证"><a href="#3、实验室：通过弱签名密钥绕过JWT身份验证" class="headerlink" title="3、实验室：通过弱签名密钥绕过JWT身份验证"></a>3、实验室：通过弱签名密钥绕过JWT身份验证</h2><p>这个用上面的方法不行，但是观察到用的是SH256对称加密，那么就尝试密钥爆破，使用jwt-tool。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-5.png"></p>
+<p>因为密钥是弱密钥所以可以爆破，爆破后那就随便搞了。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-6.png"></p>
+<h2 id="4、实验室：通过jwk标头注入绕过JWT身份验证"><a href="#4、实验室：通过jwk标头注入绕过JWT身份验证" class="headerlink" title="4、实验室：通过jwk标头注入绕过JWT身份验证"></a><font style="color:#DF2A3F;">4、实验室：通过jwk标头注入绕过JWT身份验证</font></h2><p><font style="color:#2F8EF4;">位置：</font><font style="color:#2F8EF4;background-color:rgba(0, 0, 0, 0);">JWT Header 头部字段</font><font style="color:#2F8EF4;">，多用于 RS256 非对称验签，作用是给服务端提供验签公钥， 直接将公钥嵌入 JWT 头部。我们在jwt-editor新建一个rsa密钥，私钥保存在bp的缓存中，公钥插件把它转换成jwk格式，放到header中，用我们自己的私钥签发，公钥验签当然能绕过了！</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-7.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-8.png"></p>
+<h2 id="5、实验室：通过jku标头注入绕过JWT身份验证"><a href="#5、实验室：通过jku标头注入绕过JWT身份验证" class="headerlink" title="5、实验室：通过jku标头注入绕过JWT身份验证"></a><font style="color:#DF2A3F;">5、实验室：通过jku标头注入绕过JWT身份验证</font></h2><p><font style="color:#2F8EF4;background-color:rgba(0, 0, 0, 0);">JWT Header 头部字段</font><font style="color:#2F8EF4;">，多用于 RS256 非对称验签，作用是给服务端提供验签公钥， 存放 JWKS 密钥集的 URL 地址。这个和上面一个是一样的，只是从远程加载公钥而已。一样的操作，创建rsa密钥，然后复制到远程服务器，然后header加jku后面跟url，然后即可</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-9.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-10.png"></p>
+<h2 id="6、实验室：通过kid头路径遍历绕过JWT身份验证"><a href="#6、实验室：通过kid头路径遍历绕过JWT身份验证" class="headerlink" title="6、实验室：通过kid头路径遍历绕过JWT身份验证"></a><font style="color:#DF2A3F;">6、实验室：通过kid头路径遍历绕过JWT身份验证</font></h2><p>kid值就是密钥的一个编号，因为可能不用业务用的签发密钥不同，验签的时候也要用对应密钥，只针对对称算法。后端没写死密钥，而是把kid值作为路径了。目录穿越去访问dev&#x2F;null这是一个空文件，所以签发验签都是空密钥就绕过了。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-11.png"></p>
+<h2 id="7、算法混淆"><a href="#7、算法混淆" class="headerlink" title="7、算法混淆"></a>7、算法混淆</h2><h3 id="1、ctfshow-Web349（公钥私钥泄露）"><a href="#1、ctfshow-Web349（公钥私钥泄露）" class="headerlink" title="1、ctfshow-Web349（公钥私钥泄露）"></a>1、ctfshow-Web349（公钥私钥泄露）</h3><p><font style="color:#2F8EF4;">这个就是私钥泄露了，写个脚本去把user值改了</font></p>
+<p>pip install PyJWT&#x3D;&#x3D;1.7.1</p>
+<p>import jwt</p>
+<p>public&#x3D;open(‘private.key’,’r’).read()</p>
+<p>payload&#x3D;{“user”:”admin”}</p>
+<p>print(jwt.encode(payload, key&#x3D;public, algorithm&#x3D;’RS256’))</p>
+<h3 id="2、ctfshow-Web350-密钥混淆攻击RS256-HS256"><a href="#2、ctfshow-Web350-密钥混淆攻击RS256-HS256" class="headerlink" title="2、ctfshow-Web350(密钥混淆攻击RS256&#x3D;&gt;HS256)"></a>2、ctfshow-Web350(密钥混淆攻击RS256&#x3D;&gt;HS256)</h3><p><font style="color:#2F8EF4;">这个和上面的空密钥绕过很像，都是后端没有写死算法。这里就是它这次没有泄露私钥，我们无法伪造jwt，但是我们可以改成HS256对称加密，加密解密都是一个密钥，所以全程不用获得密钥就能伪造。</font></p>
+<p>将RS256算法改为HS256（非对称密码算法&#x3D;&gt;对称密码算法）</p>
+<p>HS256算法使用密钥为所有消息进行签名和验证。</p>
+<p>而RS256算法则使用私钥对消息进行签名并使用公钥进行身份验证。</p>
+<p>var jwt &#x3D;require(‘jsonwebtoken’);</p>
+<p>var fs &#x3D;require(‘fs’);</p>
+<p>var privateKey &#x3D; fs.readFileSync(‘.&#x2F;public.key’);</p>
+<p>var token &#x3D; jwt.sign({ user:’admin’}, privateKey,{ algorithm:’HS256’});</p>
+<p>console.log(token)</p>
+<h2 id="8、某个测试目标"><a href="#8、某个测试目标" class="headerlink" title="8、某个测试目标"></a>8、某个测试目标</h2><p>参考：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/obiU3BaFoZ7272z2vS0QgQ">https://mp.weixin.qq.com/s/obiU3BaFoZ7272z2vS0QgQ</a></p>
+<p>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjo0MDcyNjE1MzE0fQ.mwI2P1j8CIvhxBKFvcyU7TNLBeuFtiUM1mPrKanF1w4</p>
+<p>Content-Type: application&#x2F;x-www-form-urlencoded</p>
+<p>db&#x3D;sample&amp;q&#x3D;show users</p>
+<p>复盘：</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ITVFuQpA8OCIRj4wW-peAA">https://mp.weixin.qq.com/s/ITVFuQpA8OCIRj4wW-peAA</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/xuY1oTwFcM1pyiql0U3NPQ">https://mp.weixin.qq.com/s/xuY1oTwFcM1pyiql0U3NPQ</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/AVW8DsnLiviopeJYQYKC3A">https://mp.weixin.qq.com/s/AVW8DsnLiviopeJYQYKC3A</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/st0xma6KoRbo1NUp9rtZhw">https://mp.weixin.qq.com/s/st0xma6KoRbo1NUp9rtZhw</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/9OL5jZK7S1MiEUb8Q_F1Pw">https://mp.weixin.qq.com/s/9OL5jZK7S1MiEUb8Q_F1Pw</a></p>
+<p>首先找到需要JWT鉴权后才能访问的页面，如个人资料页面，将请求重放测试：</p>
+<p>1）未授权访问：删除Token后仍然可以正常响应对应页面</p>
+<p>2）敏感信息泄露：通过JWt.io解密出Payload后查看其中是否包含敏感信息，如弱加密的密码等</p>
+<p>3）破解密钥+越权访问：通过JWT.io解密出Payload部分内容，通过空加密算法或密钥爆破等方式实现重新签发Token并修改Payload部分内容，重放请求包，观察响应包是否能够越权查看其他用户资料</p>
+<p>4）检查Token时效性：解密查看payload中是否有exp字段键值对（Token过期时间），等待过期时间后再次使用该Token发送请求，若正常响应则存在Token不过期</p>
+<p>5）通过页面回显进行探测：如修改Payload中键值对后页面报错信息是否存在注入，payload中kid字段的目录遍历问题与sql注入问题</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/09/28/%E7%AC%AC79%E5%A4%A9-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E7%AF%87-%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83-%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE-%E7%BA%A7%E5%88%AB%E6%9E%B6%E6%9E%84-%E9%A1%B9%E7%9B%AE%E6%8F%92%E4%BB%B6-SRC%E5%A4%8D%E7%9B%98/" rel="prev" title="第79天-访问控制篇&水平越权&垂直越权&未授权访问&级别架构&项目插件&SRC复盘">
+      <i class="fa fa-chevron-left"></i> 第79天-访问控制篇&水平越权&垂直越权&未授权访问&级别架构&项目插件&SRC复盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/09/28/%E7%AC%AC81%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-OAuth%E8%AE%A4%E8%AF%81-%E6%8E%88%E6%9D%83%E5%88%86%E7%B1%BB%E5%8F%8A%E5%8F%82%E6%95%B0-%E9%87%8D%E5%AE%9A%E5%90%91%E6%8E%A5%E7%AE%A1-State%E7%BC%BA%E9%99%B7-Scope%E7%AF%A1%E6%94%B9/" rel="next" title="第81天-身份验证篇&OAuth认证&授权分类及参数&重定向接管&State缺陷&Scope篡改">
+      第81天-身份验证篇&OAuth认证&授权分类及参数&重定向接管&State缺陷&Scope篡改 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81JWT%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">一、JWT介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81JWT%E8%AF%86%E5%88%AB"><span class="nav-number">1.1.</span> <span class="nav-text">1、JWT识别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%9C%89%E6%95%88%E8%BD%BD%E8%8D%B7%EF%BC%88Payload%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">2、有效载荷（Payload）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E7%AD%BE%E5%90%8D%EF%BC%88Signature%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">3、签名（Signature）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AF%86%E5%88%AB%E6%A3%80%E6%B5%8B%E5%88%A9%E7%94%A8%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">二、识别检测利用项目：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">三、实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%9A%E9%80%9A%E8%BF%87%E6%9C%AA%E9%AA%8C%E8%AF%81%E7%9A%84%E7%AD%BE%E5%90%8D%E7%BB%95%E8%BF%87JWT%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">3.1.</span> <span class="nav-text">1、实验室：通过未验证的签名绕过JWT身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%9A%E9%80%9A%E8%BF%87%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87JWT%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">3.2.</span> <span class="nav-text">2、实验室：通过有缺陷的签名验证绕过JWT身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%9A%E9%80%9A%E8%BF%87%E5%BC%B1%E7%AD%BE%E5%90%8D%E5%AF%86%E9%92%A5%E7%BB%95%E8%BF%87JWT%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">3.3.</span> <span class="nav-text">3、实验室：通过弱签名密钥绕过JWT身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%9A%E9%80%9A%E8%BF%87jwk%E6%A0%87%E5%A4%B4%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87JWT%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">3.4.</span> <span class="nav-text">4、实验室：通过jwk标头注入绕过JWT身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%9A%E9%80%9A%E8%BF%87jku%E6%A0%87%E5%A4%B4%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87JWT%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">3.5.</span> <span class="nav-text">5、实验室：通过jku标头注入绕过JWT身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%9A%E9%80%9A%E8%BF%87kid%E5%A4%B4%E8%B7%AF%E5%BE%84%E9%81%8D%E5%8E%86%E7%BB%95%E8%BF%87JWT%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">3.6.</span> <span class="nav-text">6、实验室：通过kid头路径遍历绕过JWT身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E7%AE%97%E6%B3%95%E6%B7%B7%E6%B7%86"><span class="nav-number">3.7.</span> <span class="nav-text">7、算法混淆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81ctfshow-Web349%EF%BC%88%E5%85%AC%E9%92%A5%E7%A7%81%E9%92%A5%E6%B3%84%E9%9C%B2%EF%BC%89"><span class="nav-number">3.7.1.</span> <span class="nav-text">1、ctfshow-Web349（公钥私钥泄露）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81ctfshow-Web350-%E5%AF%86%E9%92%A5%E6%B7%B7%E6%B7%86%E6%94%BB%E5%87%BBRS256-HS256"><span class="nav-number">3.7.2.</span> <span class="nav-text">2、ctfshow-Web350(密钥混淆攻击RS256&#x3D;&gt;HS256)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81%E6%9F%90%E4%B8%AA%E6%B5%8B%E8%AF%95%E7%9B%AE%E6%A0%87"><span class="nav-number">3.8.</span> <span class="nav-text">8、某个测试目标</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

