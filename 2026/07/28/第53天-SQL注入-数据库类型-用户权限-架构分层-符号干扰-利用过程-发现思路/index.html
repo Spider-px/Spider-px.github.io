@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://zhigao.xyz/images/053-1.png">
 <meta property="article:published_time" content="2026-07-28T14:13:49.000Z">
-<meta property="article:modified_time" content="2026-07-28T14:31:14.843Z">
+<meta property="article:modified_time" content="2026-10-10T15:31:33.261Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -213,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-07-28 22:13:49 / 修改时间：22:31:14" itemprop="dateCreated datePublished" datetime="2026-07-28T22:13:49+08:00">2026-07-28</time>
+              <time title="创建时间：2026-07-28 22:13:49" itemprop="dateCreated datePublished" datetime="2026-07-28T22:13:49+08:00">2026-07-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-10-10 23:31:33" itemprop="dateModified" datetime="2026-10-10T23:31:33+08:00">2026-10-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -252,6 +258,7 @@
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/053-1.png"></p>
 <p><font style="background-color:#FBDE28;">注入漏洞不仅仅只有SQL注入，之前学长讲过他面试的过程中问到了有什么注入漏洞</font></p>
+<p><font style="background-color:#FBDE28;">ldap是轻量目录访问协议，规定了如何给ldap服务发送请求，数据格式，查询语法怎么写，服务端怎么返回。ldap服务例子：Windows server中的AD DS（活动目录域服务，口语简称AD），它对外开放LDAP查询接口，端口389（明文LDAP），636为加密LDAPS。但是AD还有别的组件如Kerberos、GPO等；部署AD DS角色的服务器叫做DC（域控制器）。</font></p>
 <p>除了上面图片提到的还有很多，可以自行网上搜索学习！</p>
 <p><font style="color:#000000;">#知识点：</font></p>
 <p><font style="color:#000000;">1、Web攻防-SQL注入-产生原理&amp;应用因素</font></p>
@@ -261,62 +268,49 @@
 <p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB攻防-SQL注入-数据库类型利用</font></p>
 <p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
-<p><font style="background-color:#ED740C;">#数据库知识（都以mysql讲解）：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库名，表名，列名，数据</font></p>
-<details class="lake-collapse"><summary id="ucf943a6f"><span class="ne-text" style="color: #000000; background-color: #FBDE28; font-size: 24px">数据库架构：</span></summary><p id="u62f350d8" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">数据库服务器（如mysql等）</span></p><p id="u8890fe1f" class="ne-p" style="text-align: justify; text-indent: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据库A</span></p><p id="u2490c9d5" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——表</span></p><p id="u22fc9699" class="ne-p" style="text-align: justify; margin-left: 4em; text-indent: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——字段</span></p><p id="uf346cfad" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 6em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据</span></p><p id="uce7e837b" class="ne-p" style="text-align: justify; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据库A</span></p><p id="u1ed5a417" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——表</span></p><p id="u38237743" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 4em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——字段</span></p><p id="u281a80a4" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 6em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据</span></p></details>
-<font style="color:#990055;">2</font><font style="color:#000000;">、自带数据库，数据库用户及权限</font>
-
+<h1 id="一、数据库知识（都以mysql讲解）"><a href="#一、数据库知识（都以mysql讲解）" class="headerlink" title="一、数据库知识（都以mysql讲解）"></a>一、数据库知识（都以mysql讲解）</h1><h2 id="1、数据库名，表名，列名，数据"><a href="#1、数据库名，表名，列名，数据" class="headerlink" title="1、数据库名，表名，列名，数据"></a><font style="color:#990055;">1</font><font style="color:#000000;">、数据库名，表名，列名，数据</font></h2><details class="lake-collapse"><summary id="ucf943a6f"><span class="ne-text" style="color: #000000; background-color: #FBDE28; font-size: 24px">数据库架构：</span></summary><p id="u62f350d8" class="ne-p" style="text-align: justify; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">数据库服务器（如mysql等）</span></p><p id="u8890fe1f" class="ne-p" style="text-align: justify; text-indent: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据库A</span></p><p id="u2490c9d5" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——表</span></p><p id="u22fc9699" class="ne-p" style="text-align: justify; margin-left: 4em; text-indent: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——字段</span></p><p id="uf346cfad" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 6em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据</span></p><p id="uce7e837b" class="ne-p" style="text-align: justify; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据库A</span></p><p id="u1ed5a417" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 2em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——表</span></p><p id="u38237743" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 4em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——字段</span></p><p id="u281a80a4" class="ne-p" style="text-align: justify; text-indent: 2em; margin-left: 6em; line-height: 1.5"><span class="ne-text" style="color: #000000; font-size: 24px">|——数据</span></p></details>
+## <font style="color:#990055;">2</font><font style="color:#000000;">、自带数据库，数据库用户及权限</font>
 <details class="lake-collapse"><summary id="uab42246d"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">information_schema 数据库sql注入相关知识点：</span></summary><p id="u3c6829fd" class="ne-p"><span class="ne-text" style="font-size: 24px">schemata表（记录所有数据库） 关键字段：schema_name</span></p><p id="u48bebae1" class="ne-p"><span class="ne-text" style="font-size: 24px">tables表（记录所有表）：查表名 关键字段：table_schema：数据库名  table_name：表名</span></p><p id="u89654f64" class="ne-p"><span class="ne-text" style="font-size: 24px">columns表（记录所有字段）：查字段名  table_schema:库名  table_name:表名 column_name:字段名</span></p></details>
-<details class="lake-collapse"><summary id="ucd44155c"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">数据库用户及权限内容：</span></summary><p id="ue1e756ba" class="ne-p"><span class="ne-text" style="font-size: 24px">一台MySQL服务器可以创建多个等于账号。</span></p><p id="uf2768a67" class="ne-p"><span class="ne-text" style="font-size: 24px">root（超级管理员）负责划分权限；普通账号没有先天划分权限。</span></p><p id="u7b2206c2" class="ne-p"><span class="ne-text" style="font-size: 24px">root授予哪个库的哪些权限，账号才能对应操作；</span></p><p id="u474aa93e" class="ne-p"><span class="ne-text" style="font-size: 24px">未授权的数据库无法看见；</span></p><p id="uebdaa60e" class="ne-p"><span class="ne-text" style="font-size: 24px">就算能够看见的数据库，权限也是拆分的，可以做到仅查询</span></p></details>
-<font style="color:#990055;">3</font><font style="color:#000000;">、数据库敏感函数，默认端口及应用</font>
+<details class="lake-collapse"><summary id="ucd44155c"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">数据库用户及权限内容：</span></summary><p id="ue1e756ba" class="ne-p"><span class="ne-text" style="font-size: 24px">一台MySQL服务器可以创建多个账号。</span></p><p id="uf2768a67" class="ne-p"><span class="ne-text" style="font-size: 24px">root（超级管理员）负责划分权限；普通账号没有分配权限的能力。</span></p><p id="u7b2206c2" class="ne-p"><span class="ne-text" style="font-size: 24px">root授予哪个库的哪些权限，账号才能对应操作；</span></p><p id="u474aa93e" class="ne-p"><span class="ne-text" style="font-size: 24px">未授权的数据库无法看见；</span></p><p id="uebdaa60e" class="ne-p"><span class="ne-text" style="font-size: 24px">就算能够看见的数据库，权限也是拆分的，可以做到仅查询</span></p></details>
+## <font style="color:#990055;">3</font><font style="color:#000000;">、数据库敏感函数，默认端口及应用</font>
+<font style="background-color:#FBDE28;">数据库自带函数也能利用来操作数据库</font>
 
-<p><font style="background-color:#FBDE28;">数据库自带函数也能利用来操作数据库</font></p>
-<details class="lake-collapse"><summary id="uce3b7232"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">默认端口（后期面试可能会提问，之前护网面试提到过）</span></summary><p id="u1be9acf9" class="ne-p"><span class="ne-text" style="font-size: 24px">mysql：3306</span></p><p id="u2fced44b" class="ne-p"><span class="ne-text" style="font-size: 24px">oracle：1521</span></p><p id="u393927d1" class="ne-p"><span class="ne-text" style="font-size: 24px">SQLserver：1433</span></p><p id="u7bff797d" class="ne-p"><span class="ne-text" style="font-size: 24px">Redis：6379</span></p><p id="u54ad743f" class="ne-p"><span class="ne-text" style="font-size: 24px">MongoDB：27017</span></p><p id="ub1092f7e" class="ne-p"><span class="ne-text" style="font-size: 24px">不止这些剩下可以网上查一下，为什么要记这些呢，后期渗透测试的时候首先会进行端口扫描，通过端口就能判断使用的是什么数据库</span></p></details>
-<font style="color:#990055;">4</font><font style="color:#000000;">、数据库查询方法（增加删除修改更新）</font>
-
+<details class="lake-collapse"><summary id="uce3b7232"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">默认端口（后期面试可能会提问，之前护网面试提到过）</span></summary><p id="u1be9acf9" class="ne-p"><span class="ne-text" style="font-size: 24px">mysql：3306</span></p><p id="u2fced44b" class="ne-p"><span class="ne-text" style="font-size: 24px">oracle：1521</span></p><p id="u393927d1" class="ne-p"><span class="ne-text" style="font-size: 24px">SQLserver：1433</span></p><p id="u7bff797d" class="ne-p"><span class="ne-text" style="font-size: 24px">Redis：6379</span></p><p id="u54ad743f" class="ne-p"><span class="ne-text" style="font-size: 24px">MongoDB：27017</span></p><p id="ub1092f7e" class="ne-p"><span class="ne-text" style="font-size: 24px">不止这些剩下可以网上查一下，为什么要记这些呢，后期渗透测试的时候首先会进行端口扫描，通过端口就能判断使用的是什么数据库，进行对应数据库漏洞利用</span></p></details>
+## <font style="color:#990055;">4</font><font style="color:#000000;">、数据库查询方法（增加删除修改更新）</font>
 <details class="lake-collapse"><summary id="ufd3ab294"><span class="ne-text" style="background-color: #FBDE28; font-size: 24px">mysql增删改查：</span></summary><p id="u605ca60e" class="ne-p"><span class="ne-text" style="font-size: 24px">查：select * from 表名 where 列名=“条件”；</span></p><p id="u955bca9b" class="ne-p"><span class="ne-text" style="font-size: 24px">增：insert into 表名（`列名1`,`列名2`）values(列1值1','列2值2')；</span></p><p id="uf2d24340" class="ne-p"><span class="ne-text" style="font-size: 24px">删：delete from 表名 where 列名=“条件”；</span></p><p id="uf8ff09ed" class="ne-p"><span class="ne-text" style="font-size: 24px">改：update 表名 set 列名 = 数据 where 列名 = “条件”；</span></p></details>
 
 
-<p><font style="background-color:#ED740C;">#SQL注入产生原理：</font></p>
-<p>代码中执行的SQL语句存在可控变量导致</p>
-<p><font style="background-color:#81BBF8;">就好理解的案例：大部分站点都有搜索功能，你只需要输入关键字，它的后端逻辑为select * from 表 where 字段&#x3D;我们的输入，这就是我们可以控制where后面的参数，用后续的注入方式就能获取到你想要的东西</font></p>
+<h1 id="二、SQL注入产生原理"><a href="#二、SQL注入产生原理" class="headerlink" title="二、SQL注入产生原理"></a>二、SQL注入产生原理</h1><p>代码中执行的SQL语句存在可控变量导致</p>
+<p><font style="background-color:#81BBF8;">很好理解的案例：大部分站点都有搜索功能，你只需要输入关键字，它的后端逻辑为select * from 表 where 字段&#x3D;我们的输入，这就是我们可以控制where后面的参数，用后续的注入方式就能获取到你想要的东西</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#影响SQL注入的主要因素（后续按这个顺序讲）：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、数据库类型（权限操作）</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">不同数据库类型注入语句不同</font></p>
-<p><font style="color:#990055;">2</font><font style="color:#000000;">、数据操作方法（增删改查）</font></p>
-<p><font style="color:#990055;">3</font><font style="color:#000000;">、参数数据类型（符号干扰）</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">比如：select * from 表 where 字段&#x3D;”$username”</font></p>
+<h1 id="三、影响SQL注入的主要因素（后续按这个顺序讲）"><a href="#三、影响SQL注入的主要因素（后续按这个顺序讲）" class="headerlink" title="三、影响SQL注入的主要因素（后续按这个顺序讲）"></a>三、影响SQL注入的主要因素（后续按这个顺序讲）</h1><h2 id="1、数据库类型（权限操作）"><a href="#1、数据库类型（权限操作）" class="headerlink" title="1、数据库类型（权限操作）"></a><font style="color:#990055;">1</font><font style="color:#000000;">、数据库类型（权限操作）</font></h2><p><font style="color:#000000;background-color:#FBDE28;">不同数据库类型注入语句不同</font></p>
+<h2 id="2、数据操作方法（增删改查）"><a href="#2、数据操作方法（增删改查）" class="headerlink" title="2、数据操作方法（增删改查）"></a><font style="color:#990055;">2</font><font style="color:#000000;">、数据操作方法（增删改查）</font></h2><h2 id="3、参数数据类型（符号干扰）"><a href="#3、参数数据类型（符号干扰）" class="headerlink" title="3、参数数据类型（符号干扰）"></a><font style="color:#990055;">3</font><font style="color:#000000;">、参数数据类型（符号干扰）</font></h2><p><font style="color:#000000;background-color:#FBDE28;">比如：select * from 表 where 字段&#x3D;”$username”</font></p>
 <p><font style="color:#000000;background-color:#FBDE28;">黑盒测试中字符注入一定要考虑引号，不考虑的话你把你的注入语句都写在引号内不生效</font></p>
-<p><font style="color:#990055;">4</font><font style="color:#000000;">、参数数据格式（加密编码等）</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">你输入注入内容，后端接收数据会进行解密解码，带入带sql中执行，所以你必须在一开始输入的时候就进行对应的加密</font></p>
-<p><font style="color:#990055;">5</font><font style="color:#000000;">、提交数据方式（数据包部分）</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">按照对应格式(json，xml等)注入，注入语句不能破坏数据提交格式</font></p>
+<h2 id="4、参数数据格式（加密编码等）"><a href="#4、参数数据格式（加密编码等）" class="headerlink" title="4、参数数据格式（加密编码等）"></a><font style="color:#990055;">4</font><font style="color:#000000;">、参数数据格式（加密编码等）</font></h2><p><font style="color:#000000;background-color:#FBDE28;">你输入注入内容，后端接收数据会进行解密解码，带入带sql中执行，所以你必须在一开始输入的时候就进行对应的加密</font></p>
+<h2 id="5、提交数据方式（数据包部分）"><a href="#5、提交数据方式（数据包部分）" class="headerlink" title="5、提交数据方式（数据包部分）"></a><font style="color:#990055;">5</font><font style="color:#000000;">、提交数据方式（数据包部分）</font></h2><p><font style="color:#000000;background-color:#FBDE28;">按照对应格式(json，xml等)注入，注入语句不能破坏数据提交格式</font></p>
 <p><font style="color:#000000;background-color:#FBDE28;"></font></p>
 <p><font style="color:#000000;background-color:#FBDE28;">json:{“id”:”1”,”username”:”admin”}</font></p>
 <p><font style="color:#000000;background-color:#FBDE28;"></font></p>
 <p><font style="color:#000000;background-color:#FBDE28;">xml:</font></p>
 <p><font style="color:#000000;background-color:#FBDE28;"><username>admin</username></font></p>
 <p><font style="color:#000000;background-color:#FBDE28;"><password>123456</password></font></p>
-<p><font style="color:#990055;">6</font><font style="color:#000000;">、有无数据处理（无回显逻辑等）</font></p>
-<p><font style="color:#000000;background-color:#FBDE28;">无回显我们会用到延时注入</font></p>
+<h2 id="6、有无数据回显"><a href="#6、有无数据回显" class="headerlink" title="6、有无数据回显"></a><font style="color:#990055;">6</font><font style="color:#000000;">、有无数据回显</font></h2><p><font style="color:#000000;background-color:#FBDE28;">无回显我们会用到延时注入</font></p>
 <p><font style="background-color:#ED740C;"></font></p>
-<p><font style="background-color:#ED740C;">#常见SQL注入的利用过程：</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、判断数据库类型</font></p>
+<h1 id="四、常见SQL注入的利用过程"><a href="#四、常见SQL注入的利用过程" class="headerlink" title="四、常见SQL注入的利用过程"></a>四、常见SQL注入的利用过程</h1><p><font style="color:#990055;">1</font><font style="color:#000000;">、判断数据库类型</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、判断参数类型及格式</font></p>
 <p><font style="color:#990055;">3</font><font style="color:#000000;">、判断数据格式及提交</font></p>
 <p><font style="color:#990055;">4</font><font style="color:#000000;">、判断数据回显及防护</font></p>
 <p><font style="color:#990055;">5</font><font style="color:#000000;">、获取数据库名，表名，列名</font></p>
 <p><font style="color:#990055;">5</font><font style="color:#000000;">、获取对应数据及尝试其他利用</font></p>
 <p><font style="color:#000000;"></font></p>
-<p><font style="background-color:#ED740C;">#黑盒&#x2F;白盒如何发现SQL注入</font></p>
-<p><font style="color:#990055;">1</font><font style="color:#000000;">、盲对所有参数进行测试</font></p>
+<h1 id="五、黑盒-白盒如何发现SQL注入"><a href="#五、黑盒-白盒如何发现SQL注入" class="headerlink" title="五、黑盒&#x2F;白盒如何发现SQL注入"></a>五、黑盒&#x2F;白盒如何发现SQL注入</h1><p><font style="color:#990055;">1</font><font style="color:#000000;">、盲对所有参数进行测试</font></p>
 <p><font style="color:#990055;">2</font><font style="color:#000000;">、整合功能点脑补进行测试</font></p>
 <p><font style="color:#000000;">白盒参考后期代码审计课程</font></p>
 <p><font style="color:#000000;"></font></p>
 <p><font style="color:#000000;">利用过程：</font></p>
 <p><font style="color:#000000;">获取数据库名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">表名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">列名</font><font style="color:#9a6e3a;">-&gt;</font><font style="color:#000000;">数据（一般是关键数据，如管理员）</font></p>
 <p><font style="color:#000000;background-color:#FBDE28;">大部分都是用工具跑，工具有限制或者跑不出来才手工。后面原本也有各种数据库的靶场，因为是第一节课很多东西写了也看不懂，所以等到后面讲完了或者遇到对应数据库再写</font></p>
+<p><font style="color:#000000;background-color:#FBDE28;"></font></p>
 
     </div>
 
@@ -409,6 +403,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9F%A5%E8%AF%86%EF%BC%88%E9%83%BD%E4%BB%A5mysql%E8%AE%B2%E8%A7%A3%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">一、数据库知识（都以mysql讲解）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D%EF%BC%8C%E8%A1%A8%E5%90%8D%EF%BC%8C%E5%88%97%E5%90%8D%EF%BC%8C%E6%95%B0%E6%8D%AE"><span class="nav-number">1.1.</span> <span class="nav-text">1、数据库名，表名，列名，数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81SQL%E6%B3%A8%E5%85%A5%E4%BA%A7%E7%94%9F%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">二、SQL注入产生原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BD%B1%E5%93%8DSQL%E6%B3%A8%E5%85%A5%E7%9A%84%E4%B8%BB%E8%A6%81%E5%9B%A0%E7%B4%A0%EF%BC%88%E5%90%8E%E7%BB%AD%E6%8C%89%E8%BF%99%E4%B8%AA%E9%A1%BA%E5%BA%8F%E8%AE%B2%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">三、影响SQL注入的主要因素（后续按这个顺序讲）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%9D%83%E9%99%90%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">1、数据库类型（权限操作）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95%EF%BC%88%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">2、数据操作方法（增删改查）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%8F%82%E6%95%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E7%AC%A6%E5%8F%B7%E5%B9%B2%E6%89%B0%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">3、参数数据类型（符号干扰）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%8F%82%E6%95%B0%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%EF%BC%88%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AD%89%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">4、参数数据格式（加密编码等）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E6%8F%90%E4%BA%A4%E6%95%B0%E6%8D%AE%E6%96%B9%E5%BC%8F%EF%BC%88%E6%95%B0%E6%8D%AE%E5%8C%85%E9%83%A8%E5%88%86%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">5、提交数据方式（数据包部分）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E6%9C%89%E6%97%A0%E6%95%B0%E6%8D%AE%E5%9B%9E%E6%98%BE"><span class="nav-number">3.6.</span> <span class="nav-text">6、有无数据回显</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%B8%B8%E8%A7%81SQL%E6%B3%A8%E5%85%A5%E7%9A%84%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">四、常见SQL注入的利用过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E9%BB%91%E7%9B%92-%E7%99%BD%E7%9B%92%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0SQL%E6%B3%A8%E5%85%A5"><span class="nav-number">5.</span> <span class="nav-text">五、黑盒&#x2F;白盒如何发现SQL注入</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
