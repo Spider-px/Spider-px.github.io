@@ -5458,7 +5458,7 @@ fclose($myfile);
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-原生PHP-代码审计案例</font></p>
 <h1 id="一、变量覆盖安全"><a href="#一、变量覆盖安全" class="headerlink" title="一、变量覆盖安全"></a>一、变量覆盖安全</h1><p>$GLOBALS：这种全局变量用于在PHP脚本中的任意位置访问全局变量</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="https://cdn.nlark.com/yuque/0/2026/png/62951829/1792330823119-6ba792ee-5676-4744-822c-b8e13d6e3d22.png"></p>
+<p><img src="/images/027-3.png"></p>
 <h1 id="二、数据接收安全"><a href="#二、数据接收安全" class="headerlink" title="二、数据接收安全"></a>二、数据接收安全</h1><p>$_REQUEST：$_REQUEST 用于收集 HTML 表单提交的数据。</p>
 <p>$_POST：广泛用于收集提交method&#x3D;”post” 的HTML表单后的表单数据。</p>
 <p>$_GET：收集URL中的发送的数据。也可用于提交表单数据(method&#x3D;”get”)</p>
