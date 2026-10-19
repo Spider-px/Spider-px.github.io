@@ -5446,4 +5446,82 @@ fclose($myfile);
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第27天-PHP应用&amp;原生语法&amp;全局变量&amp;数据接受&amp;身份验证&amp;变量覆盖&amp;任意上传</title>
+    <url>/2026/10/19/%E7%AC%AC27%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-%E5%8E%9F%E7%94%9F%E8%AF%AD%E6%B3%95-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F-%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%97-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96-%E4%BB%BB%E6%84%8F%E4%B8%8A%E4%BC%A0/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB开发-原生PHP-超级全局变量</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-原生PHP-代码审计案例</font></p>
+<h1 id="一、变量覆盖安全"><a href="#一、变量覆盖安全" class="headerlink" title="一、变量覆盖安全"></a>一、变量覆盖安全</h1><p>$GLOBALS：这种全局变量用于在PHP脚本中的任意位置访问全局变量</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="https://cdn.nlark.com/yuque/0/2026/png/62951829/1792330823119-6ba792ee-5676-4744-822c-b8e13d6e3d22.png"></p>
+<h1 id="二、数据接收安全"><a href="#二、数据接收安全" class="headerlink" title="二、数据接收安全"></a>二、数据接收安全</h1><p>$_REQUEST：$_REQUEST 用于收集 HTML 表单提交的数据。</p>
+<p>$_POST：广泛用于收集提交method&#x3D;”post” 的HTML表单后的表单数据。</p>
+<p>$_GET：收集URL中的发送的数据。也可用于提交表单数据(method&#x3D;”get”)</p>
+<p>$_ENV：是一个包含服务器端环境变量的数组。</p>
+<p>$_SERVER：这种超全局变量保存关于报头、路径和脚本位置的信息。</p>
+<h1 id="三、文件上传安全"><a href="#三、文件上传安全" class="headerlink" title="三、文件上传安全"></a>三、文件上传安全</h1><p>$_FILES：文件上传且处理包含通过POST方法上传给当前脚本的文件内容。</p>
+<p>:::info<br>$_FILES[‘userfile’][‘name’]  　　　 &#x2F;&#x2F;客户端机器文件的原名称。</p>
+<p>$_FILES[‘userfile’][‘type’]　　　　 &#x2F;&#x2F;文件的 MIME 类型，如果浏览器提供此信息的话。一个例子是“image&#x2F;gif”。不过此 MIME 类型在 PHP 端并不检查，因此不要想当然认为有这个值。</p>
+<p>$_FILES[‘userfile’][‘size’]　　　　 &#x2F;&#x2F;已上传文件的大小，单位为字节。</p>
+<p>$_FILES[‘userfile’][‘tmp_name’]   &#x2F;&#x2F;文件被上传后在服务端储存的临时文件名。</p>
+<p>$_FILES[‘userfile’][‘error’]      &#x2F;&#x2F;和该文件上传相关的错误代码。此项目是在 PHP 4.2.0 版本中增加的。</p>
+<p>:::</p>
+<h1 id="四、身份验证安全"><a href="#四、身份验证安全" class="headerlink" title="四、身份验证安全"></a>四、身份验证安全</h1><p>$_COOKIE：是一个关联数组，包含通过cookie传递给当前脚本的内容。</p>
+<p>本地客户端浏览器存储</p>
+<p>:::info<br>设置cookie</p>
+<p>setcookie(name, value, expire, path, domain);</p>
+<p>name：cookie名</p>
+<p>value：cookie值</p>
+<p>expire：过期时间。常见写法：time()+3600一小时后过去、time()-1删除cookie</p>
+<p>path：生效路径</p>
+<p>domain：生效域名</p>
+<p>$_COOKIE[‘cookie名’]：取cookie值</p>
+<p>:::</p>
+<p>$_SESSION：是一个关联数组，包含当前脚本中的所有session内容。</p>
+<p>:::info<br>目标服务端存储，存储记录的数据</p>
+<p>session_start()开启session会话，这个必须在html前开启</p>
+<p>$_SESSION[‘名’]&#x3D;值，用来存储session数据</p>
+<p>unset($_SESSION[名])，删除单个session数据</p>
+<p>session_unset()，删除所有session数据</p>
+<p> session_destroy()，删除session文件</p>
+<p>:::</p>
+<h1 id="五、代码审计应用"><a href="#五、代码审计应用" class="headerlink" title="五、代码审计应用"></a>五、代码审计应用</h1><h2 id="1、DuomiCMS变量覆盖"><a href="#1、DuomiCMS变量覆盖" class="headerlink" title="1、DuomiCMS变量覆盖"></a>1、DuomiCMS变量覆盖</h2><p>找变量覆盖代码-&gt;找此文件调用-&gt;</p>
+<p>选择利用覆盖Session-&gt;找开启Session文件去覆盖</p>
+<p>参考：</p>
+<p><a href="https://blog.csdn.net/qq_59023242/article/details/135080259">https://blog.csdn.net/qq_59023242/article/details/135080259</a></p>
+<p><font style="background-color:#FBDE28;">这里有三个关键文件</font></p>
+<p><font style="background-color:#FBDE28;">a.common.php这个是漏洞形成代码</font></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">foreach(Array(&#x27;_GET&#x27;,&#x27;_POST&#x27;,&#x27;_COOKIE&#x27;) as $_request)</span><br><span class="line">&#123;</span><br><span class="line">    foreach($$_request as $_k =&gt; $_v) $&#123;$_k&#125; = _RunMagicQuotes($_v);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font style="background-color:#FBDE28;">因为可变变量可以伪造session的值</font></p>
+<p><font style="background-color:#FBDE28;">b.攻击利用文件（如，comment.php）</font></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line">require_once(&quot;../duomiphp/common.php&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><font style="background-color:#FBDE28;">主要就是要开启session，并且调用了漏洞代码，符合这个条件的其他文件也可以。这样就成功伪造了session凭证。</font></p>
+<p><font style="background-color:#FBDE28;">c. check.admin.php鉴权文件</font></p>
+<p><font style="background-color:#FBDE28;">哪个文件包含或引用了它，执行了鉴权函数或实例，就会鉴权正好读到我们伪造的session数据然后登录管理员账号，login.php调用了但是没执行鉴权代码，那就没用。index这种admin后台操作文件，它调用了也执行鉴权了，我们输入payload之后再访问就成功通过管理员权限执行了</font></p>
+<p>漏洞复现：</p>
+<p>&#x2F;interface&#x2F;comment.php?_SESSION[duomi_admin_id]&#x3D;10&amp;_SESSION[duomi_group_id]&#x3D;1&amp;_SESSION[duomi_admin_name]&#x3D;zmh</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-1.png"><br>伪造管理员session数据</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-2.png"></p>
+<p>成功登录</p>
+<h1 id="2、YcCms任意文件上传"><a href="#2、YcCms任意文件上传" class="headerlink" title="2、YcCms任意文件上传"></a>2、YcCms任意文件上传</h1><p>找文件上传代码-&gt;找此文件调用-&gt;找函数调用-&gt;过滤type用mime绕过</p>
+<p>这个目前还没学mvc就不写了</p>
+<p>参考：<a href="https://zhuanlan.zhihu.com/p/718742254">https://zhuanlan.zhihu.com/p/718742254</a></p>
+<p>?a&#x3D;call&amp;m&#x3D;upLoad send</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web开发)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
