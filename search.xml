@@ -4014,12 +4014,6 @@ logindata.Password =encodeURI(encrypt.encrypt(numPassword));
       </tags>
   </entry>
   <entry>
-    <title>浑水老公我腿好看吗</title>
-    <url>/2026/07/28/buhuo/</url>
-    <content><![CDATA[<p><img src="/images/x.jpg"><br><img src="/images/xxxx.jpg"><br>浑水老公我美吗</p>
-]]></content>
-  </entry>
-  <entry>
     <title>第65天-SSRF服务端伪造&amp;伪协议利玩法&amp;域名及IP绕过&amp;无回显利用&amp;挖掘点</title>
     <url>/2026/09/10/%E7%AC%AC65%E5%A4%A9-SSRF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%AA%E9%80%A0-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%8E%A9%E6%B3%95-%E5%9F%9F%E5%90%8D%E5%8F%8AIP%E7%BB%95%E8%BF%87-%E6%97%A0%E5%9B%9E%E6%98%BE%E5%88%A9%E7%94%A8-%E6%8C%96%E6%8E%98%E7%82%B9/</url>
     <content><![CDATA[<p><font></font></p>
@@ -5460,30 +5454,28 @@ fclose($myfile);
 <p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-原生PHP-代码审计案例</font></p>
 <h1 id="一、变量覆盖安全"><a href="#一、变量覆盖安全" class="headerlink" title="一、变量覆盖安全"></a>一、变量覆盖安全</h1><p>$GLOBALS：这种全局变量用于在PHP脚本中的任意位置访问全局变量</p>
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/027-3.png"></p>
+<p><img src="/images/027-1.png"></p>
 <h1 id="二、数据接收安全"><a href="#二、数据接收安全" class="headerlink" title="二、数据接收安全"></a>二、数据接收安全</h1><p>$_REQUEST：$_REQUEST 用于收集 HTML 表单提交的数据。</p>
 <p>$_POST：广泛用于收集提交method&#x3D;”post” 的HTML表单后的表单数据。</p>
 <p>$_GET：收集URL中的发送的数据。也可用于提交表单数据(method&#x3D;”get”)</p>
 <p>$_ENV：是一个包含服务器端环境变量的数组。</p>
 <p>$_SERVER：这种超全局变量保存关于报头、路径和脚本位置的信息。</p>
 <h1 id="三、文件上传安全"><a href="#三、文件上传安全" class="headerlink" title="三、文件上传安全"></a>三、文件上传安全</h1><p>$_FILES：文件上传且处理包含通过POST方法上传给当前脚本的文件内容。</p>
-<p>:::info<br>$_FILES[‘userfile’][‘name’]  　　　 &#x2F;&#x2F;客户端机器文件的原名称。</p>
-<p>$_FILES[‘userfile’][‘type’]　　　　 &#x2F;&#x2F;文件的 MIME 类型，如果浏览器提供此信息的话。一个例子是“image&#x2F;gif”。不过此 MIME 类型在 PHP 端并不检查，因此不要想当然认为有这个值。</p>
-<p>$_FILES[‘userfile’][‘size’]　　　　 &#x2F;&#x2F;已上传文件的大小，单位为字节。</p>
-<p>$_FILES[‘userfile’][‘tmp_name’]   &#x2F;&#x2F;文件被上传后在服务端储存的临时文件名。</p>
-<p>$_FILES[‘userfile’][‘error’]      &#x2F;&#x2F;和该文件上传相关的错误代码。此项目是在 PHP 4.2.0 版本中增加的。</p>
-<p>:::</p>
+<p><font style="background-color:#FBDE28;">$_FILES[‘userfile’][‘name’]  　　　 &#x2F;&#x2F;客户端机器文件的原名称。</font></p>
+<p><font style="background-color:#FBDE28;">$_FILES[‘userfile’][‘type’]　　　　 &#x2F;&#x2F;文件的 MIME 类型，如果浏览器提供此信息的话。一个例子是“image&#x2F;gif”。不过此 MIME 类型在 PHP 端并不检查，因此不要想当然认为有这个值。</font></p>
+<p><font style="background-color:#FBDE28;">$_FILES[‘userfile’][‘size’]　　　　 &#x2F;&#x2F;已上传文件的大小，单位为字节。</font></p>
+<p><font style="background-color:#FBDE28;">$_FILES[‘userfile’][‘tmp_name’]   &#x2F;&#x2F;文件被上传后在服务端储存的临时文件名。</font></p>
+<p><font style="background-color:#FBDE28;">$_FILES[‘userfile’][‘error’]      &#x2F;&#x2F;和该文件上传相关的错误代码。此项目是在 PHP 4.2.0 版本中增加的。</font></p>
 <h1 id="四、身份验证安全"><a href="#四、身份验证安全" class="headerlink" title="四、身份验证安全"></a>四、身份验证安全</h1><p>$_COOKIE：是一个关联数组，包含通过cookie传递给当前脚本的内容。</p>
 <p>本地客户端浏览器存储</p>
-<p>:::info<br>设置cookie</p>
-<p>setcookie(name, value, expire, path, domain);</p>
-<p>name：cookie名</p>
-<p>value：cookie值</p>
-<p>expire：过期时间。常见写法：time()+3600一小时后过去、time()-1删除cookie</p>
-<p>path：生效路径</p>
-<p>domain：生效域名</p>
+<p><font style="background-color:#FBDE28;">设置cookie</font></p>
+<p><font style="background-color:#FBDE28;">setcookie(name, value, expire, path, domain);</font></p>
+<p><font style="background-color:#FBDE28;">name：cookie名</font></p>
+<p><font style="background-color:#FBDE28;">value：cookie值</font></p>
+<p><font style="background-color:#FBDE28;">expire：过期时间。常见写法：time()+3600一小时后过去、time()-1删除cookie</font></p>
+<p><font style="background-color:#FBDE28;">path：生效路径</font></p>
+<p><font style="background-color:#FBDE28;">domain：生效域名</font></p>
 <p>$_COOKIE[‘cookie名’]：取cookie值</p>
-<p>:::</p>
 <p>$_SESSION：是一个关联数组，包含当前脚本中的所有session内容。</p>
 <p>:::info<br>目标服务端存储，存储记录的数据</p>
 <p>session_start()开启session会话，这个必须在html前开启</p>
@@ -5492,8 +5484,8 @@ fclose($myfile);
 <p>session_unset()，删除所有session数据</p>
 <p> session_destroy()，删除session文件</p>
 <p>:::</p>
-<h1 id="五、代码审计应用"><a href="#五、代码审计应用" class="headerlink" title="五、代码审计应用"></a>五、代码审计应用</h1><h2 id="1、DuomiCMS变量覆盖"><a href="#1、DuomiCMS变量覆盖" class="headerlink" title="1、DuomiCMS变量覆盖"></a>1、DuomiCMS变量覆盖</h2><p>找变量覆盖代码-&gt;找此文件调用-&gt;</p>
-<p>选择利用覆盖Session-&gt;找开启Session文件去覆盖</p>
+<h1 id="五、代码审计应用"><a href="#五、代码审计应用" class="headerlink" title="五、代码审计应用"></a>五、代码审计应用</h1><h2 id="1、DuomiCMS变量覆盖"><a href="#1、DuomiCMS变量覆盖" class="headerlink" title="1、DuomiCMS变量覆盖"></a>1、DuomiCMS变量覆盖</h2><h3 id="漏洞利用原理："><a href="#漏洞利用原理：" class="headerlink" title="漏洞利用原理："></a>漏洞利用原理：</h3><p><font style="background-color:#ED740C;">首先这个漏洞是在common.php，里面存在可变变量漏洞。我们可以在URL中构造session的键和值，参数传入common.php，经过拼接后创建session相关变量。这个利用文件comment.php需要满足两点：第一，文件开头执行session_start()；第二，引入存在漏洞的common.php。这样我们就能通过Payload伪造管理员session数据。</font></p>
+<p><font style="background-color:#ED740C;">当访问admin&#x2F;index.php时，admin&#x2F;index.php引用了config.php，而config.php引用了check.admin.php，所以这一步就会鉴定我们是否有管理员权限。服务端读取对应session文件里面的session数据，判断管理员权限。因为之前已经伪造好了管理员session，校验通过，所以就能直接登录管理员后台。</font></p>
 <p>参考：</p>
 <p><a href="https://blog.csdn.net/qq_59023242/article/details/135080259">https://blog.csdn.net/qq_59023242/article/details/135080259</a></p>
 <p><font style="background-color:#FBDE28;">这里有三个关键文件</font></p>
@@ -5507,17 +5499,33 @@ fclose($myfile);
 <p><font style="background-color:#FBDE28;">主要就是要开启session，并且调用了漏洞代码，符合这个条件的其他文件也可以。这样就成功伪造了session凭证。</font></p>
 <p><font style="background-color:#FBDE28;">c. check.admin.php鉴权文件</font></p>
 <p><font style="background-color:#FBDE28;">哪个文件包含或引用了它，执行了鉴权函数或实例，就会鉴权正好读到我们伪造的session数据然后登录管理员账号，login.php调用了但是没执行鉴权代码，那就没用。index这种admin后台操作文件，它调用了也执行鉴权了，我们输入payload之后再访问就成功通过管理员权限执行了</font></p>
-<p>漏洞复现：</p>
-<p>&#x2F;interface&#x2F;comment.php?_SESSION[duomi_admin_id]&#x3D;10&amp;_SESSION[duomi_group_id]&#x3D;1&amp;_SESSION[duomi_admin_name]&#x3D;zmh</p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/images/027-1.png"><br>伪造管理员session数据</p>
+<h3 id="漏洞复现："><a href="#漏洞复现：" class="headerlink" title="漏洞复现："></a>漏洞复现：</h3><p>&#x2F;interface&#x2F;comment.php?_SESSION[duomi_admin_id]&#x3D;10&amp;_SESSION[duomi_group_id]&#x3D;1&amp;_SESSION[duomi_admin_name]&#x3D;zmh</p>
 <!-- 这是一张图片，ocr 内容为： -->
 <p><img src="/images/027-2.png"></p>
+<p>伪造管理员session数据</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-3.png"></p>
 <p>成功登录</p>
-<h1 id="2、YcCms任意文件上传"><a href="#2、YcCms任意文件上传" class="headerlink" title="2、YcCms任意文件上传"></a>2、YcCms任意文件上传</h1><p>找文件上传代码-&gt;找此文件调用-&gt;找函数调用-&gt;过滤type用mime绕过</p>
-<p>这个目前还没学mvc就不写了</p>
-<p>参考：<a href="https://zhuanlan.zhihu.com/p/718742254">https://zhuanlan.zhihu.com/p/718742254</a></p>
+<h1 id="2、YcCms任意文件上传"><a href="#2、YcCms任意文件上传" class="headerlink" title="2、YcCms任意文件上传"></a>2、YcCms任意文件上传</h1><p>参考：<a href="https://zhuanlan.zhihu.com/p/718742254">https://zhuanlan.zhihu.com/p/718742254</a></p>
 <p>?a&#x3D;call&amp;m&#x3D;upLoad send</p>
+<h3 id="漏洞利用："><a href="#漏洞利用：" class="headerlink" title="漏洞利用："></a>漏洞利用：</h3><p>首先用小皮搭建一下这个网站，登录到后台</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-4.png"></p>
+<p>这里有一个上传logo，这里采用了mime类型校验，只允许上传image&#x2F;png和image&#x2F;x-png，这里一会儿会从代码中讲解。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-5.png"></p>
+<p>上传网址是<a href="http://yccms.com/admin/?a=call&m=upfile&type=content">http://yccms.com/admin/?a=call&m=upfile&type=content</a></p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-6.png"></p>
+<p>我们确保mime类型是image&#x2F;png，内容末尾写上后门，直接蚁剑连一下。</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-7.png"></p>
+<h3 id="漏洞原理："><a href="#漏洞原理：" class="headerlink" title="漏洞原理："></a>漏洞原理：</h3><!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-8.png"></p>
+<p>这个是关键的上传代码，看到这个方法里面创建了一个LogoUpload实例，并且调用了out()函数</p>
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/images/027-9.png"></p>
+<p>这个是LogoUpload类内的out()函数，发现法设置了mime类型白名单，只允许image&#x2F;png 和 image&#x2F;x-png上传</p>
 ]]></content>
       <categories>
         <category>小迪安全课程学习笔记(web开发)</category>
