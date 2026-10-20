@@ -5601,7 +5601,7 @@ fclose($myfile);
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$user=$_COOKIE[&#x27;user&#x27;];</span><br><span class="line">if ($user==&quot;&quot;)&#123;</span><br><span class="line">header(&quot;Location: ?r=login&quot;);</span><br><span class="line">exit;	</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">这个就是检查是否携带cookie，如果没有就重定向到login。漏洞点就在这里，index.php引入了这个文件，只</span><br><span class="line">要cookie不为空就能进入</span><br></pre></td></tr></table></figure>
 
 <!-- 这是一张图片，ocr 内容为： -->
-<p><img src="/028-1.png"></p>
+<p><img src="/images/028-1.png"></p>
 <p>我随便设置了user&#x3D;1就登进来了，正常你不登录的话是访问不了这个页面的</p>
 <h2 id="2、YXCMS-Session固定"><a href="#2、YXCMS-Session固定" class="headerlink" title="2、YXCMS Session固定"></a>2、YXCMS Session固定</h2><p><a href="https://xz.aliyun.com/t/2025%E8%BF%99%E4%B8%AA%E5%B0%B1%E7%9C%8B%E6%96%87%E7%AB%A0%E5%90%A7%E5%81%B7%E4%B8%AA%E6%87%92">https://xz.aliyun.com/t/2025这个就看文章吧偷个懒</a></p>
 <p>后面都是些知识点：</p>
