@@ -5664,4 +5664,75 @@ fclose($myfile);
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第29天-PHP应用&amp;弱类型脆弱&amp;Hash加密&amp;Bool类型&amp;Array数组&amp;函数转换比较</title>
+    <url>/2026/10/21/%E7%AC%AC29%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-%E5%BC%B1%E7%B1%BB%E5%9E%8B%E8%84%86%E5%BC%B1-Hash%E5%8A%A0%E5%AF%86-Bool%E7%B1%BB%E5%9E%8B-Array%E6%95%B0%E7%BB%84-%E5%87%BD%E6%95%B0%E8%BD%AC%E6%8D%A2%E6%AF%94%E8%BE%83/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB开发-弱类型&amp;函数-特性安全</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-数据对比-代码审计案例</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">这节课的内容一般ctf中比较多，代码审计可能有</font></p>
+<h1 id="1、-和"><a href="#1、-和" class="headerlink" title="1、&#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D;"></a>1、&#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D;</h1><p><font style="color:#000000;">两个等号</font><font style="color:#9a6e3a;">&#x3D;&#x3D;</font><font style="color:#000000;">是弱比较，使用</font><font style="color:#9a6e3a;">&#x3D;&#x3D;</font><font style="color:#000000;">进行对比的时候，php解析器就会做隐式类型转换，如果两个值的类型不相等就会把两个值的类型转为同一类型进行对比。</font></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$type==$GET[&#x27;a&#x27;];</span><br><span class="line">if($type=&#x27;pay&#x27;)&#123;</span><br><span class="line">  echo &#x27;ok&#x27;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">  echo &#x27;no&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">如果$type是0那会输出ok，一个数字和字符串进行比较会把字符串转换成数字类型，pay也没有数字那就是0</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2、MD5对比缺陷"><a href="#2、MD5对比缺陷" class="headerlink" title="2、MD5对比缺陷"></a>2、MD5对比缺陷</h1><p>进行hash加密出来的字符串如存在0e开头进行弱比较的话会直接判定为true，<font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">只有 0e 开头、后面全部是数字</font>的两个字符串，用&#x3D;&#x3D;弱比较，才会都被转成数字 0，结果为 true  </p>
+<p>QNKCDZO</p>
+<p>0e830400451993494058024219903391</p>
+<p>240610708</p>
+<p>0e462097431906509019562988736854</p>
+<p>s878926199a</p>
+<p>0e545993274517709034328855841020</p>
+<p>s155964671a</p>
+<p>0e342768416822451524974117254469</p>
+<p>s214587387a</p>
+<p>0e848240448830537924465865611904</p>
+<p>s214587387a</p>
+<p>0e848240448830537924465865611904</p>
+<p>s878926199a</p>
+<p>0e545993274517709034328855841020</p>
+<p>s1091221200a</p>
+<p>0e940624217856561557816327384675</p>
+<p>s1885207154a</p>
+<p>0e509367213418206700842008763514</p>
+<h1 id="3-函数strcmp类型比较缺陷"><a href="#3-函数strcmp类型比较缺陷" class="headerlink" title="3 函数strcmp类型比较缺陷"></a>3 函数strcmp类型比较缺陷</h1><p>低版本的strcmp比较的是字符串类型，如果强行传入其他类型参数，会出错，出错后返回值0，正是利用这点进行绕过。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(strcmp($_GET[&#x27;pwd&#x27;], &quot;admin123&quot;) == 0)&#123;</span><br><span class="line">    echo &quot;登录成功&quot;;</span><br><span class="line">&#125;</span><br><span class="line">传入数组来绕过，?pwd[]=1，数字不行get传入转换为字符串了</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="4、函数Bool类型比较缺陷"><a href="#4、函数Bool类型比较缺陷" class="headerlink" title="4、函数Bool类型比较缺陷"></a>4、函数Bool类型比较缺陷</h1><p>在使用 json_decode() 函数或 unserialize() 函数时，部分结构被解释成 bool 类型，也会造成缺陷，运行结果超出研发人员的预期。</p>
+<p>json_decode()</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$real_pwd = &quot;admin123&quot;;</span><br><span class="line">$data = json_decode($_GET[&#x27;json&#x27;], true);</span><br><span class="line">if ($data[&#x27;pass&#x27;] == $real_pwd) &#123;</span><br><span class="line">    echo &quot;登录成功&quot;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    echo &quot;密码错误&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">login_json.php?json=&#123;&quot;pass&quot;:true&#125;输入这个也是登录成功，和login_json.php?json=&#123;&quot;pass&quot;:admin1</span><br><span class="line">23&#125;效果一样</span><br></pre></td></tr></table></figure>
+
+<p>unserialize() </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">序列化字符串怎么看懂？</span><br><span class="line">类型标记:长度:值;</span><br><span class="line">数组是 a:个数:&#123;里面一堆成员&#125;</span><br><span class="line">标记对照表（审计最常用）</span><br><span class="line">a → array 数组</span><br><span class="line">s → string 字符串</span><br><span class="line">i → int 整数</span><br><span class="line">b → bool 布尔（b:1;=true，b:0;=false）</span><br><span class="line">d → float 浮点数</span><br><span class="line">N → null，直接 N;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">$real_pwd = &quot;mima123&quot;;</span><br><span class="line">$data = unserialize($_GET[&#x27;u&#x27;]);</span><br><span class="line">if($data[&#x27;pwd&#x27;] == $real_pwd)&#123;</span><br><span class="line">    echo &quot;登录成功&quot;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &quot;密码错误&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">xxx.php?u=a:1:&#123;s:3:&quot;pwd&quot;;b:1;&#125;输入这个也是登录成功，和xxx.php?u=a:1:&#123;s:3:&quot;pwd&quot;;s:7:&quot;mima123&quot;</span><br><span class="line">;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="5、函数switch-类型比较缺陷"><a href="#5、函数switch-类型比较缺陷" class="headerlink" title="5、函数switch 类型比较缺陷"></a>5、函数switch 类型比较缺陷</h1><p>当在switch中使用case判断数字时，switch会将参数转换为int类型计算</p>
+<h1 id="6、函数in-array数组比较缺陷"><a href="#6、函数in-array数组比较缺陷" class="headerlink" title="6、函数in_array数组比较缺陷"></a>6、函数in_array数组比较缺陷</h1><p>当使用in_array()或array_search()函数时，如果第三个参数没有设置为true，则in_array()或array_search()将使用松散比较来判断，松散比较就是弱对比和上面没区别，不写案例了</p>
+<p><code>&lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;in_array(要找的值, 数组, [是否强比较])&lt;/font&gt;``&lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;array_search(要找的值, 数组, [是否强比较])&lt;/font&gt;</code></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<h1 id="7、-数组比较缺陷"><a href="#7、-数组比较缺陷" class="headerlink" title="7、&#x3D;&#x3D;&#x3D;数组比较缺陷"></a>7、&#x3D;&#x3D;&#x3D;数组比较缺陷</h1><p>注意此时遇到的是 “&#x3D;&#x3D;&#x3D;” ，不过也不是代表无从下手。在md5()函数传入数组时会报错返回NULL，当变量都导致报错返回NULL时就能使使得条件成立。</p>
+<h1 id="8、案例"><a href="#8、案例" class="headerlink" title="8、案例"></a>8、案例</h1><p>CTF题目：</p>
+<p><a href="https://ctf.bugku.com/challenges/detail/id/72.html">https://ctf.bugku.com/challenges/detail/id/72.html</a></p>
+<p>这个也是弱比较，用1abs这种字符串即可绕过</p>
+<p><a href="https://ctf.bugku.com/challenges/detail/id/94.html">https://ctf.bugku.com/challenges/detail/id/94.html</a></p>
+<p>这个还是md5对比缺陷一样</p>
+<p>代码审CMS:</p>
+<p><a href="https://mp.weixin.qq.com/s/k1hRg7cmRwwJJyyX04Ipmg">https://mp.weixin.qq.com/s/k1hRg7cmRwwJJyyX04Ipmg</a></p>
+<p>这个不讲了和上面MD5对比缺陷一样，就是注册的时候密码设置为加密后能为0e开头的密码，然后登录的时候只要能通过md5加密成0e开头字符串的都能登录。</p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web开发)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
