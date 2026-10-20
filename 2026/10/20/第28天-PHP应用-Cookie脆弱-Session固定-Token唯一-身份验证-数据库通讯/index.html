@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhigao.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="第28天-PHP应用&amp;Cookie脆弱&amp;Session固定&amp;Token唯一&amp;身份验证&amp;数据库通讯">
+<meta property="og:url" content="http://zhigao.xyz/2026/10/20/%E7%AC%AC28%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-Cookie%E8%84%86%E5%BC%B1-Session%E5%9B%BA%E5%AE%9A-Token%E5%94%AF%E4%B8%80-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%9A%E8%AE%AF/index.html">
+<meta property="og:site_name" content="Voyage Memo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhigao.xyz/028-1.png">
+<meta property="article:published_time" content="2026-10-20T14:36:38.000Z">
+<meta property="article:modified_time" content="2026-10-20T14:38:54.730Z">
+<meta property="article:author" content="智高">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhigao.xyz/028-1.png">
+
+<link rel="canonical" href="http://zhigao.xyz/2026/10/20/%E7%AC%AC28%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-Cookie%E8%84%86%E5%BC%B1-Session%E5%9B%BA%E5%AE%9A-Token%E5%94%AF%E4%B8%80-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%9A%E8%AE%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第28天-PHP应用&Cookie脆弱&Session固定&Token唯一&身份验证&数据库通讯 | Voyage Memo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Voyage Memo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhigao.xyz/2026/10/20/%E7%AC%AC28%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-Cookie%E8%84%86%E5%BC%B1-Session%E5%9B%BA%E5%AE%9A-Token%E5%94%AF%E4%B8%80-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%9A%E8%AE%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="智高">
+      <meta itemprop="description" content="正因为我有能力跨越，这个考验才会降临!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Voyage Memo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第28天-PHP应用&Cookie脆弱&Session固定&Token唯一&身份验证&数据库通讯
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-10-20 22:36:38 / 修改时间：22:38:54" itemprop="dateCreated datePublished" datetime="2026-10-20T22:36:38+08:00">2026-10-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-web%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">小迪安全课程学习笔记(web开发)</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-原生PHP-通讯数据库</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB开发-Cookie&amp;Session&amp;Token</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-身份验证-代码审计案例</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="一、数据库操作-验证用户"><a href="#一、数据库操作-验证用户" class="headerlink" title="一、数据库操作 验证用户"></a><font style="color:#990055;">一</font><font style="color:#000000;">、数据库操作 验证用户</font></h1><p><font style="color:#000000;">login</font><font style="color:#9a6e3a;">.</font><font style="color:#000000;">php</font>-&gt;index.php</p>
+<h2 id="1、login-php"><a href="#1、login-php" class="headerlink" title="1、login.php:"></a><font style="color:#000000;">1、login.php:</font></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/*</span><br><span class="line">1、连接数据库</span><br><span class="line">2、选择数据库中的表</span><br><span class="line">3、接收提交的用户和密码</span><br><span class="line">4、执行sql语句判断用户密码是否正确</span><br><span class="line">*/ </span><br><span class="line"></span><br><span class="line">include &#x27;./config.php&#x27;;</span><br><span class="line">$user=@$_POST[&#x27;username&#x27;];</span><br><span class="line">$pass=@$_POST[&#x27;password&#x27;];</span><br><span class="line">$con = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);</span><br><span class="line">$sql=&quot;select * from admin where username=&#x27;$user&#x27; and password=&#x27;$pass&#x27;&quot;;</span><br><span class="line"></span><br><span class="line">if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;)&#123;</span><br><span class="line">    $data=mysqli_query($con,$sql);//第一个参数是mysqli_connect()函数返回的句柄。第二个参数是sql语句</span><br><span class="line">    if(mysqli_num_rows($data) &gt; 0)&#123;</span><br><span class="line">    #mysqli_num_rows()查询结果集有多少条行数</span><br><span class="line">    header(&#x27;Location: index.php&#x27;);</span><br><span class="line">    exit();</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">     echo &quot;&lt;script&gt;alert(&#x27;登录失败&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">重点理解标色的四行即可，三个函数，mysqli_connect()数据库连接函数，一共六个参数常用的就这四个，数</span><br><span class="line">据库地址，账户名，密码，数据库，第五个端口默认不用如果mysql换了端口就要写了，第六个unix套接字文</span><br><span class="line">件路径。mysqli_query()是向数据库发送一条sql语句拿到执行结果，两个参数数据库连接句柄和sql语句，</span><br><span class="line">mysqli_num_rows()查询结果集有多少条行数。一个逻辑，if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;)</span><br><span class="line">发送post包后才进入if内部防止一访问这个页面就谈报错</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、index-php"><a href="#2、index-php" class="headerlink" title="2、index.php:"></a>2、index.php:</h2><p>就是模拟一个后台的一个功能点，这里是后台页面，目前这里没写代码。所以现在这里没有鉴权操作有未授权漏洞，下面会完善</p>
+<h2 id="3、config-php"><a href="#3、config-php" class="headerlink" title="3、config.php:"></a>3、config.php:</h2><p>这里写了一些数据库的固定数据，单开一个文件就是方便其他文件调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">define(&#x27;DB_HOST&#x27;,&#x27;localhost&#x27;);</span><br><span class="line">define(&#x27;DB_USER&#x27;,&#x27;root&#x27;);</span><br><span class="line">define(&#x27;DB_PASS&#x27;,&#x27;123456&#x27;);</span><br><span class="line">define(&#x27;DB_NAME&#x27;,&#x27;test28&#x27;);</span><br><span class="line"></span><br><span class="line">//这里定义了四个常量都是mysqli_connet()函数的参数</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="二、Cookie验证-后台登录"><a href="#二、Cookie验证-后台登录" class="headerlink" title="二、Cookie验证 后台登录"></a>二、Cookie验证 后台登录</h1><p><font style="background-color:#FBDE28;">cookie是本地存储，已被窃取</font></p>
+<p>loginc.php-&gt;indexc.php-&gt;loginc_out.php</p>
+<h2 id="1、loginc-php"><a href="#1、loginc-php" class="headerlink" title="1、loginc.php:"></a>1、loginc.php:</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/*</span><br><span class="line">1、连接数据库</span><br><span class="line">2、选择数据库中的表</span><br><span class="line">3、接收提交的用户和密码</span><br><span class="line">4、执行sql语句判断用户密码是否正确</span><br><span class="line">*/ </span><br><span class="line"></span><br><span class="line">include &#x27;./config.php&#x27;;</span><br><span class="line">$user=@$_POST[&#x27;username&#x27;];</span><br><span class="line">$pass=@$_POST[&#x27;password&#x27;];</span><br><span class="line">$con = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);</span><br><span class="line">$sql=&quot;select * from admin where username=&#x27;$user&#x27; and password=&#x27;$pass&#x27;&quot;;</span><br><span class="line"></span><br><span class="line">if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;)&#123;</span><br><span class="line">    $data=mysqli_query($con,$sql);//第一个参数是mysqli_connect()函数返回的句柄。第二个参数是sql语句</span><br><span class="line">    if(mysqli_num_rows($data) &gt; 0)&#123;</span><br><span class="line">    #mysqli_num_rows()查询结果集有多少条行数</span><br><span class="line">    $expier = time()+60*60*24; //一天过期</span><br><span class="line">    setcookie(&#x27;username&#x27;,$user,$expire,&#x27;/&#x27;);</span><br><span class="line">    setcookie(&#x27;password&#x27;,$pass,$expire,&#x27;/&#x27;);</span><br><span class="line">    header(&#x27;Location: indexc.php&#x27;);</span><br><span class="line">    exit();</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">     echo &quot;&lt;script&gt;alert(&#x27;登录失败&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">其他位置都和上面的login.php一样，只有标色部分添加了内容，$expier是过期时间，time()是当前时间，后</span><br><span class="line">面加的是秒，所以整个一句就是设置过期时间为一天，二三行都是设置cookie，setcookie(键，值，过期时间</span><br><span class="line">，生效目录)。下一句就是跳转到indexc.php</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、indexc-php"><a href="#2、indexc-php" class="headerlink" title="2、indexc.php"></a>2、indexc.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if(@$_COOKIE[&#x27;username&#x27;]==&#x27;xiaodi&#x27; and @$_COOKIE[&#x27;password&#x27;]==&#x27;xiaodisec&#x27;)&#123;</span><br><span class="line">    echo &#x27;恭喜进入管理员后台！&#x27;;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;loginc_out.php&quot;&gt;退出&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo  &#x27;请登录后尝试！&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">这里就和之前index.php不一样了，这里加了鉴权操作，就是判断cookie是否为loginc.php，当然这里是写死</span><br><span class="line">的正常业务逻辑这里是变量，echo &#x27;&lt;a href=&quot;loginc_out.php&quot;&gt;退出&lt;/a&gt;&#x27;;这个是一个超链接，点一下相当</span><br><span class="line">于跳到loginc_out.php了，loginc_out.php是一个删除cookie的操作就是模拟退出</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、loginc-out-php"><a href="#3、loginc-out-php" class="headerlink" title="3、loginc.out.php"></a>3、loginc.out.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">setcookie(&#x27;username&#x27;,$user,time()-1,&#x27;/&#x27;);</span><br><span class="line">setcookie(&#x27;password&#x27;,$pass,time()-1,&#x27;/&#x27;);</span><br><span class="line">header(&#x27;Location: loginc.php&#x27;);</span><br><span class="line">过期时间改成time()-任意数，这个就是销毁cookie，值置不置空都行，然后重定向到登录页面</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="三、Session验证-后台登录"><a href="#三、Session验证-后台登录" class="headerlink" title="三、Session验证 后台登录"></a>三、Session验证 后台登录</h1><p><font style="background-color:#FBDE28;">session存储在服务端，也能被窃取，但是cookie能被篡改，session不行，一定程度上防范了越权登录其他用户</font></p>
+<p>logins.php-&gt;indexs.php-&gt;logins_out.php</p>
+<h2 id="1、logins-php"><a href="#1、logins-php" class="headerlink" title="1、logins.php"></a>1、logins.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/*</span><br><span class="line">1、连接数据库</span><br><span class="line">2、选择数据库中的表</span><br><span class="line">3、接收提交的用户和密码</span><br><span class="line">4、执行sql语句判断用户密码是否正确</span><br><span class="line">*/ </span><br><span class="line"></span><br><span class="line">include &#x27;./config.php&#x27;;</span><br><span class="line">$user=@$_POST[&#x27;username&#x27;];</span><br><span class="line">$pass=@$_POST[&#x27;password&#x27;];</span><br><span class="line">$con = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);</span><br><span class="line">$sql=&quot;select * from admin where username=&#x27;$user&#x27; and password=&#x27;$pass&#x27;&quot;;</span><br><span class="line"></span><br><span class="line">if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;)&#123;</span><br><span class="line">    $data=mysqli_query($con,$sql);//第一个参数是mysqli_connect()函数返回的句柄。第二个参数是sql语句</span><br><span class="line">    if(mysqli_num_rows($data) &gt; 0)&#123;</span><br><span class="line">    #mysqli_num_rows()查询结果集有多少条行数</span><br><span class="line">    session_start();</span><br><span class="line">    $_SESSION[&#x27;username&#x27;]=$user;</span><br><span class="line">    $_SESSION[&#x27;password&#x27;]=$pass;</span><br><span class="line">    header(&#x27;Location: indexs.php&#x27;);</span><br><span class="line">    exit();</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">     echo &quot;&lt;script&gt;alert(&#x27;登录失败&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">session_start()开启会话，剩下两行就是设置session数据</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、indexs-php"><a href="#2、indexs-php" class="headerlink" title="2、indexs.php"></a>2、indexs.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line">if(@$_SESSION[&#x27;username&#x27;]==&#x27;xiaodi&#x27; and @$_SESSION[&#x27;password&#x27;]==&#x27;xiaodisec&#x27;)&#123;</span><br><span class="line">    echo &#x27;恭喜进入管理员后台！&#x27;;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;logins_out.php&quot;&gt;退出&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo  &#x27;请登录后尝试！&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">这个和indexc.php不一样的点就是把COOKIE换成SESSION</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、logins-out-php"><a href="#3、logins-out-php" class="headerlink" title="3、logins_out.php"></a>3、logins_out.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();//消除session必须先销毁session</span><br><span class="line">session_unset();//删除所有session数据,还可以unset($_SESSION[名])，删除单个session数据</span><br><span class="line">session_destroy();//删除session文件</span><br><span class="line">header(&#x27;Location: logins.php&#x27;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="四、Session-Token-防爆破登录"><a href="#四、Session-Token-防爆破登录" class="headerlink" title="四、Session+Token 防爆破登录"></a>四、Session+Token 防爆破登录</h1><p>loginst.php-&gt;logincheck.php-&gt;indexst.php-&gt;loginst_out.php</p>
+<h2 id="1、loginst-php"><a href="#1、loginst-php" class="headerlink" title="1、loginst.php"></a>1、loginst.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">// 生成Token并将其存储在Session中</span><br><span class="line">include &#x27;configs.php&#x27;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//1.因为是用的session维持会话，token已经绑定到下面的表单了</span><br><span class="line">//2.token，生成之后直接存到session里，主要是方便重置token,</span><br><span class="line">//每次token随表单提交后都需要重置以保持token的唯一性。</span><br><span class="line"></span><br><span class="line">$_SESSION[&#x27;token&#x27;] = bin2hex(random_bytes(32));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;zh&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;后台登录&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div class=&quot;login-container&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;login-box&quot;&gt;</span><br><span class="line">        &lt;h2&gt;后台登录&lt;/h2&gt;</span><br><span class="line">        &lt;form action=&quot;logincheck.php&quot; method=&quot;POST&quot;&gt;</span><br><span class="line">            &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;&lt;?php echo $_SESSION[&#x27;token&#x27;] ; ?&gt;&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;input-group&quot;&gt;</span><br><span class="line">                &lt;label for=&quot;username&quot;&gt;用户名&lt;/label&gt;</span><br><span class="line">                &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; placeholder=&quot;请输入用户名&quot; required&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;input-group&quot;&gt;</span><br><span class="line">                &lt;label for=&quot;password&quot;&gt;密码&lt;/label&gt;</span><br><span class="line">                &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;请输入密码&quot; required&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">            &lt;button type=&quot;submit&quot; class=&quot;btn&quot;&gt;登录&lt;/button&gt;</span><br><span class="line">            &lt;div class=&quot;footer&quot;&gt;</span><br><span class="line">                &lt;p&gt;忘记密码?&lt;/p&gt;</span><br><span class="line">                &lt;p&gt;还没有账号? &lt;a href=&quot;regedit.php&quot;&gt;注册&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/form&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">这个页面的作用是生成一个64位的十六进制字符串，下面表单中让这个十六进制字符串也就是token嵌入，这</span><br><span class="line">里的token指的是csrf token，用于身份验证的是jwt，csrf tokn是用来防止爆破的。</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、configs-php"><a href="#2、configs-php" class="headerlink" title="2、configs.php"></a>2、configs.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line">// 生成 CSRF Token（如果没有）</span><br><span class="line">if (empty($_SESSION[&#x27;token&#x27;])) &#123;</span><br><span class="line">    $_SESSION[&#x27;token&#x27;] = bin2hex(random_bytes(32)); // 生成一个 32 字节的 token</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 数据库配置信息</span><br><span class="line">define(&#x27;DB_HOST&#x27;, &#x27;localhost&#x27;);     // 数据库主机</span><br><span class="line">define(&#x27;DB_USER&#x27;, &#x27;root&#x27;);          // 数据库用户名</span><br><span class="line">define(&#x27;DB_PASS&#x27;, &#x27;123456&#x27;);      // 数据库密码</span><br><span class="line">define(&#x27;DB_NAME&#x27;, &#x27;phpstudy&#x27;); // 数据库名称</span><br><span class="line">这里也是生成token，然后定义数据库连接的数据</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、logincheck-php"><a href="#3、logincheck-php" class="headerlink" title="3、logincheck.php"></a>3、logincheck.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;configs.php&#x27;;</span><br><span class="line">$conn=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);</span><br><span class="line">$user=@$_POST[&#x27;username&#x27;];</span><br><span class="line">$pass=@$_POST[&#x27;password&#x27;];</span><br><span class="line">$token = @$_POST[&#x27;token&#x27;];</span><br><span class="line"></span><br><span class="line">$sql=&quot;select * from admin where username=&#x27;$user&#x27; and password=&#x27;$pass&#x27;;&quot;;</span><br><span class="line">$data=mysqli_query($conn,$sql);</span><br><span class="line"></span><br><span class="line">if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;)&#123;</span><br><span class="line">    if (empty($token) || $token!== $_SESSION[&#x27;token&#x27;]) &#123;</span><br><span class="line">        echo &#x27;&lt;script&gt;alert(&quot;Token 无效！&quot;)&lt;/script&gt;&#x27;;</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br><span class="line">    //判断用户登录成功</span><br><span class="line">    if(mysqli_num_rows($data) &gt; 0)&#123;</span><br><span class="line">        session_start();</span><br><span class="line">        $_SESSION[&#x27;username&#x27;]=$user;</span><br><span class="line">        $_SESSION[&#x27;password&#x27;]=$pass;</span><br><span class="line">        $_SESSION[&#x27;token&#x27;] = bin2hex(random_bytes(32));</span><br><span class="line">        header(&#x27;Location: indexst.php&#x27;);</span><br><span class="line">        exit();</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        //判断用户登录失败</span><br><span class="line">        echo &#x27;&lt;script&gt;alert(&quot;登录失败!&quot;)&lt;/script&gt;&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">首先是连接数据库去查用户名和密码，这里有一个逻辑是判断token是否为空或者token的值对不对的上，每</span><br><span class="line">次刷新页面csrf token都会刷新，所以爆破行为得到抑制。</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、indexst-php"><a href="#4、indexst-php" class="headerlink" title="4、indexst.php"></a>4、indexst.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line">if(@$_SESSION[&#x27;username&#x27;]==&#x27;xiaodi&#x27; &amp;&amp; @$_SESSION[&#x27;password&#x27;]==&#x27;xiaodisec&#x27;)&#123;</span><br><span class="line">    echo &quot;恭喜进入后台管理页面!&quot;;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;loginst_out.php&quot;&gt;退出&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &#x27;&lt;script&gt;alert(&quot;请登录!&quot;)&lt;/script&gt;&#x27;;</span><br><span class="line">    //header(&#x27;Location: loginc.php&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">这个和之前的没什么区别，就是退出登录的超链接地址不一样</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="5、loginst-out-php"><a href="#5、loginst-out-php" class="headerlink" title="5、loginst_out.php"></a>5、loginst_out.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// 开始会话</span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line">// 清除 SESSION 变量，并销毁会话</span><br><span class="line">session_unset();</span><br><span class="line">session_destroy();</span><br><span class="line"></span><br><span class="line">// 重定向到登录页面</span><br><span class="line">header(&#x27;Location: loginst.php&#x27;);</span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line">这一步和logins_out.php一样就是销毁SESSION，因为这里是SESSION来维持会话。</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="五、两例代码审计-Cookie-Session"><a href="#五、两例代码审计-Cookie-Session" class="headerlink" title="五、两例代码审计-Cookie&amp;Session"></a>五、两例代码审计-Cookie&amp;Session</h1><h2 id="1、XHCMS-Cookie脆弱"><a href="#1、XHCMS-Cookie脆弱" class="headerlink" title="1、XHCMS Cookie脆弱"></a>1、XHCMS Cookie脆弱</h2><p>admin目录索引文件(默认首页)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//单一入口模式</span><br><span class="line">error_reporting(0); //关闭错误显示</span><br><span class="line">$file=addslashes($_GET[&#x27;r&#x27;]); //接收文件名</span><br><span class="line">$action=$file==&#x27;&#x27;?&#x27;index&#x27;:$file; //判断为空或者等于index</span><br><span class="line">include(&#x27;files/&#x27;.$action.&#x27;.php&#x27;); //载入相应文件</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">//这里第四行是三元运算符，条件?条件成立的值:不成立的值。r的值为空的话就是index,写值的话就是那个值。</span><br><span class="line">然后包含files/r的值.php</span><br></pre></td></tr></table></figure>
+
+<p>我们直接访问xhcms.com&#x2F;admin就相当于访问了xhcms.com&#x2F;admin&#x2F;</p>
+<p>index.php。因为没带r所以就访问了admin&#x2F;files&#x2F;index.php这也就是上面代码的逻辑。</p>
+<p>admin&#x2F;files&#x2F;index.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">require &#x27;../inc/checklogin.php&#x27;;</span><br><span class="line">require &#x27;../inc/conn.php&#x27;;</span><br><span class="line">$indexopen=&#x27;class=&quot;open&quot;&#x27;;</span><br><span class="line">?&gt;</span><br><span class="line">后面有一个登录表单这里不显示了</span><br></pre></td></tr></table></figure>
+
+<p>观察这个代码一个是数据库连接文件还有一个就是检测登录状态的文件，肯定是这个checklogin.php重要。</p>
+<p>admin&#x2F;inc&#x2F;checklogin.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$user=$_COOKIE[&#x27;user&#x27;];</span><br><span class="line">if ($user==&quot;&quot;)&#123;</span><br><span class="line">header(&quot;Location: ?r=login&quot;);</span><br><span class="line">exit;	</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">这个就是检查是否携带cookie，如果没有就重定向到login。漏洞点就在这里，index.php引入了这个文件，只</span><br><span class="line">要cookie不为空就能进入</span><br></pre></td></tr></table></figure>
+
+<!-- 这是一张图片，ocr 内容为： -->
+<p><img src="/028-1.png"></p>
+<p>我随便设置了user&#x3D;1就登进来了，正常你不登录的话是访问不了这个页面的</p>
+<h2 id="2、YXCMS-Session固定"><a href="#2、YXCMS-Session固定" class="headerlink" title="2、YXCMS Session固定"></a>2、YXCMS Session固定</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2025%E8%BF%99%E4%B8%AA%E5%B0%B1%E7%9C%8B%E6%96%87%E7%AB%A0%E5%90%A7%E5%81%B7%E4%B8%AA%E6%87%92">https://xz.aliyun.com/t/2025这个就看文章吧偷个懒</a></p>
+<p>后面都是些知识点：</p>
+<p>身份验证-Cookie使用</p>
+<p>生成cookie的原理图过程：</p>
+<p>1、客户端向服务器发送HTTP请求。</p>
+<p>2、服务器检查请求头中是否包含cookie信息。</p>
+<p>3、如果请求头中包含cookie信息，则服务器使用该cookie来识别客户端，否则服务器将生成一个新的cookie。</p>
+<p>4、服务器在响应头中设置cookie信息并将其发送回客户端。</p>
+<p>5、客户端接收响应并将cookie保存在本地。</p>
+<p>6、当客户端发送下一次HTTP请求时，它会将cookie信息附加到请求头中。</p>
+<p>7、服务器收到请求并检查cookie的有效性。</p>
+<p>8、如果cookie有效，则服务器响应请求。否则，服务器可能会要求客户端重新登录。</p>
+<p>$_COOKIE：是一个关联数组，包含通过cookie传递给当前脚本的内容。</p>
+<p>setcookie(): 设置一个cookie并发送到客户端浏览器。</p>
+<p>unset(): 用于删除指定的cookie。</p>
+<p>身份验证-Session使用</p>
+<p>1、客户端向服务器发送HTTP请求。</p>
+<p>2、服务器为客户端生成一个唯一的session ID，并将其存储在服务器端的存储器中（如文件、数据库等）。</p>
+<p>3、服务器将生成的session ID作为一个cookie发送给客户端。</p>
+<p>4、客户端将session ID保存为一个cookie，通常是在本地浏览器中存储。</p>
+<p>5、当客户端在发送下一次HTTP请求时，它会将该cookie信息附加到请求头中，以便服务器可以通过该session ID来识别客户端。</p>
+<p>6、服务器使用session ID来检索存储在服务器端存储器中的与该客户端相关的session数据，从而在客户端和服务器之间共享数据。</p>
+<p>session_start(): 启动会话，用于开始或恢复一个已经存在的会话。</p>
+<p>$_SESSION：是一个关联数组，包含当前脚本中的所有session内容。</p>
+<p>session_destroy(): 销毁当前会话中的所有数据。</p>
+<p>session_unset(): 释放当前会话中的所有变量。</p>
+<p>Session存储路径：PHP.INI中session.save_path设置路径</p>
+<p>唯一性判断-Token使用</p>
+<p>1、生成Token并将其存储在Session</p>
+<p>2、生成Token并将其绑定在Cookie触发</p>
+<p>3、尝试登录表单中带入Token验证逻辑</p>
+<p>4、思考Token安全特性</p>
+<p>具体安全知识点：</p>
+<p>-Cookie和Session都是用来在Web应用程序中跟踪用户状态的机制</p>
+<p>1、存储位置不同：</p>
+<p>Cookie是存储在客户端（浏览器）上的，而Session是存储在服务器端的。</p>
+<p>2、安全性不同：</p>
+<p>Cookie存储在客户端上，可能会被黑客利用窃取信息，而Session存储在服务器上，更加安全。</p>
+<p>3、存储容量不同：</p>
+<p>Cookie的存储容量有限，一般为4KB，而Session的存储容量理论上没有限制，取决于服务器的硬件和配置。</p>
+<p>4、生命周期不同：</p>
+<p>Cookie可以设置过期时间，即便关闭浏览器或者重新打开电脑，Cookie仍然存在，直到过期或者被删除。而Session一般默认在浏览器关闭后就会过期。</p>
+<p>5、访问方式不同：</p>
+<p>Cookie可以通过JavaScript访问，而Session只能在服务器端进行访问。</p>
+<p>6、使用场景不同：</p>
+<p>Cookie一般用于存储小型的数据，如用户的用户名和密码等信息。而Session一般用于存储大型的数据，如购物车、登录状态等信息。</p>
+<p>总之，Cookie和Session都有各自的优缺点，选择使用哪一种方式，取决于具体的应用场景和需求。一般来说，如果需要存储敏感信息或者数据较大，建议使用Session；如果只需要存储少量的数据，并且需要在客户端进行访问，可以选择使用Cookie。</p>
+<p>-在Web应用程序中，使用token和不使用的主要差异在于身份验证和安全性。</p>
+<p>1.身份验证：采用token机制的Web应用程序，用户在登录成功后会收到一个token，这个token可以在每次请求时发送给服务器进行身份验证。而不采用token机制的Web应用程序，一般会使用session机制来保存用户登录状态，服务器会在用户登录成功后创建一个session，之后的每个请求都需要在HTTP头中附带这个session ID，以便服务器能够验证用户身份。</p>
+<p>2、安全性：采用token机制的Web应用程序，在服务器上不会存储用户的登录状态，只需要存储token即可。因此，即使token被盗取，黑客也无法获得用户的密码或者其他敏感信息。而不采用token机制的Web应用程序，一般会在服务器上存储用户的登录状态，因此如果服务器被黑客攻击，黑客可能会获得用户的敏感信息。</p>
+<p>3、跨域访问：采用token机制的Web应用程序，在跨域访问时，可以使用HTTP头中的Authorization字段来传递token信息，方便实现跨域访问。而不采用token机制的Web应用程序，在跨域访问时，需使用cookie或session来传递用户身份信息，比较麻烦。</p>
+<p>总之，采用token机制可以提高Web应用程序的安全性，并且方便实现跨域访问。不过，使用token机制也需要开发者自己来实现身份验证和token的生成和验证，相对来说比较复杂。而不采用token机制，使用session机制则相对简单，但是安全性相对较低。因此，具体采用哪种机制，需要根据实际情况进行权衡和选择。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/10/19/%E7%AC%AC27%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-%E5%8E%9F%E7%94%9F%E8%AF%AD%E6%B3%95-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F-%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%97-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96-%E4%BB%BB%E6%84%8F%E4%B8%8A%E4%BC%A0/" rel="prev" title="第27天-PHP应用&原生语法&全局变量&数据接受&身份验证&变量覆盖&任意上传">
+      <i class="fa fa-chevron-left"></i> 第27天-PHP应用&原生语法&全局变量&数据接受&身份验证&变量覆盖&任意上传
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="w0aFeK3v2HV9LRG7Ubh6"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+
+<livere-comment client-id="w0aFeK3v2HV9LRG7Ubh6"></livere-comment>
+<script type="module" src="https://www.livere.org/livere-widget.js"></script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C-%E9%AA%8C%E8%AF%81%E7%94%A8%E6%88%B7"><span class="nav-number">1.</span> <span class="nav-text">一、数据库操作 验证用户</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81login-php"><span class="nav-number">1.1.</span> <span class="nav-text">1、login.php:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81index-php"><span class="nav-number">1.2.</span> <span class="nav-text">2、index.php:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81config-php"><span class="nav-number">1.3.</span> <span class="nav-text">3、config.php:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Cookie%E9%AA%8C%E8%AF%81-%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">二、Cookie验证 后台登录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81loginc-php"><span class="nav-number">2.1.</span> <span class="nav-text">1、loginc.php:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81indexc-php"><span class="nav-number">2.2.</span> <span class="nav-text">2、indexc.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81loginc-out-php"><span class="nav-number">2.3.</span> <span class="nav-text">3、loginc.out.php</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81Session%E9%AA%8C%E8%AF%81-%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95"><span class="nav-number">3.</span> <span class="nav-text">三、Session验证 后台登录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81logins-php"><span class="nav-number">3.1.</span> <span class="nav-text">1、logins.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81indexs-php"><span class="nav-number">3.2.</span> <span class="nav-text">2、indexs.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81logins-out-php"><span class="nav-number">3.3.</span> <span class="nav-text">3、logins_out.php</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Session-Token-%E9%98%B2%E7%88%86%E7%A0%B4%E7%99%BB%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">四、Session+Token 防爆破登录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81loginst-php"><span class="nav-number">4.1.</span> <span class="nav-text">1、loginst.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81configs-php"><span class="nav-number">4.2.</span> <span class="nav-text">2、configs.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81logincheck-php"><span class="nav-number">4.3.</span> <span class="nav-text">3、logincheck.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81indexst-php"><span class="nav-number">4.4.</span> <span class="nav-text">4、indexst.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81loginst-out-php"><span class="nav-number">4.5.</span> <span class="nav-text">5、loginst_out.php</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%B8%A4%E4%BE%8B%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-Cookie-Session"><span class="nav-number">5.</span> <span class="nav-text">五、两例代码审计-Cookie&amp;Session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81XHCMS-Cookie%E8%84%86%E5%BC%B1"><span class="nav-number">5.1.</span> <span class="nav-text">1、XHCMS Cookie脆弱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81YXCMS-Session%E5%9B%BA%E5%AE%9A"><span class="nav-number">5.2.</span> <span class="nav-text">2、YXCMS Session固定</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="智高"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">智高</p>
+  <div class="site-description" itemprop="description">正因为我有能力跨越，这个考验才会降临!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Spider-px" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Spider-px" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">智高</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.7' zIndex='' count='90' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
