@@ -5744,4 +5744,409 @@ fclose($myfile);
     <content><![CDATA[<p>主要澄清一下，我不是内奸，主要就是打城打平了发了战报，28扣？号还说下午不来就下野自己玩去，我当时好像就一队主力汪汪队，拆迁也没出就随便凑了一队，当时主力为什么没去我也忘了，反正我也有问题我觉得28说话冲冲的，可能人家没那个意思。后来我说看着我估计也待不下去，我就去问汉要不要考勤，因为我本来就业余也卖考勤软件，我就说了我去汉盟做管理这话，后面人家汉一盟也没要我，我就一直在二盟了，然后就成内奸了，我真不是！<br><img src="/images/cq-1.jpg"><br><img src="/images/cq-2.jpg"><br><img src="/images/cq-3.jpg"></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>第30天-PHP应用&amp;组件框架&amp;前端模版渲染&amp;三方插件&amp;富文本编辑器&amp;CVE审计</title>
+    <url>/2026/10/23/%E7%AC%AC30%E5%A4%A9-PHP%E5%BA%94%E7%94%A8-%E7%BB%84%E4%BB%B6%E6%A1%86%E6%9E%B6-%E5%89%8D%E7%AB%AF%E6%A8%A1%E7%89%88%E6%B8%B2%E6%9F%93-%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6-%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8-CVE%E5%AE%A1%E8%AE%A1/</url>
+    <content><![CDATA[<p><font></font></p>
+<span id="more"></span>
+
+
+<p><font style="color:#ff0000;background-color:#ffff00;">演示案例：</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢</font><font style="color:#ff0000;background-color:#ffffff;"> </font><font style="color:#ff0000;background-color:#ffffff;">WEB开发-Smarty模版&amp;插件编辑器</font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;">➢ WEB开发-模版&amp;插件-代码审计案例</font></p>
+<table>
+<thead>
+<tr>
+<th><strong><font style="color:#000000;">类别</font></strong></th>
+<th><strong><font style="color:#000000;">组件&#x2F;框架</font></strong></th>
+<th><strong><font style="color:#000000;">说明</font></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong><font style="color:#000000;">[Web框架]</font></strong></td>
+<td><font style="color:#000000;">Laravel</font></td>
+<td><font style="color:#000000;">现代化、功能全面的框架，适合大多数Web应用。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Symfony</font></td>
+<td><font style="color:#000000;">高度模块化、功能强大的框架，适合复杂应用。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">CodeIgniter</font></td>
+<td><font style="color:#000000;">轻量级框架，适合快速开发。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Zend Framework (Laminas)</font></td>
+<td><font style="color:#000000;">企业级框架，适合大规模应用，具有高扩展性和性能。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Yii</font></td>
+<td><font style="color:#000000;">高性能框架，适合快速开发和大规模应用。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[数据库组件]</font></strong></td>
+<td><font style="color:#000000;">Doctrine ORM</font></td>
+<td><font style="color:#000000;">强大的ORM工具，支持复杂的查询和映射。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Eloquent ORM</font></td>
+<td><font style="color:#000000;">Laravel内置ORM，简化数据库操作。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">PDO</font></td>
+<td><font style="color:#000000;">PHP的数据库抽象层，支持多种数据库引擎。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">RedBeanPHP</font></td>
+<td><font style="color:#000000;">轻量级ORM，自动创建和管理数据库表。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[模板引擎]</font></strong></td>
+<td><font style="color:#000000;">Twig</font></td>
+<td><font style="color:#000000;">灵活、现代的模板引擎，常用于Symfony项目。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Blade</font></td>
+<td><font style="color:#000000;">Laravel内置模板引擎，支持模板继承和控制结构。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Smarty</font></td>
+<td><font style="color:#000000;">经典模板引擎，适合中大型项目。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Mustache</font></td>
+<td><font style="color:#000000;">轻量级跨语言模板引擎，支持PHP、JavaScript等。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[路由组件]</font></strong></td>
+<td><font style="color:#000000;">FastRoute</font></td>
+<td><font style="color:#000000;">高性能PHP路由库，适用于小型应用和API。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">AltoRouter</font></td>
+<td><font style="color:#000000;">轻量级路由库，适合小型项目，易于配置。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Symfony Routing</font></td>
+<td><font style="color:#000000;">Symfony的路由组件，适合复杂应用。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[认证与授权]</font></strong></td>
+<td><font style="color:#000000;">OAuth2 Server PHP</font></td>
+<td><font style="color:#000000;">实现OAuth2协议的PHP库，适用于API认证。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">JWT (JSON Web Token)</font></td>
+<td><font style="color:#000000;">轻量级身份验证方案，适合API认证。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">PHP-Auth</font></td>
+<td><font style="color:#000000;">简单的用户认证库，适用于中小型Web应用。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[支付集成]</font></strong></td>
+<td><font style="color:#000000;">Stripe PHP SDK</font></td>
+<td><font style="color:#000000;">集成Stripe支付功能，支持信用卡支付、订阅等。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">PayPal SDK for PHP</font></td>
+<td><font style="color:#000000;">集成PayPal支付功能，支持支付、退款等。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[邮件发送]</font></strong></td>
+<td><font style="color:#000000;">PHPMailer</font></td>
+<td><font style="color:#000000;">功能强大的邮件发送库，支持SMTP、POP3等协议。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">SwiftMailer</font></td>
+<td><font style="color:#000000;">另一款流行的邮件发送库，支持多种邮件功能。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Mailgun PHP SDK</font></td>
+<td><font style="color:#000000;">Mailgun的官方SDK，用于通过Mailgun API发送邮件。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[文件管理]</font></strong></td>
+<td><font style="color:#000000;">Flysystem</font></td>
+<td><font style="color:#000000;">文件存储抽象库，支持多种存储方式（如本地、Amazon S3、FTP等）。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Symfony Filesystem</font></td>
+<td><font style="color:#000000;">Symfony的文件系统组件，提供简单的文件操作API。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Intervention Image</font></td>
+<td><font style="color:#000000;">图片处理库，支持裁剪、调整大小、水印等功能。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[缓存与性能]</font></strong></td>
+<td><font style="color:#000000;">Redis</font></td>
+<td><font style="color:#000000;">内存数据存储系统，用于缓存、消息队列等，提升性能。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Memcached</font></td>
+<td><font style="color:#000000;">内存缓存系统，适用于高并发应用。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Symfony Cache</font></td>
+<td><font style="color:#000000;">Symfony缓存组件，支持多种缓存后端。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Laravel Cache</font></td>
+<td><font style="color:#000000;">Laravel内置缓存系统，提升Web应用性能。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[日志管理]</font></strong></td>
+<td><font style="color:#000000;">Monolog</font></td>
+<td><font style="color:#000000;">强大的日志库，支持多种日志渠道（如文件、数据库、邮件等）。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Log4PHP</font></td>
+<td><font style="color:#000000;">Apache Log4j的PHP实现，适用于复杂日志功能。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[任务队列]</font></strong></td>
+<td><font style="color:#000000;">Laravel Queue</font></td>
+<td><font style="color:#000000;">Laravel内置队列系统，支持延迟任务、异步处理。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Resque</font></td>
+<td><font style="color:#000000;">基于Redis的任务队列库，适用于异步任务处理。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">RabbitMQ</font></td>
+<td><font style="color:#000000;">开源消息代理服务，用于任务调度和消息传递。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[WebSocket与实时通信]</font></strong></td>
+<td><font style="color:#000000;">Ratchet</font></td>
+<td><font style="color:#000000;">用于实现WebSocket服务，适合在线聊天、实时通信。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Swoole</font></td>
+<td><font style="color:#000000;">高性能协程框架，支持WebSocket、TCP、UDP等协议，适用于高并发实时应用。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[测试与调试]</font></strong></td>
+<td><font style="color:#000000;">PHPUnit</font></td>
+<td><font style="color:#000000;">PHP标准单元测试框架，广泛用于自动化测试。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><font style="color:#000000;">Xdebug</font></td>
+<td><font style="color:#000000;">PHP调试工具，支持堆栈跟踪、性能分析、断点调试等功能。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[富文本编辑器]</font></strong></td>
+<td><strong><font style="color:#000000;">KindEditor</font></strong></td>
+<td><font style="color:#000000;">一个轻量级且功能丰富的富文本编辑器，支持图片上传、插入视频等，适用于PHP开发的Web项目。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">TinyMCE</font></strong></td>
+<td><font style="color:#000000;">开源的富文本编辑器，支持多种格式的文本编辑，插件丰富，易于集成。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">CKEditor</font></strong></td>
+<td><font style="color:#000000;">高度可定制的富文本编辑器，支持图片、文件上传、富文本格式化等功能，广泛用于Web项目中。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Froala Editor</font></strong></td>
+<td><font style="color:#000000;">轻量级、现代的富文本编辑器，支持图像处理、视频嵌入、内嵌富文本等，适合复杂的Web应用。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Quill</font></strong></td>
+<td><font style="color:#000000;">开源富文本编辑器，功能强大、轻量级，支持图片、视频、格式设置等功能，适合单页面应用。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Summernote</font></strong></td>
+<td><font style="color:#000000;">基于jQuery的轻量级富文本编辑器，支持文本格式化、图片上传等，适合中小型Web项目。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Trumbowyg</font></strong></td>
+<td><font style="color:#000000;">轻量级的富文本编辑器，功能简单但支持基本的文本编辑、图片上传、视频插入等。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Redactor</font></strong></td>
+<td><font style="color:#000000;">现代的富文本编辑器，功能丰富，支持图片、文件上传等，适合多种Web应用。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[图片上传组件]</font></strong></td>
+<td><strong><font style="color:#000000;">Dropzone.js</font></strong></td>
+<td><font style="color:#000000;">支持拖拽上传和多文件上传的JavaScript库，易于与PHP集成，常用于图片、文件上传功能。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">FilePond</font></strong></td>
+<td><font style="color:#000000;">高度可定制的文件上传库，支持图片预览、验证、上传进度等，适合需要精美上传功能的Web项目。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Fine Uploader</font></strong></td>
+<td><font style="color:#000000;">支持多种文件上传方式的组件，支持多文件上传、拖拽上传，支持PHP处理后台。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Plupload</font></strong></td>
+<td><font style="color:#000000;">支持多种文件上传方式（包括HTML5和Flash），可以与PHP后台集成，广泛用于Web应用中。</font></td>
+</tr>
+<tr>
+<td><strong><font style="color:#000000;">[图片处理组件]</font></strong></td>
+<td><strong><font style="color:#000000;">ImageMagick</font></strong></td>
+<td><font style="color:#000000;">强大的图像处理库，支持图像格式转换、剪裁、旋转、加水印等多种功能，适用于PHP处理图像。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">GD Library</font></strong></td>
+<td><font style="color:#000000;">PHP内置图像处理库，支持图像创建、缩放、裁剪、色调调整等功能。</font></td>
+</tr>
+<tr>
+<td><font style="color:#333333;"></font></td>
+<td><strong><font style="color:#000000;">Intervention Image</font></strong></td>
+<td><font style="color:#000000;">PHP图像处理库，支持裁剪、缩放、加水印等，易于与Laravel集成。</font></td>
+</tr>
+</tbody></table>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<p><font style="color:#ff0000;background-color:#ffffff;"></font></p>
+<h1 id="1、模版引擎"><a href="#1、模版引擎" class="headerlink" title="1、模版引擎"></a>1、模版引擎</h1><p>在开始介绍Smarty之前先了解一下模板引擎，模板引擎是为了让前端界(html)与程序代码(php)分离而产生的一种解决方案，简单来说就是html文件里再也不用写php代码了。Smarty的原理是变量替换原则，我们只需在html文件写好Smarty的标签即可，例{name}，然后调用Smarty的方法传递变量参数即可。** **<font style="background-color:#FBDE28;">简单一句话：</font><font style="color:rgb(0, 0, 0);background-color:#FBDE28;">模板引擎 &#x3D; 一个 “填空渲染工具”，把【模板骨架】+【后台数据】拼在一起，生成最终 HTML 页面</font><font style="background-color:#FBDE28;">。</font></p>
+<p>模版使用案例：</p>
+<p>Php模版框架：Smarty、Twig，codeeval等</p>
+<p>python模版框架：jinja2、mako、tornad、Django等</p>
+<p>Java模版框架：Thymeleaf、jade、velocity、FreeMarker等</p>
+<p>JavaScript模版框架：doT，Nunjucks，Pug，Marko，EJS，Dust等</p>
+<p>安全漏洞影响：</p>
+<p>SSTI（Server Side Template Injection，服务器端模板注入）<font style="background-color:#FBDE28;">后续web攻防会讲</font></p>
+<p>下载：<a href="https://github.com/smarty-php/smarty/releases">https://github.com/smarty-php/smarty/releases</a></p>
+<p>使用：</p>
+<p>1、创建一个文件夹，命名为smarty-demo。</p>
+<p>2、下载Smarty对应版本并解压缩到该文件夹中。</p>
+<p>3、创建一个PHP文件，命名为index.php，并在文件中添加以下代码：</p>
+<?php
+
+// 引入 Smarty 类文件
+
+require('smarty-demo/libs/Smarty.class.php');
+
+// 创建 Smarty 实例
+
+$smarty=newSmarty;
+
+// 设置 Smarty 相关属性
+
+$smarty->template_dir='smarty-demo/templates/'; <font style="background-color:#FBDE28;">渲染模版存放目录</font>
+
+$smarty->compile_dir='smarty-demo/templates_c/'; <font style="background-color:#FBDE28;">编译目录</font>
+
+$smarty->cache_dir='smarty-demo/cache/'; <font style="background-color:#FBDE28;">缓存目录</font>
+
+$smarty->config_dir='smarty-demo/configs/'; <font style="background-color:#FBDE28;">配置目录</font>
+
+// 赋值变量到模板中
+
+$smarty->assign('title','欢迎使用 Smarty');  <font style="background-color:#FBDE28;">这里是渲染关键代码</font>
+
+// 显示模板
+
+$smarty->display('index.tpl'); <font style="background-color:#FBDE28;">.tpl文件就是模版文件，这个代码也就是要渲染那个模版，把模版中的title值换成欢迎使用Smarty。</font>
+
+?>
+
+<p>4、创建一个名为index.tpl的模板文件，并将以下代码复制到上述点定义文件夹中</p>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>{$title}</title>
+
+</head>
+
+<body>
+
+<h1>{$title}</h1>
+
+<p>这是一个使用 Smarty 的例子。</p>
+
+</body>
+
+</html>
+
+
+
+<h2 id="a-渲染文件受控-例如：-smarty-display-GET-‘page’"><a href="#a-渲染文件受控-例如：-smarty-display-GET-‘page’" class="headerlink" title="a.渲染文件受控(例如：$smarty-&gt;display($_GET[‘page’]);)"></a>a.渲染文件受控(例如：$smarty-&gt;display($_GET[‘page’]);)</h2><p>这个就是ssti模版注入漏洞，漏洞成因就是渲染模版可控，我们输入一些payload直接被解析执行了，正常写法是$smarty-&gt;display(‘index.tpl’);，然后这个文件就是渲染模版然后对这个文件进行编译，$smarty-&gt;display($_GET[‘page’]);如果我们输入这个传入<font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">string{file_get_contents(‘&#x2F;etc&#x2F;passwd’)}类似这样的payload，前面有string然后Smarty就把后面内容识别为渲染模版了，然后直接编译，编译过程中就把函数执行了。 Smarty 不是简单的字符串替换（不是像 str_replace 那样单纯文本替换）；它是【编译型模板引擎】：先把模板源码编译成一段 PHP 代码，然后跑这段 PHP 代码，所以会造成代码执行。</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></p>
+<p>CVE参考：</p>
+<p><a href="https://xz.aliyun.com/t/11108">https://xz.aliyun.com/t/11108</a></p>
+<p><a href="https://www.cnblogs.com/magic-zero/p/8351974.html">https://www.cnblogs.com/magic-zero/p/8351974.html</a></p>
+<p>总结：</p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">条件： 后端代码：$smarty-&gt;display($_GET[‘payload’]);</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"> display 的参数由 GET 可控，Smarty 识别 string: 前缀</font></p>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">流程：</font></p>
+<pre><code>1. &lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;攻击者传参：?payload=string&#123;file_get_contents(&#39;/&lt;/font&gt;
+2. &lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;etc/passwd&#39;)&#125;&lt;/font&gt;
+3. &lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;Smarty 收到参数，发现前缀 string: → 不把它当成文件名，把冒号后面内容直接当作模板源码&lt;/font&gt;
+4. &lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;进入编译：Smarty 解析模板语法，自动补 echo，在 templates_c 目录生成编译后的 PHP 文件 编译结果等价：&lt;?php echo file_get_contents(&#39;/etc/passwd&#39;); ?&gt;&lt;/font&gt;
+5. &lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;PHP 执行这个编译文件：调用函数读取敏感文件&lt;/font&gt;
+6. &lt;font style=&quot;color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);&quot;&gt;echo 将读取到的内容输出到页面，攻击者拿到敏感信息&lt;/font&gt;
+</code></pre>
+<p><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);">关键规则：Smarty 模板里的变量 &#x2F; 函数表达式，默认输出，编译自动添加 echo</font></p>
+<p><strong><font style="color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0);"></font></strong></p>
+<p>这些payload是不用版本的。</p>
+<p>*&#x2F;phpinfo();&#x2F;&#x2F;</p>
+<p>string:{include file&#x3D;’C:&#x2F;Windows&#x2F;win.ini’}</p>
+<p>string:{function name&#x3D;’x(){};system(whoami);function ‘}{&#x2F;function}</p>
+<p>string:{$smarty.template_object-&gt;smarty-&gt;_getSmartyObj()-&gt;display(‘string:{system(whoami)}’)}</p>
+<p>eval:{math equation&#x3D;’(“\163\171\163\164\145\155”)(“\167\150\157\141\155\151”)’}</p>
+<h1 id="2、插件组件"><a href="#2、插件组件" class="headerlink" title="2、插件组件"></a>2、插件组件</h1><p><font style="background-color:#FBDE28;">这个就是其他人已经写好的功能代码，我们需要什么功能就下什么组件即可，渗透测试中遇到这种组件，直接去查这个组件有没有历史漏洞</font></p>
+<p>编辑器,邮箱，图片处理等（见上图）</p>
+<p>使用:</p>
+<p><a href="https://www.cnblogs.com/qq350760546/p/6669112.html">https://www.cnblogs.com/qq350760546/p/6669112.html</a></p>
+<p>参考：</p>
+<p><a href="https://www.cnblogs.com/linglinglingling/p/18040866">https://www.cnblogs.com/linglinglingling/p/18040866</a></p>
+<p><a href="https://blog.csdn.net/weixin_58099903/article/details/125810825">https://blog.csdn.net/weixin_58099903/article/details/125810825</a></p>
+<h1 id="3、案例："><a href="#3、案例：" class="headerlink" title="3、案例："></a>3、案例：</h1><p>代码审CMS:(由第三方应用引用导致安全问题)</p>
+<p>-网钛（OTCMS）：</p>
+<p><a href="https://xz.aliyun.com/t/13432">https://xz.aliyun.com/t/13432</a></p>
+<p>-Kindeditor：<a href="https://www.cnblogs.com/TaoLeonis/p/14899198.html">https://www.cnblogs.com/TaoLeonis/p/14899198.html</a></p>
+]]></content>
+      <categories>
+        <category>小迪安全课程学习笔记(web开发)</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
